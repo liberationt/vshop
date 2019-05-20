@@ -57,7 +57,7 @@ module.exports = {
       postcss: {
         plugins: [
           require('postcss-px2rem')({
-            remUnit: 37.5
+            remUnit: 37.5,
           })
         ]
       } // 这里的选项会传递给 postcss-loader
