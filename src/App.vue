@@ -27,5 +27,6 @@ export default {
   text-align: center;
   width: 375px;
   margin: 0 auto;
+  background-color: #fff;
 }
 </style>

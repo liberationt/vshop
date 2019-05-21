@@ -4,51 +4,148 @@
       <header>登录微店</header>
     </div>
     <div class="login_text">
-      <van-tabs class="login_tab" @click="onClick">
+      <van-tabs class="login_tab" v-model="tabactive" @click="onClick">
         <van-tab title="动态获取验证码">
           <div class="login_dynamic clearfix">
             <p>
-              <input type="text" placeholder="请输入手机号">
+              <input type="number" v-model="phoneNum" oninput='if(value.length>11)value=value.slice(0,11)' placeholder="请输入手机号">
             </p>
             <p>
-              <input type="text" placeholder="请输入验证码">
-              <span class="login_getcode right">获取验证码</span>
+              <input type="number" v-model="phoneCode" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码">
+              <span v-show="show" class="login_getcode right" @click="flag && getcode()">获取验证码</span>
+				      <span v-show="!show" class="login_getcode right">{{count}} s后获取</span>	
             </p>
           </div>
         </van-tab>
         <van-tab title="普通登录">
           <div class="login_dynamic">
             <p>
-              <input type="text" placeholder="请输入手机号">
+              <input type="number" v-model="phoneNum" oninput='if(value.length>11)value=value.slice(0,11)' placeholder="请输入手机号">
             </p>
             <p>
-              <input type="text" placeholder="请输入6-18位登录密码">
-              <span class="login_img right"> <img src="./imgs/eye-yincang@2x.png" alt=""> </span>
+              <input :type=typeText v-model="phonePwd" oninput='if(value.length>6)value=value.slice(0,18)' placeholder="请输入6-18位登录密码">
+              <span class="login_img right" @click="onLookImg"> <img :src= " look == 1? nolookImg : lookImg " alt=""> </span>
             </p>
           </div>
         </van-tab>
       </van-tabs>
-      <div class="login_login">
+      <div class="login_login" @click="goLogin">
         登录
       </div>
+    </div>
+    <div class="login_footer">
+      点击“立即注册”代表您已经同意 <span style="color:#4697FB" @click="goAgree">《抢单侠用户协议》</span>
     </div>
   </div>
 </template>
 <script>
-import { Tab, Tabs } from 'vant';
+import { Tab, Tabs, Toast } from 'vant';
 export default {
   components:{
     [Tabs.name] : Tabs,
-    [Tab.name] : Tab
+    [Tab.name] : Tab,
+    [Toast.name] : Toast 
   },
   data(){
     return {
-      active: 2,
-      
+      tabactive: 2,
+      lookImg: require('./imgs/eye-xianshi@2x.png'),
+      nolookImg: require('./imgs/eye-yincang@2x.png'),
+      look:1,
+      phoneNum: "",
+      phoneCode: "",
+      phonePwd: "",
+      typeText:'password',
+      count: "",
+      show: true,
+      flag: true,
     };
   },
   methods:{
     onClick(){},
+    onLookImg(){
+      if(this.look == 1){
+        this.look = 2
+        this.typeText = 'number'
+      } else {
+        this.look = 1
+        this.typeText = 'password'
+      }
+    },
+    // 获取验证码
+    getcode(){
+      if(!this.isCheck(0)){
+        return false
+      }
+      this.setTimeout()
+      this.deleteTime()
+      // this.request()
+    },
+    // 登录
+    goLogin(){
+      if(!this.isCheck(1)){
+        return false
+      }
+      this.$router.push({path:'./myshop'})
+    },
+    goAgree(){
+      window.location.href = 'http://qdx.zanfin.com/promotion/#/agreement    '
+    },
+    isCheck(num){
+      // 手机号校验
+      if(this.phoneNum == ""){
+        Toast('请输入手机号！')
+        return false
+      }
+      if(!/(1([3-9])[0-9]{9})/.test(this.phoneNum)){
+        Toast('手机号有误，请重新输入！')
+        return false
+      }
+      if(num == 1 ){
+        if (this.phoneCode == "") {
+          Toast('验证码不能为空，请重新输入！')
+          return false;
+        }
+        if (!/^[0-9]*$/.test(this.phoneCode) || this.phoneCode.length < 6) {
+          Toast('验证码有误，请重新输入！')
+          return false;
+        }
+      }
+      if(num ==2 ){
+        if(this.phonePwd == ""){
+          Toast('密码不能为空，请重新输入！')
+          return false;
+        }
+        if(this.phoneCode.length < 6 ){
+          Toast('密码输入有误，请重新输入！')
+          return false;
+        }
+      }
+      return true
+    },
+    // 定时器
+    setTimeout() {
+      const TIME_COUNT = 60;
+      if (!this.timer) {
+        this.count = TIME_COUNT;
+        this.show = false;
+        this.timer = setInterval(() => {
+          if (this.count > 0 && this.count <= TIME_COUNT) {
+            this.count--;
+          } else {
+            this.show = true;
+            clearInterval(this.timer);
+            this.timer = null;
+          }
+        }, 1000);
+      }
+    },
+    //清楚定时器
+    deleteTime() {
+      this.show = true;
+      clearInterval(this.timer);
+      this.timer = null;
+    }
   }
 }
 </script>
@@ -74,7 +171,7 @@ export default {
     text-align: left;
     padding-top: 20px;
     input {
-      color: #B2B2B2;
+      color: #333;
       font-size:15px;
       font-family:'PingFang-SC-Medium';
     }
@@ -105,6 +202,14 @@ export default {
     border-radius:25px;
     line-height: 50px;
     margin: 30px auto 0px auto;
+  }
+  .login_footer {
+    position: absolute;
+    bottom: 25px;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    color: #999;
   }
 }
 </style>

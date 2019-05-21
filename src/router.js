@@ -14,7 +14,7 @@ export default new Router({
     {
       path: '/about',
       name: 'about',
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')  
     },
     {
       path: '/mlogin',
@@ -47,6 +47,15 @@ export default new Router({
         }
       ]
     },
-    
+    {
+      path: '/myshop',
+      name: 'myshop',
+      component: () => import( './pages/myShop/m-myshop.vue') // 我的微店
+    },
+    {
+      path: '/meditshop',
+      name: 'meditshop',
+      component: () => import( './pages/myShop/m-editshop.vue') // 编辑店铺
+    }
   ]
 })
