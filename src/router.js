@@ -17,9 +17,9 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
     },
     {
-      path: '/slogin',
-      name: 'slogin',
-      component: () => import( './pages/myShop/s-login.vue')
+      path: '/mlogin',
+      name: 'mlogin',
+      component: () => import( './pages/myShop/m-login.vue')
     }
   ]
 })

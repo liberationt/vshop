@@ -8,7 +8,6 @@
     <van-checkbox v-model="checked" checked-color="#ff4444">复选框</van-checkbox>
 
     <div>
-      
       <van-tabbar v-model="active" @change="storedValue">
         <van-tabbar-item icon="home-o">首页</van-tabbar-item>
         <van-tabbar-item icon="search">找客户</van-tabbar-item>

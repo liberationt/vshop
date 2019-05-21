@@ -23,6 +23,7 @@
             </p>
             <p>
               <input type="text" placeholder="请输入6-18位登录密码">
+              <span class="login_img right"> <img src="./imgs/eye-yincang@2x.png" alt=""> </span>
             </p>
           </div>
         </van-tab>
@@ -42,8 +43,12 @@ export default {
   },
   data(){
     return {
-      active: 2
+      active: 2,
+      
     };
+  },
+  methods:{
+    onClick(){},
   }
 }
 </script>
@@ -82,6 +87,13 @@ export default {
       font-size:13px;
       padding-left: 10px;
       border-left: 1px solid #D3D3D3;/*no*/
+    }
+    .login_img {
+      img {
+        width: 18px;
+        height: 8px;
+        margin-top: 4px;
+      }
     }
   }
   .login_login {
