@@ -4,7 +4,7 @@
  */
 import http from './http'
 import utils from './utils'
-console.log(utils.getCookie(name)) // 获取本地内容
+console.log (utils.getCookie(name)) // 获取本地内容
 import {
   Toast
 } from 'vant';
@@ -24,18 +24,18 @@ export function request(apiKey,data={}, isShowError = true) {
 			identifier: "weidian",
 		},
   }
-  if(true){  //用户信息
+  if(true) {  //用户信息
     baseParams.session = {}
   }
   let token = (baseParams.session && baseParams.session.token) ? baseParams.session.token : ''
   let salt = "*(&!*(Q#IUHAX89y19823h*&(YQ#($(*AGFsd"
   baseParams.sign = MD5(baseParams.apiKey + token + baseParams.data + salt)
 
-  console.log('request=====> ' + apiKey + "   " + JSON.stringify(baseParams))
+  console.log ('request=====> ' + apiKey + "   " + JSON.stringify(baseParams))
   return new Promise((resolve, reject)=>{
     return http.post("/api/proxy", baseParams).then((response={}) => {
       if (response.code == 'success') {
-        console.log('response=====> ' + apiKey + "   " + JSON.stringify(response))
+        console.log ('response=====> ' + apiKey + "   " + JSON.stringify(response))
         resolve && resolve(response.data)
       } else {
         handleError(apiKey, response, reject, isShowError)
@@ -81,7 +81,7 @@ let handleError = (apiKey, e = {}, reject, isShowError = true)=>{
       }
       break
   }
-  console.log('response  fail=====> ' + apiKey + "   " + JSON.stringify(response));
+  console.log ('response  fail=====> ' + apiKey + "   " + JSON.stringify(response));
   reject && reject(e)
 }
 

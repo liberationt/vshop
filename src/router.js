@@ -14,12 +14,17 @@ export default new Router({
     {
       path: '/about',
       name: 'about',
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')  
     },
     {
       path: '/mlogin',
       name: 'mlogin',
-      component: () => import( './pages/myShop/m-login.vue')
+      component: () => import( './pages/myShop/m-login.vue') //登录
+    },
+    {
+      path: '/myshop',
+      name: 'myshop',
+      component: () => import( './pages/myShop/m-myshop.vue') // 我的微店
     }
   ]
 })
