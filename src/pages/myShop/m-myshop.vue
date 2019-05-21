@@ -88,10 +88,9 @@
   </div>
 </template>
 <script>
-import { NavBar, Row, Col  } from 'vant';
+import { Row, Col  } from 'vant';
 export default {
   components:{
-    [NavBar.name] : NavBar,
     [Row.name] : Row,
     [Col.name] : Col,
   },
