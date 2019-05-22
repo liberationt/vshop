@@ -15,7 +15,7 @@
         <van-tabbar-item icon="setting-o">我的</van-tabbar-item>
       </van-tabbar>
     </div>
-
+    <input type="text">
     <div>
       <van-popup v-model="show" position="bottom" :overlay="false">
         <van-datetime-picker

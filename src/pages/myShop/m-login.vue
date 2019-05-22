@@ -32,10 +32,11 @@
       <div class="login_login" @click="goLogin">
         登录
       </div>
+      <div class="login_footer">
+        点击“立即注册”代表您已经同意 <span style="color:#4697FB" @click="goAgree">《抢单侠用户协议》</span>
+      </div>
     </div>
-    <div class="login_footer">
-      点击“立即注册”代表您已经同意 <span style="color:#4697FB" @click="goAgree">《抢单侠用户协议》</span>
-    </div>
+    
   </div>
 </template>
 <script>
@@ -48,7 +49,7 @@ export default {
   },
   data(){
     return {
-      tabactive: 2,
+      tabactive: 0,
       lookImg: require('./imgs/eye-xianshi@2x.png'),
       nolookImg: require('./imgs/eye-yincang@2x.png'),
       look:1,
@@ -83,7 +84,7 @@ export default {
     },
     // 登录
     goLogin(){
-      if(!this.isCheck(1)){
+      if(!this.isCheck()){
         return false
       }
       this.$router.push({path:'./myshop'})
@@ -91,7 +92,7 @@ export default {
     goAgree(){
       window.location.href = 'http://qdx.zanfin.com/promotion/#/agreement    '
     },
-    isCheck(num){
+    isCheck(){
       // 手机号校验
       if(this.phoneNum == ""){
         Toast('请输入手机号！')
@@ -101,7 +102,7 @@ export default {
         Toast('手机号有误，请重新输入！')
         return false
       }
-      if(num == 1 ){
+      if(this.tabactive == 0){
         if (this.phoneCode == "") {
           Toast('验证码不能为空，请重新输入！')
           return false;
@@ -111,7 +112,7 @@ export default {
           return false;
         }
       }
-      if(num ==2 ){
+      if(this.tabactive == 1){
         if(this.phonePwd == ""){
           Toast('密码不能为空，请重新输入！')
           return false;
@@ -151,6 +152,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .login_common {
+  text-align: center;
+  height: 100%;
   width: 100%;
   .login_top {
     height: 176px;
@@ -204,12 +207,15 @@ export default {
     margin: 30px auto 0px auto;
   }
   .login_footer {
+    width: 100%;
+    height: 20px;
     position: absolute;
     bottom: 25px;
     width: 100%;
     text-align: center;
     font-size: 10px;
     color: #999;
+    z-index: -1
   }
 }
 </style>

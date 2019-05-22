@@ -65,6 +65,12 @@ export default new Router({
       name: 'mshopsign',
       title:'微店招牌',
       component: () => import( './pages/myShop/m-shopsign.vue')  
+    },
+    {
+      path: '/mshopregister',
+      name: 'mshopregister',
+      title:'我的客户',
+      component: () => import( './pages/myShop/m-shopregister.vue')  
     }
   ]
 })
