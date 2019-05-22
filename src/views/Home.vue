@@ -68,7 +68,7 @@ export default {
   },
   created() {
     utils.setCookie('name','2222')
-//     this.request("wisdom.loan.captcha.loanUserSendSmsForRiskH511",{
+//     this.request("wisdom.loan.captcha.loanUserSendSmsForRiskH5",{
 //       "captchaId": "",
 //       "phone": '13939466455',
 //       "type": 20000,

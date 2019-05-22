@@ -19,6 +19,7 @@ export default new Router({
     {
       path: '/mlogin',
       name: 'mlogin',
+      tittle:'登陆页面',
       component: () => import( './pages/myShop/m-login.vue')
     },
     //shareShop 路由
@@ -50,12 +51,20 @@ export default new Router({
     {
       path: '/myshop',
       name: 'myshop',
-      component: () => import( './pages/myShop/m-myshop.vue') // 我的微店
+      title:'我的微店',
+      component: () => import( './pages/myShop/m-myshop.vue')
     },
     {
       path: '/meditshop',
       name: 'meditshop',
-      component: () => import( './pages/myShop/m-editshop.vue') // 编辑店铺
+      title:'编辑店铺',
+      component: () => import( './pages/myShop/m-editshop.vue')  
+    },
+    {
+      path: '/mshopsign',
+      name: 'mshopsign',
+      title:'微店招牌',
+      component: () => import( './pages/myShop/m-shopsign.vue')  
     }
   ]
 })

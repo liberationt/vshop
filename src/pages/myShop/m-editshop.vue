@@ -8,11 +8,13 @@
           @click-left="onGomyshop"
         />
       </header>
-      <div class="editshop_center">
+      <div class="editshop_center clearfix">
         <van-row class="center_list">
           <van-col span="12" style="text-align:left;" class="center_geren">个人形象照</van-col>
           <van-col span="12" style="text-align:right">
-            <img src="./imgs/topimgf.png" alt="">
+            <van-uploader :after-read="onReadTop" class="right">
+              <img :src=topImgUrl alt="">
+            </van-uploader>
           </van-col>
         </van-row>
         <van-row class="center_list">
@@ -34,38 +36,66 @@
           </van-col>
         </van-row>
         <van-row class="center_list">
-          <van-col span="12" style="text-align:left">微信二维码</van-col>
+          <van-col span="12" style="text-align:left" class="center_geren">微信二维码</van-col>
           <van-col span="12">
-            <input type="text" placeholder="请上传微信二维码图片">
+            <van-uploader :after-read="onRead" class="right">
+              <img :src=wxImgurl class="right" alt="">
+            </van-uploader>
           </van-col>
         </van-row>
         <van-row class="center_list">
-          <van-col span="12" style="text-align:left">店铺介绍</van-col>
-          <van-col span="12">
-            <input type="text" placeholder="">
-          </van-col>
+          <div span="12" style="text-align:left">店铺介绍</div>
+          <div class="left">
+            <textarea class="shop_tarea" v-model="shopValue.shopIntroduce" placeholder="请填写一句话店铺介绍 ，30字内"></textarea>
+          </div>
         </van-row>
       </div>
     </div>
+    <footer>
+      <button class="editSubmit" @click="editSubmit">确认提交</button>
+    </footer>
   </div>
 </template>
 <script>
-import { Row, Col  } from 'vant';
+import { Row, Col, Uploader  } from 'vant';
+import utils from '../../utils/utils'
 export default {
   components:{
     [Row.name] : Row,
-    [Col.name] : Col
+    [Col.name] : Col,
+    [Uploader.name] : Uploader 
   },
   data(){
     return {
       shopValue:{
         shopName:"",
-        wxCode: ""
-      }
+        wxCode: "",
+        shopIntroduce:"",
+      },
+      wxImgurl: require("./imgs/erwei ma@2x.png"),
+      topImgUrl: require("./imgs/topimgf.png")
     }
   },
   methods:{
     onGomyshop(){
+      this.$router.push({path:'./myshop'})
+    },
+    onReadTop(file){
+      this.upload(file.file).then((data)=>{
+        this.topImgUrl = data.url
+      }).catch(err=>{})
+      
+    },
+    onRead(file) {
+      if(file){
+        this.upload(file.file).then((data)=>{
+          this.wxImgurl = data.url
+        }).catch(err=>{})
+      }
+    },
+    // 确认提交
+    editSubmit(){
+      // 提交成功后跳转到首页
       this.$router.push({path:'./myshop'})
     }
   }
@@ -104,8 +134,26 @@ export default {
         input {
           text-align: right;
           color: #333;
+          float: right;
         }
       }
+    }
+    .shop_tarea {
+      border: none;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #999;
+      width: 340px;
+      height: 78px;
+    }
+    .editSubmit {
+      width: 100%;
+      height: 55px;
+      background-color: #4597fb;
+      font-size:16px;
+      color: #fff;
+      position: absolute;
+      bottom: 0px;
     }
   }
 </style>
