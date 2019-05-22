@@ -46,7 +46,8 @@ export default {
     },
     //确认框
     shopsignConfirm(){
-
+      //成功后跳转
+      this.$router.push({path:'./meditshop'})
     }
   }
 }
