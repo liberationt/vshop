@@ -19,7 +19,33 @@ export default new Router({
     {
       path: '/mlogin',
       name: 'mlogin',
-      component: () => import( './pages/myShop/m-login.vue') //登录
+      component: () => import( './pages/myShop/m-login.vue')
+    },
+    //shareShop 路由
+    {
+      path: '/shopHome',
+      name: 'shopHome',
+      component: () => import( './pages/shareShop/s-shophome.vue'),
+      children:[
+        {
+          path:'/shoppage',
+          name:'shoppage',
+          tittle:'店铺首页',
+          component:()=>import('./pages/shareShop/s-shoppage.vue')
+        },
+        {
+          path:'/relatedproducts',
+          name:'relatedproducts',
+          tittle:'相关产品',
+          component:()=>import('./pages/shareShop/s-relatedproducts.vue')
+        },
+        {
+          path:'/utilities',
+          name:'utilities',
+          title:'实用工具',
+          component:()=>import('./pages/shareShop/s-utilities.vue')
+        }
+      ]
     },
     {
       path: '/myshop',

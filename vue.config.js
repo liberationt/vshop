@@ -6,7 +6,10 @@ module.exports = {
   outputDir: 'dist', // 输出文件目录
   lintOnSave: false, // eslint-loader 是否在保存的时候检查
   // webpack配置
-  chainWebpack: (config) => {},
+  chainWebpack: (config) => {
+    //热更新
+    config.resolve.symlinks(true)
+  },
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {
       // 为生产环境修改配置...
@@ -50,7 +53,7 @@ module.exports = {
   productionSourceMap: false, // 生产环境是否生成 sourceMap 文件
   // css相关配置
   css: {
-    extract: true, // 是否使用css分离插件 ExtractTextPlugin
+    // extract: true, // 是否使用css分离插件 ExtractTextPlugin
     sourceMap: false, // 开启 CSS source maps?
     loaderOptions: {
       css: {}, // 这里的选项会传递给 css-loader
