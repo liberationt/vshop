@@ -49,6 +49,18 @@ export default new Router({
       ]
     },
     {
+      path:'/havemoney',
+      name:'havemoney',
+      tittle:'有钱花',
+      component:()=>import('./pages/shareShop/s-havemoney.vue')
+    },
+    {
+      path:'/applicationsteps',
+      name:'applicationsteps',
+      tittle:'申请步骤',
+      component:()=>import('./pages/shareShop/s-applicationsteps.vue')
+    },
+    {
       path: '/myshop',
       name: 'myshop',
       title:'我的微店',

@@ -10,7 +10,7 @@
 				</van-tabs>
 			</div>
 		</header>
-		<div class="havemoney">
+		<div class="havemoney" @click="closeTost">
 			<div>图片</div>
 			<div>
 				<p>有钱花</p>
@@ -19,33 +19,47 @@
 			<div>急速贷款</div>
 		</div>
 		<div>
-			<ul>
-				<li>
-					<div>图片</div>
-					<div></div>
-				</li>
-			</ul>
+			<officialloans v-if='index==0'></officialloans>
+			<creditcard v-if='index==1'></creditcard>
+			<financingloan v-if='index==2'></financingloan>
 		</div>
 	</div>
 </template>
 <script>
 import financingloan from './s-financingloan.vue'
-import { Tab, Tabs } from 'vant';
+import officialloans from './s-officialloans.vue'
+import creditcard from './s-creditcard.vue'
+import { Tab, Tabs ,Dialog} from 'vant'
 export default {
 		components:{
 			[Tab.name]:Tab,
 			[Tabs.name]:Tabs,
-			financingloan
+			[Dialog.name]:Dialog,
+			financingloan, //官方贷款
+			officialloans, //自营贷款
+			creditcard //信用卡
 		},
     data(){
         return{
-					active:0
+			active:0,
+			index:0
         }
     },
     methods:{
-			onClick(i){
-				alert(i)
-			}
+		onClick(i){
+			this.index =i
+		},
+		closeTost(){
+			Dialog.confirm({
+				confirmButtonText:'10天内不再提示',
+				cancelButtonText:'永不提示',
+				message: '确认关闭此提示框吗？'
+			}).then(() => {
+			// on confirm
+			}).catch(() => {
+			// on cancel
+			});
+		}
     },
     mounted(){
         this.$emit('toparent','相关产品',1)
@@ -60,7 +74,6 @@ export default {
 			justify-content: space-between;
 			.srelate_menu{
 				width:80%;
-				// border-radius: 20px;
 				overflow: hidden;
 				
 			}
@@ -68,5 +81,6 @@ export default {
 		.havemoney{
 			display: flex;
 			background:yellow;
+			height:100px;
 		}
 </style>
