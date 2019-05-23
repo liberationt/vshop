@@ -57,12 +57,10 @@
   </div>
 </template>
 <script>
-import { Row, Col, Uploader  } from 'vant';
+import {  Uploader  } from 'vant';
 import utils from '../../utils/utils'
 export default {
   components:{
-    [Row.name] : Row,
-    [Col.name] : Col,
     [Uploader.name] : Uploader 
   },
   data(){

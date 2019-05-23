@@ -45,11 +45,36 @@ export function selectFrom(minValue, maxValue) {
   return Math.floor(Math.random() * num + minValue);
 }
 
+const isAndroid = () => {
+  return navigator.userAgent.indexOf("Android") > -1
+}
+
+// 拒绝input框弹出 顶起底部按钮 暂无用
+export function refuseJacking(element){
+  if(isAndroid()){
+    var originalHeight =
+      document.documentElement.clientHeight || document.body.clientHeight;
+    window.onresize = function() {
+      //键盘弹起与隐藏都会引起窗口的高度发生变化
+      var resizeHeight =
+        document.documentElement.clientHeight || document.body.clientHeight;
+      if (resizeHeight - 0 < originalHeight - 0) {
+        element = false
+        //当软键盘弹起，在此处操作
+      } else {
+        element = false
+        //当软键盘收起，在此处操作
+      }
+    };
+  }
+}
+
 export default {
   getCookie,
   setCookie,
   delCookie,
   putlocal,
   getlocal,
-  selectFrom
+  selectFrom,
+  refuseJacking
 }

@@ -88,11 +88,8 @@
   </div>
 </template>
 <script>
-import { Row, Col  } from 'vant';
 export default {
   components:{
-    [Row.name] : Row,
-    [Col.name] : Col,
   },
   data(){
     return {
@@ -245,7 +242,6 @@ export default {
     margin-top: 32px;
     font-size:11px;
     color: #999999;
-    
   }
 }
 </style>
