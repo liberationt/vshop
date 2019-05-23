@@ -15,7 +15,7 @@
         <van-tabbar-item icon="setting-o">我的</van-tabbar-item>
       </van-tabbar>
     </div>
-
+    <input type="text">
     <div>
       <van-popup v-model="show" position="bottom" :overlay="false">
         <van-datetime-picker
@@ -68,7 +68,7 @@ export default {
   },
   created() {
     utils.setCookie('name','2222')
-//     this.request("wisdom.loan.captcha.loanUserSendSmsForRiskH511",{
+//     this.request("wisdom.loan.captcha.loanUserSendSmsForRiskH5",{
 //       "captchaId": "",
 //       "phone": '13939466455',
 //       "type": 20000,

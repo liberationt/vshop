@@ -111,6 +111,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .myshop_common {
+  text-align: center;
   .myshop_center {
     .center_top{
       padding: 15px;

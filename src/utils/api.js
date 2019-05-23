@@ -4,60 +4,119 @@
  */
 import http from './http'
 import utils from './utils'
-console.log (utils.getCookie(name)) // 获取本地内容
 import {
   Toast
 } from 'vant';
 import MD5 from "js-md5";
 
-export function request(apiKey,data={}, isShowError = true) {
+// console.log (utils.getCookie(name)) // 获取本地内容
 
-  let baseParams = {
-		apiKey: apiKey,
-		data: JSON.stringify(data),
-		session: null,
-		sign: "",
-		system: {
-			appType: "H5",
-			appVersion: "1.0.0",
-			channel: "",
-			identifier: "weidian",
-		},
-  }
-  if(true) {  //用户信息
-    baseParams.session = {}
-  }
-  let token = (baseParams.session && baseParams.session.token) ? baseParams.session.token : ''
-  let salt = "*(&!*(Q#IUHAX89y19823h*&(YQ#($(*AGFsd"
-  baseParams.sign = MD5(baseParams.apiKey + token + baseParams.data + salt)
+// 公共言
+let saltcomm = "*(&!*(Q#IUHAX89y19823h*&(YQ#($(*AGFsd"
 
-  console.log ('request=====> ' + apiKey + "   " + JSON.stringify(baseParams))
-  return new Promise((resolve, reject)=>{
-    return http.post("/api/proxy", baseParams).then((response={}) => {
+export function request(apiKey, data = {}, isShowError = true) {
+  let baseParams = getRequestInfo(apiKey, data)
+  return new Promise((resolve, reject) => {
+    return http.post("/api/proxy", baseParams).then((response = {}) => {
       if (response.code == 'success') {
-        console.log ('response=====> ' + apiKey + "   " + JSON.stringify(response))
+        console.log('response=====> ' + apiKey + "   " + JSON.stringify(response))
         resolve && resolve(response.data)
       } else {
         handleError(apiKey, response, reject, isShowError)
       }
     }).catch(err => {
-        handleError(apiKey, err, reject, isShowError)
-      });
+      handleError(apiKey, err, reject, isShowError)
+    });
   })
 }
+/**
+ * 文件上传
+ *
+ * @param url
+ * @param
+ * parameters :{
+ *      fileKey:'file',
+ *      filePath:"",
+ *      fileName:"image.png",
+ *      fileType:"multipart/form-data",
+ * }
+ * @returns {*}
+ */
+export function upload(file = {}) {
+  let params = {
+    type: '1', //头像图片固定传1
+  }
+  let formData = new FormData();
+  formData.append("file", file);
 
-let handleError = (apiKey, e = {}, reject, isShowError = true)=>{
+  let baseParams = getRequestInfo('', params)
+  formData.append("form", JSON.stringify(baseParams))
+
+  let config = {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  };
+  return new Promise((resolve, reject) => {
+    return http.post('/upload', formData, config).then(response => {
+      if (response.code == 'success') {
+        console.log('response=====> ' + JSON.stringify(response))
+        resolve && resolve(response.data)
+      } else {
+        handleError('', response, reject, true)
+      }
+    }).catch(err => {
+      handleError('', err, reject, true)
+    });
+  })
+}
+// 公共参数的封装
+let getRequestInfo = (apiKey = '', data = {}) => {
+  let baseParams = {
+    apiKey: apiKey,
+    data: JSON.stringify(data),
+    session: null,
+    sign: "",
+    system: {
+      appType: "H5",
+      appVersion: "1.0.0",
+      channel: "",
+      identifier: "weidian",
+    },
+  }
+  // 取用户信息
+  let userInfo = {
+    "userId": "20190416094530070104813912794",
+    "token": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNmI3NzZlNDM4Njg0MDJhOGUyNzIxZGY4YTM3ZGU4ZiIsImlzcyI6InNobGgiLCJzdWIiOiJcIjIwMTkwNDE2MDk0NTMwMDcwMTA0ODEzOTEyNzk0XCIiLCJpYXQiOjE1NTg0OTQwNDksImV4cCI6MTU1ODkyNjA0OX0.QnvRHpCTogAyuvqYnLDgb2IK7vHty4QklC5TTW0KYt8"
+  }
+  if (userInfo) { // 用户信息
+    baseParams.session = {
+      userId: userInfo.userId,
+      token: userInfo.token
+    }
+  }
+  let token = (baseParams.session && baseParams.session.token) ? baseParams.session.token : ''
+
+  baseParams.sign = MD5(baseParams.apiKey + token + baseParams.data + saltcomm)
+
+  console.log('request=====> ' + apiKey + "   " + JSON.stringify(baseParams))
+
+  return baseParams
+}
+
+
+let handleError = (apiKey, e = {}, reject, isShowError = true) => {
   let response = {}
   if (e instanceof Error) {
     response.code = e.code
     if (e.message === 'Network request failed') {
-        if (e.stack && e.stack.includes('XMLHttpRequest.xhr.ontimeout')) {
-            response.message = '服务器超时，请稍后重试'
-        } else {
-            response.message = '请检查手机网络状态'
-        }
+      if (e.stack && e.stack.includes('XMLHttpRequest.xhr.ontimeout')) {
+        response.message = '服务器超时，请稍后重试'
+      } else {
+        response.message = '请检查手机网络状态'
+      }
     } else {
-        response.message = '网络开小差啦~'
+      response.message = '网络开小差啦~'
     }
   } else {
     response.code = e.code
@@ -65,7 +124,7 @@ let handleError = (apiKey, e = {}, reject, isShowError = true)=>{
     response.message = e.message
   }
 
-  if(response.code == undefined){
+  if (response.code == undefined) {
     response.code = '-1'
   }
   if (!response.message) {
@@ -73,18 +132,17 @@ let handleError = (apiKey, e = {}, reject, isShowError = true)=>{
   }
   switch (response.code) {
     case "": //商户注销
-    
+
       break
     default:
-      if(isShowError){
+      if (isShowError) {
         Toast(response.message);
       }
       break
   }
-  console.log ('response  fail=====> ' + apiKey + "   " + JSON.stringify(response));
+  console.log('response  fail=====> ' + apiKey + "   " + JSON.stringify(response));
   reject && reject(e)
 }
-
 
 export default {
   /**
@@ -92,6 +150,7 @@ export default {
    * @param {Vue} Vue Vue
    */
   install(Vue) {
-      Vue.prototype.request = request
+    Vue.prototype.request = request,
+      Vue.prototype.upload = upload
   },
 }
