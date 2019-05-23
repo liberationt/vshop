@@ -1,7 +1,7 @@
 <template>
-    <div>
+  <div class="shopmain">
 		<header>
-			<van-nav-bar :title='tittle' left-text="" left-arrow>
+			<van-nav-bar :title='tittle' left-text="" left-arrow fixed>
 				<!-- <van-icon name="search" slot="right" /> -->
 				<span slot="right" v-show='number==1' @click="toshare"> 分享微店</span>
 			</van-nav-bar>
@@ -50,5 +50,7 @@ export default {
 }
 </script>
 <style lang="less">
-    
+    .shopmain{
+			padding:50px 0;
+		}
 </style>
