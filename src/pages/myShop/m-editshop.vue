@@ -1,5 +1,5 @@
 <template>
-  <div class="editshop_common">
+  <div class="editshop_common pddingTop">
     <div class="edishop_fff">
       <header>
         <van-nav-bar

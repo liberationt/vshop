@@ -95,7 +95,7 @@ export default {
 <style scoped lang="less">
 .shopregister_common {
   padding-bottom: 50px;
-  padding-top: 66px;
+  padding-top: 110px;
   .center_search {
     position: fixed;
     top: 46px;

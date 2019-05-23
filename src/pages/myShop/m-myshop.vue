@@ -1,5 +1,5 @@
 <template>
-  <div class="myshop_common">
+  <div class="myshop_common pddingTop">
     <header>
       <van-nav-bar
         title="我的微店"
@@ -54,9 +54,11 @@
           <img src="./imgs/dailichanpin.png" alt="">
         </van-col>
         <van-col class="center_zidai">
-          <p class="zidai_blod">代理产品</p>
-          <p>多种贷超和信贷工具等你领佣金</p>
-          <router-link to="magentproduct"><p class="center_agentproduct">免费代理</p></router-link>
+          <router-link to="magentproduct">
+            <p class="zidai_blod">代理产品</p>
+            <p>多种贷超和信贷工具等你领佣金</p>
+            <p class="center_agentproduct">免费代理</p>
+          </router-link>
         </van-col>
       </van-row>
       <div class="navbar"></div>
