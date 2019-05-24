@@ -1,6 +1,6 @@
 <template>
   <div class="product_common"> 
-    <div v-for="item in 10" class="product_center">
+    <div v-for="item in 10" class="product_center" @click="goDetails">
       <van-row class="clearfix">
         <van-col>
           <img src="../imgs/products.png" alt="">
@@ -50,7 +50,11 @@ export default {
   },
   methods:{
     // 马上赚钱
-    makeMoney(){this.moneyShow = true}
+    makeMoney(){this.moneyShow = true},
+    // 跳转到详情
+    goDetails(){
+      this.$router.push({path:'./mproductdetails'})
+    }
   }
 };
 </script>
