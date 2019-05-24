@@ -48,10 +48,10 @@
           代理后推荐用户 赚 <span style="color:#FE951E">2.6%</span> 佣金
         </van-col>
         <van-col span="8">
-          <button>产品海报</button>
+          <button @click="productposter">产品海报</button>
         </van-col>
         <van-col span="8">
-          <button class="button_user">
+          <button @click="recommenduser" class="button_user">
             <p>推荐用户</p>
             <p>推荐后会隐藏佣金</p>
           </button>
@@ -83,9 +83,17 @@ export default {
       ],
     }
   },
+  created(){
+  },
   methods:{
     onGoback(){
       this.$router.push({path:'./magentproduct'})
+    },
+    productposter(){
+      alert('产品海报')
+    },
+    recommenduser(){
+       alert('推荐用户')
     }
   }
 }
@@ -155,12 +163,14 @@ export default {
     background: url('./imgs/dibutouying.png') no-repeat;
     background-size: 100%;
     padding-top: 13px;
+    padding-right: 5px;
     .van_daili{
       padding: 9px 17px 0px 18px;
       text-align: center;
       font-size:12px;
     }
     button {
+      font-size:15px;
       width: 120px;
       height: 44px;
       color: #fff;
@@ -169,6 +179,9 @@ export default {
     }
     .button_user{
       background-color: #4597FB;
+      :nth-child(2){
+        font-size:11px;
+      }
     }
     
   }
