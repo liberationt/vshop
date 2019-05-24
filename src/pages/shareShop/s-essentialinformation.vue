@@ -1,13 +1,6 @@
 <template>
     <div>
-			<h1>申请贷款</h1>
-			<div class="lonamoney">
-				<label>贷款金额</label>
-				<div @click="todolist" class="lonatext">内容的</div>
-				<van-popup v-model="show" position="bottom" :overlay="false">
-					<van-picker  show-toolbar :columns="columns" @cancel="onCancel" @confirm="onConfirm" />
-				</van-popup>
-			</div>
+			<h1>基本信息</h1>
 			<div>
 				<h3>贷款期限</h3>
 				<options :options="selections"></options>
@@ -21,31 +14,12 @@
 </template>
 <script>
 import options from '../../views/options.vue'
-import { Popup ,Picker} from 'vant';
 export default {
 		components:{
-			[Popup.name]:Popup,
-			[Picker.name]:Picker,
 			options
 		},
     data(){
         return{
-					carddataList:[1,2,3,4,5,6,7,8,9,10],
-					show:false,
-					columns: [
-						{text:'杭州',value:'1'},
-						{text:'浙江',value:'2'},
-						{text:'上海',value:'3'},
-						{text:'上海',value:'3'},
-						{text:'上海',value:'3'},
-						{text:'上海',value:'3'},
-						{text:'上海',value:'3'},
-						{text:'上海',value:'3'},
-						{text:'上海',value:'3'},
-						{text:'上海',value:'3'},
-						{text:'上海',value:'3'},
-					],
-					money:'',
 					selections: [],
 					selections1: [
 						{label:'慕容冲',value:1},
