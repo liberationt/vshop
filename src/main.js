@@ -7,6 +7,9 @@ import Api from './utils/api'
 import 'lib-flexible'
 // 导航栏
 import { NavBar  } from 'vant';
+// 布局
+import { Row, Col } from 'vant';
+Vue.use(Row).use(Col);
 Vue.use(NavBar);
 
 //兼容ie10 以上

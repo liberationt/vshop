@@ -13,8 +13,11 @@ body,html{
     height: 100%;
     font-size: 14px;/*px*/
     font-family:'PingFang-SC-Medium';
+    
 }
-
+.pddingTop{
+    padding-top: 45px;
+}
 button {
     outline:0;
 }
@@ -27,11 +30,18 @@ button {
 }
 // 头部导航
 .van-icon-arrow-left:before {
+    z-index: 9999;
     color: #333333;
 }
 .van-nav-bar__title{
     color: #333;
     font-size: 17px;
+}
+.van-nav-bar {
+    position: fixed;
+    top: 0px;
+    width: 375px;
+    z-index: 999 !important;
 }
 [class*=van-hairline]::after {
     border: 1px solid #E7E7E7;/*no*/
@@ -41,3 +51,4 @@ button {
 button {
     border: none;
 }
+

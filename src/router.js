@@ -83,6 +83,12 @@ export default new Router({
       name: 'mshopregister',
       title:'我的客户',
       component: () => import( './pages/myShop/m-shopregister.vue')  
+    },
+    {
+      path: '/magentproduct',
+      name: 'magentproduct',
+      title:'代理产品',
+      component: () => import( './pages/myShop/m-agentproduct.vue')  
     }
   ]
 })
