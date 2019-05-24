@@ -21,7 +21,9 @@
           <van-tab title="信用卡">
             <cards></cards>
           </van-tab>
-          <van-tab title="信贷产品">内容 3</van-tab>
+          <van-tab title="信贷产品">
+            <instruments></instruments>
+          </van-tab>
         </div>
       </van-tabs>
     </div>
@@ -34,10 +36,12 @@
 import { Tab, Tabs } from 'vant';
 import products from './cards/products.vue'
 import cards from './cards/cards.vue'
+import instruments from './cards/instruments.vue'
 export default {
   components:{
     products,
     cards,
+    instruments,
     [Tab.name] : Tab,
     [Tabs.name] : Tabs
     
