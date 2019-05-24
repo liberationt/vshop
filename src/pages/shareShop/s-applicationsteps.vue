@@ -14,9 +14,8 @@
 				</van-steps>
 			</div>
 			<div>
-				<applicationloan></applicationloan>
+				<applicationloan @tosteps='getstepsnum'></applicationloan>
 			</div>
-			<div @click="nextstep">下一步</div>
     </div>
 </template>
 <script>
@@ -37,12 +36,9 @@ export default {
 			returngo(){
 
 			},
-			nextstep(){
-				this.active+=1
-				if(this.active>=3){
-					this.active =3
-				}
-			},
+			getstepsnum(msg){
+				this.active = msg
+			}
     },
     mounted(){
 
