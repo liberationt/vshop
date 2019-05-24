@@ -61,6 +61,18 @@ export default new Router({
       component:()=>import('./pages/shareShop/s-applicationsteps.vue')
     },
     {
+      path:'/productnamedetail',
+      name:'productnamedetail',
+      tittle:'产品详情',
+      component:()=>import('./pages/shareShop/s-productnamedetail.vue')
+    },
+    {
+      path:'/city',
+      name:'city',
+      tittle:'城市',
+      component:()=>import('./pages/shareShop/city.vue')
+    },
+    {
       path: '/myshop',
       name: 'myshop',
       title:'我的微店',
