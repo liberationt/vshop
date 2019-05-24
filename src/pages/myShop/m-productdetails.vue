@@ -47,15 +47,24 @@
         <van-col class="van_daili" span="8">
           代理后推荐用户 赚 <span style="color:#FE951E">2.6%</span> 佣金
         </van-col>
-        <van-col span="8">
-          <button @click="productposter">产品海报</button>
-        </van-col>
-        <van-col span="8">
-          <button @click="recommenduser" class="button_user">
-            <p>推荐用户</p>
-            <p>推荐后会隐藏佣金</p>
-          </button>
-        </van-col>
+        <div v-if="false">
+          <van-col span="8">
+            <button @click="productposter">产品海报</button>
+          </van-col>
+          <van-col span="8">
+            <button @click="recommenduser" class="button_user">
+              <p>推荐用户</p>
+              <p>推荐后会隐藏佣金</p>
+            </button>
+          </van-col>  
+        </div>
+        <div v-else>
+          <van-col span="16">
+            <button @click="iwantagent" class="button_user button_userc">
+              我要代理
+            </button>
+          </van-col> 
+        </div>
       </van-row>
     </footer>
     <!-- 弹出层 -->
@@ -128,6 +137,9 @@ export default {
     },
     recommenduser(){
        alert('推荐用户')
+    },
+    iwantagent(){
+      alert('我要代理')
     }
   }
 }
@@ -203,6 +215,9 @@ export default {
       text-align: center;
       font-size:12px;
     }
+    .button_userc {
+      width: 240px;
+    }
     button {
       font-size:15px;
       width: 120px;
@@ -217,7 +232,6 @@ export default {
         font-size:11px;
       }
     }
-    
   }
   .van-popup {
     border-radius: 5px 5px 0px 0px;
