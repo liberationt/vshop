@@ -58,10 +58,43 @@
         </van-col>
       </van-row>
     </footer>
+    <!-- 弹出层 -->
+    <van-popup v-model="showPoster" :close-on-click-overlay=false>
+      <div class="popup_img_op">
+        <img src="./imgs/dailichanpin.png" alt="">
+      </div>
+      <div class="popup_center">
+        <img src="./imgs/dailichanpin.png" alt="">
+        <p>长按识别二维码马上申请</p>
+      </div>
+      <div class="popu_footer">
+        <van-row >
+          <van-col span="16">
+            <van-col class="popuf_img">
+              <img src="./imgs/topimg.png" alt="">
+            </van-col>
+            <van-col class="popuf_text">
+              <p>欢迎咨询</p>
+              <p>13189775677</p>
+            </van-col>
+          </van-col>
+          <van-col class="popuf_logo clearfix" span="8">
+            <img src="./imgs/logo@2x.png" alt="">
+          </van-col>
+        </van-row>
+      </div>
+      <div class="popu_close" @click="showPoster = false">
+        <img src="./imgs/turn_off@2x.png" alt="">
+      </div>
+    </van-popup>
   </div>
 </template>
 <script>
+import { Popup } from 'vant';
 export default {
+  components: {
+    [Popup.name] : Popup
+  },
   data(){
     return{
       processimg:[
@@ -81,6 +114,7 @@ export default {
           process_text: '3、手机实名制'
         }
       ],
+      showPoster: false
     }
   },
   created(){
@@ -90,7 +124,7 @@ export default {
       this.$router.push({path:'./magentproduct'})
     },
     productposter(){
-      alert('产品海报')
+      this.showPoster = true
     },
     recommenduser(){
        alert('推荐用户')
@@ -100,8 +134,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .productdetails_common {
-  height: 100%;
   background-color: #f1f1fb;
+  padding-bottom: 76px;
   .productdetails_header {
     .header_img{
       img {
@@ -156,7 +190,7 @@ export default {
     }
   }
   .productdetail_footer {
-    position: absolute;
+    position: fixed;
     bottom: 0px;
     width: 375px;
     height: 65px;
@@ -184,6 +218,62 @@ export default {
       }
     }
     
+  }
+  .van-popup {
+    border-radius: 5px 5px 0px 0px;
+    width: 289px;
+    background-color: transparent;
+  }
+  .popup_img_op {
+    background-color: #fff;
+    img{
+      width: 289px;
+      height: 233px;
+    }
+  }
+  .popup_center {
+    background-color: #fff;
+    text-align: center;
+    padding-top: 15px;
+    font-size:12px;
+    color: #333333;
+    img {
+      width: 65px;
+      height: 65px;
+      margin-bottom: 10px;
+    }
+  }
+  .popu_footer {
+    background-color: #fff;
+    padding: 18px 15px 20px 16px;
+    border-radius: 0px 0px 5px 5px;
+    .popuf_img {
+      width: 48px;
+      height: 48px;
+    }
+    .popuf_text {
+      font-size:15px;
+      color: #333;
+      padding-left: 8px;
+      line-height: 25px;
+    }
+    .popuf_logo {
+      img{
+        width: 38px;
+        height: 38px;
+        float: right;
+        margin-top: 5px;
+      }
+    }
+  }
+  .popu_close{
+    text-align: center;
+    margin-top: 34px;
+    img {
+      width: 35px;
+      height: 36px;
+    }
+
   }
 }
 </style>
