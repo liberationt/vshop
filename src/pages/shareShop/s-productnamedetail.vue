@@ -67,10 +67,15 @@ export default {
 		},
 		methods:{
 			tocity(){
-				this.$router.push('/')
+				this.$router.push('/city')
 			},
 			onClickLeft(){
 				this.$router.go(-1)
+			}
+		},
+		mounted(){
+			if(this.$route.query.city){
+				this.city=this.$route.query.city
 			}
 		}
 }

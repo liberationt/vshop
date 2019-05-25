@@ -73,6 +73,18 @@ export default new Router({
       component:()=>import('./pages/shareShop/city.vue')
     },
     {
+      path:'/citylist',
+      name:'citylist',
+      tittle:'城市列表',
+      component:()=>import('./pages/shareShop/citylist.vue')
+    },
+    {
+      path:'/stiflingborrow',
+      name:'stiflingborrow',
+      tittle:'虫虫借钱',
+      component:()=>import('./pages/shareShop/s-stiflingborrow.vue')
+    },
+    {
       path: '/myshop',
       name: 'myshop',
       title:'我的微店',
@@ -101,6 +113,25 @@ export default new Router({
       name: 'magentproduct',
       title:'代理产品',
       component: () => import( './pages/myShop/m-agentproduct.vue')  
-    }
+    },
+    {
+      path: '/commissionwithdrawal',
+      name: 'commissionwithdrawal',
+      title:'佣金提现',
+      component: () => import( './pages/myShop/m-commissionwithdrawal.vue')  
+    },
+    {
+      path: '/bankcard',
+      name: 'bankcard',
+      title:'添加银行卡',
+      component: () => import( './pages/myShop/m-bankcard.vue')  
+    },
+    {
+      path: '/mycommission',
+      name: 'mycommission',
+      title:'我的佣金',
+      component: () => import( './pages/myShop/m-mycommission.vue')  
+    },
+    
   ]
 })
