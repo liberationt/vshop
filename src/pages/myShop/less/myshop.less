@@ -23,6 +23,22 @@
   }
 }
 // shopregister 页面
+.shopregister_common {
+  .van-hairline--top-bottom::after {
+    border: none;
+  }
+  .van-search--show-action {
+    border-bottom: 1px solid #E7E7E7;/*no*/ 
+  }
+  .van-tab span {
+    font-size:15px;
+    color: #333;
+  }
+  .van-tabs__line{
+    background-color: #4597fb;
+    border-radius:2px;
+  }
+}
 .center_search {
   .van-field__left-icon {
     position: absolute;
@@ -36,6 +52,9 @@
 
 // 代理产品页面
 .agentproduct_common {
+  .van-pull-refresh{
+    overflow: visible;
+  }
   .van-tab:nth-child(3){
     span {
       border-left: 1px solid #E7E7E7;
@@ -117,5 +136,19 @@
   .van-nav-bar__right .van-nav-bar__text{
     color:#333333!important;
     font-size:14px;
+  }
+}
+
+// 信用卡
+.productCard_common{
+  .van-progress__pivot {
+    display: none;
+  }
+  .van-progress {
+    left: 88px;
+    bottom: 12px;
+    width: 80%;
+    background-color: #DFDFDF;
+    border-radius:3px;
   }
 }

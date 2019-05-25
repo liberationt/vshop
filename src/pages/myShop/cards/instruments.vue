@@ -7,7 +7,7 @@
         </van-col>
         <van-col>
           <p class="product_title">人人贷借款</p>
-          <p class="product_money">贷款额度:  <span>1万-20万元</span></p>
+          <p class="product_money">一句话简介20字左右</p>
           <p class="product_label">
             <span>返佣5%</span>
           </p>

@@ -3,7 +3,7 @@
  * Vue.use(http)
  */
 import http from './http'
-import utils from './utils'
+// import utils from './utils'
 import {
   Toast
 } from 'vant';

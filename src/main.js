@@ -7,10 +7,13 @@ import Api from './utils/api'
 import 'lib-flexible'
 // 导航栏
 import { NavBar  } from 'vant';
+// 下拉刷新
+import { PullRefresh } from 'vant';
 // 布局
 import { Row, Col } from 'vant';
 Vue.use(Row).use(Col);
 Vue.use(NavBar);
+Vue.use(PullRefresh);
 
 //兼容ie10 以上
 import '@babel/polyfill'

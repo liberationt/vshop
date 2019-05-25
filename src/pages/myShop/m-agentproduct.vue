@@ -7,22 +7,29 @@
         @click-left="onGoback"
       />
     </header>
-    <div class="agentproduct_center">
-      <van-tabs class="vantab_center" @click="onvanTabs"  v-model="active">
-        <!-- <div style="height:5px;background-color:#fff;"></div> -->
-        <div class="Recommend">
-          <img src="./imgs/Recommend.png" alt="">
-          {{RecommendText}}
-        </div>
-        <div class="vantTab_center">
-          <van-tab title="相关产品">
-            <products></products>
-          </van-tab>
-          <van-tab title="信用卡">内容 2</van-tab>
-          <van-tab title="信贷产品">内容 3</van-tab>
-        </div>
-      </van-tabs>
-    </div>
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+      <!-- <p>刷新次数: {{ count }}</p> -->
+      <div class="agentproduct_center">
+        <van-tabs class="vantab_center" @click="onvanTabs"  v-model="active">
+          <!-- <div style="height:5px;background-color:#fff;"></div> -->
+          <div class="Recommend">
+            <img src="./imgs/Recommend.png" alt="">
+            {{RecommendText}}
+          </div>
+          <div class="vantTab_center">
+            <van-tab title="相关产品">
+              <products></products>
+            </van-tab>
+            <van-tab title="信用卡">
+              <cards></cards>
+            </van-tab>
+            <van-tab title="信贷产品">
+              <instruments></instruments>
+            </van-tab>
+          </div>
+        </van-tabs>
+      </div>
+    </van-pull-refresh>
     <footer class="footer_button">
       <button>一键代理推广赚工资</button>
     </footer>
@@ -31,9 +38,13 @@
 <script>
 import { Tab, Tabs } from 'vant';
 import products from './cards/products.vue'
+import cards from './cards/cards.vue'
+import instruments from './cards/instruments.vue'
 export default {
   components:{
     products,
+    cards,
+    instruments,
     [Tab.name] : Tab,
     [Tabs.name] : Tabs
     
@@ -41,7 +52,9 @@ export default {
   data(){
     return{
       active:0,
-      RecommendText:'推荐他人贷款申请成功，更多佣金等你拿'
+      RecommendText:'推荐他人贷款申请成功，更多佣金等你拿',
+      count: 0,
+      isLoading: false
     }
   },
   methods:{
@@ -61,12 +74,20 @@ export default {
           this.RecommendText='推荐他人使用查询工具，轻松拿返佣'
         break;
       }
+    },
+    onRefresh() {
+      setTimeout(() => {
+        this.$toast('刷新成功');
+        this.isLoading = false;
+        this.count++;
+      }, 500);
     }
   }
 }
 </script>
 <style lang="less" scoped>
 .agentproduct_common {
+  display: block;
   .agentproduct_center {
     .Recommend {
       width:375px;
@@ -97,10 +118,10 @@ export default {
       height: 52px;
       line-height: 52px;
       background-color: #4597fb;
-      position: fixed;
-      bottom: 0px;
       font-size:16px;
       font-weight:bold;
+      position: fixed;
+      bottom: 0px;
       color:rgba(255,255,255,1);
     }
   }

@@ -132,6 +132,17 @@ export default new Router({
       title:'我的佣金',
       component: () => import( './pages/myShop/m-mycommission.vue')  
     },
-    
+    {
+      path: '/mproductdetails',
+      name: 'mproductdetails',
+      title:'代理产品',
+      component: () => import( './pages/myShop/m-productdetails.vue')  
+    },
+    {
+      path: '/muserdetails',
+      name: 'muserdetails',
+      title:'客户详情',
+      component: () => import( './pages/myShop/m-userdetails.vue')  
+    }
   ]
 })
