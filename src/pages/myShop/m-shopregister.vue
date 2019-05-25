@@ -31,7 +31,7 @@
           <div class="shopregister_tips">一键推广店铺链接</div>
           <van-tab class="shopregister_list" title="微店客户">
             <ul>
-              <li v-for="item in 10">
+              <li v-for="item in 10" @click="goregisterdetails">
                 <div class="pleace_label">
                   <span>请选择标签</span>
                   <span>...</span>
@@ -99,7 +99,11 @@ export default {
       this.bounceup = true
     },
     // tab事件
-    onvanTabs(){}
+    onvanTabs(){},
+    //跳转到客户详情页
+    goregisterdetails(){
+      this.$router.push({ path: "./muserdetails" });
+    }
   }
 };
 </script>

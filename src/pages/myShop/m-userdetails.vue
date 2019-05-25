@@ -1,0 +1,218 @@
+<template>
+  <div class="muserdetails_common">
+    <header class="muserdetails_header">
+      <van-nav-bar
+        title="客户详情"
+      />
+    </header>
+    <div class="muserdetails_center">
+      <div class="muserdetails_message">
+        <ul>
+          <li class="message_top">
+            <p>
+              <span class="message_one">王大力</span>
+              <span class="message_two">先生</span>
+              <span>上海31岁</span>
+            </p>
+            <p>
+              <span>注册时间：</span>
+              <span>2019-05-10 10:33:40</span>
+            </p>
+            <p>申请记录：<span class="message_color">9笔</span> &nbsp  返佣成功：<span class="message_color">1笔</span></p>
+          </li>
+          <li class="message_center">
+            <p>
+              <span class="message_center_one">贷款金额：<span class="message_color">10-20万</span> </span>
+              <span>贷款用途：<span class="message_color">短期周转</span> </span>
+            </p>
+            <p class="message_center_two">
+              <span>贷款期限：<span class="message_color">12个月</span> </span>
+            </p>
+          </li>
+          <li class="message_footer clearfix">
+            <span class="message_text">15********8</span>
+            <span class="right"><img src="./imgs/phone_iconyuan@2x.png" alt=""></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="muserdetails_bottom">
+      <div class="muserdetails_bottom_one white">
+        <span v-for="item in personalInformation">{{item}}</span>
+      </div>
+      <div v-for="item in messgaeList" class="muserdetails_bottom_two white">
+        <p class="muserdetails_one">
+          <span>{{item.title}}</span>
+        </p>
+        <div  v-for="(v,index) in item.clhild">
+          <p  :class="index != item.clhild.length-1? 'borderB muserdetails_two' : 'muserdetails_two'">{{v}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data(){
+    return {
+      personalInformation:[
+        '6-12个月内',
+        '后期可回访',
+        '社保满6个月',
+        '本地户口',
+        '有车',
+        '有房',
+        '有微粒贷',
+        '有借呗'
+      ],
+      messgaeList:[
+        {title:'基本信息',clhild:[
+          '学历',
+          '婚姻状况'
+        ]},
+        {title:'工作信息',clhild:[
+          '职业类型',
+          '工资发放方式',
+          '月收入',
+          '公司代缴社保',
+          '公司代缴公积金'
+        ]},
+        {title:'补充信息',clhild:[
+          '个人信用情况',
+          '信用状况',
+          '信用卡额度',
+          '寿险缴纳情况',
+          '微粒贷额度',
+          '芝麻信用分',
+          '房产情况',
+          '所在地区',
+          '产权人',
+          '房产状态',
+          '是否抵押',
+          '车产情况',
+          '车产状态',
+          '购车时间',
+          '是否抵押'
+        ]},
+      ]
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+.muserdetails_common {
+  background-color: #f1f1fb;
+  .van-nav-bar{
+    background-color: #4597fb;
+  }
+  .van-nav-bar__title{
+    font-size:17px;
+    color: #fff;
+  }
+  .van-hairline--bottom::after{
+    border: none;
+  }
+  .muserdetails_header {
+    background:url('./imgs/usertop.png') no-repeat;
+    background-size: 100%;
+    height: 289px;
+  }
+  .muserdetails_center{
+    .muserdetails_message {
+      padding: 15px 10px;
+      background-color: #fff;
+      position: absolute;
+      top: 46px;
+      left: 15px;
+      width: 345px;
+      box-shadow:0px 3px 5px 0px rgba(70, 251, 151, 0.35);
+      border-radius: 6px;
+    }
+    .message_top{
+      color: #666;
+      font-size:14px;
+      p{
+        margin-bottom: 10px;
+      }
+      .message_one{
+        font-size:17px;
+        font-weight:bold;
+        color: #333;
+        margin-right: 9px;
+      }
+      .message_two{
+        margin-right: 25px
+      }
+    }
+    .message_color{
+      color: #4697FB;
+    }
+    .message_center{
+      color: #333333;
+      font-size:15px;
+      padding: 15px 0px;
+      border-top: 1px dashed #E7E7E7;/*no*/
+      border-bottom: 1px dashed #E7E7E7;/*no*/
+      .message_center_one{
+        margin-right: 58px;
+      }
+    }
+    .message_center_two{
+      margin-top: 8px;
+    }
+    .message_footer{
+      padding-top: 11px;
+      font-size:14px;
+      color: #333333;
+      .message_text {
+        display: inline-block;
+        margin-top: 10px;
+      }
+      img {
+        width: 28px;
+        height: 28px;
+        vertical-align: center;
+      }
+    }
+  }
+  .muserdetails_bottom{
+    .muserdetails_bottom_one{
+      padding: 15px 0px 10px 15px;
+      margin-top: 15px;
+      span {
+        display: inline-block;
+        color: #4597FB;
+        background-color: #E3EFFE;
+        border:1px solid rgba(69,151,251,1);/*no*/
+        padding: 7px;
+        width: 83px;
+        text-align: center;
+        border-radius:3px;
+        margin-right: 5px;
+        margin-bottom: 8px;
+      }
+    }
+    .muserdetails_bottom_two{
+      margin-top: 15px;
+      padding: 18px 15px 0px 15px;
+      color: #999999;
+      font-size:14px;
+      .muserdetails_one {
+        font-size:14px;
+        color: #4597FB;
+        span {
+          display: inline-block;
+          border-left: 5px solid #4597FB;/*no*/
+          padding-left: 8px;
+        }
+      }
+      .muserdetails_two{
+        padding: 18px 0px;
+      }
+      .borderB{
+        border-bottom: 1px solid #E7E7E7;
+      }
+    }
+  }
+}
+</style>

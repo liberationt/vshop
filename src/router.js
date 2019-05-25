@@ -107,6 +107,12 @@ export default new Router({
       name: 'mproductdetails',
       title:'代理产品',
       component: () => import( './pages/myShop/m-productdetails.vue')  
+    },
+    {
+      path: '/muserdetails',
+      name: 'muserdetails',
+      title:'客户详情',
+      component: () => import( './pages/myShop/m-userdetails.vue')  
     }
   ]
 })
