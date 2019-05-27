@@ -143,6 +143,18 @@ export default new Router({
       name: 'muserdetails',
       title:'客户详情',
       component: () => import( './pages/myShop/m-userdetails.vue')  
+    },
+    {
+      path: '/mselfsupport',
+      name: 'mselfsupport',
+      title:'自营产品',
+      component: () => import( './pages/myShop/m-selfsupport.vue')  
+    },
+    {
+      path: '/maddproduct',
+      name: 'maddproduct',
+      title:'自营产品',
+      component: () => import( './pages/myShop/m-addproduct.vue')  
     }
   ]
 })
