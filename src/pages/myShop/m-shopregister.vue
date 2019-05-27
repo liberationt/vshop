@@ -52,7 +52,26 @@
               </li>
             </ul>
           </van-tab>
-          <van-tab title="导入客户">内容 3</van-tab>
+          <van-tab class="shopregister_list" title="导入客户">
+            <ul>
+              <li v-for="item in 10" @click="goregisterdetails">
+                <div class="pleace_label">
+                  <span>请选择标签</span>
+                  <span>...</span>
+                </div>
+                <div class="shopregister_operation">
+                  <p class="one">2018-03-20 10:20:33</p>
+                  <p class="two">
+                    <span>黎明演</span>
+                    <span>136 **** 1111</span>
+                    <span class="message_icon"><img src="./imgs/message_icon@2x.png" alt=""></span>
+                    <span class="phone_icon"><img src="./imgs/phone_icon@2x.png" alt=""></span>
+                    <span class="biajidianpu"><img src="./imgs/biajidianpu.png" alt=""></span>
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </van-tab>
         </van-tabs>
       </div>
      <footer class="shopregister_footer" v-if="bounceup">
