@@ -9,7 +9,7 @@
     </header>
     <div class="mselfsupport_center">
       <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-        <div class="mselfsupport_modal" v-for="item in 10">
+        <div class="mselfsupport_modal" v-for="item in 10" @click="goShopdetails">
           <van-row>
             <van-col>
               <img src="./imgs/dai.png" alt="">
@@ -50,6 +50,9 @@ export default {
     },
     addproduct() {
       this.$router.push({ path: "./maddproduct" });
+    },
+    goShopdetails(){
+      this.$router.push({ path: "./mselfshopdetails" });
     }
   }
 };

@@ -153,8 +153,14 @@ export default new Router({
     {
       path: '/maddproduct',
       name: 'maddproduct',
-      title:'自营产品',
+      title:'添加/编辑自营产品今年',
       component: () => import( './pages/myShop/m-addproduct.vue')  
+    },
+    {
+      path: '/mselfshopdetails',
+      name: 'mselfshopdetails',
+      title:'产品详情',
+      component: () => import( './pages/myShop/m-selfshopdetails.vue')  
     }
   ]
 })
