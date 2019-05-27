@@ -127,10 +127,40 @@ export default new Router({
       component: () => import( './pages/myShop/m-bankcard.vue')  
     },
     {
+      path: '/successfulwithdrawals',
+      name: 'successfulwithdrawals',
+      title:'提现成功',
+      component: () => import( './pages/myShop/m-successfulwithdrawals.vue')  
+    },
+    {
+      path: '/commissiondetails',
+      name: 'commissiondetails',
+      title:'佣金明细',
+      component: () => import( './pages/myShop/m-commissiondetails.vue')  
+    },
+    {
+      path: '/cashdetails',
+      name: 'cashdetails',
+      title:'现金明细',
+      component: () => import( './pages/myShop/m-cashdetails.vue')  
+    },
+    {
+      path:'/readydetails',
+      name:'readydetails',
+      title:'流水详情',
+      component:()=>import('./pages/myShop/m-readydetails.vue')
+    },
+    {
       path: '/mycommission',
       name: 'mycommission',
       title:'我的佣金',
-      component: () => import( './pages/myShop/m-mycommission.vue')  
+      component: () => import( './pages/myShop/m-mycommission.vue')
+    },
+    {
+      path: '/withdrawalsrecord',
+      name: 'withdrawalsrecord',
+      title:'我的佣金',
+      component: () => import( './pages/myShop/m-withdrawalsrecord.vue')
     },
     {
       path: '/mproductdetails',

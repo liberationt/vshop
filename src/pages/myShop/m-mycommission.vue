@@ -39,7 +39,7 @@
 			</div>
 			<div class="cashdetail lookall">
 				<div>
-					<img src="./imgs/xianjinming.png" alt="">
+					<img src="./imgs/yongjinmingxi.png" alt="">
 					<span>佣金明细</span>
 				</div>
 				<div>
@@ -166,7 +166,7 @@ export default {
 			}
 		}
 		.cimulativebor{
-			border-right:1px solid #f1f1fb;
+			border-right:1px solid #f1f1fb /*no*/;
 		}
 	}
 	.lookall{
