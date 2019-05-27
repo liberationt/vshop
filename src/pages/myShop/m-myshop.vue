@@ -63,13 +63,15 @@
       </van-row>
       <div class="navbar"></div>
       <van-row class="center_product">
-        <van-col>
-          <img src="./imgs/ziyingchanpin.png" alt="">
-        </van-col>
-        <van-col class="center_zidai">
-          <p class="zidai_blod">自营产品</p>
-          <p>自定义添加个人或公司的信贷产品</p>
-        </van-col>
+        <router-link to="mselfsupport">
+          <van-col>
+            <img src="./imgs/ziyingchanpin.png" alt="">
+          </van-col>
+          <van-col class="center_zidai">
+            <p class="zidai_blod">自营产品</p>
+            <p>自定义添加个人或公司的信贷产品</p>
+          </van-col>
+        </router-link>
       </van-row>
       <div class="navbar"></div>
     </div>
