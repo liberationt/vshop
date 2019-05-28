@@ -1,6 +1,6 @@
 <template>
   <div class="loanFacility_common"> 
-    <div class="loanFacility_center" v-for="item in 10" @click="goDetails">
+    <div class="loanFacility_center" @click="goDetails" v-for="item in 10">
       <div>
         <van-row>
           <van-col>
@@ -52,11 +52,12 @@ export default {
   methods: {
     // 马上赚钱
     makeMoney() {
+      alert(3)
       this.moneyShow = true;
     },
     // 跳转到详情
     goDetails() {
-      this.$router.push({ path: "./mproductdetails" });
+      this.$router.push({ path: "./mshopapplydetails" });
     }
   }
 };

@@ -28,8 +28,8 @@
             {{RecommendText}}
           </div>
           <div class="vantTab_center">
-            <van-tab title="贷款申请">
-              <loanFacility></loanFacility>
+            <van-tab @click="parentMethod" title="贷款申请">
+              <loanFacility ref="loanFacility"></loanFacility>
             </van-tab>
             <van-tab title="信用卡申请">
               <loanFacility></loanFacility>
@@ -47,7 +47,7 @@
   </div>
 </template>
 <script>
-import { Tab, Tabs, Search, DropdownMenu, DropdownItem  } from "vant";
+import { Tab, Tabs, Search, DropdownMenu, DropdownItem } from "vant";
 import loanFacility from "./ordertools/loanFacility.vue";
 export default {
   components: {
@@ -56,7 +56,7 @@ export default {
     [Tabs.name]: Tabs,
     [Search.name]: Search,
     [DropdownMenu.name]: DropdownMenu,
-    [DropdownItem.name]: DropdownItem,
+    [DropdownItem.name]: DropdownItem
   },
   data() {
     return {
@@ -66,20 +66,26 @@ export default {
       isLoading: false,
       value1: 0,
       option1: [
-        { text: '全部商品', value: 0 },
-        { text: '新款商品', value: 1 },
-        { text: '活动商品', value: 2 }
-      ],
+        { text: "全部商品", value: 0 },
+        { text: "新款商品", value: 1 },
+        { text: "活动商品", value: 2 }
+      ]
     };
   },
+  mounted() {
+    console.log(this.$refs.hahah);
+  },
   methods: {
+    parentMethod() {
+      this.$refs.loanFacility.makeMoney(); //过this.$refs.ref.method调用
+    },
     onGoback() {
       this.$router.push({ path: "./myshop" });
     },
     onvanTabs(v) {
       console.log(v);
     },
-    search(){},
+    search() {},
     onRefresh() {
       setTimeout(() => {
         this.$toast("刷新成功");
@@ -118,8 +124,8 @@ export default {
         bottom: 9px;
       }
     }
-    .inputserch_img{
-      font-size:14px;
+    .inputserch_img {
+      font-size: 14px;
       color: #333;
       line-height: 34px;
       padding-left: 10px;
