@@ -7,7 +7,7 @@
         @click-left="onGoback"
       />
     </header>
-    <van-pull-refresh class="xilashuaxin" v-model="isLoading" @refresh="onRefresh">
+    <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
       <!-- <p>刷新次数: {{ count }}</p> -->
       <div class="agentproduct_center">
         <van-tabs class="vantab_center" @click="onvanTabs"  v-model="active">

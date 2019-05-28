@@ -8,26 +8,28 @@
       />
     </header>
     <div class="myshop_center clearfix">
-      <van-row class="center_top">
-        <van-col span="4" class="center_topimg">
-          <img :src=topImg alt="">
-        </van-col>
-        <van-col span="10" class="center_text">
-          <div>
-            <van-col span="11" class="center_username">郑经理</van-col>
-            <van-col span="13" class="center_identity">
-              <span><img src="./imgs/shiliang.png" alt=""></span>
-              身份认证</van-col>
+      <router-link to="/meditshop">
+        <van-row class="center_top">
+          <van-col span="4" class="center_topimg">
+            <img :src=topImg alt="">
+          </van-col>
+          <van-col span="10" class="center_text">
+            <div>
+              <van-col span="11" class="center_username">郑经理</van-col>
+              <van-col span="13" class="center_identity">
+                <span><img src="./imgs/shiliang.png" alt=""></span>
+                身份认证</van-col>
+            </div>
+            <div class="center_phone">
+              <span><img src="./imgs/phone.png" alt=""></span>
+              <span>13565587991</span>
+            </div>
+          </van-col>
+          <div span="2" class="center_right right">
+            <img src="./imgs/right.png" alt="">
           </div>
-          <div class="center_phone">
-            <span><img src="./imgs/phone.png" alt=""></span>
-            <span>13565587991</span>
-          </div>
-        </van-col>
-        <div span="2" class="center_right right">
-           <router-link to="/meditshop"><img src="./imgs/right.png" alt=""></router-link>
-        </div>
-      </van-row>
+        </van-row>
+      </router-link>
       <van-row class="center_navbar">
         <van-col span="8">
           <router-link to="/mshopregister">
@@ -150,8 +152,9 @@ export default {
         img {
           width: 10px;
           height: 16px;
-          vertical-align: sub;
           margin-right: 7px;
+          vertical-align: sub;
+          margin-bottom: 2px;
         }
         margin-top: 37px;
         font-size:13px;
