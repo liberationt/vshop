@@ -7,7 +7,7 @@
         @click-left="onGoback"
       />
     </header>
-    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+    <van-pull-refresh class="xilashuaxin" v-model="isLoading" @refresh="onRefresh">
       <!-- <p>刷新次数: {{ count }}</p> -->
       <div class="agentproduct_center">
         <van-tabs class="vantab_center" @click="onvanTabs"  v-model="active">
@@ -40,6 +40,7 @@ import { Tab, Tabs } from 'vant';
 import products from './cards/products.vue'
 import cards from './cards/cards.vue'
 import instruments from './cards/instruments.vue'
+import { Toast } from 'vant';
 export default {
   components:{
     products,
@@ -77,9 +78,11 @@ export default {
     },
     onRefresh() {
       setTimeout(() => {
-        this.$toast('刷新成功');
-        this.isLoading = false;
+        // this.$toast('刷新成功');
+        Toast.success('刷新成功');
         this.count++;
+        this.isLoading = false;
+        
       }, 500);
     }
   }

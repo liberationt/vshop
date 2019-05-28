@@ -191,6 +191,12 @@ export default new Router({
       name: 'mselfshopdetails',
       title:'产品详情',
       component: () => import( './pages/myShop/m-selfshopdetails.vue')  
+    },
+    {
+      path: '/mshopapply',
+      name: 'mshopapply',
+      title:'我的订单',
+      component: () => import( './pages/myShop/m-shopapply.vue')  
     }
   ]
 })
