@@ -96,6 +96,9 @@ export default {
         ]},
       ]
     }
+  },
+  created(){
+    window.scrollTo(0,0);
   }
 }
 </script>
@@ -184,7 +187,8 @@ export default {
         color: #4597FB;
         background-color: #E3EFFE;
         border:1px solid rgba(69,151,251,1);/*no*/
-        padding: 7px;
+        font-size:12px;
+        padding: 7px 0px;
         width: 83px;
         text-align: center;
         border-radius:3px;

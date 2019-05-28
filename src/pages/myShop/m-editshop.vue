@@ -3,7 +3,7 @@
     <div class="edishop_fff">
       <header>
         <van-nav-bar
-          title="编辑店铺"
+          title="添加/编辑自营产品"
           left-arrow
           @click-left="onGomyshop"
         />
@@ -12,9 +12,7 @@
         <van-row class="center_list">
           <van-col span="12" style="text-align:left;" class="center_geren">个人形象照</van-col>
           <van-col span="12" style="text-align:right">
-            <van-uploader :after-read="onReadTop" class="right">
               <img :src=topImgUrl alt="">
-            </van-uploader>
           </van-col>
         </van-row>
         <van-row class="center_list">
@@ -77,12 +75,6 @@ export default {
   methods:{
     onGomyshop(){
       this.$router.push({path:'./myshop'})
-    },
-    onReadTop(file){
-      this.upload(file.file).then((data)=>{
-        this.topImgUrl = data.url
-      }).catch(err=>{})
-      
     },
     onRead(file) {
       if(file){
