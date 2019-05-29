@@ -1,3 +1,27 @@
 .maincontent{
     background:#f1f1fb
 }
+//切换菜单栏
+.srelate_menu .van-tabs--card>.van-tabs__wrap{
+    height:44px !important;
+    width:265px !important;
+    .van-tabs__nav--card {
+        margin:0;
+        height:44px;
+        border:1px solid #4897FF /*no*/;
+        border-radius: 5px;
+        .van-tab{
+            color:#4897FF;
+            font-size: 14px !important;
+            border-right:1px solid #4597FD/*no*/;
+        }
+    }
+    .van-tab span{
+        line-height:44px;
+       
+    }
+    .van-tabs__nav--card .van-tab.van-tab--active {
+        background:#4897FF;
+        color:#ffffff;
+    }
+}

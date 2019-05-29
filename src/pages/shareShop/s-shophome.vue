@@ -1,6 +1,6 @@
 <template>
   <div class="shopmain">
-		<header>
+		<header class="paddingTop">
 			<van-nav-bar :title='tittle' left-text="" left-arrow fixed>
 				<!-- <van-icon name="search" slot="right" /> -->
 				<span slot="right" v-show='number==1' @click="toshare"> 分享微店</span>

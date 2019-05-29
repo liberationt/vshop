@@ -1,28 +1,30 @@
 <template>
-	<div>
-		<header class="srela_top">
-			<div>照片</div>
-			<div class="srelate_menu">
-				<van-tabs type="card" @click='onClick'>
-					<van-tab title="官方贷款"></van-tab>
-					<van-tab title="信用卡"></van-tab>
-					<van-tab title="自营贷款"></van-tab>
-				</van-tabs>
+	<div class="srelamain">
+		<header class="srelatop">
+			<div class="srelatopmain">
+				<div><img src="./images/tou xiang.png" alt=""></div>
+				<div class="srelate_menu">
+					<van-tabs type="card" @click='onClick'>
+						<van-tab title="官方贷款"></van-tab>
+						<van-tab title="信用卡"></van-tab>
+						<van-tab title="自营贷款"></van-tab>
+					</van-tabs>
+				</div>
 			</div>
+			<div class="invitenum">邀请码6S89WH</div>
 		</header>
-		<div class="havemoney" @click="closeTost">
-			<div>图片</div>
-			<div>
-				<p>有钱花</p>
-				<p>精准匹配</p>
+		<div class="havemoney" >
+			<div class="havemoneytop" v-show="show">
+				<div @click="tohavemoney"><img src="" alt=""></div>
+				<div class="close" @click="closeTost"><img src="./images/close.png" alt=""></div>
 			</div>
-			<div>急速贷款</div>
+			<div>
+				<officialloans v-if='index==0'></officialloans>
+				<creditcard v-if='index==1'></creditcard>
+				<financingloan v-if='index==2'></financingloan>
+			</div>
 		</div>
-		<div>
-			<officialloans v-if='index==0'></officialloans>
-			<creditcard v-if='index==1'></creditcard>
-			<financingloan v-if='index==2'></financingloan>
-		</div>
+		
 	</div>
 </template>
 <script>
@@ -40,14 +42,18 @@ export default {
 			creditcard //信用卡
 		},
     data(){
-        return{
-			active:0,
-			index:0
-        }
+      return{
+				active:0,
+				index:0,
+				show:true
+      }
     },
     methods:{
 		onClick(i){
 			this.index =i
+		},
+		tohavemoney(){
+			this.$router.push('')
 		},
 		closeTost(){
 			Dialog.confirm({
@@ -67,20 +73,50 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-    .srela_top{
+.srelamain{
+	background:#f1f1fb;
+	.invitenum{
+		text-align: center;
+		margin-top: 12px;
+		font-size: 11px;
+		color:#999999;
+		line-height:11px;
+	}
+	.srelatop{
+		height:110px;
+		background: #ffffff;;
+		padding:15px;
+		margin-bottom:15px;
+		.srelatopmain{
 			display: flex;
-			height:100px;
-			background: red;
-			justify-content: space-between;
-			.srelate_menu{
-				width:80%;
-				overflow: hidden;
-				
+			align-items: center;
+			img{
+				width:60px;
+				height:60px;
+				margin-right: 20px;
 			}
 		}
-		.havemoney{
-			display: flex;
-			background:yellow;
-			height:100px;
+		.srelate_menu{
+			width:265px;
+			height:44px;
 		}
+	}
+	.havemoney{
+		padding:0 15px;
+		.havemoneytop{
+			height:95px;
+			margin-bottom: 15px;
+			background: red;
+			position: relative;
+		}
+		.close{
+			height:16px;
+			width:16px;
+			position:absolute;
+			top:11px;
+			right:11px;
+			z-index: 100;
+		}
+	}
+}
 </style>

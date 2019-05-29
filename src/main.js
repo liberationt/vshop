@@ -10,10 +10,11 @@ import { NavBar  } from 'vant';
 // 下拉刷新
 import { PullRefresh,List } from 'vant';
 // 布局
-import { Row, Col } from 'vant';
+import { Row, Col ,Dialog} from 'vant';
 Vue.use(Row).use(Col);
 Vue.use(NavBar);
 Vue.use(PullRefresh);
+Vue.use(Dialog)
 Vue.use(List)
 
 //兼容ie10 以上
