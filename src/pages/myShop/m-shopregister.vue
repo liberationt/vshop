@@ -22,7 +22,7 @@
             shape="round"
             @search="onSearch"
           >
-            <div slot="action" @click="onSearch">
+            <div slot="action" @click="rightShow = true">
               <img src="./imgs/screening_icon@2x.png" alt="">
               筛选
             </div>
@@ -77,7 +77,6 @@
           </van-tabs>
         </div>
       </van-pull-refresh>
-      
      <footer v-if="isHide" class="shopregister_footer" :class="{  'nav-hide': hideClass }">
         <van-row>
           <van-col class="footer_top">确认导出（已选19）</van-col>
@@ -86,17 +85,35 @@
         </van-row>
      </footer>
     </div>
+    <!-- 右侧弹出框 -->
+    <van-popup v-model="rightShow" position="right" class="rightShow" :overlay="true">
+      <div class="rightShow_common" v-for="item in InformationState">
+        <p class="rightShow_one">
+          <span>{{item.title}}</span>
+        </p>
+        <p class="rightShow_two">
+          <options :options=item.child :isMultiply=true></options>
+        </p>
+      </div>
+      <van-row class="rightShow_footer">
+        <van-col @click.native="rightShow = false" span="12" class="rightShow_footer_one">取消</van-col>
+        <van-col span="12" class="rightShow_footer_two">确定</van-col>
+      </van-row>
+    </van-popup>
   </div>
 </template>
 
 <script>
 import utils from "../../utils/utils";
-import { Search, Tab, Tabs } from "vant";
+import options from "../../views/options";
+import { Search, Tab, Tabs, Popup } from "vant";
 export default {
   components: {
     [Search.name]: Search,
     [Tab.name]: Tab,
-    [Tabs.name]: Tabs
+    [Tabs.name]: Tabs,
+    [Popup.name]: Popup,
+    options
   },
   data() {
     return {
@@ -108,7 +125,56 @@ export default {
       docmHeight: document.documentElement.clientHeight, //一开始的屏幕高度
       showHeight: document.documentElement.clientHeight, //一开始的屏幕高度
       hideClass: false,
-      isHide:false
+      isHide: false,
+      rightShow: false,
+      InformationState: [
+        {
+          title: "最后跟进时间",
+          child: [
+            {label:'1个月内',value:1},
+            {label:'1~2个月内',value:2},
+            {label:'2~3个月内',value:3},
+            {label:'3~6个月内',value:4},
+            {label:'6~12个月内',value:5},
+            {label:'超过一年',value:6},
+          ]
+        },
+        {
+          title: "跟进状态",
+          child: [
+            {label:'无跟进记录',value:1},
+            {label:'紧急借款',value:2},
+            {label:'明确有意向',value:3},
+            {label:'微信已加',value:4},
+            {label:'联系中',value:5},
+            {label:'后期可回访',value:6},
+            {label:'资料已递交',value:7},
+            {label:'无人接听',value:8},
+            {label:'资质不够',value:9},
+            {label:'客户不需要',value:10},
+            {label:'已归档',value:11},
+            {label:'已放款',value:12},
+          ]
+        },
+        {
+          title: "优质标签",
+          child: [
+            {label:'社保满3个月',value:1},
+            {label:'社保满6个月',value:2},
+            {label:'有公积金',value:3},
+            {label:'有微粒贷',value:4},
+            {label:'有车',value:5},
+            {label:'有房',value:6},
+            {label:'有信用卡',value:7},
+            {label:'有借呗',value:8},
+            {label:'芝麻分650+',value:9},
+            {label:'有保单',value:10},
+            {label:'已归档',value:11},
+            {label:'本地客户',value:12},
+          ]
+        }
+      ],
+      changeRed: "",
     };
   },
   created() {},
@@ -123,12 +189,12 @@ export default {
   },
   methods: {
     // 发信息
-    goMessage(){
-      window.location.href = 'sms:' + '18201814187'
+    goMessage() {
+      window.location.href = "sms:" + "18201814187";
     },
     // 拨打电话
-    goPhone(){
-      window.location.href = 'tel://' + '18201814187'
+    goPhone() {
+      window.location.href = "tel://" + "18201814187";
     },
     goBack() {
       this.$router.push({ path: "./myshop" });
@@ -141,16 +207,19 @@ export default {
     Lose() {
       this.bounceup = true;
     },
+    // 取消
+    cancel(){
+      alert(3)
+    },
     // tab事件
     onvanTabs() {},
     //跳转到客户详情页
     goregisterdetails() {
-      if(this.isHide){
-        // 操作全选功能 
+      if (this.isHide) {
+        // 操作全选功能
       } else {
         this.$router.push({ path: "./muserdetails" });
       }
-      
     },
     //下拉刷新
     onRefresh() {
@@ -188,6 +257,48 @@ export default {
   padding-bottom: 50px;
   padding-top: 100px;
   background-color: #f1f1fb;
+  .rightShow {
+    width: 314px;
+    height: 100%;
+    background-color: #f1f1fb;
+    padding-bottom: 45px;
+    .rightShow_common {
+      background-color: #fff;
+      padding-left: 13px;
+      color: #4597fb;
+      font-size: 14px;
+      font-family: PingFang-SC-Bold;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .rightShow_footer {
+      line-height: 45px;
+      text-align: center;
+      font-size: 15px;
+      font-family: PingFang-SC-Medium;
+      font-weight: 500;
+      position: fixed;
+      bottom: 0px;
+      width: 314px;
+      .rightShow_footer_one {
+        height: 45px;
+        background-color: #fff;
+        color: #4597fb;
+      }
+      .rightShow_footer_two {
+        height: 45px;
+        background-color: #4597fb;
+        color: #fff;
+      }
+    }
+    .rightShow_one {
+      padding: 27px 0px 12px 0px;
+      span {
+        border-left: 3px solid #4597fb; /*none*/
+        padding-left: 8px;
+      }
+    }
+  }
   .van-tabs--line .van-tabs__wrap {
     border: none;
   }

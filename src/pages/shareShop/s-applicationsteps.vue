@@ -37,6 +37,7 @@ export default {
 
 			},
 			getstepsnum(msg){
+				console.log(msg)
 				this.active = msg
 			}
     },
