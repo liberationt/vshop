@@ -64,6 +64,7 @@ export default {
 				this.$router.go(-1)
 			},
 			getstepsnum(msg){
+				console.log(msg)
 				this.active = msg
 			},
 			close(){
