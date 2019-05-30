@@ -80,24 +80,27 @@
 export default {
 	data(){
 		return{
-			show:true,
+			show:false,
 			dataList:[1]
 		}
 	},
 	methods:{
+		onClickLeft(){
+			this.$router.go(-1)
+		},
 		getDatas(){
 			this.request('',{}).then((data)=>{
 					this.data = data.data
 			})
 		},
 		loan(){
-			this.$router.push('')
+			this.$router.push('/relatedproducts')
 		},
 		card(){
-			this.$router.push('')
+			this.$router.push('/relatedproducts?index='+1)
 		},
 		tool(){
-			this.$router.push('')
+			this.$router.push('/utilities')
 		},
 		todetails(){
 			this.$router.push('')
@@ -115,11 +118,10 @@ export default {
 				}
 		},
 		confirm(){
-			alert(1)
 			this.show= false
-		
 		}
 	},
+
 	mounted(){
 			this.$emit('toparent','店铺首页',1)
 	}

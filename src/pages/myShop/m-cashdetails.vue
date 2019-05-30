@@ -8,7 +8,7 @@
 				/> 
 			</header> 
 			<div class="detailsmain">
-				<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功'>
+				<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功' class="xialashuaxin">
 					<div>
 						<van-list
 							v-model="loading"
@@ -36,11 +36,9 @@
 export default {
 	data(){
 		return{
-			loading: false,//控制上拉加载的加载动画
 			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
 			isLoading: false,//控制下拉刷新的加载动画
 			loading: false,//控制上拉加载的加载动画
-      finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
 		}
 	},
 	methods:{

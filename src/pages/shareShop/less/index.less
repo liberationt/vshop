@@ -24,4 +24,84 @@
         background:#4897FF;
         color:#ffffff;
     }
+    
+}
+//上拉加载
+.van-loading--circular{
+    height:50px !important;
+    line-height: 50px !important;
+    font-size:10px !important;
+  }
+  //下拉选择框
+  .dropdown [class*=van-hairline]::after{
+      border: none;
+  }
+  .dropdown .van-popup--top{
+      left:50% !important;
+  }
+  .dropdown .van-dropdown-menu__title::after{
+      top:40%;
+  }
+  .dropdown .van-dropdown-menu__title{
+    color:#333333;
+    font-size:14px;
+}
+.dropdowns{
+    margin-right: 15px;
+    .van-dropdown-menu__title{
+        color:#4597FD !important;
+    }
+}
+//导航栏的footer banner
+.shophome [class*=van-hairline]::after {
+    border:none !important;
+}
+//进度条
+.applicamain{
+    .van-icon-checked:before{
+        display: none !important;
+        // content:'';
+    }
+    .van-step__line{
+        display: none;
+    }
+    .van-step__circle{
+        display: none;
+    }
+    
+}
+// 有钱花公共样式
+.loneNext{
+    height:50px;
+    background: #4597FD;
+    text-align: center;
+    position: fixed;
+    width:100%;
+    bottom:0;
+    line-height:50px;
+    color:#ffffff;
+    font-size:16px;
+    text-align: center;
+}
+.applyloan{
+    background: #ffffff;
+    margin-bottom:8px;
+    h3{
+        height:39px;
+        line-height:39px;
+        display: flex;
+        align-items: center;
+        font-size:14px; 
+        color:#333333;
+        padding:0 15px;
+        border-bottom:1px solid #E7E7E7 /*no*/;
+        span{
+            display: block;
+            width:3px;
+            height:18px;
+            background: #4597FB;
+            border-radius: 1px;
+            margin-right: 8px;
+        }
+    }
 }

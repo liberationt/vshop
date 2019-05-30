@@ -1,16 +1,29 @@
 <template>
-    <div>
-			<h1>基本信息</h1>
-			<div>
-				<h3>贷款期限</h3>
-				<options :options="selections"></options>
-			</div>
-			<div>
-				<h3>贷款用途</h3>
-				<options :options="selections1" :isMultiply=true></options>
-			</div>
-			<div @click="nextstep" class="loneNext">下一步</div>
+	<div>
+		<div class="forminfor">
+			<p>
+				<label for="">姓名:</label>
+				<input type="text" placeholder="请输入姓名">
+			</p>
+			<p>
+				<label for="">身份证:</label>
+					<input type="text" placeholder="请输入身份证号">
+				</p>
+			<p>
+				<label for="">工作所在地:</label>
+				<input type="text" placeholder="请选择城市">
+			</p>
 		</div>
+		<div>
+			<h3>贷款期限</h3>
+			<options :options="selections"></options>
+		</div>
+		<div>
+			<h3>贷款用途</h3>
+			<options :options="selections1" :isMultiply=true></options>
+		</div>
+		<div @click="nextstep" class="loneNext">下一步</div>
+	</div>
 </template>
 <script>
 import options from '../../views/options.vue'
@@ -42,18 +55,12 @@ export default {
 			onCancel(i){
 				console.log(i)
 			},
-			//确认
-			onConfirm(item){
-				var lonatext = document.getElementsByClassName('lonatext')[0]
-				lonatext.innerHTML = item.text
-				this.show = false
-			},
+		
 			nextstep(){
 				this.$emit('tosteps',1)
 			}
     },
     mounted(){
-		
 			this.selections =	[{label:'赵雅芝',value:'1'},
 						{label:'刘雪华',value:'2'},
 						{label:'俞飞鸿',value:'3'},]
@@ -61,19 +68,19 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-    .lonamoney{
-			height:50px;background:red;
-			line-height: 50px;
-			display: flex;
-			justify-content: space-between;
-		}
-		.loneNext{
-			height:30px;
-			background: #000;
-			text-align: center;
-			position: fixed;
-			width:60%;
-			bottom:0;
-			left:20%;
+		.forminfor{
+			background: #ffffff;
+			padding:0 15px;
+			font-size:14px;
+			color:#33333333;
+			p{
+				height:48px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				input{
+					text-align: right;
+				}
+			}
 		}
 </style>

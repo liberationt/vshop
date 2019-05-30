@@ -32,19 +32,29 @@ export default new Router({
           path:'/shoppage',
           name:'shoppage',
           tittle:'店铺首页',
+          meta:{tittle:'1'},
           component:()=>import('./pages/shareShop/s-shoppage.vue')
         },
         {
           path:'/relatedproducts',
           name:'relatedproducts',
           tittle:'相关产品',
+          meta:{tittle:'2'},
           component:()=>import('./pages/shareShop/s-relatedproducts.vue')
         },
         {
           path:'/utilities',
           name:'utilities',
           title:'实用工具',
+          meta:{tittle:'3'},
           component:()=>import('./pages/shareShop/s-utilities.vue')
+        },
+        {
+          path:'/loanlist',
+          name:'loanlist',
+          tittle:'产品列表',
+          meta:{tittle:'2'},
+          component:()=>import('./pages/shareShop/s-loanlist.vue')
         }
       ]
     },

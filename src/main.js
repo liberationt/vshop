@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import utils from './utils/utils' 
 // import http from './utils/http'
 import Api from './utils/api'
 import 'lib-flexible'
@@ -19,7 +20,10 @@ Vue.use(List)
 
 //兼容ie10 以上
 import '@babel/polyfill'
-
+if (!store.state.actives ) {
+  // 从sessionStorage中读取状态
+  store.state.actives = utils.getlocal('actives')
+}
 Vue.use(Api)
 Vue.config.productionTip = false
 

@@ -6,9 +6,9 @@
 		</div>
 		<div class="tittle">
 			<p>申请多个产品，可大幅提高贷款成功率</p>
-			<div><img src="./images/shuaxin.png" alt="">换一批</div>
+			<div @click="another"><img src="./images/shuaxin.png" alt="">换一批</div>
 		</div>
-		<div class="listdata">
+		<div class="listdata" @click="toproductnamedetail">
 			<div class="listdatatop">
 				<div>
 					<div><img src="" alt=""></div>
@@ -27,9 +27,10 @@
 					<p>期限：<span>12个月-36个月</span></p>
 					<p>最快当天到账</p>
 				</div>
-				<div>立即申请</div>
+				<div class="apply" @click="apply">立即申请</div>
 			</div>
 		</div>
+		<div class="viewall" @click="viewall">查看全部</div>
 	</div>
 </template>
 <script>
@@ -41,15 +42,28 @@ export default {
     },
     methods:{
 			todolist(){
-				alert(1)
 			},
 			//网贷
 			tonetloan(){
-
+				this.$router.push('/loanlist')
 			},
 			//大额
 			toamount(){
+				this.$router.push('/loanlist')
+			},
+			toproductnamedetail(){
+				this.$router.push('/productnamedetail')
+			},
+			//申请
+			apply(){
+				this.$router.push('')
+			},
+			//换一批
+			another(){
 
+			},
+			viewall(){
+				this.$router.push('/loanlist')
 			}
     },
     mounted(){
@@ -57,7 +71,7 @@ export default {
     }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 	.tochiose{
 		display: flex;
 		justify-content: space-between;
@@ -129,10 +143,28 @@ export default {
 			font-size:12px;
 			color:#333333;
 			div{
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
+				line-height:20px;
+				span{
+					color:#FE951E;
+				}
+			}
+			.apply{
+				background: #4597FB;
+				color:#ffffff;
+				font-weight: bold;
+				border-radius: 15px;
+				padding:5px 10px;
 			}
 		}
+	}
+	.viewall{
+		height:50px;
+		background: #4597FB;
+		border-radius: 25px;
+		text-align: center;
+		line-height:50px;
+		font-size: 16px;
+		color:#ffffff;
+		margin-top: 20px;
 	}
 </style>
