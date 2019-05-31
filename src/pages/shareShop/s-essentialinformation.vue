@@ -1,5 +1,28 @@
 <template>
-	<div>
+  <div class="appliationlocnmain  pddingTop">
+		<header>
+			<van-nav-bar title='有钱花' left-arrow fixed @click-left="returngo">
+			</van-nav-bar>
+		</header>
+		<div class="applireminder">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
+		<div class="applistap">
+			<div class="applistaplist">
+				<div><img src='./images/loanapply.png' alt=""></div>
+				<p>申请借款</p>
+			</div>
+			<div class="applistaplist">
+				<div><img src='./images/basic2.png' alt=""></div>
+				<p>基本信息</p>
+			</div>
+			<div class="applistaplist">
+				<div><img src='./images/job1.png' alt=""></div>
+				<p>工作信息</p>
+			</div>
+			<div class="applistaplist">
+				<div><img src='./images/add.png' alt=""></div>
+				<p>补充信息</p>
+			</div>
+		</div>
 		<div class="forminfor">
 			<p>
 				<label for="">姓名:</label>
@@ -47,6 +70,12 @@ export default {
 				}
     },
     methods:{
+			returngo(){
+				this.$router.go(-1)
+			},
+			close(){
+
+			},
 			onSelect(){
 
 			},
@@ -59,7 +88,7 @@ export default {
 			},
 		
 			nextstep(){
-				this.$emit('tosteps',1)
+				this.$emit('tosteps',2)
 			}
     },
     mounted(){
@@ -74,7 +103,7 @@ export default {
 			background: #ffffff;
 			padding:0 15px;
 			font-size:14px;
-			margin:20px 0 10px;
+			margin:10px 0 10px;
 			color:#33333333;
 			p{
 				height:48px;

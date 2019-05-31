@@ -1,80 +1,108 @@
 <template>
-    <div>
-			<div class="lonamoney">
-				<label>贷款金额</label>
-				<div @click="todolist" class="dropdown dropdowns">
-					<van-dropdown-menu>
-						<van-dropdown-item v-model="value1" :options="option1" />
-					</van-dropdown-menu>
-				</div>
+  <div class="appliationlocnmain  pddingTop">
+		<header>
+			<van-nav-bar title='有钱花' left-arrow fixed @click-left="returngo">
+			</van-nav-bar>
+		</header>
+		<div class="applireminder">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
+		<div class="applistap">
+			<div class="applistaplist">
+				<div><img src='./images/loanapply.png' alt=""></div>
+				<p>申请借款</p>
 			</div>
-			<div class="applyloan">
-				<h3><span></span>贷款期限</h3>
-				<options :options="selections"></options>
+			<div class="applistaplist">
+				<div><img src='./images/basic1.png' alt=""></div>
+				<p>基本信息</p>
 			</div>
-			<div class="applyloan">
-				<h3><span></span>贷款用途</h3>
-				<!-- <options :options="selections1" :isMultiply=true></options> -->
-				<options :options="selections1"></options>
+			<div class="applistaplist">
+				<div><img src='./images/job1.png' alt=""></div>
+				<p>工作信息</p>
 			</div>
-			<div @click="nextstep" class="loneNext">下一步</div>
+			<div class="applistaplist">
+				<div><img src='./images/add.png' alt=""></div>
+				<p>补充信息</p>
+			</div>
 		</div>
+		<div class="lonamoney">
+			<label>贷款金额</label>
+			<div class="dropdown dropdowns">
+				<van-dropdown-menu>
+					<van-dropdown-item v-model="value1" :options="option1" @change="onSelect"/>
+				</van-dropdown-menu>
+			</div>
+		</div>
+		<div class="applyloan">
+			<h3><span></span>贷款期限</h3>
+			<div class="optionstyle">
+				<options :options="loanperiodList" v-model='loanperiod'></options>
+			</div>
+			
+		</div>
+		<div class="applyloan">
+			<h3><span></span>贷款用途</h3>
+			<div class="optionstyle">
+				<options :options="loanpurposeList" v-model='loanpurpose' ref='getloanpurpose'></options>
+			</div>
+		</div>
+		<div @click="nextstep" class="loneNext">下一步</div>
+	</div>
 </template>
 <script>
 import options from '../../views/options.vue'
-import { DropdownMenu, DropdownItem } from 'vant';
+import { DropdownMenu, DropdownItem,Step, Steps } from 'vant';
+
 export default {
 		components:{
 			[DropdownMenu.name]:DropdownMenu,
 			[DropdownItem.name]:DropdownItem,
+			[Step.name]:Step,
+			[Steps.name]:Steps,
 			options
 		},
     data(){
-			return{
-				carddataList:[1,2,3,4,5,6,7,8,9,10],
-				show:true,
-				value1:0,
-				option1: [
-					{ text: '全部商品', value: 0 },
-					{ text: '新款商品', value: 1 },
-					{ text: '活动商品', value: 2 }
-				],
-				selections: [],
-				selections1: [
-					{label:'慕容冲',value:1},
-					{label:'潘安',value:2},
-					{label:'宋玉',value:3},
-					{label:'卫玠',value:4},
-					{label:'兰陵王',value:5},
-				],
-				value:''
-			}
+		return{
+			value1:0,
+			option1: [
+				{ text: '1万-2万', value: 0 },
+				{ text: '2万-5万', value: 1 },
+				{ text: '5万以上', value: 2 }
+			],
+			loanperiod:[],
+			loanperiodList: [
+				{label:'3个月',value:1},
+				{label:'6个月',value:2},
+				{label:'9个月',value:3},
+				{label:'12个月',value:4},
+				{label:'24个月',value:5},
+				{label:'36个月',value:6}
+			],
+			loanpurpose:[],
+			loanpurposeList: [
+				{label:'日常消费',value:1},
+				{label:'购车',value:2},
+				{label:'购房',value:3},
+				{label:'教育培训',value:4},
+				{label:'短期周转',value:5},
+				{label:'其他',value:6},
+			],
+			value:''
+		}
     },
 	methods:{
-		onSelect(){
+		close(){
 
 		},
-		todolist(value){
-			this.show = true
+		onSelect(value){
+		this.value1 = value
 		},
-		//取消
-		onCancel(i){
-			console.log(i)
-		},
-		//确认
-		onConfirm(item){
-			var lonatext = document.getElementsByClassName('lonatext')[0]
-			lonatext.innerHTML = item.text
-			this.show = false
+		returngo(){
+			this.$router.go(-1)
 		},
 		nextstep(){
-			this.$emit('tosteps',1)
+			console.log(this.loanperiod)
 		}
 	},
 	mounted(){
-		this.selections =	[{label:'赵雅芝',value:'1'},
-			{label:'刘雪华',value:'2'},
-			{label:'俞飞鸿',value:'3'},]
 	}
 }
 </script>
@@ -84,7 +112,7 @@ export default {
 			line-height: 50px;
 			display: flex;
 			justify-content: space-between;
-			margin:20px 0 10px;
+			margin:10px 0;
 			padding:0 15px;
 			font-size:14px;
 			.dropdowns{

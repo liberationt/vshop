@@ -56,29 +56,48 @@
 .shophome [class*=van-hairline]::after {
     border:none !important;
 }
-//进度条
-.applicamain{
-    [class*=van-hairline]::after{
-        border: none;
-        width: 25%;
-    }
-    .van-step--horizontal{
-        width: 200px;
-        background-color: red;
-    }
-    .van-icon-checked:before{
-        display: none !important;
-        // content:'';
-    }
-    .van-step__line{
-        display: none;
-    }
-    .van-step__circle{
-        display: none;
-    }
-    
-}
 // 有钱花公共样式
+.appliationlocnmain{
+    background: #f1f1fb;
+    padding-bottom:50px;
+}
+//温馨提示
+.applireminder{
+    height:40px;
+    background: #FEF1E3;
+    line-height:40px;
+    font-size:13px;
+    color:#FE951E;
+    padding:0 15px;
+    position: relative;
+    margin-bottom:10px;
+    img{
+        width:11px;height:11px;
+        position: absolute;
+        right:30px;
+        top:15px;
+    }
+}
+//进度条
+.applistap{
+    background:#ffffff;
+    height:96px;
+    padding:0 24px;
+    font-size:13px;
+    margin:10px 0;
+    color: #BFBFBF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .applistaplist{
+        display: flex;
+        flex-direction: column;
+        img{
+            width:46px;height:46px;
+            margin-bottom: 6px;
+        }
+    }
+}
 .loneNext{
     height:50px;
     background: #4597FD;
@@ -112,4 +131,48 @@
             margin-right: 8px;
         }
     }
+   
+}
+
+//组件样式
+.optionstyle{
+    padding:15px;
+    overflow: hidden;
+    .chooser-list{
+        margin-right: -22px;
+    }
+}
+.optionstyles{
+    padding:15px;
+    overflow: hidden;
+    .chooser-list{
+        margin-right: -22px; 
+        li{
+            width:161px !important;
+        }
+    }
+}
+.applyloanhouse{
+    padding:0 15px;
+    >div{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height:40px;
+        border-bottom: 1px solid #E7E7E7 /*no*/;
+        font-size:14px;
+        color:#333333;
+        overflow: hidden;
+        input{
+            height:100%;
+            text-align: right;
+        }
+        .van-dropdown-menu__title::after{
+            display: none;
+        }
+    }
+    >div:nth-last-child(1){
+        border:none;
+    }
+    
 }

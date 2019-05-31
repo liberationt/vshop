@@ -71,6 +71,36 @@ export default new Router({
       component:()=>import('./pages/shareShop/s-applicationsteps.vue')
     },
     {
+      path:'/applicationloan',
+      name:'applicationloan',
+      tittle:'申请贷款',
+      meta: {
+        keepAlive: true // 需要被缓存
+      },
+      component:()=>import('./pages/shareShop/s-applicationloan.vue')
+    },
+    {
+      path:'/essentialinformation',
+      name:'essentialinformation',
+      tittle:'基本信息',
+      meta: {
+        keepAlive: true // 需要被缓存
+      },
+      component:()=>import('./pages/shareShop/s-essentialinformation.vue')
+    },
+    {
+      path:'/workinformation',
+      name:'workinformation',
+      tittle:'工作信息',
+      component:()=>import('./pages/shareShop/s-workinformation.vue')
+    },
+    {
+      path:'/supplementary',
+      name:'supplementary',
+      tittle:'填充信息',
+      component:()=>import('./pages/shareShop/s-supplementary.vue')
+    },
+    {
       path:'/productnamedetail',
       name:'productnamedetail',
       tittle:'产品详情',
