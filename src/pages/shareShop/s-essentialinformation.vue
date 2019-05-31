@@ -14,13 +14,15 @@
 				<input type="text" placeholder="请选择城市">
 			</p>
 		</div>
-		<div>
-			<h3>贷款期限</h3>
+		<div class="applyloan">
+			<h3><span></span>学历</h3>
 			<options :options="selections"></options>
 		</div>
-		<div>
-			<h3>贷款用途</h3>
-			<options :options="selections1" :isMultiply=true></options>
+		<div class="applyloan">
+			<h3><span></span>婚姻状态</h3>
+			<!-- <options :options="selections1" :isMultiply=true></options> -->
+			<options :options="selections1"></options>
+
 		</div>
 		<div @click="nextstep" class="loneNext">下一步</div>
 	</div>
@@ -72,6 +74,7 @@ export default {
 			background: #ffffff;
 			padding:0 15px;
 			font-size:14px;
+			margin:20px 0 10px;
 			color:#33333333;
 			p{
 				height:48px;
