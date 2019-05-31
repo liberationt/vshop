@@ -1,24 +1,24 @@
 <template>
     <div>
 			<h1>工作信息</h1>
-			<div>
-				<h3>职业类型</h3>
+			<div class="applyloan">
+				<h3><span></span>职业类型</h3>
 				<options :options="occupationalList"></options>
 			</div>
 			<div>
-				<h3>贷款用途</h3>
+				<h3><span></span>贷款用途</h3>
 				<options :options="paymentList" :isMultiply=true></options>
 			</div>
 			<div>
-				<h3>月收入</h3>
+				<h3><span></span>月收入</h3>
 				<options :options="incomeList" :isMultiply=true></options>
 			</div>
 			<div>
-				<h3>公司代缴社保</h3>
+				<h3><span></span>公司代缴社保</h3>
 				<options :options="securityLisr" :isMultiply=true></options>
 			</div>
 			<div>
-				<h3>公司代缴公积金</h3>
+				<h3><span></span>公司代缴公积金</h3>
 				<options :options="accumulationList" :isMultiply=true></options>
 			</div>
 			<div @click="nextstep" class="loneNext">下一步</div>
