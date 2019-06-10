@@ -1,28 +1,49 @@
 <template>
-    <div>
-			<h1>工作信息</h1>
+  <div class="appliationlocnmain applicamain pddingTop">
+		<header>
+			<van-nav-bar title='有钱花' left-arrow fixed @click-left="returngo"></van-nav-bar>
+		</header>
+		<div class="applireminder">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
+		<div class="applistap">
+			<div class="applistaplist">
+				<div><img src='./images/loanapply.png' alt=""></div>
+				<p>申请借款</p>
+			</div>
+			<div class="applistaplist">
+				<div><img src='./images/basic1.png' alt=""></div>
+				<p>基本信息</p>
+			</div>
+			<div class="applistaplist">
+				<div><img src='./images/job2.png' alt=""></div>
+				<p>工作信息</p>
+			</div>
+			<div class="applistaplist">
+				<div><img src='./images/add.png' alt=""></div>
+				<p>补充信息</p>
+			</div>
+		</div>
 			<div class="applyloan">
 				<h3><span></span>职业类型</h3>
 				<options :options="occupationalList"></options>
 			</div>
-			<div>
-				<h3><span></span>贷款用途</h3>
+			<div class="applyloan">
+				<h3><span></span>工资发放形式</h3>
 				<options :options="paymentList" :isMultiply=true></options>
 			</div>
-			<div>
+			<div class="applyloan">
 				<h3><span></span>月收入</h3>
 				<options :options="incomeList" :isMultiply=true></options>
 			</div>
-			<div>
+			<div class="applyloan">
 				<h3><span></span>公司代缴社保</h3>
 				<options :options="securityLisr" :isMultiply=true></options>
 			</div>
-			<div>
+			<div class="applyloan">
 				<h3><span></span>公司代缴公积金</h3>
 				<options :options="accumulationList" :isMultiply=true></options>
 			</div>
-			<div @click="nextstep" class="loneNext">下一步</div>
-		</div>
+		<div @click="nextstep" class="loneNext">下一步</div>
+	</div>
 </template>
 <script>
 import options from '../../views/options.vue'
@@ -59,8 +80,14 @@ export default {
 			onSelect(){
 
 			},
+			close(){
+
+			},
+			returngo(){
+				this.$router.go(-1)
+			},
 			nextstep(){
-				this.$emit('tosteps',1)
+				this.$emit('tosteps',3)
 			}
     },
     mounted(){
@@ -80,14 +107,5 @@ export default {
 			line-height: 50px;
 			display: flex;
 			justify-content: space-between;
-		}
-		.loneNext{
-			height:30px;
-			background: #000;
-			text-align: center;
-			position: fixed;
-			width:60%;
-			bottom:0;
-			left:20%;
 		}
 </style>

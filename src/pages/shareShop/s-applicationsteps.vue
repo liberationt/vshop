@@ -37,26 +37,27 @@
 				<!-- 申请贷款 -->
 				<applicationloan @tosteps='getstepsnum' v-if='active==0'></applicationloan> 
 				<!-- 基本信息 -->
-				<essentialinformation v-if="active==1"></essentialinformation>
+				<essentialinformation @tosteps='getstepsnum' v-if="active==1"></essentialinformation>
+				<workinformation @tosteps='getstepsnum' v-if="active==2"></workinformation>
 			</div>
     </div>
 </template>
 <script>
 import applicationloan from './s-applicationloan.vue'
 import essentialinformation from './s-essentialinformation.vue'
+import workinformation from './s-workinformation.vue'
 import { Step, Steps } from 'vant';
 export default {
 		components:{
 			[Step.name]:Step,
 			[Steps.name]:Steps,
 			applicationloan,
-			essentialinformation
+			essentialinformation,
+			workinformation
 		},
     data(){
         return{
 					active:0,
-					inactiveicon:require('./images/basicinformation1.png'),
-					activeicon:require('./images/basicinformation2.png')
         }
     },
     methods:{
@@ -64,11 +65,10 @@ export default {
 				this.$router.go(-1)
 			},
 			getstepsnum(msg){
-				console.log(msg)
 				this.active = msg
 			},
 			close(){
-				alert(1)
+				console.log(this.active)
 			}
     },
     mounted(){
@@ -78,7 +78,6 @@ export default {
 </script>
 <style lang="less" scoped>
 .applicamain{
-	// padding:50px 0 0;
 	 background: #f1f1fb;
 		.applireminder{
 			height:40px;

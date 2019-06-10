@@ -11,18 +11,23 @@
 </template>
 <script>
 export default {
+		model: {
+				prop: 'currArr',
+				event: 'input'
+			},
+			props: {
+				currArr:Array,
+				options: Array, //传入的数组
+				isMultiply: { //是否是多选。默认为false：单选；true：多选
+					type: Boolean,
+					default: false
+				},
+				cssStyle: Object //可以自定义单选或者多选的样式
+		},
     data () {
 			return {
 				currValArr: []
 			}
-  	},
-		props: {
-			options: Array, //传入的数组
-			isMultiply: { //是否是多选。默认为false：单选；true：多选
-				type: Boolean,
-				default: false
-			},
-			cssStyle: Object //可以自定义单选或者多选的样式
 		},
 		methods:{
 			optionsClick(item){
@@ -48,7 +53,7 @@ export default {
 		}
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 ul, li {
   margin: 0;
   padding:0;
@@ -56,23 +61,24 @@ ul, li {
 }
 .chooser {
   position: relative;
-  display: inline-block;
+	display: inline-block;
 }
+
 .chooser-list li{
-  margin: 5px;
-  width: 80px;
-  height: 40px;
+	width: 100px;
+	margin-right: 22px;
+	height: 40px;
+	margin-bottom: 10px;
+	font-size:13px;
   line-height: 40px;
-  border-radius: 7px;
+  border-radius: 2px;
   display: inline-block;
-  border: 1px solid #9C9C9C;
-  color: #9C9C9C;
+  color: #333333;
   text-align: center;
-  background: #fff;
+  background: #F4F4F4;
 }
 .chooser-list li.active {
-  border-color: #097fe0;
-  color: #097fe0;
-  background: #fff;
+  color: #ffffff;
+  background: #4597FB;
 }
 </style>
