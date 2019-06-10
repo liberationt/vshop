@@ -9,14 +9,14 @@
 				<div class="headerright">
 					<h4>店铺名称您的信贷专家</h4>
 					<div>
-						<span>成都</span>
-						<span>郑经理</span>
+						<span>{{dataList.adNameSecond}}</span>
+						<span>{{dataList.name}}</span>
 						<span class="identity">身份认证</span>
 					</div>
 					<span class="headerbot">这里是店铺介绍欢迎来电咨询</span>
 				</div>
 			</header>
-			<div class="contact">
+			<div class="contact" @click="phone">
 				<div class="contactleft"><img src="./images/dianhua.png" alt="">电话联系</div>
 				<div class="contactright" @click="weixin"><img src="./images/weixin.png" alt="">微信联系</div>
 			</div>
@@ -77,11 +77,12 @@
 	</div>
 </template>
 <script>
+import { parse } from 'path';
 export default {
 	data(){
 		return{
 			show:false,
-			dataList:[1]
+			dataList:{}
 		}
 	},
 	methods:{
@@ -92,6 +93,28 @@ export default {
 			this.request('',{}).then((data)=>{
 					this.data = data.data
 			})
+		},
+		phone(){
+			const copyToClipboard = str => {
+				const el = document.createElement('textarea'); // Create a <textarea> element
+				el.value = str; // Set its value to the string that you want copied
+				el.setAttribute('readonly', ''); // Make it readonly to be tamper-proof
+				el.style.position = 'absolute'; 
+				el.style.left = '-9999px'; // Move outside the screen to make it invisible
+				document.body.appendChild(el); // Append the <textarea> element to the HTML document
+				const selected = 
+				document.getSelection().rangeCount > 0 // Check if there is any content selected previously
+				? document.getSelection().getRangeAt(0) // Store selection if found
+				: false; // Mark as false to know no selection existed before
+				el.select(); // Select the <textarea> content
+				document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
+				document.body.removeChild(el); // Remove the <textarea> element
+				if (selected) { // If a selection existed before copying
+				document.getSelection().removeAllRanges(); // Unselect everything on the HTML document
+				document.getSelection().addRange(selected); // Restore the original selection
+				}
+			};
+			copyToClipboard('鱼惠妹子')
 		},
 		loan(){
 			this.$router.push('/relatedproducts')
@@ -123,7 +146,18 @@ export default {
 	},
 
 	mounted(){
-			this.$emit('toparent','店铺首页',1)
+		this.$emit('toparent','店铺首页',1)
+		let data ={
+			data : '0001'
+		}
+		this.request('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
+			if(data.code=='success'){
+				alert(1)
+				this.dataList = data.data
+			}
+		}).catch(err=>{
+			console.log(err)
+		})
 	}
 }
 </script>
