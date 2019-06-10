@@ -29,6 +29,7 @@
           </div>
         </van-tab>
       </van-tabs>
+      <div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
       <div class="login_login" @click="goLogin">
         登录
       </div>
@@ -40,89 +41,148 @@
   </div>
 </template>
 <script>
-import { Tab, Tabs, Toast } from 'vant';
+import { Tab, Tabs, Toast } from "vant";
+import utils from '../../utils/utils'
 export default {
-  components:{
-    [Tabs.name] : Tabs,
-    [Tab.name] : Tab,
-    [Toast.name] : Toast 
+  components: {
+    [Tabs.name]: Tabs,
+    [Tab.name]: Tab,
+    [Toast.name]: Toast
   },
-  data(){
+  data() {
     return {
       tabactive: 0,
-      lookImg: require('./imgs/eye-xianshi@2x.png'),
-      nolookImg: require('./imgs/eye-yincang@2x.png'),
-      look:1,
+      lookImg: require("./imgs/eye-xianshi@2x.png"),
+      nolookImg: require("./imgs/eye-yincang@2x.png"),
+      look: 1,
       phoneNum: "",
       phoneCode: "",
       phonePwd: "",
-      typeText:'password',
+      typeText: "password",
       count: "",
       show: true,
       flag: true,
+      seal_control: false
     };
   },
-  methods:{
-    onClick(){},
-    onLookImg(){
-      if(this.look == 1){
-        this.look = 2
-        this.typeText = 'number'
+  methods: {
+    onClick() {},
+    onLookImg() {
+      if (this.look == 1) {
+        this.look = 2;
+        this.typeText = "number";
       } else {
-        this.look = 1
-        this.typeText = 'password'
+        this.look = 1;
+        this.typeText = "password";
       }
     },
     // 获取验证码
-    getcode(){
-      if(!this.isCheck(0)){
-        return false
+    getcode() {
+      if (!this.isCheck(3)) {
+        return false;
       }
-      this.setTimeout()
-      this.deleteTime()
-      // this.request()
+      this.setTimeout();
+      this.request("wisdom.vshop.vshopStoreManager.sendCaptcha", {
+        captchaId: "",
+        verifyCode: "",
+        phone: this.phoneNum
+      }).then(data => {
+        if(data.code == 'success'){
+          Toast('短信发送成功');
+        } else {
+          this.deleteTime()
+        }
+      }).catch(err => {
+        this.deleteTime()
+        console.log("111====>err:   ", err);
+      });
+    },
+    // 调用风控
+    control() {
+      let that = this;
+      // 清除定时器
+      this.deleteTime();
+      initNECaptcha({
+        captchaId: that.captchaId,
+        element: "#captcha_div",
+        mode: "float",
+        width: "320px",
+        onVerify: function(err, ret) {
+          if (ret != undefined) {
+            // 风控关闭
+            that.seal_control = false;
+            //调用定时器
+            that.setTimeout();
+            that.validate = ret.validate;
+            that.show = false;
+            // 接口入参
+            let params = that.params;
+            params.apiKey = "wisdom.loan.captcha.loanOfficerSendSmsReg";
+            params.data = JSON.stringify({
+              captchaId: that.captchaId,
+              phone: that.number1,
+              type: 10000,
+              verifyCode: that.validate
+            });
+            params.sign = MD5(params.apiKey + "" + params.data + that.salt);
+            // console.log(params , '带风控')
+            that.verification(params);
+          }
+        }
+      });
     },
     // 登录
-    goLogin(){
-      if(!this.isCheck()){
-        return false
+    goLogin() {
+      if (!this.isCheck(1)) {
+        return false;
       }
-      this.$router.push({path:'./myshop'})
+      this.request("wisdom.vshop.vshopStoreManager.captchaLogin", {
+        captchaCode : this.phoneCode,
+        phone: this.phoneNum
+      })
+        .then(data => {
+          utils.setCookie('user', JSON.stringify(data.data))
+          this.$router.push({ path: "./myshop" });
+        })
+        .catch(err => {
+          console.log("111====>err:   ", err);
+        });
+      // this.$router.push({ path: "./myshop" });
     },
-    goAgree(){
-      window.location.href = 'http://qdx.zanfin.com/promotion/#/agreement    '
+    goAgree() {
+      window.location.href = "http://qdx.zanfin.com/promotion/#/agreement    ";
     },
-    isCheck(){
+    isCheck(num) {
       // 手机号校验
-      if(this.phoneNum == ""){
-        Toast('请输入手机号！')
-        return false
+      if (this.phoneNum == "") {
+        Toast("请输入手机号！");
+        return false;
       }
-      if(!/(1([3-9])[0-9]{9})/.test(this.phoneNum)){
-        Toast('手机号有误，请重新输入！')
-        return false
+      if (!/(1([3-9])[0-9]{9})/.test(this.phoneNum)) {
+        Toast("手机号有误，请重新输入！");
+        return false;
       }
-      if(this.tabactive == 0){
+      if (this.tabactive == 0 && num == 1) {
         if (this.phoneCode == "") {
-          Toast('验证码不能为空，请重新输入！')
+          Toast("验证码不能为空，请重新输入！");
           return false;
         }
         if (!/^[0-9]*$/.test(this.phoneCode) || this.phoneCode.length < 6) {
-          Toast('验证码有误，请重新输入！')
+          Toast("验证码有误，请重新输入！");
           return false;
         }
       }
-      if(this.tabactive == 1){
-        if(this.phonePwd == ""){
-          Toast('密码不能为空，请重新输入！')
+      if (this.tabactive == 1) {
+        if (this.phonePwd == "") {
+          Toast("密码不能为空，请重新输入！");
           return false;
         }
-        if(this.phoneCode.length < 6 ){
-          Toast('密码输入有误，请重新输入！')
+        if (this.phoneCode.length < 6) {
+          Toast("密码输入有误，请重新输入！");
           return false;
         }
       }
-      return true
+      return true;
     },
     // 定时器
     setTimeout() {
@@ -148,7 +208,7 @@ export default {
       this.timer = null;
     }
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .login_common {
@@ -157,14 +217,14 @@ export default {
   width: 100%;
   .login_top {
     height: 176px;
-    background: url('./imgs/loginTop.png') no-repeat;
+    background: url("./imgs/loginTop.png") no-repeat;
     background-size: 100%;
     header {
-      font-family:'PingFang-SC-Medium';
+      font-family: "PingFang-SC-Medium";
       padding-top: 17px;
-      font-weight:bold;
-      color:rgba(255,255,255,1);
-      font-size:17px;
+      font-weight: bold;
+      color: rgba(255, 255, 255, 1);
+      font-size: 17px;
     }
   }
   .login_dynamic {
@@ -175,18 +235,18 @@ export default {
     padding-top: 20px;
     input {
       color: #333;
-      font-size:15px;
-      font-family:'PingFang-SC-Medium';
+      font-size: 15px;
+      font-family: "PingFang-SC-Medium";
     }
     p {
-      border-bottom: 1px solid #D3D3D3; /*no*/
+      border-bottom: 1px solid #d3d3d3; /*no*/
       padding: 19px 0px;
     }
     .login_getcode {
-      color: #4697FB;
-      font-size:13px;
+      color: #4697fb;
+      font-size: 13px;
       padding-left: 10px;
-      border-left: 1px solid #D3D3D3;/*no*/
+      border-left: 1px solid #d3d3d3; /*no*/
     }
     .login_img {
       img {
@@ -197,12 +257,12 @@ export default {
     }
   }
   .login_login {
-    color: #FFFFFF;
+    color: #ffffff;
     font-size: 18px;
-    background-color: #4597FB;
-    width:295px;
-    height:50px;
-    border-radius:25px;
+    background-color: #4597fb;
+    width: 295px;
+    height: 50px;
+    border-radius: 25px;
     line-height: 50px;
     margin: 30px auto 0px auto;
   }
@@ -215,7 +275,7 @@ export default {
     text-align: center;
     font-size: 10px;
     color: #999;
-    z-index: -1
+    z-index: -1;
   }
 }
 </style>
