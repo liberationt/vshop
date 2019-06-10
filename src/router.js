@@ -9,7 +9,11 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {
+        title:"我的首页",
+        content: 'disabyfgelalale你好呀'
+      },
     },
     {
       path: '/about',
@@ -115,7 +119,11 @@ export default new Router({
     {
       path: '/mshopregister',
       name: 'mshopregister',
-      title:'我的客户',
+      meta: {
+        title:"我的客户",
+        content: '我的客户你好呀',
+        name:'kakakakkakakaka'
+      },
       component: () => import( './pages/myShop/m-shopregister.vue')  
     },
     {
@@ -213,6 +221,12 @@ export default new Router({
       name: 'mshopapplydetails',
       title:'订单详情',
       component: () => import( './pages/myShop/m-shopapplydetails.vue')  
+    },
+    {
+      path: '/mquanxuan',
+      name: 'mquanxuan',
+      title:'订单详情',
+      component: () => import( './pages/myShop/m-xuanxuan.vue')  
     }
   ]
 })
