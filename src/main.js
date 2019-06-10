@@ -44,7 +44,19 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title;
     // console.log(document.title)
   }
-  next()
+  if (to.matched.some( m => m.meta.auth)) {
+    // 对路由进行验证
+    if (utils.getCookie('user')) { // 已经登陆
+      next()
+    } else {
+      // 未登录,跳转到登陆页面。
+      next({ path: '/mlogin'})
+    }
+  } else {
+    next()
+  }
+
+  
 });
 
 

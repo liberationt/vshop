@@ -12,12 +12,16 @@ export default new Router({
       component: Home,
       meta: {
         title:"我的首页",
-        content: 'disabyfgelalale你好呀'
+        content: 'disabyfgelalale你好呀',
+        auth: true
       },
     },
     {
       path: '/about',
       name: 'about',
+      meta: {
+        auth: true
+      },
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')  
     },
     {
@@ -152,7 +156,8 @@ export default new Router({
       meta: {
         title:"我的客户",
         content: '我的客户你好呀',
-        name:'kakakakkakakaka'
+        name:'kakakakkakakaka',
+        auth: true
       },
       component: () => import( './pages/myShop/m-shopregister.vue')  
     },

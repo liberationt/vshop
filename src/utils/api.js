@@ -3,13 +3,11 @@
  * Vue.use(http)
  */
 import http from './http'
-// import utils from './utils'
+import utils from './utils'
 import {
   Toast
 } from 'vant';
 import MD5 from "js-md5";
-
-// console.log (utils.getCookie(name)) // 获取本地内容
 
 // 公共言
 let saltcomm = "*(&!*(Q#IUHAX89y19823h*&(YQ#($(*AGFsd"
@@ -20,7 +18,7 @@ export function request(apiKey, data = {}, isShowError = true) {
     return http.post("/api/proxy", baseParams).then((response = {}) => {
       if (response.code == 'success') {
         console.log('response=====> ' + apiKey + "   " + JSON.stringify(response))
-        resolve && resolve(response.data)
+        resolve && resolve(response)
       } else {
         handleError(apiKey, response, reject, isShowError)
       }
@@ -85,10 +83,7 @@ let getRequestInfo = (apiKey = '', data = {}) => {
     },
   }
   // 取用户信息
-  let userInfo = {
-    "userId": "20190416094530070104813912794",
-    "token": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNmI3NzZlNDM4Njg0MDJhOGUyNzIxZGY4YTM3ZGU4ZiIsImlzcyI6InNobGgiLCJzdWIiOiJcIjIwMTkwNDE2MDk0NTMwMDcwMTA0ODEzOTEyNzk0XCIiLCJpYXQiOjE1NTg0OTQwNDksImV4cCI6MTU1ODkyNjA0OX0.QnvRHpCTogAyuvqYnLDgb2IK7vHty4QklC5TTW0KYt8"
-  }
+  let userInfo = JSON.parse(utils.getCookie('user')) // 获取本地内容
   if (userInfo) { // 用户信息
     baseParams.session = {
       userId: userInfo.userId,

@@ -53,6 +53,22 @@ const isAndroid = () => {
 export function refuseJacking(element){
   
 }
+// 封控 方法
+export function sealControl(captchaId) {
+	initNECaptcha({
+		captchaId: captchaId,
+		element: "#captcha_div",
+		mode: "float",
+		width: "320px",
+		onVerify: function(err, ret) {
+			console.log(err, ret);
+			var parameter = {
+			method: "webVerifyCode",
+		};
+		// callNative(JSON.stringify(parameter));
+		}
+	});
+}
 
 export default {
   getCookie,
@@ -61,5 +77,6 @@ export default {
   putlocal,
   getlocal,
   selectFrom,
-  refuseJacking
+  refuseJacking,
+  sealControl
 }
