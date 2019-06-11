@@ -3,17 +3,17 @@
 		<div class="personalinfor">
 			<header>
 				<div class="headerlift">
-					<div class="personal"> <img src="" alt=""></div>
-					<p>邀请码6S89WH</p>
+					<div class="personal"> <img :src=dataList.personImg alt=""></div>
+					<p>邀请码{{dataList.inviterCode}}</p>
 				</div>
 				<div class="headerright">
-					<h4>店铺名称您的信贷专家</h4>
+					<h4>{{dataList.storeName}}</h4>
 					<div>
 						<span>{{dataList.adNameSecond}}</span>
 						<span>{{dataList.name}}</span>
-						<span class="identity">身份认证</span>
+						<span class="identity" v-show="dataList.realStatus==1"身份认证</span>
 					</div>
-					<span class="headerbot">这里是店铺介绍欢迎来电咨询</span>
+					<span class="headerbot">{{dataList.storeDesc}}</span>
 				</div>
 			</header>
 			<div class="contact" @click="phone">
@@ -152,7 +152,6 @@ export default {
 		}
 		this.request('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
 			if(data.code=='success'){
-				alert(1)
 				this.dataList = data.data
 			}
 		}).catch(err=>{
@@ -179,6 +178,7 @@ export default {
 					background: #000;
 					border-radius: 50%;
 					margin:0 auto;
+					overflow: hidden;
 					img{
 						width:100%;
 						height:100%;
@@ -194,6 +194,9 @@ export default {
 					color:#F3B13E;
 					line-height: 19px;
 					margin-top: -10px;
+					position: relative;
+					z-index: 10;
+					
 				}
 			}
 			.headerright{
