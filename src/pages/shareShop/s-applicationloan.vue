@@ -34,14 +34,15 @@
 		<div class="applyloan">
 			<h3><span></span>贷款期限</h3>
 			<div class="optionstyle">
-				<options :options="loanperiodList" v-model='loanperiod'></options>
+				<!-- v-model='loanperiod' -->
+				<options :options="loanperiodList" @toparents='child' ></options>
 			</div>
 			
 		</div>
 		<div class="applyloan">
 			<h3><span></span>贷款用途</h3>
 			<div class="optionstyle">
-				<options :options="loanpurposeList" v-model='loanpurpose' ref='getloanpurpose'></options>
+				<options :options="loanpurposeList" @toparents='child' v-model='loanpurpose' ref='getloanpurpose'></options>
 			</div>
 		</div>
 		<div @click="nextstep" class="loneNext">下一步</div>
@@ -74,7 +75,6 @@ export default {
 				{label:'9个月',value:3},
 				{label:'12个月',value:4},
 				{label:'24个月',value:5},
-				{label:'36个月',value:6}
 			],
 			loanpurpose:[],
 			loanpurposeList: [
@@ -85,7 +85,7 @@ export default {
 				{label:'短期周转',value:5},
 				{label:'其他',value:6},
 			],
-			value:''
+			value:[],
 		}
     },
 	methods:{
@@ -93,16 +93,21 @@ export default {
 
 		},
 		onSelect(value){
-		this.value1 = value
+			this.value1 = value
 		},
 		returngo(){
 			this.$router.go(-1)
 		},
+		child(emg){
+			this.loanperiod= emg
+		},
 		nextstep(){
+			// console.log(this.value)
 			console.log(this.loanperiod)
 		}
 	},
 	mounted(){
+		// this.child()
 	}
 }
 </script>

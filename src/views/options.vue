@@ -1,12 +1,12 @@
 <template>
     <div>
-        <ul class="chooser-list">
-					<li :style="cssStyle"
-					v-for="(item, index) in options" :key="index"
-					@click="optionsClick(item)"
-					:class="{active: checkActive(item)}"
-					>{{ item.label }}</li>
-				</ul>    
+      <ul class="chooser-list">
+				<li :style="cssStyle"
+				v-for="(item, index) in options" :key="index"
+				@click="optionsClick(item)"
+				:class="{active: checkActive(item)}"
+				>{{ item.label }}</li>
+			</ul>    
     </div>
 </template>
 <script>
@@ -42,7 +42,7 @@ export default {
 						this.currValArr.splice(this.currValArr.indexOf(item), 1)
 					}
 				}
-				console.log(this.currValArr)
+				this.$emit('toparents',this.currValArr)
 			},
 			checkActive(item){
 				if (this.isMultiply === false) {
