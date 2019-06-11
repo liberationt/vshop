@@ -11,13 +11,13 @@
 					<div>
 						<span>{{dataList.adNameSecond}}</span>
 						<span>{{dataList.name}}</span>
-						<span class="identity" v-show="dataList.realStatus==1"身份认证</span>
+						<span class="identity" v-show="dataList.realStatus==1">身份认证</span>
 					</div>
 					<span class="headerbot">{{dataList.storeDesc}}</span>
 				</div>
 			</header>
-			<div class="contact" @click="phone">
-				<div class="contactleft"><img src="./images/dianhua.png" alt="">电话联系</div>
+			<div class="contact">
+				<div class="contactleft" @click='gophone(dataList.phone)'><img src="./images/dianhua.png" alt="">电话联系</div>
 				<div class="contactright" @click="weixin"><img src="./images/weixin.png" alt="">微信联系</div>
 			</div>
 			<div class="entrance">
@@ -49,11 +49,11 @@
 		</div>
 		<div class="tweetsList">
 			<h4><span></span>推荐阅读</h4>
-			<div v-for="(item,i) in dataList" :key="i" @click="todetails">
-				<div><img src="./images/people.png" alt=""></div>
+			<div v-for="(item,i) in dataList.exhibitionContentList" :key="i" @click="todetails(item.exhibitionContentCode)">
+				<div><img :src=item.photoPath alt=""></div>
 				<div class="listright">
-					<p>信贷经理教你如何高效贷款</p>
-					<span>2019-05-10</span>
+					<p>{{item.contentTitle}}</p>
+					<span>{{item.dataCreateTime}}</span>
 				</div>
 			</div>
 		</div>
@@ -67,7 +67,7 @@
 				confirmButtonBackground='red'
 				:beforeClose="beforeClose"
 			>
-			<div class="dialogbanner"></div>
+			<div class="dialogbanner"><img :src=item.weixinImg alt=""></div>
 			<div class="dialogtitle">
 				<p>长按识别二维码图片</p>
 				<p>或复制微信ID搜索添加</p>
@@ -90,9 +90,19 @@ export default {
 			this.$router.go(-1)
 		},
 		getDatas(){
-			this.request('',{}).then((data)=>{
-					this.data = data.data
+			let data ={
+				data : '0001'
+			}
+			this.request('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
+				if(data.code=='success'){
+					this.dataList = data.data
+				}
+			}).catch(err=>{
+				console.log(err)
 			})
+		},
+		gophone(item){
+			 window.location.href = "tel://" + "18201814187";
 		},
 		phone(){
 			const copyToClipboard = str => {
@@ -144,19 +154,12 @@ export default {
 			this.show= false
 		}
 	},
-
+	created(){
+		this.getDatas()
+	},
 	mounted(){
 		this.$emit('toparent','店铺首页',1)
-		let data ={
-			data : '0001'
-		}
-		this.request('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
-			if(data.code=='success'){
-				this.dataList = data.data
-			}
-		}).catch(err=>{
-			console.log(err)
-		})
+		
 	}
 }
 </script>
@@ -224,8 +227,6 @@ export default {
 						height:17px;
 						line-height: 17px !important;
 						border-radius: 3px;
-						// margin-top: 2px;
-						// line-height: 17px;
 					}
 				}
 				.headerbot{
@@ -340,11 +341,9 @@ export default {
 		.dialog{
 			.dialogbanner{
 				height:166px;
-				background: red;
 			}
 			p{
 				text-align: center;
-
 			}
 		}
 		.dialogtitle{
