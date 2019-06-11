@@ -14,12 +14,16 @@ let saltcomm = "*(&!*(Q#IUHAX89y19823h*&(YQ#($(*AGFsd"
 
 export function request(apiKey, data = {}, isShowError = true) {
   let baseParams = getRequestInfo(apiKey, data)
+  
   return new Promise((resolve, reject) => {
     return http.post("/api/proxy", baseParams).then((response = {}) => {
       if (response.code == 'success') {
         console.log('response=====> ' + apiKey + "   " + JSON.stringify(response))
         resolve && resolve(response)
-      } else {
+      } else if (response.code == '110019') {
+        console.log('response=====> ' + JSON.stringify(response))
+        resolve && resolve(response)
+      }  else {
         handleError(apiKey, response, reject, isShowError)
       }
     }).catch(err => {
@@ -70,26 +74,29 @@ export function upload(file = {}) {
 }
 // 公共参数的封装
 let getRequestInfo = (apiKey = '', data = {}) => {
-  let baseParams = {
-    apiKey: apiKey,
-    data: JSON.stringify(data),
-    session: null,
-    sign: "",
-    system: {
-      appType: "H5",
-      appVersion: "1.0.0",
-      channel: "",
-      identifier: "weidian",
-    },
-  }
+    let baseParams = {
+      apiKey: apiKey,
+      data: JSON.stringify(data),
+      session: null,
+      sign: "",
+      system: {
+        appType: "H5",
+        appVersion: "1.0.0",
+        channel: "",
+        identifier: "weidian",
+      },
+    }
   // 取用户信息
-  let userInfo = JSON.parse(utils.getCookie('user')) // 获取本地内容
-  if (userInfo) { // 用户信息
-    baseParams.session = {
-      userId: userInfo.userId,
-      token: userInfo.token
+  if(utils.getCookie('user')){
+    let userInfo = JSON.parse(utils.getCookie('user')) // 获取本地内容
+    if (userInfo) { // 用户信息
+      baseParams.session = {
+        userId: userInfo.userId,
+        token: userInfo.token
+      }
     }
   }
+  
   let token = (baseParams.session && baseParams.session.token) ? baseParams.session.token : ''
 
   baseParams.sign = MD5(baseParams.apiKey + token + baseParams.data + saltcomm)

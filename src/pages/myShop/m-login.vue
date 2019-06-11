@@ -34,7 +34,7 @@
         登录
       </div>
       <div class="login_footer">
-        点击“立即注册”代表您已经同意 <span style="color:#4697FB" @click="goAgree">《抢单侠用户协议》</span>
+        点击“登录”代表您已经同意 <span style="color:#4697FB" @click="goAgree">《抢单侠用户协议》</span>
       </div>
     </div>
     
@@ -42,7 +42,8 @@
 </template>
 <script>
 import { Tab, Tabs, Toast } from "vant";
-import utils from '../../utils/utils'
+import utils from "../../utils/utils";
+import MD5 from "js-md5";
 export default {
   components: {
     [Tabs.name]: Tabs,
@@ -77,76 +78,86 @@ export default {
       }
     },
     // 获取验证码
-    getcode() {
+    getcode(v) {
       if (!this.isCheck(3)) {
         return false;
       }
       this.setTimeout();
-      this.request("wisdom.vshop.vshopStoreManager.sendCaptcha", {
-        captchaId: "",
-        verifyCode: "",
-        phone: this.phoneNum
-      }).then(data => {
-        if(data.code == 'success'){
-          Toast('短信发送成功');
-        } else {
-          this.deleteTime()
-        }
-      }).catch(err => {
-        this.deleteTime()
-        console.log("111====>err:   ", err);
-      });
-    },
-    // 调用风控
-    control() {
-      let that = this;
-      // 清除定时器
-      this.deleteTime();
-      initNECaptcha({
-        captchaId: that.captchaId,
-        element: "#captcha_div",
-        mode: "float",
-        width: "320px",
-        onVerify: function(err, ret) {
-          if (ret != undefined) {
-            // 风控关闭
-            that.seal_control = false;
-            //调用定时器
-            that.setTimeout();
-            that.validate = ret.validate;
-            that.show = false;
-            // 接口入参
-            let params = that.params;
-            params.apiKey = "wisdom.loan.captcha.loanOfficerSendSmsReg";
-            params.data = JSON.stringify({
-              captchaId: that.captchaId,
-              phone: that.number1,
-              type: 10000,
-              verifyCode: that.validate
+      let params = v
+        ? v
+        : {
+            captchaId: "",
+            verifyCode: "",
+            phone: this.phoneNum
+          };
+      this.request("wisdom.vshop.vshopStoreManager.sendCaptcha", params)
+        .then(data => {
+          console.log(data.code);
+          alert(3)
+          if (data.code == "success") {
+            Toast("短信发送成功");
+          } else if (data.code == "110019") {
+            this.deleteTime();
+            this.seal_control = true;
+            utils.sealControl(data.data.captchaId, (err, ret, captchaId) => {
+              let that = this;
+              if (ret != undefined) {
+                // 风控关闭
+                that.seal_control = false;
+                //调用定时器
+                that.setTimeout();
+                that.show = false;
+                // 接口入参
+                let data = {
+                  captchaId: captchaId,
+                  phone: that.phoneNum,
+                  verifyCode: ret.validate
+                };
+                // console.log(params , '带风控')
+                that.getcode(data);
+              }
             });
-            params.sign = MD5(params.apiKey + "" + params.data + that.salt);
-            // console.log(params , '带风控')
-            that.verification(params);
+            this.deleteTime();
+          } else {
+            this.deleteTime();
           }
-        }
-      });
+        })
+        .catch(err => {
+          this.deleteTime();
+          console.log("111====>err:   ", err);
+        });
     },
     // 登录
     goLogin() {
       if (!this.isCheck(1)) {
         return false;
       }
-      this.request("wisdom.vshop.vshopStoreManager.captchaLogin", {
-        captchaCode : this.phoneCode,
-        phone: this.phoneNum
-      })
-        .then(data => {
-          utils.setCookie('user', JSON.stringify(data.data))
-          this.$router.push({ path: "./myshop" });
+      if (this.tabactive == 0) {
+        this.request("wisdom.vshop.vshopStoreManager.captchaLogin", {
+          captchaCode: this.phoneCode,
+          phone: this.phoneNum
         })
-        .catch(err => {
-          console.log("111====>err:   ", err);
-        });
+          .then(data => {
+            utils.setCookie("user", JSON.stringify(data.data));
+            this.$router.push({ path: "./myshop" });
+          })
+          .catch(err => {
+            console.log("111====>err:   ", err);
+          });
+      } else {
+        this.request("wisdom.vshop.vshopStoreManager.login", {
+          phone: this.phoneNum,
+          password : MD5(this.phonePwd)
+        })
+          .then(data => {
+            utils.setCookie("user", JSON.stringify(data.data));
+            this.$router.push({ path: "./myshop" });
+          })
+          .catch(err => {
+            console.log("111====>err:   ", err);
+          });
+      }
+
       // this.$router.push({ path: "./myshop" });
     },
     goAgree() {
@@ -177,7 +188,7 @@ export default {
           Toast("密码不能为空，请重新输入！");
           return false;
         }
-        if (this.phoneCode.length < 6) {
+        if (this.phonePwd.length <= 6) {
           Toast("密码输入有误，请重新输入！");
           return false;
         }

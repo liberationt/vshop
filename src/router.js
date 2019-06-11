@@ -136,6 +136,9 @@ export default new Router({
       path: '/myshop',
       name: 'myshop',
       title:'我的微店',
+      meta: {
+        auth: true
+      },
       component: () => import( './pages/myShop/m-myshop.vue')
     },
     {
