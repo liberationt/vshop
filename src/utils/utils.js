@@ -65,6 +65,10 @@ export function sealControl(captchaId,subCallback) {
 		}
 	});
 }
+// 微信分享
+// export default function wxShare(){
+  
+// }
 
 export default {
   getCookie,
