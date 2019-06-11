@@ -54,18 +54,14 @@ export function refuseJacking(element){
   
 }
 // 封控 方法
-export function sealControl(captchaId) {
+export function sealControl(captchaId,subCallback) {
 	initNECaptcha({
 		captchaId: captchaId,
 		element: "#captcha_div",
 		mode: "float",
 		width: "320px",
 		onVerify: function(err, ret) {
-			console.log(err, ret);
-			var parameter = {
-			method: "webVerifyCode",
-		};
-		// callNative(JSON.stringify(parameter));
+      return subCallback(err, ret,captchaId)
 		}
 	});
 }
