@@ -9,10 +9,10 @@
     </header>
     <div class="shopsign_center clearfix">
       <van-radio-group v-model="radio">
-        <div class="center_radio left" @click="radio = '1'">
-          <img src="./imgs/biajidianpu.png" alt="">
+        <div class="center_radio left" v-for="(item,index) in imgList"  @click="imgChange(index,item)">
+          <img :src=item.bannerUrl alt="">
           <van-radio class="radio" name="1" />
-          <p class="img_name">图片名称1</p>
+          <p class="img_name">{{item.bannerName}}</p>
         </div>
         <div class="center_radio left" @click="radio = '2'">
           <img src="./imgs/topimgf.png" alt="">
@@ -28,6 +28,7 @@
 </template>
 <script>
 import { RadioGroup, Radio, } from 'vant';
+import utils from '../../utils/utils'
 export default {
   components:{
     [RadioGroup.name] : RadioGroup,
@@ -37,6 +38,8 @@ export default {
   data(){
     return {
       radio:"",
+      imgList:[],
+      bannerName:''
     }
   },
   methods:{
@@ -48,7 +51,22 @@ export default {
     shopsignConfirm(){
       //成功后跳转
       this.$router.push({path:'./meditshop'})
+    },
+    imgChange(i,data){
+      this.radio = i+1+''
+      this.bannerNmae = name
+      utils.putlocal('bannerData',data)
+    },
+    //页面初始化参数
+    Initialize(){
+      this.request('wisdom.vshop.vshopStoreManager.queryStoreBanner',{}).then(data=>{
+        console.log(data)
+        this.imgList = data.data.dataList
+      }).catch(err=>{console.log(err)})
     }
+  },
+  created(){
+    this.Initialize()
   }
 }
 </script>

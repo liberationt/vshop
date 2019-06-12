@@ -145,12 +145,18 @@ export default new Router({
       path: '/meditshop',
       name: 'meditshop',
       title:'编辑店铺',
+      meta: {
+        auth: true
+      },
       component: () => import( './pages/myShop/m-editshop.vue')  
     },
     {
       path: '/mshopsign',
       name: 'mshopsign',
       title:'微店招牌',
+      meta: {
+        auth: true
+      },
       component: () => import( './pages/myShop/m-shopsign.vue')  
     },
     {
@@ -210,6 +216,9 @@ export default new Router({
       path: '/mycommission',
       name: 'mycommission',
       title:'我的佣金',
+      meta: {
+        auth: true
+      },
       component: () => import( './pages/myShop/m-mycommission.vue')
     },
     {

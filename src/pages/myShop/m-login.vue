@@ -92,8 +92,6 @@ export default {
           };
       this.request("wisdom.vshop.vshopStoreManager.sendCaptcha", params)
         .then(data => {
-          console.log(data.code);
-          alert(3)
           if (data.code == "success") {
             Toast("短信发送成功");
           } else if (data.code == "110019") {

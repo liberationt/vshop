@@ -7,32 +7,25 @@
         @click-left="onGoback"
       />
     </header>
-    <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
-      <!-- <p>刷新次数: {{ count }}</p> -->
       <div class="agentproduct_center">
         <van-tabs class="vantab_center" @click="onvanTabs"  v-model="active">
-          <!-- <div style="height:5px;background-color:#fff;"></div> -->
           <div class="Recommend">
             <img src="./imgs/Recommend.png" alt="">
             {{RecommendText}}
           </div>
           <div class="vantTab_center">
             <van-tab title="相关产品">
-              <products></products>
+              <products ref="mychild"></products>
             </van-tab>
             <van-tab title="信用卡">
-              <cards></cards>
+              <cards ref="mychild"></cards>
             </van-tab>
-            <van-tab title="信贷产品">
-              <instruments></instruments>
+            <van-tab title="信贷工具">
+              <instruments ref="mychild"></instruments>
             </van-tab>
           </div>
         </van-tabs>
       </div>
-    </van-pull-refresh>
-    <footer class="footer_button">
-      <button>一键代理推广赚工资</button>
-    </footer>
   </div>
 </template>
 <script>
@@ -40,22 +33,18 @@ import { Tab, Tabs } from 'vant';
 import products from './cards/products.vue'
 import cards from './cards/cards.vue'
 import instruments from './cards/instruments.vue'
-import { Toast } from 'vant';
 export default {
   components:{
     products,
     cards,
     instruments,
     [Tab.name] : Tab,
-    [Tabs.name] : Tabs
-    
+    [Tabs.name] : Tabs,
   },
   data(){
     return{
       active:0,
       RecommendText:'推荐他人贷款申请成功，更多佣金等你拿',
-      count: 0,
-      isLoading: false
     }
   },
   methods:{
@@ -63,8 +52,10 @@ export default {
       this.$router.push({path:'./myshop'})
     },
     onvanTabs(v){
-      console.log(v)
-      switch(v){
+      this.switch(v)
+    },
+    switch (key) {
+      switch(key){
         case 0:
           this.RecommendText='推荐他人贷款申请成功，更多佣金等你拿'
         break;
@@ -76,15 +67,9 @@ export default {
         break;
       }
     },
-    onRefresh() {
-      setTimeout(() => {
-        // this.$toast('刷新成功');
-        Toast.success('刷新成功');
-        this.count++;
-        this.isLoading = false;
-        
-      }, 500);
-    }
+    
+  },
+  mounted(){
   }
 }
 </script>
@@ -115,18 +100,6 @@ export default {
       padding-bottom: 62px;
     }
   }
-  .footer_button{
-    button {
-      width: 375px;
-      height: 52px;
-      line-height: 52px;
-      background-color: #4597fb;
-      font-size:16px;
-      font-weight:bold;
-      position: fixed;
-      bottom: 0px;
-      color:rgba(255,255,255,1);
-    }
-  }
+  
 }
 </style>

@@ -7,7 +7,7 @@
         @click-left="onGoback"
       />
       <div class="header_img">
-        <img src="./imgs/dailituiguang.png" alt="">
+        <img :src=productList.bannerUrl alt="">
       </div>
     </header>
     <div class="productdetails_center">
@@ -16,12 +16,12 @@
           <p>申请流程</p>
         </div>
         <ul class="process_img clearfix">
-          <li class="left" v-for="(item,index) in processimg">
+          <li class="left" v-for="(item,index) in productList.applicationProcedureList">
             <div class="left">
-              <img :src=item.img class="img_top" alt="">
-              <p>{{item.title}}</p>
+              <img :src=item.productParamIcon class="img_top" alt="">
+              <p>{{item.productParamName}}</p>
             </div>
-            <p v-if="index != processimg.length-1" class="left img_bottom"><img src="./imgs/arrows_icon@2x.png" alt=""></p>
+            <p v-if="index != productList.applicationProcedureList.length-1" class="left img_bottom"><img src="./imgs/arrows_icon@2x.png" alt=""></p>
           </li>
         </ul>
       </div>
@@ -30,7 +30,7 @@
           <p>申请资料</p>
         </div>
         <ul class="process_text">
-          <li v-for="item in processimg">{{item.process_text}}</li>
+          <li v-for="(item,index) in productList.applicationMaterialList">{{index+1+'、'+item.productParamName}}</li>
         </ul>
       </div>
       <div class="productdetails_process">
@@ -38,7 +38,7 @@
           <p>申请条件</p>
         </div>
         <ul class="process_text">
-          <li>1、手机运营商、身份证、基本资料、征信报告、银行卡</li>
+          <li v-for="(item,index) in productList.applyCondition">{{index+1+'、'+item}}</li>
         </ul>
       </div>
     </div>
@@ -47,7 +47,7 @@
         <van-col class="van_daili" span="8">
           代理后推荐用户 赚 <span style="color:#FE951E">2.6%</span> 佣金
         </van-col>
-        <div v-if="false">
+        <div v-if="this.$route.query.num == 1">
           <van-col span="8">
             <button @click="productposter">产品海报</button>
           </van-col>
@@ -70,21 +70,22 @@
     <!-- 弹出层 -->
     <van-popup v-model="showPoster" :close-on-click-overlay=false>
       <div class="popup_img_op">
-        <img src="./imgs/dailichanpin.png" alt="">
+        <img :src=showPosterList.bannerUrl alt="">
       </div>
       <div class="popup_center">
-        <img src="./imgs/dailichanpin.png" alt="">
+        <div id="qrcode" ></div>
+        <!-- <img :src=showPosterList.productLogo alt=""> -->
         <p>长按识别二维码马上申请</p>
       </div>
       <div class="popu_footer">
         <van-row >
           <van-col span="16">
             <van-col class="popuf_img">
-              <img src="./imgs/topimg.png" alt="">
+              <img :src="showPosterList.personImg?showPosterList.personImg:'./imgs/topimg.png'" alt="">
             </van-col>
             <van-col class="popuf_text">
               <p>欢迎咨询</p>
-              <p>13189775677</p>
+              <p>{{showPosterList.phone}}</p>
             </van-col>
           </van-col>
           <van-col class="popuf_logo clearfix" span="8">
@@ -99,6 +100,7 @@
   </div>
 </template>
 <script>
+import { qrcanvas } from 'qrcanvas';
 import { Popup } from 'vant';
 export default {
   components: {
@@ -106,24 +108,9 @@ export default {
   },
   data(){
     return{
-      processimg:[
-        {
-          img:require('./imgs/submit applications_icon@2x.png'),
-          title:'提交申请',
-          process_text: '1、身份证'
-        },
-        {
-          img:require('./imgs/submit applications_icon@2x.png'),
-          title:'身份认证',
-          process_text: '2、银行卡'
-        },
-        {
-          img:require('./imgs/submit applications_icon@2x.png'),
-          title:'手机认证',
-          process_text: '3、手机实名制'
-        }
-      ],
-      showPoster: false
+      showPoster: false,
+      productList:[],
+      showPosterList:{},
     }
   },
   created(){
@@ -133,14 +120,50 @@ export default {
       this.$router.push({path:'./magentproduct'})
     },
     productposter(){
-      this.showPoster = true
+      // this.showPoster = true
+      this.operationType(1)
     },
     recommenduser(){
        alert('推荐用户')
     },
     iwantagent(){
       alert('我要代理')
+    },
+    Initialization(){
+      this.request("wisdom.vshop.product.queryH5ProductMarketDetail",{productCode:this.$route.query.code}).then(data=>{
+        this.productList = data.data
+      }).catch(err=>{console.log(err)})
+    },
+    // operationType操作类型：1产品海报，2推荐用户
+    operationType(num){
+      this.request("wisdom.vshop.product.createProductPoster",{productCode:this.$route.query.code,operationType:num}).then(data=>{
+        switch(num){
+          case 1:
+            this.showPosterList = data.data
+            this.showPoster = true
+            this.qrcode(data.data.url)
+            break;
+          case 2:
+            break;
+        }
+      }).catch(err=>{console.log(err)})
+    },
+    qrcode(url){
+       this.$nextTick(()=>{
+        var canvas = qrcanvas({
+          data:url,
+          size:65,
+          colorDark:'red'
+        })
+        document.getElementById("qrcode").innerHTML = '',
+        document.getElementById("qrcode").appendChild(canvas)
+      })
     }
+  },
+  mounted(){
+  },
+  created(){
+    this.Initialization()
   }
 }
 </script>
@@ -152,6 +175,7 @@ export default {
     .header_img{
       img {
         width: 375px;
+        height: 157px;
       }
     }
   }
@@ -176,7 +200,6 @@ export default {
       li {
         color: #333333;
         font-size:13px;
-        
         .img_top {
           width: 26px;
           height: 28px;
@@ -187,7 +210,7 @@ export default {
             width: 26px;
             height: 9px;
             margin-top: 9px;
-            margin-left: 7px;
+            // margin-left: 7px;
           }
         }
       }
@@ -251,9 +274,7 @@ export default {
     padding-top: 15px;
     font-size:12px;
     color: #333333;
-    img {
-      width: 65px;
-      height: 65px;
+    #qrcode {
       margin-bottom: 10px;
     }
   }

@@ -1,36 +1,48 @@
 <template>
-  <div class="productCard_common"> 
-    <div class="productCard_center" v-for="item in 10" @click="goDetails">
-      <div>
-        <van-row>
-          <van-col>
-            <img src="../imgs/products.png" alt="">
-          </van-col>
-          <van-col>
-            <p class="product_title">招商王者荣耀卡</p>
-            <p class="product_people">申请人数: <span>9964</span></p>
-            <p class="product_people">批卡率: <span>99%</span>
-              <van-progress
-                color="#F3B13E"
-                :percentage="99"
-              />
-            </p>
-          </van-col>
-        </van-row>  
+  <div :class="productList1.length<=4? 'height productCard_common': 'productCard_common'"> 
+    <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
+      <div class="productCard_center" v-for="item in productList1" @click="goDetails(item.productCode,item.agentStatus)">
+        <div>
+          <van-row>
+            <van-col>
+              <img :src=item.productLogo alt="">
+            </van-col>
+            <van-col>
+              <p class="product_title">{{item.productName}}</p>
+              <p class="product_people">申请人数: <span>{{item.applyNum}}</span></p>
+              <p class="product_people">批卡率: <span>{{item.batchRate}}</span>
+                <van-progress
+                  color="#F3B13E"
+                  :percentage='item.batchRateIcon? item.batchRateIcon : 0'
+                />
+              </p>
+            </van-col>
+          </van-row>  
+        </div>
+        <div class="productCard_footer">
+          <van-row class="clearfix">
+            <van-col>
+              <p class="product_label">
+                <span>{{item.rebate}}</span>
+              </p>
+            </van-col>
+            <van-col :class="item.agentStatus == 0 ?'buttonBlue right van-col_right':'buttonyellow right van-col_right'">
+              <span @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</span>
+            </van-col>  
+          </van-row>
+        </div>
       </div>
-      <div class="productCard_footer">
-        <van-row class="clearfix">
-          <van-col>
-            <p class="product_label">
-              <span>返佣5%</span>
-            </p>
-          </van-col>
-          <van-col class="right  van-col_right buttonBlue" @click="makeMoney ">
-            {{!moneyShow ? "我要代理" : "马上赚钱"}}
-          </van-col>  
-        </van-row>
-      </div>
-    </div>
+    </van-pull-refresh>
+    <!-- 下拉刷新 -->
+    <van-list
+      v-if="productList1.length>=5"
+      class="xialashuaxin"
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+    >
+    </van-list>
     <!-- 弹窗 -->
     <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
       <div>
@@ -42,36 +54,112 @@
         </p>
         <p class="product_button">
           <button @click="moneyShow = false">取消</button>
-          <button @click="">确定</button>
+          <button @click="confirm">确定</button>
         </p>
       </div>
     </van-popup>
+    <footer v-if="showStatus == 1" class="footer_button" @click="moneyShow = true">
+      <button>一键代理推广赚工资</button>
+    </footer>
   </div>
 </template>
 <script>
-import { Popup, RadioGroup, Radio, Progress  } from "vant";
+import { Popup, RadioGroup, Radio, Progress, Toast, List  } from "vant";
 export default {
   components: {
     [Popup.name]: Popup,
     [RadioGroup.name]: RadioGroup,
     [Radio.name]: Radio,
     [Progress.name]: Progress,
+    [List.name]: List
   },
   data() {
     return {
       moneyShow: false,
-      radioName: ""
+      radioName: "",
+      productList1:[],
+      isLoading:false,
+      showStatus:"",
+      productCode:"",
+      showStatus:"",
+      loading:false,
+      finished:false,
+      agentStatus:"",
     };
   },
   methods: {
     // 马上赚钱
-    makeMoney() {
-      this.moneyShow = true;
+    makeMoney(num,code) {
+      // 0 我要代理 1 马上赚钱
+      console.log(num)
+      switch(num){
+        case 1:
+          this.$router.push({ path: "./mproductdetails?num="+num+"code="+code })
+          break;
+        case 0:
+          this.moneyShow = true
+          this.productCode = code
+          this.agentStatus = 0
+          break;
+      }
     },
     // 跳转到详情
-    goDetails() {
-      this.$router.push({ path: "./mproductdetails" });
+    goDetails(code,num) {
+      this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num });
+    },
+    // 确认代理
+    confirm(){
+      let agentStatusData = []
+      if(this.agentStatus == 0){
+        agentStatusData = [{productCode:this.productCode,productType:1}]
+      } else {
+        this.productList1.forEach(v=>{
+          if(v.agentStatus == 0 ){
+            agentStatusData.push({productCode:v.productCode,productType:1})
+          }
+        })
+      }
+      this.request('wisdom.vshop.product.batchAgentProducts',{queryH5UserProductDetailReqList:agentStatusData}).then(data=>{
+        Toast.success('代理成功');
+        this.moneyShow =  false
+        this.Initialization(1)
+      }).catch(err=>{console.log(err)})
+    },
+    onRefresh() {
+      setTimeout(() => {
+        // this.$toast('刷新成功');
+        this.Initialization(1);
+        Toast.success('刷新成功');
+        this.count++;
+        this.isLoading = false;
+      }, 500);
+    },
+    onLoad(){
+       // 异步更新数据
+      setTimeout(() => {
+        for (let i = 0; i < this.total; i++) {
+          this.Initialization(2,i)
+        }
+        // 加载状态结束
+        this.loading = false;
+        // 数据全部加载完成
+        if (this.productList1.length <=10) {
+          this.finished = true;
+        }
+      }, 500);
+    },
+    Initialization(num,i){
+      this.request("wisdom.vshop.product.queryH5AgentProducts",{productType:num,pageNum:i,pageSize:10}).then(data=>{
+        if(num==1){
+          this.showStatus = data.data.showStatus
+          this.productList1 = data.data.dataList
+          this.total = data.total
+        }
+      }).catch(err=>{console.log(err)})
     }
+  },
+  mounted(){
+    this.Initialization(1)
   }
 };
 </script>

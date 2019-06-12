@@ -4,11 +4,11 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
+  state: { //存值
     actives:'',
     title:''
   },
-  mutations: {
+  mutations: { //修改
     getactive(state,actives){
       state.actives = actives
     },
@@ -16,7 +16,7 @@ export default new Vuex.Store({
       state.title = title
     }
   },
-  actions: {
+  actions: { // 异步
 
   }
 })
