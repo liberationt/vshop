@@ -94,7 +94,7 @@ export default {
       console.log(num)
       switch(num){
         case 1:
-          this.$router.push({ path: "./mproductdetails?num="+num+"code="+code })
+          this.goDetails(code,num)
           break;
         case 0:
           this.moneyShow = true
@@ -105,7 +105,7 @@ export default {
     },
     // 跳转到详情
     goDetails(code,num) {
-      this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num });
+      this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num+"&type="+1 });
     },
     // 确认代理
     confirm(){
