@@ -1,18 +1,18 @@
 <template>
   <div class="productCard_common"> 
-    <div class="productCard_center" v-for="item in 10" @click="goDetails">
+    <div class="productCard_center" v-for="item in productList1" @click="goDetails(item.productCode,item.agentStatus)">
       <div>
         <van-row>
           <van-col>
-            <img src="../imgs/products.png" alt="">
+            <img :src=item.productLogo alt="">
           </van-col>
           <van-col>
-            <p class="product_title">招商王者荣耀卡</p>
-            <p class="product_people">申请人数: <span>9964</span></p>
-            <p class="product_people">批卡率: <span>99%</span>
+            <p class="product_title">{{item.productName}}</p>
+            <p class="product_people">申请人数: <span>{{item.applyNum}}</span></p>
+            <p class="product_people">批卡率: <span>{{item.batchRate}}</span>
               <van-progress
                 color="#F3B13E"
-                :percentage="99"
+                :percentage='item.batchRateIcon? item.batchRateIcon : 0'
               />
             </p>
           </van-col>
@@ -22,11 +22,11 @@
         <van-row class="clearfix">
           <van-col>
             <p class="product_label">
-              <span>返佣5%</span>
+              <span>{{item.rebate}}</span>
             </p>
           </van-col>
-          <van-col class="right  van-col_right buttonBlue" @click="makeMoney ">
-            {{!moneyShow ? "我要代理" : "马上赚钱"}}
+          <van-col :class="item.agentStatus == 0 ?'buttonBlue right van-col_right':'buttonyellow right van-col_right'">
+            <span @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</span>
           </van-col>  
         </van-row>
       </div>
@@ -60,18 +60,38 @@ export default {
   data() {
     return {
       moneyShow: false,
-      radioName: ""
+      radioName: "",
+      productList1:[]
     };
   },
   methods: {
     // 马上赚钱
-    makeMoney() {
-      this.moneyShow = true;
+    makeMoney(num,code) {
+      // 0 我要代理 1 马上赚钱
+      console.log(num)
+      switch(num){
+        case 1:
+          this.$router.push({ path: "./mproductdetails?num="+num+"code="+code })
+          break;
+        case 0:
+          this.moneyShow = true
+          break;
+      }
     },
     // 跳转到详情
-    goDetails() {
-      this.$router.push({ path: "./mproductdetails" });
+    goDetails(code,num) {
+      this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num });
+    },
+    Initialization(num){
+      this.request("wisdom.vshop.product.queryH5AgentProducts",{productType:num,pageNum:1,pageSize:10}).then(data=>{
+        if(num==1){
+          this.productList1 = data.data.dataList
+        }
+      }).catch(err=>{console.log(err)})
     }
+  },
+  mounted(){
+    this.Initialization(1)
   }
 };
 </script>

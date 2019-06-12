@@ -16,7 +16,7 @@
           <van-col span="10" class="center_text">
             <div>
               <van-col span="11" class="center_username">{{userMessage.name}}</van-col>
-              <van-col span="13" class="center_identity">
+              <van-col span="13" class="center_identity" v-if="userMessage.name">
                 <span><img src="./imgs/shiliang.png" alt=""></span>
                 身份认证</van-col>
             </div>
@@ -44,7 +44,7 @@
           </router-link>
         </van-col>
         <van-col span="8">
-          <router-link to="/mcommission">
+          <router-link to="/mycommission">
             <p class="navbar_text">{{userMessage.realStatus}}</p>
             <p>我的佣金(元)</p>  
           </router-link>
@@ -94,6 +94,7 @@
   </div>
 </template>
 <script>
+import utils from '../../utils/utils'
 export default {
   components: {},
   data() {
@@ -122,7 +123,6 @@ export default {
       //     }
       //   });
       // });
-      console.log(window.location)
       this.request('wisdom.vshop.vshopStoreManager.getShareRes',{}).then(data=>{
         // console.log(data.data.inviterCode)
         window.location.href = window.location.origin+'/#/shoppage?storeCode='+data.data.inviterCode
@@ -148,8 +148,8 @@ export default {
   created() {
     this.request("wisdom.vshop.vshopStoreManager.getVshopStoreDetail", {})
       .then(data => {
-        console.log("莉莉===", data);
         this.userMessage = data.data;
+        utils.setCookie('userMessage',JSON.stringify(data.data))
       })
       .catch(err => {
         console.log(err);

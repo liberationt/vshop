@@ -18,13 +18,13 @@
           </div>
           <div class="vantTab_center">
             <van-tab title="相关产品">
-              <products></products>
+              <products ref="mychild"></products>
             </van-tab>
             <van-tab title="信用卡">
-              <cards></cards>
+              <cards ref="mychild"></cards>
             </van-tab>
             <van-tab title="信贷产品">
-              <instruments></instruments>
+              <instruments ref="mychild"></instruments>
             </van-tab>
           </div>
         </van-tabs>
@@ -47,15 +47,14 @@ export default {
     cards,
     instruments,
     [Tab.name] : Tab,
-    [Tabs.name] : Tabs
-    
+    [Tabs.name] : Tabs,
   },
   data(){
     return{
       active:0,
       RecommendText:'推荐他人贷款申请成功，更多佣金等你拿',
       count: 0,
-      isLoading: false
+      isLoading: false,
     }
   },
   methods:{
@@ -63,8 +62,10 @@ export default {
       this.$router.push({path:'./myshop'})
     },
     onvanTabs(v){
-      console.log(v)
-      switch(v){
+      this.switch(v)
+    },
+    switch (key) {
+      switch(key){
         case 0:
           this.RecommendText='推荐他人贷款申请成功，更多佣金等你拿'
         break;
@@ -73,18 +74,22 @@ export default {
         break;
         case 2:
           this.RecommendText='推荐他人使用查询工具，轻松拿返佣'
+          
         break;
       }
     },
     onRefresh() {
       setTimeout(() => {
         // this.$toast('刷新成功');
+        this.$refs.mychild.Initialization(this.active);
         Toast.success('刷新成功');
         this.count++;
         this.isLoading = false;
         
       }, 500);
-    }
+    },
+  },
+  mounted(){
   }
 }
 </script>

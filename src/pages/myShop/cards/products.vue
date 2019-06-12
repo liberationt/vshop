@@ -1,22 +1,23 @@
 <template>
   <div class="product_common"> 
-    <div v-for="item in 10" class="product_center" @click="goDetails">
-      <van-row class="clearfix">
-        <van-col>
-          <img src="../imgs/products.png" alt="">
-        </van-col>
-        <van-col>
-          <p class="product_title">人人贷借款</p>
-          <p class="product_money">贷款额度:  <span>1万-20万元</span></p>
-          <p class="product_label">
-            <span>返佣5%</span>
-          </p>
-        </van-col>
-        <van-col class="right">
-          <button class="buttonBlue" @click="makeMoney ">{{!moneyShow ? "我要代理" : "马上赚钱"}}</button>
-        </van-col>
-      </van-row>  
-    </div>
+    
+      <div v-for="item in productList0" class="product_center" @click="goDetails(item.productCode,item.agentStatus)">
+        <van-row class="clearfix">
+          <van-col>
+            <img :src=item.productLogo alt="">
+          </van-col>
+          <van-col>
+            <p class="product_title">{{item.productName}}</p>
+            <p class="product_money">贷款额度:  <span>{{item.amount}}</span></p>
+            <p class="product_label">
+              <span>{{item.rebate}}</span>
+            </p>
+          </van-col>
+          <van-col class="right">
+            <button :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
+          </van-col>
+        </van-row>  
+      </div>
     <!-- 弹窗 -->
     <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
       <div>
@@ -35,26 +36,57 @@
   </div>
 </template>
 <script>
-import { Popup, RadioGroup, Radio  } from 'vant';
+import { Popup, RadioGroup, Radio, List } from "vant";
 export default {
-  components:{
-    [Popup.name] : Popup,
-    [RadioGroup.name] : RadioGroup,
-    [Radio.name] : Radio,
+  components: {
+    [Popup.name]: Popup,
+    [RadioGroup.name]: RadioGroup,
+    [Radio.name]: Radio,
+    [List.name]: List
   },
-  data(){
+  data() {
     return {
-      moneyShow:false,
-      radioName:""
-    }
+      moneyShow: false,
+      radioName: "",
+      productList0: [],
+    };
   },
-  methods:{
+  methods: {
     // 马上赚钱
-    makeMoney(){this.moneyShow = true},
+    makeMoney(num,code) {
+      // 0 我要代理 1 马上赚钱
+      switch (num) {
+        case 1:
+          this.$router.push({ path: "./mproductdetails?num=" + num+"&code="+code });
+          break;
+        case 0:
+          this.moneyShow = true;
+          break;
+      }
+    },
     // 跳转到详情
-    goDetails(){
-      this.$router.push({path:'./mproductdetails'})
-    }
+    goDetails(code,num) {
+      this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num });
+    },
+    Initialization(num) {
+      this.request("wisdom.vshop.product.queryH5AgentProducts", {
+        productType: num,
+        pageNum: 1,
+        pageSize: 10
+      })
+        .then(data => {
+          console.log(data);
+          if(num==0){
+            this.productList0 = data.data.dataList;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+  },
+  mounted() {
+    this.Initialization(0);
   }
 };
 </script>
@@ -64,56 +96,56 @@ export default {
     background-color: #fff;
     width: 345px;
     height: 110px;
-    border-radius:5px;
+    border-radius: 5px;
     padding: 20px 10px;
     img {
       width: 70px;
       height: 70px;
       margin: 0px 15px 0px 5px;
     }
-    .product_title{
-      font-size:17px;
-      font-family:PingFang-SC-Bold;
-      font-weight:bold;
-      color:rgba(51,51,51,1);
-      line-height:18px;
+    .product_title {
+      font-size: 17px;
+      font-family: PingFang-SC-Bold;
+      font-weight: bold;
+      color: rgba(51, 51, 51, 1);
+      line-height: 18px;
     }
     .product_money {
       font-size: 14px;
-      font-family: 'PingFang-SC-Regular';
+      font-family: "PingFang-SC-Regular";
       color: #333333;
-      line-height:18px;
+      line-height: 18px;
       margin: 6px 17px 7px 0px;
       span {
-        color: #FE951E;
+        color: #fe951e;
         font-weight: bold;
       }
     }
     .product_label {
-      color: #FE951E;
-      font-size:11px;
-      line-height:18px;
+      color: #fe951e;
+      font-size: 11px;
+      line-height: 18px;
       span {
-        background-color: #FEF1E3;
+        background-color: #fef1e3;
         padding: 6px 8px;
         border-radius: 2px;
       }
     }
-    button{
+    button {
       width: 70px;
-      border-radius:15px;
+      border-radius: 15px;
       height: 29px;
       line-height: 29px;
-      font-size:12px;
-      font-weight:bold;
-      color:rgba(255,255,255,1);
+      font-size: 12px;
+      font-weight: bold;
+      color: rgba(255, 255, 255, 1);
       margin-top: 41px;
     }
-    .buttonBlue{
-      background-color: #4597FB;
+    .buttonBlue {
+      background-color: #4597fb;
     }
-    .buttonyellow{
-      background-color: #F3B13E;
+    .buttonyellow {
+      background-color: #f3b13e;
     }
   }
   .product_center {

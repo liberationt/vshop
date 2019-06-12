@@ -47,7 +47,7 @@
         <van-col class="van_daili" span="8">
           代理后推荐用户 赚 <span style="color:#FE951E">2.6%</span> 佣金
         </van-col>
-        <div v-if="false">
+        <div v-if="this.$route.query.num == 1">
           <van-col span="8">
             <button @click="productposter">产品海报</button>
           </van-col>
@@ -140,7 +140,15 @@ export default {
     },
     iwantagent(){
       alert('我要代理')
+    },
+    Initialization(){
+      this.request("wisdom.vshop.product.queryH5ProductMarketDetail",{productCode:this.$route.query.code}).then(data=>{
+        console.log(data)
+      }).catch(err=>{console.log(err)})
     }
+  },
+  created(){
+    this.Initialization()
   }
 }
 </script>

@@ -1,19 +1,19 @@
 <template>
   <div class="product_common"> 
-    <div v-for="item in 10" class="product_center" @click="goDetails">
+    <div v-for="item in productList2" class="product_center" @click="goDetails(item.productCode,item.agentStatus)">
       <van-row class="clearfix">
         <van-col>
-          <img src="../imgs/products.png" alt="">
+          <img :src=item.productLogo  alt="">
         </van-col>
         <van-col>
-          <p class="product_title">人人贷借款</p>
-          <p class="product_money">一句话简介20字左右</p>
+          <p class="product_title">{{item.productName}}</p>
+          <p class="product_money">{{item.productIntroduction}}</p>
           <p class="product_label">
-            <span>返佣5%</span>
+            <span>{{item.rebate}}</span>
           </p>
         </van-col>
         <van-col class="right">
-          <button class="buttonBlue" @click="makeMoney ">{{!moneyShow ? "我要代理" : "马上赚钱"}}</button>
+          <button :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
         </van-col>
       </van-row>  
     </div>
@@ -45,16 +45,37 @@ export default {
   data(){
     return {
       moneyShow:false,
-      radioName:""
+      radioName:"",
+      productList2:[]
     }
   },
   methods:{
     // 马上赚钱
-    makeMoney(){this.moneyShow = true},
+    makeMoney(num,code){
+      // 0 我要代理 1 马上赚钱
+      switch (num) {
+        case 1:
+          this.$router.push({ path: "./mproductdetails?num=" + num +"&code="+code});
+          break;
+        case 0:
+          this.moneyShow = true;
+          break;
+      }
+    },
     // 跳转到详情
-    goDetails(){
-      this.$router.push({path:'./mproductdetails'})
+    goDetails(code,num){
+      this.$router.push({path:'./mproductdetails?code='+productCode+"&num="+num})
+    },
+    Initialization(num){
+      this.request("wisdom.vshop.product.queryH5AgentProducts",{productType:num}).then(data=>{
+        if(num==2){
+          this.productList2 = data.data.dataList
+        }
+      }).catch(err=>{console.log(err)})
     }
+  },
+  created(){
+    this.Initialization(2)
   }
 };
 </script>

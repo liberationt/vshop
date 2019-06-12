@@ -12,25 +12,25 @@
         <van-row class="center_list">
           <van-col span="12" style="text-align:left;" class="center_geren">个人形象照</van-col>
           <van-col span="12" style="text-align:right">
-              <img :src=topImgUrl alt="">
+              <img :src="userMessage.headImage? userMessage.headImage:topImgUrl" alt="">
           </van-col>
         </van-row>
         <van-row class="center_list">
           <van-col span="12" style="text-align:left">微店招牌</van-col>
           <van-col span="12" class="center_arrow" style="text-align:right">
-            <router-link to="mshopsign">未选择 <img src="./imgs/biajidianpu.png" class="biajidianpu" alt=""></router-link>
+            <router-link to="mshopsign">{{imgData? imgData.bannerName : '未选择'}} <img src='./imgs/biajidianpu.png' class="biajidianpu" alt=""></router-link>
           </van-col>
         </van-row>
         <van-row class="center_list">
           <van-col span="12" style="text-align:left">店铺名称</van-col>
           <van-col span="12">
-            <input type="text" v-model="shopValue.shopName" placeholder="请填写店铺名称">
+            <input type="text" v-model="shopValue.storeName" placeholder="请填写店铺名称">
           </van-col>
         </van-row>
         <van-row class="center_list">
           <van-col span="12" style="text-align:left">微信号</van-col>
           <van-col span="12">
-            <input type="text" v-model="shopValue.wxCode" placeholder="请填写微信号">
+            <input type="text" v-model="shopValue.weixinNumber" placeholder="请填写微信号">
           </van-col>
         </van-row>
         <van-row class="center_list">
@@ -44,7 +44,7 @@
         <van-row class="center_list">
           <div span="12" style="text-align:left">店铺介绍</div>
           <div class="left">
-            <textarea class="shop_tarea" v-model="shopValue.shopIntroduce" placeholder="请填写一句话店铺介绍 ，30字内"></textarea>
+            <textarea class="shop_tarea" v-model="shopValue.storeDesc" placeholder="请填写一句话店铺介绍 ，30字内"></textarea>
           </div>
         </van-row>
       </div>
@@ -64,12 +64,15 @@ export default {
   data(){
     return {
       shopValue:{
-        shopName:"",
-        wxCode: "",
-        shopIntroduce:"",
+        storeName:"",
+        weixinNumber: "",
+        storeDesc :"",
       },
       wxImgurl: require("./imgs/erwei ma@2x.png"),
-      topImgUrl: require("./imgs/topimgf.png")
+      topImgUrl: require("./imgs/topimgf.png"),
+      userMessage: utils.getCookie('userMeaasge'),
+      imgData:utils.getlocal('bannerData'),
+      weixinImg:'2222'
     }
   },
   methods:{
@@ -86,8 +89,27 @@ export default {
     // 确认提交
     editSubmit(){
       // 提交成功后跳转到首页
-      this.$router.push({path:'./myshop'})
+      let parameter =  Object.assign(
+        this.shopValue,{
+          storeLogo:this.imgData.bannerUrl,
+          weixinImg : this.weixinImg 
+        }
+      )
+      this.request('wisdom.vshop.vshopStoreManager.updateStoreByManager',parameter).then(data=>{
+        this.$router.push({path:'./myshop'})
+      }).catch(err=>{console.log(err)})
+
+    },
+    // 编辑店铺获取参数
+    getImg(){
+      utils.getlocal('bannerData')
     }
+  },
+  mounted(){
+    if(utils.getlocal('bannerData')){
+
+    }
+    console.log(this.userMessage)
   }
 }
 </script>
