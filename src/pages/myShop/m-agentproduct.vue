@@ -7,11 +7,8 @@
         @click-left="onGoback"
       />
     </header>
-    <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
-      <!-- <p>刷新次数: {{ count }}</p> -->
       <div class="agentproduct_center">
         <van-tabs class="vantab_center" @click="onvanTabs"  v-model="active">
-          <!-- <div style="height:5px;background-color:#fff;"></div> -->
           <div class="Recommend">
             <img src="./imgs/Recommend.png" alt="">
             {{RecommendText}}
@@ -29,10 +26,6 @@
           </div>
         </van-tabs>
       </div>
-    </van-pull-refresh>
-    <footer class="footer_button">
-      <button>一键代理推广赚工资</button>
-    </footer>
   </div>
 </template>
 <script>
@@ -40,7 +33,6 @@ import { Tab, Tabs } from 'vant';
 import products from './cards/products.vue'
 import cards from './cards/cards.vue'
 import instruments from './cards/instruments.vue'
-import { Toast } from 'vant';
 export default {
   components:{
     products,
@@ -53,8 +45,6 @@ export default {
     return{
       active:0,
       RecommendText:'推荐他人贷款申请成功，更多佣金等你拿',
-      count: 0,
-      isLoading: false,
     }
   },
   methods:{
@@ -74,20 +64,10 @@ export default {
         break;
         case 2:
           this.RecommendText='推荐他人使用查询工具，轻松拿返佣'
-          
         break;
       }
     },
-    onRefresh() {
-      setTimeout(() => {
-        // this.$toast('刷新成功');
-        this.$refs.mychild.Initialization(this.active);
-        Toast.success('刷新成功');
-        this.count++;
-        this.isLoading = false;
-        
-      }, 500);
-    },
+    
   },
   mounted(){
   }
@@ -120,18 +100,6 @@ export default {
       padding-bottom: 62px;
     }
   }
-  .footer_button{
-    button {
-      width: 375px;
-      height: 52px;
-      line-height: 52px;
-      background-color: #4597fb;
-      font-size:16px;
-      font-weight:bold;
-      position: fixed;
-      bottom: 0px;
-      color:rgba(255,255,255,1);
-    }
-  }
+  
 }
 </style>

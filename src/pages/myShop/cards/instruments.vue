@@ -1,22 +1,24 @@
 <template>
-  <div class="product_common"> 
-    <div v-for="item in productList2" class="product_center" @click="goDetails(item.productCode,item.agentStatus)">
-      <van-row class="clearfix">
-        <van-col>
-          <img :src=item.productLogo  alt="">
-        </van-col>
-        <van-col>
-          <p class="product_title">{{item.productName}}</p>
-          <p class="product_money">{{item.productIntroduction}}</p>
-          <p class="product_label">
-            <span>{{item.rebate}}</span>
-          </p>
-        </van-col>
-        <van-col class="right">
-          <button :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
-        </van-col>
-      </van-row>  
-    </div>
+  <div :class="productList2.length<=4? 'height product_common': 'product_common'" > 
+    <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
+      <div v-for="item in productList2" class="product_center" @click="goDetails(item.productCode,item.agentStatus)">
+        <van-row class="clearfix">
+          <van-col>
+            <img :src=item.productLogo  alt="">
+          </van-col>
+          <van-col>
+            <p class="product_title">{{item.productName}}</p>
+            <p class="product_money">{{item.productIntroduction}}</p>
+            <p class="product_label">
+              <span>{{item.rebate}}</span>
+            </p>
+          </van-col>
+          <van-col class="right">
+            <button :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
+          </van-col>
+        </van-row>  
+      </div>
+    </van-pull-refresh>
     <!-- 弹窗 -->
     <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
       <div>
@@ -28,14 +30,17 @@
         </p>
         <p class="product_button">
           <button @click="moneyShow = false">取消</button>
-          <button @click="">确定</button>
+          <button @click="confirm">确定</button>
         </p>
       </div>
     </van-popup>
+    <footer v-if="showStatus == 1" class="footer_button" @click="moneyShow = true">
+      <button>一键代理推广赚工资</button>
+    </footer>
   </div>
 </template>
 <script>
-import { Popup, RadioGroup, Radio  } from 'vant';
+import { Popup, RadioGroup, Radio, Toast  } from 'vant';
 export default {
   components:{
     [Popup.name] : Popup,
@@ -46,7 +51,11 @@ export default {
     return {
       moneyShow:false,
       radioName:"",
-      productList2:[]
+      productList2:[],
+      showStatus:"",
+      isLoading:false,
+      showStatus:"",
+      productCode:""
     }
   },
   methods:{
@@ -59,6 +68,7 @@ export default {
           break;
         case 0:
           this.moneyShow = true;
+          this.productCode = code
           break;
       }
     },
@@ -66,9 +76,37 @@ export default {
     goDetails(code,num){
       this.$router.push({path:'./mproductdetails?code='+productCode+"&num="+num})
     },
+    // 确认代理
+    confirm(){
+      let agentStatusData = []
+      if(this.showStatus == 0){
+        agentStatusData = [{productCode:this.productCode,productType:0}]
+      } else {
+        this.productList1.forEach(v=>{
+          if(v.agentStatus == 0 ){
+            agentStatusData.push({productCode:v.productCode,productType:0})
+          }
+        })
+      }
+      this.request('wisdom.vshop.product.batchAgentProducts',agentStatusData).then(data=>{
+        Toast.success('代理成功');
+        this.moneyShow =  false
+        this.Initialization(2)
+      }).catch(err=>{console.log(err)})
+    },
+    onRefresh() {
+      setTimeout(() => {
+        // this.$toast('刷新成功');
+        this.Initialization(2);
+        Toast.success('刷新成功');
+        this.count++;
+        this.isLoading = false;
+      }, 500);
+    },
     Initialization(num){
       this.request("wisdom.vshop.product.queryH5AgentProducts",{productType:num}).then(data=>{
         if(num==2){
+          this.showStatus = data.data.showStatus
           this.productList2 = data.data.dataList
         }
       }).catch(err=>{console.log(err)})

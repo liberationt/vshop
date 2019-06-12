@@ -1,36 +1,38 @@
 <template>
-  <div class="productCard_common"> 
-    <div class="productCard_center" v-for="item in productList1" @click="goDetails(item.productCode,item.agentStatus)">
-      <div>
-        <van-row>
-          <van-col>
-            <img :src=item.productLogo alt="">
-          </van-col>
-          <van-col>
-            <p class="product_title">{{item.productName}}</p>
-            <p class="product_people">申请人数: <span>{{item.applyNum}}</span></p>
-            <p class="product_people">批卡率: <span>{{item.batchRate}}</span>
-              <van-progress
-                color="#F3B13E"
-                :percentage='item.batchRateIcon? item.batchRateIcon : 0'
-              />
-            </p>
-          </van-col>
-        </van-row>  
+  <div :class="productList1.length<=4? 'height productCard_common': 'productCard_common'"> 
+    <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
+      <div class="productCard_center" v-for="item in productList1" @click="goDetails(item.productCode,item.agentStatus)">
+        <div>
+          <van-row>
+            <van-col>
+              <img :src=item.productLogo alt="">
+            </van-col>
+            <van-col>
+              <p class="product_title">{{item.productName}}</p>
+              <p class="product_people">申请人数: <span>{{item.applyNum}}</span></p>
+              <p class="product_people">批卡率: <span>{{item.batchRate}}</span>
+                <van-progress
+                  color="#F3B13E"
+                  :percentage='item.batchRateIcon? item.batchRateIcon : 0'
+                />
+              </p>
+            </van-col>
+          </van-row>  
+        </div>
+        <div class="productCard_footer">
+          <van-row class="clearfix">
+            <van-col>
+              <p class="product_label">
+                <span>{{item.rebate}}</span>
+              </p>
+            </van-col>
+            <van-col :class="item.agentStatus == 0 ?'buttonBlue right van-col_right':'buttonyellow right van-col_right'">
+              <span @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</span>
+            </van-col>  
+          </van-row>
+        </div>
       </div>
-      <div class="productCard_footer">
-        <van-row class="clearfix">
-          <van-col>
-            <p class="product_label">
-              <span>{{item.rebate}}</span>
-            </p>
-          </van-col>
-          <van-col :class="item.agentStatus == 0 ?'buttonBlue right van-col_right':'buttonyellow right van-col_right'">
-            <span @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</span>
-          </van-col>  
-        </van-row>
-      </div>
-    </div>
+    </van-pull-refresh>
     <!-- 弹窗 -->
     <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
       <div>
@@ -42,14 +44,17 @@
         </p>
         <p class="product_button">
           <button @click="moneyShow = false">取消</button>
-          <button @click="">确定</button>
+          <button @click="confirm">确定</button>
         </p>
       </div>
     </van-popup>
+    <footer v-if="showStatus == 1" class="footer_button" @click="moneyShow = true">
+      <button>一键代理推广赚工资</button>
+    </footer>
   </div>
 </template>
 <script>
-import { Popup, RadioGroup, Radio, Progress  } from "vant";
+import { Popup, RadioGroup, Radio, Progress, Toast  } from "vant";
 export default {
   components: {
     [Popup.name]: Popup,
@@ -61,7 +66,11 @@ export default {
     return {
       moneyShow: false,
       radioName: "",
-      productList1:[]
+      productList1:[],
+      isLoading:false,
+      showStatus:"",
+      productCode:"",
+      showStatus:""
     };
   },
   methods: {
@@ -75,6 +84,7 @@ export default {
           break;
         case 0:
           this.moneyShow = true
+          this.productCode = code
           break;
       }
     },
@@ -82,9 +92,37 @@ export default {
     goDetails(code,num) {
       this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num });
     },
+    // 确认代理
+    confirm(){
+      let agentStatusData = []
+      if(this.showStatus == 0){
+        agentStatusData = [{productCode:this.productCode,productType:0}]
+      } else {
+        this.productList1.forEach(v=>{
+          if(v.agentStatus == 0 ){
+            agentStatusData.push({productCode:v.productCode,productType:0})
+          }
+        })
+      }
+      this.request('wisdom.vshop.product.batchAgentProducts',agentStatusData).then(data=>{
+        Toast.success('代理成功');
+        this.moneyShow =  false
+        this.Initialization(1)
+      }).catch(err=>{console.log(err)})
+    },
+    onRefresh() {
+      setTimeout(() => {
+        // this.$toast('刷新成功');
+        this.Initialization(1);
+        Toast.success('刷新成功');
+        this.count++;
+        this.isLoading = false;
+      }, 500);
+    },
     Initialization(num){
       this.request("wisdom.vshop.product.queryH5AgentProducts",{productType:num,pageNum:1,pageSize:10}).then(data=>{
         if(num==1){
+          this.showStatus = data.data.showStatus
           this.productList1 = data.data.dataList
         }
       }).catch(err=>{console.log(err)})

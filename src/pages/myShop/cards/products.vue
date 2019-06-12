@@ -1,30 +1,32 @@
 <template>
-  <div class="product_common"> 
-    <div v-for="item in productList0" class="product_center" @click="goDetails(item.productCode,item.agentStatus)">
-      <van-row class="clearfix">
-        <van-col>
-          <img :src=item.productLogo alt="">
-        </van-col>
-        <van-col>
-          <p class="product_title">{{item.productName}}</p>
-          <p class="product_money">贷款额度:  <span>{{item.amount}}</span></p>
-          <p class="product_label">
-            <span>{{item.rebate}}</span>
-          </p>
-        </van-col>
-        <van-col class="right">
-          <button :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
-        </van-col>
-      </van-row>  
-    </div>
+  <div :class="productList0.length<=4? 'height product_common': 'product_common'"> 
+    <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
+      <div v-for="item in productList0" class="product_center" @click="goDetails(item.productCode,item.agentStatus)">
+        <van-row class="clearfix">
+          <van-col>
+            <img :src=item.productLogo alt="">
+          </van-col>
+          <van-col>
+            <p class="product_title">{{item.productName}}</p>
+            <p class="product_money">贷款额度:  <span>{{item.amount}}</span></p>
+            <p class="product_label">
+              <span>{{item.rebate}}</span>
+            </p>
+          </van-col>
+          <van-col class="right">
+            <button :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
+          </van-col>
+        </van-row>  
+      </div>
+    </van-pull-refresh>
     <!-- 下拉刷新 -->
     <van-list
+      class="xialashuaxin"
       v-model="loading"
       :finished="finished"
       finished-text="没有更多了"
       @load="onLoad"
     >
-
     </van-list>
     <!-- 弹窗 -->
     <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
@@ -37,14 +39,17 @@
         </p>
         <p class="product_button">
           <button @click="moneyShow = false">取消</button>
-          <button @click="">确定</button>
+          <button @click="confirm">确定</button>
         </p>
       </div>
     </van-popup>
+    <footer v-if="showStatus == 1" class="footer_button" @click="moneyShow = true">
+      <button>一键代理推广赚工资</button>
+    </footer>
   </div>
 </template>
 <script>
-import { Popup, RadioGroup, Radio, List } from "vant";
+import { Popup, RadioGroup, Radio, List, Toast } from "vant";
 export default {
   components: {
     [Popup.name]: Popup,
@@ -59,6 +64,11 @@ export default {
       productList0: [],
       loading:false,
       finished:false,
+      isLoading: false,
+      count: 0,
+      showStatus:"",
+      showStatus:"",
+      productCode:""
     };
   },
   methods: {
@@ -71,6 +81,7 @@ export default {
           break;
         case 0:
           this.moneyShow = true;
+          this.productCode = code
           break;
       }
     },
@@ -87,12 +98,41 @@ export default {
         .then(data => {
           console.log(data);
           if(num==0){
+            this.showStatus = data.data.showStatus
             this.productList0 = data.data.dataList;
           }
         })
         .catch(err => {
           console.log(err);
         });
+    },
+    // 确认代理
+    confirm(){
+      let agentStatusData = []
+      if(this.showStatus == 0){ // 不是一键代理
+        agentStatusData = [{productCode:this.productCode,productType:0}]
+      } else {
+        this.productList0.forEach(v=>{
+          if(v.agentStatus == 0 ){
+            agentStatusData.push({productCode:v.productCode,productType:0})
+          }
+        })
+      }
+      this.request('wisdom.vshop.product.batchAgentProducts',{queryH5UserProductDetailReqList:agentStatusData}).then(data=>{
+        Toast.success('代理成功');
+        this.moneyShow =  false
+        this.Initialization(0)
+      }).catch(err=>{console.log(err)})
+    },
+    onRefresh() {
+      setTimeout(() => {
+        // this.$toast('刷新成功');
+        this.Initialization(0);
+        Toast.success('刷新成功');
+        this.count++;
+        this.isLoading = false;
+        
+      }, 500);
     },
     onLoad(){
        // 异步更新数据
@@ -175,5 +215,6 @@ export default {
   .product_center {
     margin-bottom: 10px;
   }
+  
 }
 </style>
