@@ -1,23 +1,31 @@
 <template>
   <div class="product_common"> 
-    
-      <div v-for="item in productList0" class="product_center" @click="goDetails(item.productCode,item.agentStatus)">
-        <van-row class="clearfix">
-          <van-col>
-            <img :src=item.productLogo alt="">
-          </van-col>
-          <van-col>
-            <p class="product_title">{{item.productName}}</p>
-            <p class="product_money">贷款额度:  <span>{{item.amount}}</span></p>
-            <p class="product_label">
-              <span>{{item.rebate}}</span>
-            </p>
-          </van-col>
-          <van-col class="right">
-            <button :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
-          </van-col>
-        </van-row>  
-      </div>
+    <div v-for="item in productList0" class="product_center" @click="goDetails(item.productCode,item.agentStatus)">
+      <van-row class="clearfix">
+        <van-col>
+          <img :src=item.productLogo alt="">
+        </van-col>
+        <van-col>
+          <p class="product_title">{{item.productName}}</p>
+          <p class="product_money">贷款额度:  <span>{{item.amount}}</span></p>
+          <p class="product_label">
+            <span>{{item.rebate}}</span>
+          </p>
+        </van-col>
+        <van-col class="right">
+          <button :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
+        </van-col>
+      </van-row>  
+    </div>
+    <!-- 下拉刷新 -->
+    <van-list
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+    >
+
+    </van-list>
     <!-- 弹窗 -->
     <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
       <div>
@@ -49,6 +57,8 @@ export default {
       moneyShow: false,
       radioName: "",
       productList0: [],
+      loading:false,
+      finished:false,
     };
   },
   methods: {
@@ -84,6 +94,20 @@ export default {
           console.log(err);
         });
     },
+    onLoad(){
+       // 异步更新数据
+      setTimeout(() => {
+        // for (let i = 0; i < 10; i++) {
+        //   this.list.push(this.list.length + 1);
+        // }
+        // 加载状态结束
+        this.loading = false;
+        // 数据全部加载完成
+        if (this.productList0.length <=10) {
+          this.finished = true;
+        }
+      }, 500);
+    }
   },
   mounted() {
     this.Initialization(0);
