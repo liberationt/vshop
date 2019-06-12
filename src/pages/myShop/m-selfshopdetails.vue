@@ -117,7 +117,15 @@ export default {
       }).catch(() => {
         // on cancel
       });
-    }
+    },
+    Initialization(){
+      this.request("wisdom.vshop.proprietaryProduct.getH5ProprietaryProductByCode",{proprietaryProductCode: this.$route.query.code,inviterCode:'111'}).then(data=>{
+        console.log(data)
+      }).catch(err=>{console.log(err)})
+    },
+  },
+  created(){
+    this.Initialization()
   }
 };
 </script>

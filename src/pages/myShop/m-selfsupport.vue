@@ -8,16 +8,16 @@
       />
     </header>
     <div class="mselfsupport_center">
-      <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
-        <div class="mselfsupport_modal" v-for="item in 10" @click="goShopdetails">
+      <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
+        <div class="mselfsupport_modal" v-for="item in selfsupportList" @click="goShopdetails(item.proprietaryProductCode)">
           <van-row>
             <van-col>
-              <img src="./imgs/dai.png" alt="">
+              <img :src=item.productLogo alt="">
             </van-col>
             <van-col>
-              <p class="modal_text">人人贷借款</p>
-              <p>综合月利率：<span class="modal_color">0.78% - 0.85%</span></p>
-              <p>贷款额度：<span class="modal_color">1000 - 20000元</span></p>
+              <p class="modal_text">{{item.productName}}</p>
+              <p>综合月利率：<span class="modal_color">{{item.productRate}}</span></p>
+              <p>贷款额度：<span class="modal_color">{{item.limitMax+'元'+'-'+item.limitMin+'元'}}</span></p>
             </van-col>
           </van-row>
         </div>
@@ -34,7 +34,8 @@ export default {
   data() {
     return {
       count: 0,
-      isLoading: false
+      isLoading: false,
+      selfsupportList:[]
     };
   },
   methods: {
@@ -51,9 +52,18 @@ export default {
     addproduct() {
       this.$router.push({ path: "./maddproduct" });
     },
-    goShopdetails(){
-      this.$router.push({ path: "./mselfshopdetails" });
-    }
+    goShopdetails(code){
+      this.$router.push({ path: "./mselfshopdetails?code="+code });
+    },
+    Initialization(i){
+      this.request("wisdom.vshop.proprietaryProduct.queryH5Page",{pageSize:10,pageNum:i}).then(data=>{
+        console.log(data)
+        this.selfsupportList = data.data.dataList
+      }).catch(err=>{console.log(err)})
+    },
+  },
+  created(){
+    this.Initialization(1)
   }
 };
 </script>
