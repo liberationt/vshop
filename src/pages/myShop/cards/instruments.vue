@@ -19,6 +19,16 @@
         </van-row>  
       </div>
     </van-pull-refresh>
+    <!-- 下拉刷新 -->
+    <van-list
+      v-if="productList2.length>=5"
+      class="xialashuaxin"
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+    >
+    </van-list>
     <!-- 弹窗 -->
     <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
       <div>
@@ -40,12 +50,13 @@
   </div>
 </template>
 <script>
-import { Popup, RadioGroup, Radio, Toast  } from 'vant';
+import { Popup, RadioGroup, Radio, Toast, List  } from 'vant';
 export default {
   components:{
     [Popup.name] : Popup,
     [RadioGroup.name] : RadioGroup,
     [Radio.name] : Radio,
+    [List.name]: List
   },
   data(){
     return {
@@ -55,7 +66,10 @@ export default {
       showStatus:"",
       isLoading:false,
       showStatus:"",
-      productCode:""
+      productCode:"",
+      loading:false,
+      finished:false,
+      agentStatus:""
     }
   },
   methods:{
@@ -68,6 +82,7 @@ export default {
           break;
         case 0:
           this.moneyShow = true;
+          this.agentStatus = 6
           this.productCode = code
           break;
       }
@@ -79,16 +94,16 @@ export default {
     // 确认代理
     confirm(){
       let agentStatusData = []
-      if(this.showStatus == 0){
-        agentStatusData = [{productCode:this.productCode,productType:0}]
+      if(this.agentStatus == 6){
+        agentStatusData = [{productCode:this.productCode,productType:2}]
       } else {
-        this.productList1.forEach(v=>{
+        this.productList2.forEach(v=>{
           if(v.agentStatus == 0 ){
-            agentStatusData.push({productCode:v.productCode,productType:0})
+            agentStatusData.push({productCode:v.productCode,productType:2})
           }
         })
       }
-      this.request('wisdom.vshop.product.batchAgentProducts',agentStatusData).then(data=>{
+      this.request('wisdom.vshop.product.batchAgentProducts',{queryH5UserProductDetailReqList:agentStatusData}).then(data=>{
         Toast.success('代理成功');
         this.moneyShow =  false
         this.Initialization(2)
@@ -103,11 +118,27 @@ export default {
         this.isLoading = false;
       }, 500);
     },
-    Initialization(num){
-      this.request("wisdom.vshop.product.queryH5AgentProducts",{productType:num}).then(data=>{
+    onLoad(){
+       // 异步更新数据
+      setTimeout(() => {
+        for (let i = 0; i < this.total; i++) {
+          this.Initialization(2,i)
+        }
+        // 加载状态结束
+        this.loading = false;
+        // 数据全部加载完成
+        if (this.productList2.length <=10) {
+          this.finished = true;
+        }
+      }, 500);
+    },
+    Initialization(num,i){
+      this.request("wisdom.vshop.product.queryH5AgentProducts",{productType:num,pageNum: i,
+        pageSize: 10}).then(data=>{
         if(num==2){
           this.showStatus = data.data.showStatus
           this.productList2 = data.data.dataList
+          this.total = data.total
         }
       }).catch(err=>{console.log(err)})
     }

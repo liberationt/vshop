@@ -21,6 +21,7 @@
     </van-pull-refresh>
     <!-- 下拉刷新 -->
     <van-list
+      v-if="productList0.length>=5"
       class="xialashuaxin"
       v-model="loading"
       :finished="finished"
@@ -68,7 +69,8 @@ export default {
       count: 0,
       showStatus:"",
       showStatus:"",
-      productCode:""
+      productCode:"",
+      agentStatus:0
     };
   },
   methods: {
@@ -82,6 +84,7 @@ export default {
         case 0:
           this.moneyShow = true;
           this.productCode = code
+          this.agentStatus = 0
           break;
       }
     },
@@ -89,10 +92,10 @@ export default {
     goDetails(code,num) {
       this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num });
     },
-    Initialization(num) {
+    Initialization(num,i) {
       this.request("wisdom.vshop.product.queryH5AgentProducts", {
         productType: num,
-        pageNum: 1,
+        pageNum: i,
         pageSize: 10
       })
         .then(data => {
@@ -100,6 +103,7 @@ export default {
           if(num==0){
             this.showStatus = data.data.showStatus
             this.productList0 = data.data.dataList;
+            this.total = data.total
           }
         })
         .catch(err => {
@@ -109,7 +113,7 @@ export default {
     // 确认代理
     confirm(){
       let agentStatusData = []
-      if(this.showStatus == 0){ // 不是一键代理
+      if(this.agentStatus == 0){ // 不是一键代理
         agentStatusData = [{productCode:this.productCode,productType:0}]
       } else {
         this.productList0.forEach(v=>{
@@ -137,9 +141,9 @@ export default {
     onLoad(){
        // 异步更新数据
       setTimeout(() => {
-        // for (let i = 0; i < 10; i++) {
-        //   this.list.push(this.list.length + 1);
-        // }
+        for (let i = 0; i < this.total; i++) {
+          this.Initialization(0,i)
+        }
         // 加载状态结束
         this.loading = false;
         // 数据全部加载完成
@@ -150,7 +154,7 @@ export default {
     }
   },
   mounted() {
-    this.Initialization(0);
+    this.Initialization(0,1);
   }
 };
 </script>

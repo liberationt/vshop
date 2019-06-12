@@ -20,7 +20,7 @@
             <van-tab title="信用卡">
               <cards ref="mychild"></cards>
             </van-tab>
-            <van-tab title="信贷产品">
+            <van-tab title="信贷工具">
               <instruments ref="mychild"></instruments>
             </van-tab>
           </div>
