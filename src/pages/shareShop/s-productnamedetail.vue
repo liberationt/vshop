@@ -8,50 +8,43 @@
 				/>
 			</header>
       <div class="productbannerimg">
-				<img src="" alt="">
+				<img :src=dataobject.productLogo alt="">
 			</div>
 			<!-- 信息 -->
 			<div class="productinfor">
 				<div>
 					<h3><span></span>产品权益</h3>
-					<p>1、可借1千-1万，日息0.05%，7天</p>
-					<p>1、可借1千-1万，日息0.05%，7天</p>
-					<p>1、可借1千-1万，日息0.05%，7天</p>
+					<p v-for="(item,i) in dataobject.productDescribe" :key="i">{{item}}</p>
 				</div>
 				<div>
 					<h3><span></span>申请条件</h3>
-					<p>1、申请条件</p>
-					<p>1、申请条件</p>
+					<p v-for="(item,i) in dataobject.applyCondition" :key="i">{{item}}</p>
 				</div>
 				<div class="productcity" @click="tocity">
 					<label><img src="./images/positioncity.png" alt=""><span>工作城市</span></label>
 					<input type="text" placeholder="请选择城市" v-model="city">
 				</div>
-				<div class="rightapply">立即申请</div>
+				<div class="rightapply" @click="apply">立即申请</div>
 			</div>
 			<div class="guesslike">
 				<h3><span></span>猜你喜欢</h3>
 				<div class="guesslikecont">
-					<div>
-						<div class="guessimgs"><img src="" alt=""></div>
-						<p>产品名称</p>
-					</div>
-					<div>
-						<div class="guessimgs"><img src="" alt=""></div>
-						<p>产品名称</p>
+					<div v-for="(item,i) in dataobject.vshopProductResList" :key='i'>
+						<div class="guessimgs"><img :src=item.productLogo alt=""></div>
+						<p>{{item.productName}}</p>
 					</div>
 				</div>
 			</div>
 			<div class="recommend">
 				<h3><span></span>推荐阅读</h3>
 				<ul>
-					<li>
+					<li v-for="(item,i) in dataobject.exhibitionContentList" :key="i">
 						<div>
-							<img src="" alt="">
+							<img :src=item.photoPath alt="">
 						</div>
 						<div class="recommendright">
-							<h4>信贷经理教你如何高效贷款</h4>
-							<p>2019-05-10</p>
+							<h4>{{item.contentTitle}}</h4>
+							<p>{{item.dataCreateTime}}</p>
 						</div>
 					</li>
 				</ul>
@@ -59,10 +52,12 @@
     </div>
 </template>
 <script>
+import utils from '../../utils/utils'
 export default {
     data(){
 			return{
-				city:'上海'
+				city:'上海',
+				dataobject:{}
 			}
 		},
 		methods:{
@@ -71,19 +66,52 @@ export default {
 			},
 			onClickLeft(){
 				this.$router.go(-1)
+			},
+			//立即申请
+			apply(){
+				let data = {
+					productType:0,
+					inviterCode:utils.getCookie('InviterCode'),
+					productCode:utils.getCookie('ProductCode')
+				}	
+				this.request('wisdom.vshop.product.h5BeforeJumpDetail',data)
+				.then(data=>{
+					if(data.code=='success'){
+						this.$router.push('/stiflingborrow')
+					}
+				})
+			},
+			getdatas(){
+				let data = {
+					inviterCode:utils.getCookie('InviterCode'),
+					productCode:utils.getCookie('ProductCode')
+				}
+				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
+				.then(data=>{
+					if(data.code=='success'){
+						this.dataobject = data.data
+					}
+				})
 			}
 		},
 		mounted(){
 			if(this.$route.query.city){
 				this.city=this.$route.query.city
 			}
+			this.getdatas()
 		}
 }
 </script>
 <style lang="less">
+.maincontent{
+	background: #f1f1fb
+}
     .productbannerimg{
-			width:100%;height:126px;
-			background: #000;
+			height:126px;
+			img{
+				width:100%;
+				height:100%;
+			}
 		}
 		.productinfor{
 			margin:8px 8px 20px;

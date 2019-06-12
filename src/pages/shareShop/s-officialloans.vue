@@ -1,44 +1,49 @@
 <template>
 	<div>
 		<div class='tochiose'>
-			<div class="netloan" @click="tonetloan">网贷</div>
-			<div class="amount " @click="toamount">大额</div>
+			<div class="netloan" @click="tonetloan" v-for="(item,i) in bannerProductResList" :key="i">
+				<img :src=item.bannerUrl alt="">
+				<p>{{item.bannerName}}</p>
+			</div>
 		</div>
 		<div class="tittle">
 			<p>申请多个产品，可大幅提高贷款成功率</p>
 			<div @click="another"><img src="./images/shuaxin.png" alt="">换一批</div>
 		</div>
-		<div class="listdata" @click="toproductnamedetail">
+		<div class="listdata" v-for="(item,i) in productResList" :key="i">
 			<div class="listdatatop">
 				<div>
-					<div><img src="" alt=""></div>
+					<div><img :src=item.productLogo alt=""></div>
 				</div>
 				<div>
-					<h4>大王贷款</h4>
-					<p>“门槛低 额度大 放款快 费率低”</p>
+					<h4>{{item.productName}}</h4>
+					<p>{{item.subTitle}}</p>
 				</div>
 			</div>
 			<div class="listdatabot">
 				<div>
-					<p style="font-size:16px;color:#FE951E">1万-20万</p>
+					<p style="font-size:16px;color:#FE951E">{{item.amount}}</p>
 					<p>可用额度 (元)</p>
 				</div>
 				<div>
-					<p>期限：<span>12个月-36个月</span></p>
+					<p>期限：<span>{{item.limit}}个月</span></p>
 					<p>最快当天到账</p>
 				</div>
-				<div class="apply" @click="apply">立即申请</div>
+				<div class="apply" @click="toproductnamedetail(item.productCode)">立即申请</div>
 			</div>
 		</div>
-		<div class="viewall" @click="viewall">查看全部</div>
+		<div class="viewall" v-if="productResList.length>1" @click="viewall">查看全部</div>
 	</div>
 </template>
 <script>
+import utils from '../../utils/utils'
 export default {
     data(){
-        return{
-					officialdataList:[1]
-        }
+			return{
+				productResList:[],
+				bannerProductResList:[],
+				inviterCode:''
+			}
     },
     methods:{
 			todolist(){
@@ -51,7 +56,9 @@ export default {
 			toamount(){
 				this.$router.push('/loanlist')
 			},
-			toproductnamedetail(){
+			toproductnamedetail(productCode){
+				utils.setCookie('ProductCode',productCode)
+				utils.setCookie('InviterCode',this.inviterCode)
 				this.$router.push('/productnamedetail')
 			},
 			//申请
@@ -64,10 +71,25 @@ export default {
 			},
 			viewall(){
 				this.$router.push('/loanlist')
-			}
+			},
+			getdatas(){
+				let data = {
+					storeCode:'0001',
+					head : true , 
+					type:0
+				}
+				this.request('wisdom.vshop.vshopStore.queryStoreProduct',data)
+					.then(data=>{ 
+						if(data.code=='success'){
+							this.productResList = data.data.productResList
+							this.bannerProductResList = data.data.bannerProductResList
+							this.inviterCode = data.data.inviterCode
+						}
+					})
+				},
     },
     mounted(){
-
+			this.getdatas()
     }
 }
 </script>
@@ -76,21 +98,25 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		margin-bottom: 14px;
+		flex-wrap: wrap;
 		div{
 			width:166px;height:51px;
 			font-size:20px;
 			line-height: 51px;
 			color:#ffffff;
-			text-indent: 87px;
 			font-weight:bold;
-		}
-		.netloan{
-			background:url(./images/netloan.png);
-			background-size:100%;
-		}
-		.amount{
-			background:url(./images/amount.png);
-			background-size:100%;
+			position: relative;
+			img{
+				width:100%;
+				height:100%;
+				position: absolute;
+			}
+			p{
+				width:100%;
+				position: absolute;
+				z-index:2;
+				text-align: center;
+			}
 		}
 	} 
 	.tittle{

@@ -5,32 +5,39 @@
 			<div class="invitnum">邀请码6S89WH</div>
 			<div class="dropdown">
 				<van-dropdown-menu>
-					<van-dropdown-item v-model="value1" :options="option1" />
+					<van-dropdown-item v-model="value1" @change="adds" :options="option1" />
 				</van-dropdown-menu>
 			</div>
 		</div>
-		<div class="listdata" @click="toproductnamedetail">
-			<div class="listdatatop">
-				<div>
-					<div><img src="" alt=""></div>
+		<van-list
+			v-model="loading"
+			:finished="finished"
+			finished-text="没有更多了"
+			@load="onLoad"
+		>	
+			<div class="listdata" @click="toproductnamedetail" v-for="(item,i) in dataList" :key="i">
+				<div class="listdatatop">
+					<div>
+						<div><img :src=item.productLogo alt=""></div>
+					</div>
+					<div>
+						<h4>{{item.productName}}</h4>
+						<p>{{item.subTitle}}</p>
+					</div>
 				</div>
-				<div>
-					<h4>大王贷款</h4>
-					<p>“门槛低 额度大 放款快 费率低”</p>
+				<div class="listdatabot">
+					<div>
+						<p style="font-size:16px;color:#FE951E">{{item.amount}}</p>
+						<p>可用额度 (元)</p>
+					</div>
+					<div>
+						<p>期限：<span>{{item.limit}}个月</span></p>
+						<p>最快当天到账</p>
+					</div>
+					<div class="apply" @click="apply">立即申请</div>
 				</div>
 			</div>
-			<div class="listdatabot">
-				<div>
-					<p style="font-size:16px;color:#FE951E">1万-20万</p>
-					<p>可用额度 (元)</p>
-				</div>
-				<div>
-					<p>期限：<span>12个月-36个月</span></p>
-					<p>最快当天到账</p>
-				</div>
-				<div class="apply" @click="apply">立即申请</div>
-			</div>
-		</div>
+		</van-list>
   </div>
 	</van-pull-refresh>
 </template>
@@ -44,17 +51,34 @@ export default {
 	data(){
 		return{
 			isLoading:false,
-			value1:0,
+			value1:'-1',
 			option1: [
-        { text: '全部商品', value: 0 },
-        { text: '新款商品', value: 1 },
-        { text: '活动商品', value: 2 }
-      ],
+				{text:'全部',value:'-1'}
+			],
+			dataList:[],
+			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
+			loading: false,//控制上拉加载的加载动画
+			pageNum:1,
+			pageSize:10,
 		}
 	},
 	methods:{
 		apply(){
 
+		},
+		adds(i){
+			let data = {
+				storeCode:'0001',
+				productDetailType:i,
+				filter:false
+			}
+			this.request('wisdom.vshop.vshopStore.queryStoreProductList',data)
+				.then(data=>{ 
+					if(data.code=='success'){
+						let options = data.data.productDetailTypeBean
+						this.dataList = data.data.dataList
+					}
+			})
 		},
 		toproductnamedetail(){
 			this.$router.push('/productnamedetail')
@@ -64,7 +88,44 @@ export default {
 			setTimeout(() => {
 				this.isLoading = false; //关闭下拉刷新效果
 			}, 500);
-		}
+		},
+		//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
+		onLoad() {
+			// let that = this
+			setTimeout(() => {
+				let data = {
+				storeCode:'0001',
+				productDetailType:this.value1,
+				pageNum:this.pageNum,
+				pageSize:this.pageSize,
+				filter:true
+			}
+			this.request('wisdom.vshop.vshopStore.queryStoreProductList',data)
+				.then(data=>{ 
+					if(data.code=='success'){
+						let options = data.data.productDetailTypeBean
+						let options2=[
+							
+						]
+						for(var i=0;i<options.length;i++){
+							options2.push(
+								{
+									text:	options[i].label,
+									value:options[i].code
+								}
+							)
+						}
+						this.option1 =this.option1.concat(options2) 
+						this.pageNum++
+						this.loading = false
+						this.dataList = this.dataList.concat(data.data.dataList)
+						if(data.data.dataList.length>=3){
+							this.finished = true
+						}
+					}
+			})
+			}, 500);
+		},
 	},
 	mounted(){
 	}
