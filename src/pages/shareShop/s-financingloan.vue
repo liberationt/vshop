@@ -2,21 +2,21 @@
     <div>
 			<div class="financtittle">申请多个产品，可大幅度提高贷款成功率</div>
 			<div>
-				<van-list
+				<!-- <van-list
 					v-model="loading"
 					:finished="finished"
 					finished-text="没有更多了"
 					@load="onLoad"
-				>	
-					<div class="financlist">
-						<div class="financlistbanner"><img src="" alt=""></div>
+				>	 -->
+					<div class="financlist" v-for="(item,i) in financList" :key="i" @click="toproductnamedetail()">
+						<div class="financlistbanner"><img :src=item.productLogo alt=""></div>
 						<div class="financlistright">
-							<h4>人人贷借款</h4>
-							<p>综合月利率：<span>0.78% - 0.85%</span></p>
-							<p>贷款额度：<span>1000 - 20000元</span></p>
-						</div>
+							<h4>{{item.productName}}</h4>
+							<p>综合月利率：<span>{{item.productRate}}</span></p>
+							<p>贷款额度：<span>{{item.limitMin}}-{{item.limitMax}}元</span></p>
+						</div>  
 					</div>
-				</van-list>
+				<!-- </van-list> -->
 			</div>
     </div>
 </template>
@@ -26,16 +26,39 @@ export default {
 			return{
 				finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
 				loading: false,//控制上拉加载的加载动画
+				financList:[],
+				inviterCode:''
 			}
 		},
 		methods:{
 			//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
 			onLoad() {
 				setTimeout(() => {
+						// this.getdatas()
 						this.loading = false
 						this.finished = true
-				}, 500);
-			}
+				}, 1);
+			},
+			getdatas(){
+				let data = {
+					storeCode:'0001',
+					head : true , 
+					type:3
+				}
+				this.request('wisdom.vshop.vshopStore.queryStoreProduct',data)
+				.then(data=>{ 
+					if(data.code=='success'){
+						this.financList = data.data.proprietaryProductResList
+						this.inviterCode = data.data.inviterCode
+					}
+				})
+			},
+			toproductnamedetail(productCode){
+				this.$router.push('/productnamedetail?inviterCode='+this.inviterCode)
+			},
+		},
+		mounted(){
+			this.getdatas()
 		}
 }
 </script>

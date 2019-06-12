@@ -9,7 +9,7 @@ import 'lib-flexible'
 // 导航栏
 import { NavBar  } from 'vant';
 // 下拉刷新
-import { PullRefresh,List } from 'vant';
+import { PullRefresh,List,Toast} from 'vant';
 // 布局
 import { Row, Col ,Dialog} from 'vant';
 Vue.use(Row).use(Col);
@@ -17,7 +17,7 @@ Vue.use(NavBar);
 Vue.use(PullRefresh);
 Vue.use(Dialog)
 Vue.use(List)
-
+Vue.use(Toast)
 //兼容ie10 以上
 import '@babel/polyfill'
 if (!store.state.actives ) {

@@ -2,30 +2,33 @@
     <div>
 			<div class="credtittle">各种热门信用卡，批卡率高，下卡快</div>
 			<div>
-				<van-list
+				<!-- <van-list
 					v-model="loading"
 					:finished="finished"
 					finished-text="没有更多了"
 					@load="onLoad"
-				>	
-					<div class="credlist" @click="tostiflingborrow">
-						<div class="credlistbanner"><img src="" alt=""></div>
+				>	 -->
+					<div class="credlist" @click="tostiflingborrow(item.productCode)" v-for="(item,i) in cardList" :key="i">
+						<div class="credlistbanner"><img :src=item.productLogo alt=""></div>
 						<div class="credlistright">
-							<h4>招商王者荣耀卡</h4>
-							<p>玩家每月可获得500招行积分</p>
-							<p>新户达标月月领好礼</p>
+							<h4>{{item.productName}}</h4>
+							<p>{{item.subTitle}}</p>
+							<p>{{item.desc}}</p>
 						</div>
 					</div>
-				</van-list>
+				<!-- </van-list> -->
 			</div>
     </div>
 </template>
 <script>
+import utils from '../../utils/utils'
 export default {
     data(){
 			return{
 				finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
 				loading: false,//控制上拉加载的加载动画
+				cardList:[],
+				inviterCode:''
 			}
 		},
 		methods:{
@@ -36,9 +39,28 @@ export default {
 						this.finished = true
 				}, 500);
 			},
-			tostiflingborrow(){
+			tostiflingborrow(productCode){
+				utils.setCookie('ProductCode',productCode)
+				utils.setCookie('InviterCode',this.inviterCode)
 				this.$router.push('/stiflingborrow')
+			},
+			getdatas(){
+				let data = {
+				storeCode:'0001',
+				head : true , 
+				type:1
 			}
+			this.request('wisdom.vshop.vshopStore.queryStoreProduct',data)
+				.then(data=>{ 
+					if(data.code=='success'){
+						this.cardList = data.data.productResList
+						this.inviterCode = data.data.inviterCode
+					}
+				})
+			},
+		},
+		mounted(){
+			this.getdatas()
 		}
 }
 </script>
@@ -63,8 +85,11 @@ export default {
 		 .credlistbanner{
 			 width:100px;
 			 height:70px;
-			 background: red;
 			 margin-right: 10px;
+			 img{
+				 width:100%;
+				 height:100%;
+			 }
 		 }
 		 .credlistright{
 			 h4{

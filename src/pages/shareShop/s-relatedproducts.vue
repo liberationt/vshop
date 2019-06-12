@@ -3,26 +3,28 @@
 	<div class="srelamain">
 		<header class="srelatop">
 			<div class="srelatopmain">
-				<div><img src="./images/tou xiang.png" alt=""></div>
+				<div class="bannerudius"><img :src= personImg alt=""></div>
 				<div class="srelate_menu">
 					<van-tabs type="card" v-model="active" @click='onClick'>
-						<van-tab class='van-tab van-tab--active' title="官方贷款"></van-tab>
+						<!-- <van-tab class='van-tab van-tab--active' title="官方贷款"></van-tab> -->
+						<!-- <van-tab title="官方贷款"></van-tab>
 						<van-tab title="信用卡"></van-tab>
-						<van-tab title="自营贷款"></van-tab>
+						<van-tab title="自营贷款"></van-tab> -->
+						<van-tab v-for="(item,i) in loanlist" :title = item.label :key='i'></van-tab>
 					</van-tabs>
 				</div>
 			</div>
-			<div class="invitenum">邀请码6S89WH</div>
+			<div class="invitenum">邀请码{{inviterCode}}</div>
 		</header>
 		<div class="havemoney" >
-			<div class="havemoneytop" v-show="show">
-				<div @click="tohavemoney"><img src="" alt=""></div>
+			<div class="havemoneytop" v-show="showUMoney">
+				<div @click="tohavemoney" class="havamoneyImg"><img :src=havemoneyImg alt=""></div>
 				<div class="close" @click="closeTost"><img src="./images/close.png" alt=""></div>
 			</div>
 			<div>
-				<officialloans v-if='index==0'></officialloans>
-				<creditcard v-if='index==1'></creditcard>
-				<financingloan v-if='index==2'></financingloan>
+				<officialloans v-if="disabled=='贷款'"></officialloans>
+				<creditcard  v-if="disabled=='信用卡'"></creditcard>
+				<financingloan  v-if="disabled=='自营'"></financingloan>
 			</div>
 		</div>
 		
@@ -30,9 +32,9 @@
 	</van-pull-refresh>
 </template>
 <script>
-import financingloan from './s-financingloan.vue'
-import officialloans from './s-officialloans.vue'
-import creditcard from './s-creditcard.vue'
+import financingloan from './s-financingloan'
+import officialloans from './s-officialloans'
+import creditcard from './s-creditcard'
 import { Tab, Tabs ,Dialog} from 'vant'
 export default {
 	components:{
@@ -46,49 +48,79 @@ export default {
 	data(){
 		return{
 			active:'',
-			index:'',
-			show:true,
+			index:0,
+			inviterCode:'',
 			isLoading:false,
-			disabled:'官方贷款'
+			loanlist:[],
+			disabled:'',
+			personImg:'',
+			havemoneyImg:'',
+			showUMoney:true,
+			dayUMoney:''
 		}
 	},
 	methods:{
 		onClick(i,v){
-			this.index =i
 			this.disabled = v
 		},
 		tohavemoney(){
-			this.$router.push('')
+			this.$router.push('/havemoney')
 		},
 		closeTost(){
 			Dialog.confirm({
-				confirmButtonText:'10天内不再提示',
+				confirmButtonText:this.dayUMoney+"天内不再提示",
 				cancelButtonText:'永不提示',
 				message: '确认关闭此提示框吗？'
 			}).then(() => {
-			// on confirm
+				this.closehaveMoney(0)
 			}).catch(() => {
-			// on cancel
+				this.closehaveMoney(1)
 			});
+		},
+		//关闭
+		closehaveMoney(v){
+			let data = {
+				data:v==0?false:true
+			}
+			this.request('wisdom.vshop.vshopStore.closeUMoneyTip',data)
+			.then(data=>{
+				// if(data.code=='success'){
+				// 	this.getdatas()
+				// }
+			})
 		},
 			// 下拉刷新
 		onRefresh(){
 			setTimeout(() => {
 				this.isLoading = false; //关闭下拉刷新效果
 			}, 500);
-		}
-	},
-	computed:{
-		backgroundcolor(){
-			return 
+		},
+		//获取数据
+		getdatas(){
+			let data = {
+				storeCode:'0001',
+				head : true , 
+				type:1
+			}
+			this.request('wisdom.vshop.vshopStore.queryStoreProduct',data)
+			.then(data=>{ 
+				this.loanlist = data.data.searchOptionBeanList
+				this.inviterCode = data.data.inviterCode
+				this.personImg = data.data.personImg
+				this.disabled = this.loanlist[0].label
+				this.havemoneyImg = data.data.bannerResList[0].bannerUrl
+				this.dayUMoney = data.data.dayUMoney
+				this.showUMoney = data.data.showUMoney
+				this.$emit('toparent',data.data.storeName,1)
+			})
 		}
 	},
 	created(){
-		this.$emit('toparent','相关产品',1)
 		if(this.$route.query.index){
 			this.index= Number(this.$route.query.index)
 			this.active = this.$route.query.index
 		}
+		this.getdatas()
 	}
 }
 </script>
@@ -111,10 +143,16 @@ export default {
 		.srelatopmain{
 			display: flex;
 			align-items: center;
+			.bannerudius{
+				width:60px;
+				height:60px;
+				border-radius: 50%;
+				overflow: hidden;
+				margin-right: 20px;
+			}
 			img{
 				width:60px;
 				height:60px;
-				margin-right: 20px;
 			}
 		}
 		.srelate_menu{
@@ -129,6 +167,13 @@ export default {
 			height:95px;
 			margin-bottom: 15px;
 			position: relative;
+			.havamoneyImg{
+				height:95px;
+				img{
+					width:100%;
+					height:100%;
+				}
+			}
 		}
 		.close{
 			height:16px;

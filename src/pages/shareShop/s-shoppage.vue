@@ -66,8 +66,9 @@
 				confirmButtonColor=""
 				confirmButtonBackground='red'
 				:beforeClose="beforeClose"
+				@confirm = confirm(dataList.weixinNumber)
 			>
-			<div class="dialogbanner"><img :src=item.weixinImg alt=""></div>
+			<div class="dialogbanner"><img :src=dataList.weixinImg alt=""></div>
 			<div class="dialogtitle">
 				<p>长按识别二维码图片</p>
 				<p>或复制微信ID搜索添加</p>
@@ -77,12 +78,16 @@
 	</div>
 </template>
 <script>
-import { parse } from 'path';
+import { Toast } from 'vant';
 export default {
+	component:{
+		[Toast.name]:Toast
+	},
 	data(){
 		return{
 			show:false,
-			dataList:{}
+			dataList:{},
+			tittle:''
 		}
 	},
 	methods:{
@@ -96,6 +101,8 @@ export default {
 			this.request('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
 				if(data.code=='success'){
 					this.dataList = data.data
+					this.tittle = data.data.storeName
+					this.$emit('toparent',this.tittle,1)
 				}
 			}).catch(err=>{
 				console.log(err)
@@ -104,7 +111,7 @@ export default {
 		gophone(item){
 			 window.location.href = "tel://" + "18201814187";
 		},
-		phone(){
+		copywx(content){
 			const copyToClipboard = str => {
 				const el = document.createElement('textarea'); // Create a <textarea> element
 				el.value = str; // Set its value to the string that you want copied
@@ -124,13 +131,13 @@ export default {
 				document.getSelection().addRange(selected); // Restore the original selection
 				}
 			};
-			copyToClipboard('鱼惠妹子')
+			copyToClipboard(content)
 		},
 		loan(){
 			this.$router.push('/relatedproducts')
 		},
 		card(){
-			this.$router.push('/relatedproducts?index='+1)
+			this.$router.push('/relatedproducts')
 		},
 		tool(){
 			this.$router.push('/utilities')
@@ -143,14 +150,17 @@ export default {
 		},
 		beforeClose(action,down){
 				if(action==='confirm'){
-					this.confirm()
 					down()
 				}else{
 					this.show= false
 					down()
 				}
 		},
-		confirm(){
+		confirm(content){
+			this.copywx(content)
+			Toast({
+						message:'复制成功'
+					});
 			this.show= false
 		}
 	},
@@ -158,7 +168,6 @@ export default {
 		this.getDatas()
 	},
 	mounted(){
-		this.$emit('toparent','店铺首页',1)
 		
 	}
 }
@@ -167,6 +176,7 @@ export default {
    .shoppagemain{
 		background: #f1f1fb;
 		height:100%;
+		// padding-bottom:25px;
 		.personalinfor{
 			padding:15px;
 			header{
@@ -303,6 +313,7 @@ export default {
 		.tweetsList{
 			background: #ffffff;
 			padding-left:15px;
+			padding-bottom:15px;
 			>div{
 				height:95px;
 				display: flex;

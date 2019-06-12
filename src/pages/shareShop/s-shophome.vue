@@ -2,7 +2,7 @@
   <div class="shopmain">
 		<header class="paddingTop">
 			<van-nav-bar :title='tittle' left-text="" :left-arrow="this.active!=0" fixed @click-left="onClickLeft">
-				<span slot="right" v-show='number==1' @click="toshare"> 分享微店</span>
+				<span slot="right" style='color:#4597FB' v-show='number==1' @click="toshare"> 分享微店</span>
 			</van-nav-bar>
 		</header>
 			<div>
@@ -85,7 +85,8 @@ export default {
     .shopmain{
 			padding:50px 0;
 		}
-		footer{
+		.shophome{
+			background:red !important;
 			.footbar{
 				display: flex;
 				align-items: center;

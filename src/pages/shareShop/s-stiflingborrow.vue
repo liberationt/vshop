@@ -13,44 +13,178 @@
 				<div>
 					<p>
 						<span>手机号</span>
-						<input type="number" v-model="text">
+						<input type="number" v-model="userPhone" oninput='if(value.length>11)value=value.slice(0,11)'>
 					</p>
 					<p>
 						<span>验证码</span>
-						<input type="number" v-model="text" style="width:140px;">
-						<i style='color:#4697FB'>获取验证码</i>
+						<input type="number" v-model="verification" style="width:140px;">
+						<i style='color:#4697FB' @click="obtain()&&flag">{{content}}</i>
 					</p>
 					<p>
 						<span>姓名</span>
-						<input type="number" v-model="text">
+						<input type="text" v-model="userName">
 					</p>
 					<p>
 						<span>身份证号</span>
-						<input type="number" v-model="text">
+						<input type="text" v-model="idCard">
 					</p>
 				</div>
 			</div>
-			<div class="comform">
+			<div class="comform" @click="confim">
 				确认资料
 			</div>
+			<div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
 			<div class="recommender">
 				<span><img src="" alt=""></span>
-				<span>推荐人：134****1233</span>
+				<span>推荐人：{{managerPhone}}</span>
 			</div>
     </div>
 </template>
 <script>
+import utils from '../../utils/utils'
+import { Toast } from 'vant';
 export default {
 	data(){
 		return{
-			text:111
+			userPhone:'',
+			verification:'',
+			userName:'',
+			idCard:'',
+			content:'获取验证码',
+			managerPhone:'',
+			flag:true,
+			seal_control:false
 		}
 	},
 	methods:{
-
+		//提交
+		confim(){
+			let data={
+				inviterCode:utils.getCookie('InviterCode'),
+				productCode:utils.getCookie('ProductCode'),
+				userPhone:this.userPhone,
+				verifyCode:this.verification,
+				userName :this.userName,
+				idCard:this.idCard
+			}
+			this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',data)
+			.then(data=>{
+				if(data.code=='success'){
+					// utils.setCookie('usertoken',)
+				}else{
+					Toast({
+						message:data.message,
+						duration:800
+					})
+				}
+			}).catch(err=>{
+				console.log(err)
+			})
+		},
+		obtain(v){
+			if(!this.userPhone){
+				Toast({
+						message:'请输入手机号',
+						duration:800
+					})
+				return false
+			}
+			if(!/^1[34578]\d{9}$/.test(this.userPhone)){
+				Toast({
+					message:'请输入正确格式手机号',
+					duration:800
+				})
+				return false
+			}
+			this.setTimeout()
+			let data = v?v
+			:{
+				captchaId: "",
+				verifyCode: "",
+				phone: this.userPhone
+			};
+			this.request('wisdom.vshop.vshopLoanUser.sendCaptcha',data)
+			.then(data=>{
+				if(data.code=='success'){
+					Toast({
+						message:'短信发送成功',
+						duration:800
+					})
+				}else if (data.code == "110019") {
+            this.deleteTime();
+            this.seal_control = true;
+            utils.sealControl(data.data.captchaId, (err, ret, captchaId) => {
+              let that = this;
+              if (ret != undefined) {
+                // 风控关闭
+                that.seal_control = false;
+                //调用定时器
+                that.setTimeout();
+                // 接口入参
+                let data = {
+                  captchaId: captchaId,
+                  phone: that.userPhone,
+                  verifyCode: ret.validate
+                };
+                // console.log(params , '带风控')
+                that.obtain(data);
+              }
+            });
+            this.deleteTime();
+				}else{
+					Toast({
+						message:data.message,
+						duration:800
+					})
+					clearInterval(this.timer)
+				}
+			}).catch(err=>{
+				console.log(err)
+				clearInterval(this.timer)
+			})
+		},
+		setTimeout(){
+    	const TIME_COUNT = 60;
+    	this.flag = false
+      if(!this.timer) {
+        this.count = TIME_COUNT;
+        this.timer = setInterval(() => {
+	        if(this.count > 0 && this.count <= TIME_COUNT) {
+	          this.count--;
+						this.content = this.count+' s后获取';
+	        } else {
+						this.content = '获取验证码';
+						this.flag = true;
+		        clearInterval(this.timer);
+		        this.timer = null;
+	         }
+         }, 1000)
+       }
+		},
+		//清楚定时器
+    deleteTime() {
+      // this.content = '获取验证码';
+      clearInterval(this.timer);
+      this.timer = null;
+    },
+		getdata(){
+			let data = {
+				inviterCode:utils.getCookie('InviterCode'),
+				productCode:utils.getCookie('ProductCode')
+			}
+			this.request('wisdom.vshop.product.h5BeforeJumpDetail',data)
+			.then(data=>{
+				if(data.code=='success'){
+					this.managerPhone = data.data.managerPhone
+					this.userPhone=data.data.userPhone
+					this.userName = data.data.userName
+					this.idCard = data.data.idCard
+				}
+			})
+		}
 	},
 	mounted(){
-
+		this.getdata()
 	}
 }
 </script>

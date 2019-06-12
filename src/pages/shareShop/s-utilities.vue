@@ -2,24 +2,24 @@
 	<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功' class="xialashuaxin">
 		<div class="utilitmain">
 			<div class="utilitop">
-				<div class="utilitopbanner"><img src="./images/tou xiang.png" alt=""></div>
+				<div class="utilitopbanner"><img :src=personImg alt=""></div>
 				<div class="utiliright">
-					<span>成都 </span>
-					<span>郑经理</span>
-					<p>身份认证</p>
+					<span>{{adNameSecond}}</span>
+					<span>{{name}}</span>
+					<p v-show='realStatus==1'>身份认证</p>
 				</div>
 			</div>
 			<div class="utilitslist">
 				<div class="havemoney" v-show="show">
-					<div @click="tohavemoney"><img src="" alt=""></div>
+					<div class="havamoneyImg" @click="tohavemoney"><img :src=havemoneyImg alt=""></div>
 					<div class="close" @click="closeTost"><img src="./images/close.png" alt=""></div>
 				</div>
 				<div class="utilistittle">申请多个产品，可大幅度提高贷款成功率</div>
-				<div class="utilisdatalist" @click="tostiflingborrow">
-					<div class="datalistbanner"><img src="" alt=""></div>
+				<div class="utilisdatalist" @click="tostiflingborrow(item.productCode)" v-for="(item,i) in dataList" :key='i'>
+					<div class="datalistbanner"><img :src=item.productLogo alt=""></div>
 					<div>
-						<h4>工具名称</h4>
-						<p>工具简介</p>
+						<h4>{{item.productName}}</h4>
+						<p>{{item.desc}}</p>
 					</div>
 				</div>
 			</div>
@@ -36,6 +36,13 @@ export default {
 		return{
 			isLoading:false,
 			show:true,
+			inviterCode:'',
+			dataList:[],
+			personImg:'',
+			name:'',
+			adNameSecond:'',
+			havemoneyImg:'',
+			realStatus:0
 		}
 	},
 	methods:{
@@ -43,16 +50,33 @@ export default {
 			setTimeout(() => {
 				// 加载状态结束
 				this.isLoading = false;
-			
 			}, 500);
 		},
-		getdatalist(){
-		},
+		getdatas(){
+			let data = {
+				storeCode:'0001',
+				head : true , 
+				type:2
+			}
+			this.request('wisdom.vshop.vshopStore.queryStoreProduct',data)
+				.then(data=>{ 
+					if(data.code=='success'){
+						this.dataList = data.data.productResList
+						this.inviterCode = data.data.inviterCode
+						this.personImg=data.data.personImg
+						this.name = data.data.name
+						this.adNameSecond = data.data.adNameSecond
+						this.show = data.data.showUMoney
+						this.havemoneyImg = data.data.bannerResList[0].bannerUrl
+						this.realStatus = data.data.realStatus
+					}
+				})
+			},
 		tohavemoney(){
-
+			this.$router.push('/havemoney')
 		},
-		tostiflingborrow(){
-			this.$router.push('/stiflingborrow')
+		tostiflingborrow(productCode){
+				this.$router.push('/stiflingborrow?productCode='+productCode+'&'+'inviterCode='+this.inviterCode)
 		},
 		closeTost(){
 			Dialog.confirm({
@@ -67,7 +91,8 @@ export default {
 		}
 	},
 	mounted(){
-			this.$emit('toparent','实用工具')
+		this.getdatas()
+		this.$emit('toparent','实用工具')
 	}
 }
 </script>
@@ -83,9 +108,14 @@ export default {
 			padding-left:15px;
 			align-items: center;
 			margin-bottom:15px;
-			.utilitopbanner img{
+			.utilitopbanner{
 				width:50px;height:50px;
+				border-radius: 50%;
+				overflow: hidden;
 				margin-right: 15px;
+				img{
+					width:50px;height:50px;
+				}
 			}
 			.utiliright{
 				display: flex;
@@ -146,8 +176,14 @@ export default {
 		}
 		.havemoney{
 			height:95px;
-			background: red;
 			position: relative;
+			.havamoneyImg{
+				height:95px;
+				img{
+					width:100%;
+					height:100%;
+				}
+			}
 			.close{
 				width:17px;
 				height:17px;
