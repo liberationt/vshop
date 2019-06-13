@@ -19,25 +19,25 @@
       <van-row class="center_list">
         <van-col span="12" style="text-align:left">产品名称</van-col>
         <van-col span="12">
-          <input type="text" v-model="shopValue.productName" placeholder="请填写产品名称">
+          <input type="text" v-on:input="inputFunc" v-model="shopValue.productName" placeholder="请填写产品名称">
         </van-col>
       </van-row>
       <van-row class="center_list">
         <van-col span="10" style="text-align:left">月利率范围</van-col>
         <van-col span="14">
-          <input type="text" v-model="shopValue.productRate" placeholder="请填写月利率如:0.3%-0.5%">
+          <input type="text" v-on:input="inputFunc" v-model="shopValue.productRate" placeholder="请填写月利率如:0.3%-0.5%">
         </van-col>
       </van-row>
       <van-row class="center_list">
         <van-col span="12" style="text-align:left">最小额度</van-col>
         <van-col span="12">
-          <input type="text" v-model="shopValue.limitMin" placeholder="请填写产品最小额度">
+          <input type="text" v-on:input="inputFunc" v-model="shopValue.limitMin" placeholder="请填写产品最小额度">
         </van-col>
       </van-row>
       <van-row class="center_list">
         <van-col span="12" style="text-align:left">最大额度</van-col>
         <van-col span="12">
-          <input type="text" v-model="shopValue.maxAmount" placeholder="请填写产品最大额度">
+          <input type="text" v-on:input="inputFunc" v-model="shopValue.limitMax" placeholder="请填写产品最大额度">
         </van-col>
       </van-row>
       <van-row class="center_list">
@@ -66,7 +66,7 @@
       </van-row>
     </div>
     <footer>
-      <button @click="addProduct">保存</button>
+      <button :class="flag ? '' :'color'" @click="flag && addProduct()">保存</button>
     </footer>
   </div>
 </template>
@@ -82,7 +82,7 @@ export default {
         productName: "",
         productRate: "",
         limitMin: "",
-        maxAmount: "",
+        limitMax: "",
         productDetail: ""
       },
       processList: [],
@@ -90,14 +90,19 @@ export default {
       materialsArr: [],
       processArr: [],
       topImgUrl: require("./imgs/topimgf.png"),
-      productLogo:"",
-      arr: []
+      productLogo: "",
+      flag: true,
+      isAdd:this.$route.query.isAdd
     };
   },
   methods: {
+    inputFunc() {
+      console.log(222);
+    },
     ongobanck() {
       this.$router.push({ path: "./mselfsupport" });
     },
+    // 图片上传
     onReadTop(file) {
       this.upload(file.file)
         .then(data => {
@@ -106,16 +111,51 @@ export default {
         })
         .catch(err => {});
     },
-    // 确认提交
-    editSubmit() {
-      
-      // 提交成功后跳转到首页
-      // this.$router.push({ path: "./myshop" });
+    // 保存或编辑
+    addProduct() {
+      let apiKey, dataList;
+      if (this.isAdd == "is") {
+        // 添加
+        dataList = Object.assign(this.shopValue, {
+          proprietaryProductSelectReqList: this.arrList(),
+          productLogo: this.productLogo
+        });
+        apiKey = "wisdom.vshop.proprietaryProduct.h5Save";
+      } else {
+        // 编辑
+        dataList = Object.assign(this.shopValue, {
+          proprietaryProductSelectReqList: this.arrList(),
+          productLogo: this.productLogo,
+          proprietaryProductCode:this.$route.query.code
+        });
+        apiKey = "wisdom.vshop.proprietaryProduct.h5UpdateByCode"
+      }
+      this.request(apiKey, dataList)
+        .then(data => {
+          this.$router.push({ path: "./mselfsupport" });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    Initialization(){
+      this.request("wisdom.vshop.proprietaryProduct.getH5ProprietaryProductByCode",{proprietaryProductCode: this.$route.query.code}).then(data=>{
+        const { productLogo , applicationMaterialList, applicationProcedureList } = data.data
+        this.shopValue = data.data
+        this.productLogo = productLogo
+        this.topImgUrl = productLogo
+        applicationMaterialList.forEach(v=>{
+          this.materialsArr.push(v.productParamCode)
+        })
+        applicationProcedureList.forEach(v=>{
+          this.processArr.push(v.productParamCode)
+        })
+      }).catch(err=>{console.log(err)})
     },
     processChange(code) {
       this.changeList(code, this.processArr);
     },
-    materialsChange(code){
+    materialsChange(code) {
       this.changeList(code, this.materialsArr);
     },
     changeList(code, arr) {
@@ -132,34 +172,38 @@ export default {
         arr.push(code);
       }
     },
-    // 保存或编辑
-    addProduct() {
-      let apiKey, dataList;
-      if (this.$route.query.isAdd == "is") {
-        // 添加
-        dataList = Object.assign(this.shopValue, {
-          proprietaryProductSelectReqList:this.arrList(),
-          productLogo : this.productLogo
-        })
-        apiKey = "wisdom.vshop.proprietaryProduct.h5Save";
-      } else {
-        // 编辑
-      }
-      this.request(apiKey,dataList).then(data=>{
-        this.$router.push({ path: "./mselfsupport" });
-      }).catch(err=>{
-        console.log(err)
-      })
+    arrList() {
+      let arrList = [];
+      this.processArr.forEach(v => {
+        arrList.push({ productParamCode: v, productParamType: 0 });
+      });
+      this.materialsArr.forEach(v => {
+        arrList.push({ productParamCode: v, productParamType: 1 });
+      });
+      return arrList;
     },
-    arrList(){
-      let arrList=[]
-      this.processArr.forEach(v=>{
-        arrList.push({productParamCode:v,productParamType:0})
-      })
-      this.materialsArr.forEach(v=>{
-        arrList.push({productParamCode:v,productParamType:1})
-      })
-      return arrList
+    // 校验
+    check() {
+      // 带订
+      // shopValue: {
+      //   productName: "",
+      //   productRate: "",
+      //   limitMin: "",
+      //   limitMax: "",
+      //   productDetail: ""
+      // }
+      if (
+        this.shopValue.productName == "" ||
+        this.productLogo == "" ||
+        this.shopValue.productRate == "" ||
+        this.shopValue.limitMin == "" ||
+        this.shopValue.limitMax == "" ||
+        this.shopValue.productDetail == ""
+      ) {
+        this.flag = false
+      } else {
+        this.flag = true
+      }
     }
   },
   mounted() {
@@ -176,12 +220,19 @@ export default {
       .catch(err => {
         console.log(err);
       });
+    // 编辑回显
+    if(this.isAdd != 'is'){
+      this.Initialization()
+    }
   }
 };
 </script>
 <style lang="less" scoped>
 .maddproduct_common {
   padding-bottom: 10px;
+  .color {
+    background-color: #928f8f;
+  }
   .editshop_center {
     padding: 0px 15px;
     .center_list {

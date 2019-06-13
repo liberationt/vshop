@@ -109,7 +109,9 @@ export default {
         title: '温馨提示',
         message: '确认删除此产品吗？'
       }).then(() => {
-        // on confirm
+        this.request("wisdom.vshop.proprietaryProduct.deleteByCode",{proprietaryProductCode: this.$route.query.code}).then(data=>{
+          this.$router.push({ path: "./mselfsupport" });
+        }).catch(err=>{console.log(err)})
       }).catch(() => {
         // on cancel
       });
@@ -119,7 +121,7 @@ export default {
         console.log(data)
         this.shopdetailsData = data.data
       }).catch(err=>{console.log(err)})
-    },
+    }
   },
   created(){
     this.Initialization()
