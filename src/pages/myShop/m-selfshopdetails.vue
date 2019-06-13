@@ -9,14 +9,14 @@
       <div class="header_message">
         <van-row>
           <van-col>
-            <img src="./imgs/dai.png" alt="">
+            <img :src=shopdetailsData.productLogo alt="">
           </van-col>
           <van-col class="message_text">
-            <p>人人贷借款</p>
-            <p>综合月利率：<span class="modal_color">0.78% - 0.85%</span></p>
-            <p>贷款额度：<span class="modal_color">1000 - 20000元</span></p>
+            <p>{{shopdetailsData.productName}}</p>
+            <p>综合月利率：<span class="modal_color">{{shopdetailsData.productRate}}</span></p>
+            <p>贷款额度：<span class="modal_color">{{shopdetailsData.amount}}</span></p>
           </van-col>
-          <van-col class="message_img">
+          <van-col class="message_img" v-if="!inviterCode">
             <span @click="goEdit"> <img src="./imgs/edit_icon@2x.png" alt=""> </span>
             <span @click="deleteProduct"> <img src="./imgs/delete_icon@2x.png" alt=""> </span>
           </van-col>
@@ -29,12 +29,12 @@
           <p>申请流程</p>
         </div>
         <ul class="process_img clearfix">
-          <li class="left" v-for="(item,index) in processimg">
+          <li class="left" v-for="(item,index) in shopdetailsData.applicationProcedureList">
             <div class="left">
-              <img :src=item.img class="img_top" alt="">
-              <p>{{item.title}}</p>
+              <img :src=item.productParamIcon class="img_top" alt="">
+              <p>{{item.productParamName}}</p>
             </div>
-            <p v-if="index != processimg.length-1" class="left img_bottom"><img src="./imgs/arrows_icon@2x.png" alt=""></p>
+            <p v-if="index != shopdetailsData.applicationProcedureList.length-1" class="left img_bottom"><img src="./imgs/arrows_icon@2x.png" alt=""></p>
           </li>
         </ul>
       </div>
@@ -43,7 +43,7 @@
           <p>申请资料</p>
         </div>
         <ul class="process_text">
-          <li v-for="item in processimg">{{item.process_text}}</li>
+          <li v-for="(item,index) in shopdetailsData.applicationMaterialList">{{index+1+'、'+item.productParamName}}</li>
         </ul>
       </div>
       <div class="mselfshopdetails_process">
@@ -51,13 +51,13 @@
           <p>申请条件</p>
         </div>
         <ul class="process_text">
-          <li>1、手机运营商、身份证、基本资料、征信报告、银行卡</li>
+          <li v-for="(item,index) in shopdetailsData.applyCondition">{{index+1+'、'+item}}</li>
         </ul>
       </div>
     </div>
     <footer class="productdetail_footer">
       <button @click="iwantagent" class="button_user button_userc">
-        立即申请
+        {{inviterCode?'立即申请':'立即分享'}}
       </button>
     </footer>
     <!-- 确认删除框 -->
@@ -66,6 +66,7 @@
 </template>
 <script>
 import { Popup, Dialog } from "vant";
+import utils from '../../utils/utils'
 export default {
   components: {
     [Popup.name]: Popup,
@@ -73,23 +74,9 @@ export default {
   },
   data() {
     return {
-      processimg: [
-        {
-          img: require("./imgs/submit applications_icon@2x.png"),
-          title: "提交申请",
-          process_text: "1、身份证"
-        },
-        {
-          img: require("./imgs/submit applications_icon@2x.png"),
-          title: "身份认证",
-          process_text: "2、银行卡"
-        },
-        {
-          img: require("./imgs/submit applications_icon@2x.png"),
-          title: "手机认证",
-          process_text: "3、手机实名制"
-        }
-      ],
+      inviterCode:this.$route.query.inviterCode,
+      code:this.$route.query.code,
+      shopdetailsData:{},
     };
   },
   created() {},
@@ -101,11 +88,20 @@ export default {
       alert("推荐用户");
     },
     iwantagent() {
-      alert("我要代理");
+      if(!inviterCode){ // 立即分享
+        this.request("wisdom.vshop.proprietaryProduct.getH5ProprietaryProductByCode",{proprietaryProductCode: this.$route.query.code}).then(data=>{
+          console.log(data)
+          this.shopdetailsData = data.data
+        }).catch(err=>{console.log(err)})
+      } else {
+        this.$router.push({path:'./stiflingborrow?type='+3})
+        utils.setCookie('InviterCode',this.InviterCode)
+        utils.setCookie('ProductCode',this.code)
+      }
     },
     goEdit(){
       // 调到编辑页
-      this.$router.push({ path: "./maddproduct" });
+      this.$router.push({ path: "./maddproduct?code="+this.code });
     },
     // 删除
     deleteProduct(){
@@ -119,8 +115,9 @@ export default {
       });
     },
     Initialization(){
-      this.request("wisdom.vshop.proprietaryProduct.getH5ProprietaryProductByCode",{proprietaryProductCode: this.$route.query.code,inviterCode:'111'}).then(data=>{
+      this.request("wisdom.vshop.proprietaryProduct.getH5ProprietaryProductByCode",{proprietaryProductCode: this.$route.query.code}).then(data=>{
         console.log(data)
+        this.shopdetailsData = data.data
       }).catch(err=>{console.log(err)})
     },
   },

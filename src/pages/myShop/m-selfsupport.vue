@@ -50,7 +50,7 @@ export default {
       }, 500);
     },
     addproduct() {
-      this.$router.push({ path: "./maddproduct" });
+      this.$router.push({ path: "./maddproduct?isAdd="+'is' });
     },
     goShopdetails(code){
       this.$router.push({ path: "./mselfshopdetails?code="+code });
