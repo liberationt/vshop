@@ -20,7 +20,7 @@
             shape="round"
             @click="inquery"
           >
-            <div slot="action" @click="rightShow = true">
+            <div slot="action" @click="rightShow = true,labelName = '确认'">
               <img src="./imgs/screening_icon@2x.png" alt="">
               筛选
             </div>
@@ -30,7 +30,6 @@
           <van-tabs class="vantab_center" @click="onvanTabs"  v-model="active">
             <div class="shopregister_tips" @click="extension">一键推广店铺链接</div>
             <van-tab class="shopregister_list" title="微店客户">
-              
             </van-tab>
             <van-tab class="shopregister_list" title="导入客户">
               <!-- <ul>
@@ -55,11 +54,11 @@
             <div class="shopregister_list">
                 <ul>
                   <li v-for="item in customerList" @click="goregisterdetails(item.userCode)">
-                    <div v-if="item.label.length != 0" class="pleace_label" >
-                      <span v-for="item in item.label">{{item.labelOptionName}}</span>
+                    <div v-if="item.label.length != 0" @click.stop="selectLabels(item.userCode)" class="pleace_label" >
+                      <span v-if="index<3" v-for="(item,index) in item.label">{{item.labelOptionName}}</span>
                       <span v-if="item.label.length == 3">...</span>
                     </div>
-                    <div class="pleace_label" v-else>
+                    <div @click.stop="selectLabels(item.userCode)" class="pleace_label" v-else>
                       <span >请选择标签</span>
                     </div>
                     <div class="shopregister_operation">
@@ -96,17 +95,28 @@
     </div>
     <!-- 右侧弹出框 -->
     <van-popup v-model="rightShow" position="right" class="rightShow" :overlay="true">
-      <div class="rightShow_common" v-for="item in InformationState">
+      <div class="rightShow_common" v-for="(item,i) in labeData">
         <p class="rightShow_one">
-          <span>{{item.title}}</span>
+          <span>{{item.labelTitleName}}</span>
         </p>
         <p class="rightShow_two">
-          <options :options=item.child :isMultiply=true></options>
+          <ul class="center_list_two">
+            <li v-if="item.labelIsRadio == 1 && item.labelTitleKey =='last_flow_time' " :class="{checked:item1 == labelOptionKey}"  v-for="(item1,index) in item.optionResList" @click="singleElection(item1,item.labelTitleName)">
+              {{item1.labelOptionName}}
+            </li>
+            <li v-if="item.labelIsRadio == 1 && item.labelTitleKey =='flow_state' " :class="{checked:item1 == labelOptionKey1}"  v-for="(item1,index) in item.optionResList" @click="singleElection1(item1,item.labelTitleName)">
+              {{item1.labelOptionName}}
+            </li>
+            <li v-if="item.labelIsRadio == 0" :class="{checked:materialsArr.includes(item1)}"  v-for="(item1,index) in item.optionResList" @click="materialsChange(item1,item.labelTitleName)">
+              {{item1.labelOptionName}}
+            </li>
+          </ul>
+          <!-- <options :options=item.optionResList :isMultiply=true></options> -->
         </p>
       </div>
       <van-row class="rightShow_footer">
         <van-col @click.native="rightShow = false" span="12" class="rightShow_footer_one">取消</van-col>
-        <van-col span="12" class="rightShow_footer_two">确定</van-col>
+        <van-col span="12" @click.native="updateTags" class="rightShow_footer_two">{{labelName}}</van-col>
       </van-row>
     </van-popup>
   </div>
@@ -114,8 +124,8 @@
 <script>
 import utils from "../../utils/utils";
 import options from "../../views/options";
-import { Search, Tab, Tabs, Popup, Dialog } from "vant";
-import {mapState} from 'vuex'
+import { Search, Tab, Tabs, Popup, Dialog, Toast } from "vant";
+import { mapState } from "vuex";
 export default {
   components: {
     [Search.name]: Search,
@@ -127,6 +137,8 @@ export default {
   },
   data() {
     return {
+      labelOptionKey:{},
+      labelOptionKey1:{},
       searchValue: "",
       active: 0,
       count: 0,
@@ -185,15 +197,28 @@ export default {
       ],
       changeRed: "",
       checkData: [],
-      customerList:[],
-      checkboxImg:require('./imgs/choose_icon@2.png'),
+      customerList: [],
+      checkboxImg: require("./imgs/choose_icon@2.png"),
+      labeData: [],
+      materialsArr: [],
+      userCode:"",
+      labelTitleName0:"",
+      labelTitleName1:"",
+      labelTitleName2:[],
+      labelName:"",
+      labelObj:{},
+      labelArr:[],
+      generalizeStore:{},
     };
   },
   computed: {
-    ...mapState(['title'])
+    ...mapState(["title"])
   },
   created() {
-    this.Initialization(1)
+    this.Initialization(1, "",{});
+    this.labelist();
+    // 一键推广链接
+    this.generalizeStoreLink()
   },
   mounted() {
     // window.onresize监听页面高度的变化
@@ -205,8 +230,8 @@ export default {
     };
   },
   methods: {
-    inquery(){
-      this.Initialization(1,this.searchValue)
+    inquery() {
+      this.Initialization(1, this.searchValue,{});
     },
     // 发信息
     goMessage(phone) {
@@ -221,45 +246,76 @@ export default {
     },
     // tab事件
     onvanTabs() {
-      this.Initialization(1,'')
+      this.Initialization(1, "",{});
+    },
+    //一键推广店铺链接
+    generalizeStoreLink(){
+      this.request('wisdom.vshop.vshopStore.generalizeStoreLink',{data:window.location.href}).then(data=>{
+        console.log(data)
+        this.generalizeStore = data.data
+      }).catch(err=>{console.log(err)})
     },
     // 一键推广
-    extension (){
+    extension() {
+      let message,generalizeName
+      if(this.generalizeStore.hasStore){
+        message = this.generalizeStore.text+" "+this.generalizeStore.shortLink
+        generalizeName = '去复制内容'
+      } else {
+        message = "您还没有创建店铺，请先去编辑保存店铺信息"
+        generalizeName = '去编辑'
+      }
       Dialog.confirm({
-        title: '',
-        message: '您还没有创建店铺，请先去编辑保存店铺信息'
-      }).then(() => {
-
-      }).catch(() => {
-        // on cancel
-      });
+        title: "",
+        message: message,
+        confirmButtonText:generalizeName
+      })
+        .then(() => {
+          if(this.generalizeStore.hasStore){
+            utils.copyContent(this.generalizeStore.text+this.generalizeStore.shortLink)
+            Toast('复制成功')
+          } else {
+            this.$router.push({path:'./meditshop'})
+          }
+          
+        })
+        .catch(() => {
+          // on cancel
+        });
     },
     // 取消导出
-    cancelExport(){
-      this.isHide = false
-      this.checkData = []
-      this.checkboxImg =require('./imgs/choose_icon@2.png')
+    cancelExport() {
+      this.isHide = false;
+      this.checkData = [];
+      this.checkboxImg = require("./imgs/choose_icon@2.png");
     },
     // 初始化数据
-    Initialization(i,user){
-      this.request("wisdom.vshop.vshopLoanUser.queryVshopLoanUserList",{searchStr : user,type :this.active,pageNum:i,pageSize:10}).then(data=>{
-        console.log('莉莉',data)
-        this.customerList = data.data.dataList
-      }).catch(err=>{console.log(err)})
+    Initialization(i, user, data1) {
+      // console.log('莉莉',)
+      this.request("wisdom.vshop.vshopLoanUser.queryVshopLoanUserList", Object.assign({
+        searchStr: user,
+        type: this.active,
+        pageNum: i,
+        pageSize: 10
+      },data1))
+        .then(data => {
+          this.customerList = data.data.dataList;
+          if(JSON.stringify(data1) != "{}"){this.rightShow = false}
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     //跳转到客户详情页
     goregisterdetails(code) {
-
       if (this.isHide) {
         // 操作全选功能
       } else {
-        this.$router.push({ path: "./muserdetails?code="+code });
+        this.$router.push({ path: "./muserdetails?code=" + code });
       }
     },
     checkAll(e) {
-      this.checkboxImg =require('./imgs/quanxuan@2x.png')
-      console.log(e)
-      console.log(this.checkData)
+      this.checkboxImg = require("./imgs/quanxuan@2x.png");
       // 点击全选事件函数
       var checkObj = document.querySelectorAll(".checkItem"); // 获取所有checkbox项
       if (e.target.checked) {
@@ -272,18 +328,82 @@ export default {
         }
       } else {
         // 如果是去掉全选则清空checkbox选项绑定数组
-        this.checkboxImg =require('./imgs/choose_icon@2.png')
+        this.checkboxImg = require("./imgs/choose_icon@2.png");
         this.checkData = [];
       }
     },
     //下拉刷新
     onRefresh() {
       setTimeout(() => {
-        this.Initialization(1)
+        this.Initialization(1);
         this.$toast("刷新成功");
         this.isLoading = false;
         this.count++;
       }, 500);
+    },
+    // 选择标签
+    selectLabels(v){
+      this.rightShow = true
+      this.userCode = v
+      this.labelName = '更新标签'
+    },
+    // 更新标签
+    updateTags(){
+      let parmise 
+      if(this.userCode){
+        parmise = {
+          followTime : this.labelTitleName0,
+          followState : this.labelTitleName1,
+          optionUpdateReqList : this.labelTitleName2,
+          userCode : this.userCode
+        }
+        this.request('wisdom.vshop.userLabel.updateUserLabel',).then(data=>{
+          this.rightShow = false
+          this.Initialization(1,'',{})
+        }).catch(err=>{console.log(err)})
+      } else {
+        this.Initialization(1, this.searchValue,Object.assign(this.labelObj,{goodLabelList:this.labelArr}))
+      }
+    },
+    // 选择标签事件
+    materialsChange(code,name) {
+      this.changeList(code, this.materialsArr);
+      this.labelArr.push(code.labelOptionKey)
+      this.labelTitleName2.push(Object.assign(code,{labelTitleName:name}))
+    },
+    singleElection(v,name){
+      this.labelOptionKey = v
+      this.labelTitleName0 = Object.assign(v,{labelTitleName:name})
+      this.labelObj.followTime = v.labelOptionKey
+    },
+    singleElection1(v,name){
+      this.labelOptionKey1 = v
+      this.labelTitleName1 = Object.assign(v,{labelTitleName:name})
+      this.labelObj.followState = v.labelOptionKey
+    },
+    // 选择标签列表
+    labelist() {
+      this.request("wisdom.vshop.vshopLoanUser.getFilteringOptions", {})
+        .then(data => {
+          this.labeData = data.data.dataList;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    changeList(code, arr) {
+      if (arr.includes(code)) {
+        //includes()方法判断是否包含某一元素,返回true或false表示是否包含元素，对NaN一样有效
+        //filter()方法用于把Array的某些元素过滤掉，filter()把传入的函数依次作用于每个元素，然后根据返回值是true还是false决定保留还是丢弃该元素：生成新的数组
+        // arr=arr.filter(function (ele){return ele != i;});
+        arr.forEach((e, index) => {
+          if (e == code) {
+            arr.splice(index, 1);
+          }
+        });
+      } else {
+        arr.push(code);
+      }
     },
     // 检测屏幕高度变化
     inputType() {
@@ -301,7 +421,7 @@ export default {
           that.timer = false;
         }, 20);
       }
-    },
+    }
   },
   watch: {
     showHeight: "inputType"
@@ -325,7 +445,7 @@ export default {
   }
   .checkItem[type="checkbox"]:checked {
     background: url("./imgs/choose@2x.png") no-repeat center;
-    background-size: 100% 100%; 
+    background-size: 100% 100%;
   }
   .rightShow {
     width: 314px;
@@ -366,6 +486,24 @@ export default {
       span {
         border-left: 3px solid #4597fb; /*none*/
         padding-left: 8px;
+      }
+    }
+    .rightShow_two {
+      .checked {
+        background-color: #4597fb;
+        color: #fff;
+      }
+      li {
+        width: 88px;
+        height: 32px;
+        line-height: 32px;
+        background-color: #f4f4f4;
+        text-align: center;
+        border-radius: 2px;
+        margin-right: 8px;
+      }
+      :last-child {
+        margin-right: 0px;
       }
     }
   }
