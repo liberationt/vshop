@@ -1,11 +1,11 @@
 <template>
-	<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功' class="xialashuaxin" :disabled="disabled=='官方贷款'">
+	<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功' class="xialashuaxin" :disabled="disabled=='贷款'">
 	<div class="srelamain">
 		<header class="srelatop">
 			<div class="srelatopmain">
 				<div class="bannerudius"><img :src= personImg alt=""></div>
 				<div class="srelate_menu">
-					<van-tabs type="card" v-model="active" @click='onClick'>
+					<van-tabs type="card" @click='onClick' v-model="active">
 						<!-- <van-tab class='van-tab van-tab--active' title="官方贷款"></van-tab> -->
 						<!-- <van-tab title="官方贷款"></van-tab>
 						<van-tab title="信用卡"></van-tab>
@@ -19,7 +19,7 @@
 		<div class="havemoney" >
 			<div class="havemoneytop" v-show="showUMoney">
 				<div @click="tohavemoney" class="havamoneyImg"><img :src=havemoneyImg alt=""></div>
-				<div class="close" @click="closeTost"><img src="./images/close.png" alt=""></div>
+				<div class="close" @click="closeTost" v-show="isshow"><img src="./images/close.png" alt=""></div>
 			</div>
 			<div>
 				<officialloans v-if="disabled=='贷款'"></officialloans>
@@ -32,6 +32,7 @@
 	</van-pull-refresh>
 </template>
 <script>
+import utils from '../../utils/utils'
 import financingloan from './s-financingloan'
 import officialloans from './s-officialloans'
 import creditcard from './s-creditcard'
@@ -55,14 +56,16 @@ export default {
 			disabled:'',
 			personImg:'',
 			havemoneyImg:'',
-			showUMoney:true,
-			dayUMoney:''
+			showUMoney:false,
+			dayUMoney:'',
+			isshow:false
 		}
 	},
 	methods:{
 		onClick(i,v){
 			this.disabled = v
 		},
+		
 		tohavemoney(){
 			this.$router.push('/havemoney')
 		},
@@ -84,9 +87,9 @@ export default {
 			}
 			this.request('wisdom.vshop.vshopStore.closeUMoneyTip',data)
 			.then(data=>{
-				// if(data.code=='success'){
-				// 	this.getdatas()
-				// }
+				if(data.code=='success'){
+					this.getdatas()
+				}
 			})
 		},
 			// 下拉刷新
@@ -116,6 +119,11 @@ export default {
 		}
 	},
 	created(){
+		if(utils.getCookie('user')){
+			this.isshow = true
+		}else{
+			this.isshow = false
+		}
 		if(this.$route.query.index){
 			this.index= Number(this.$route.query.index)
 			this.active = this.$route.query.index

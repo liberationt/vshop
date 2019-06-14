@@ -4,8 +4,7 @@
       <!-- <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> -->
     </div>
-    <router-view/>
-    
+    <router-view v-if='isRouterlive'></router-view>
   </div>
 </template>
 <script>
@@ -14,6 +13,24 @@ export default {
    components: {
     
   },
+  provide(){
+    return {
+      reload:this.reload
+    }
+  },
+  data(){
+    return{
+      isRouterlive:true
+    }
+  },
+  methods:{
+    reload () {
+      this.isRouterlive = false
+      this.$nextTick(function () {
+        this.isRouterlive = true
+      })
+    }
+  }
   
 }
 </script>

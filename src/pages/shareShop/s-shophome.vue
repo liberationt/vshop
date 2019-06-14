@@ -1,7 +1,7 @@
 <template>
-  <div class="shopmain">
-		<header class="paddingTop">
-			<van-nav-bar :title='tittle' left-text="" :left-arrow="this.active!=0" fixed @click-left="onClickLeft">
+  <div class="shopmain pddingTop">
+		<header>
+			<van-nav-bar :title='tittle' left-text="" :left-arrow="this.active!=1" fixed @click-left="onClickLeft">
 				<span slot="right" style='color:#4597FB' v-show='number==1' @click="toshare"> 分享微店</span>
 			</van-nav-bar>
 		</header>
@@ -31,7 +31,7 @@ export default {
 		},
 		data(){
 			return{
-				active:'1',
+				active:1,
 				tittle:'',
 				number:'',
 				isLoading:false,

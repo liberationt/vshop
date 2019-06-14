@@ -17,6 +17,7 @@
 	</div>
 </template>
 <script>
+import utils from '../../utils/utils'
 export default {
 	data(){
 		return{
@@ -28,6 +29,7 @@ export default {
 			this.$router.go(-1)
 		},
 		tocitylsit(e){
+			utils.setCookie('adNameSecond',e)
 			this.$router.push('/productnamedetail?city='+e)
 		}
 	},

@@ -27,7 +27,9 @@
   </div>
 </template>
 <script>
+import utils from '../../utils/utils'
 import { Icon } from 'vant';
+import { utimesSync } from 'fs';
 export default {
 	components:{
 		[Icon.name]:Icon
@@ -61,9 +63,11 @@ export default {
 			this.$router.go(-1)
 		},
 		hotcitys(e){
+			utils.setCookie('adNameFirst',e)
 			this.$router.push('/productnamedetail?city='+e)
 		},
 		province(item,i){
+			utils.setCookie('adNameFirst',item)
 			this.$router.push('/citylist?id='+i)
 		}
 	}

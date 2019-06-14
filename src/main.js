@@ -6,6 +6,7 @@ import utils from './utils/utils'
 // import http from './utils/http'
 import Api from './utils/api'
 import 'lib-flexible'
+import scroll from 'vue-seamless-scroll'
 // 导航栏
 import { NavBar  } from 'vant';
 // 下拉刷新
@@ -18,6 +19,7 @@ Vue.use(PullRefresh);
 Vue.use(Dialog)
 Vue.use(List)
 Vue.use(Toast)
+Vue.use(scroll)
 //兼容ie10 以上
 import '@babel/polyfill'
 if (!store.state.actives ) {
