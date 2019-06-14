@@ -60,7 +60,7 @@
         </div>
         <div v-else>
           <van-col span="16">
-            <button @click="iwantagent" class="button_user button_userc">
+            <button @click="moneyShow = true" class="button_user button_userc">
               我要代理
             </button>
           </van-col> 
@@ -97,20 +97,39 @@
         <img src="./imgs/turn_off@2x.png" alt="">
       </div>
     </van-popup>
+    <!-- 弹窗 -->
+    <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
+      <div>
+        <p class="product_message">确认代理后您将获得该产品 专属推广链接，是否确认？</p>
+        <p class="product_radio">
+          <van-radio-group v-model="radioName">
+            <van-radio name="1">已阅读并同意<span style="color:#4597FB;">《XX代理协议》</span></van-radio>
+          </van-radio-group>
+        </p>
+        <p class="product_button">
+          <button @click="moneyShow = false">取消</button>
+          <button @click="confirm">确定</button>
+        </p>
+      </div>
+    </van-popup>
   </div>
 </template>
 <script>
 import { qrcanvas } from 'qrcanvas';
-import { Popup } from 'vant';
+import { Popup, RadioGroup, Radio,} from 'vant';
 export default {
   components: {
-    [Popup.name] : Popup
+    [Popup.name] : Popup,
+    [RadioGroup.name] : RadioGroup,
+    [Radio.name] : Radio,
   },
   data(){
     return{
       showPoster: false,
       productList:[],
       showPosterList:{},
+      moneyShow: false,
+      radioName:"",
     }
   },
   created(){
@@ -126,8 +145,13 @@ export default {
     recommenduser(){
        alert('推荐用户')
     },
-    iwantagent(){
-      alert('我要代理')
+    // 确认代理
+    confirm(){
+      let agentStatusData = [{productCode:this.$route.query.code,productType:this.$route.query.type}]
+      this.request('wisdom.vshop.product.batchAgentProducts',{queryH5UserProductDetailReqList:agentStatusData}).then(data=>{
+        this.moneyShow =  false
+        this.$router.push({path:"./magentproduct"})
+      }).catch(err=>{console.log(err)})
     },
     Initialization(){
       this.request("wisdom.vshop.product.queryH5ProductMarketDetail",{productCode:this.$route.query.code}).then(data=>{

@@ -17,10 +17,8 @@
             v-model="searchValue"
             placeholder="请输入姓名或手机号"
             show-action
-            @focus="obtain()"
-            @blur="Lose()"
             shape="round"
-            @search="onSearch"
+            @click="inquery"
           >
             <div slot="action" @click="rightShow = true">
               <img src="./imgs/screening_icon@2x.png" alt="">
@@ -30,37 +28,16 @@
         </div>
         <div class="shopregister_message">
           <van-tabs class="vantab_center" @click="onvanTabs"  v-model="active">
-            <div class="shopregister_tips">一键推广店铺链接</div>
+            <div class="shopregister_tips" @click="extension">一键推广店铺链接</div>
             <van-tab class="shopregister_list" title="微店客户">
-              <ul>
-                <li v-for="item in 10" @click="goregisterdetails">
-                  <div class="pleace_label">
-                    <span>请选择标签</span>
-                    <span>...</span>
-                  </div>
-                  <div class="shopregister_operation">
-                    <p class="one">2018-03-20 10:20:33</p>
-                    <p class="two">
-                      <span>黎明演</span>
-                      <span>136 **** 1111</span>
-                      <span class="message_icon" @click.stop="goMessage"><img src="./imgs/message_icon@2x.png" alt=""></span>
-                      <span class="phone_icon" @click.stop="goPhone"><img src="./imgs/phone_icon@2x.png" alt=""></span>
-                      <span class="biajidianpu"><img src="./imgs/biajidianpu.png" alt=""></span>
-                    </p>
-                  </div>
-                  <label>        
-                      <!-- v-model 双向数据绑定命令 -->
-                      <input class="checkItem" type="checkbox" :value="item" v-model="checkData">
-                  </label>
-                </li>
-              </ul>
+              
             </van-tab>
             <van-tab class="shopregister_list" title="导入客户">
-              <ul>
+              <!-- <ul>
                 <li v-for="item in 10" @click="goregisterdetails">
                   <div class="pleace_label">
                     <span>请选择标签</span>
-                    <span>...</span>
+                    <span v-if="">...</span>
                   </div>
                   <div class="shopregister_operation">
                     <p class="one">2018-03-20 10:20:33</p>
@@ -73,18 +50,47 @@
                     </p>
                   </div>
                 </li>
-              </ul>
+              </ul> -->
             </van-tab>
+            <div class="shopregister_list">
+                <ul>
+                  <li v-for="item in customerList" @click="goregisterdetails(item.userCode)">
+                    <div v-if="item.label.length != 0" class="pleace_label" >
+                      <span v-for="item in item.label">{{item.labelOptionName}}</span>
+                      <span v-if="item.label.length == 3">...</span>
+                    </div>
+                    <div class="pleace_label" v-else>
+                      <span >请选择标签</span>
+                    </div>
+                    <div class="shopregister_operation">
+                      <p class="one">{{item.dataCreateTime}}</p>
+                      <p class="two">
+                        <span>{{item.userName}}</span>
+                        <span>{{item.userPhone}}</span>
+                        <span class="message_icon" @click.stop="goMessage(item.userPhone)"><img src="./imgs/message_icon@2x.png" alt=""></span>
+                        <span class="phone_icon" @click.stop="goPhone(item.userPhone)"><img src="./imgs/phone_icon@2x.png" alt=""></span>
+                        <span class="biajidianpu"><img src="./imgs/biajidianpu.png" alt=""></span>
+                      </p>
+                    </div>
+                    <label>        
+                        <!-- v-model 双向数据绑定命令 -->
+                        <input class="checkItem" type="checkbox" :value="item.userCode" v-model="checkData">
+                    </label>
+                  </li>
+                </ul>
+              </div>
           </van-tabs>
         </div>
       </van-pull-refresh>
      <footer v-if="isHide" class="shopregister_footer" :class="{  'nav-hide': hideClass }">
         <van-row>
-          <van-col class="footer_top">确认导出（已选19）</van-col>
-          <van-col class="footer_center">取消导出</van-col>
+          <van-col class="footer_top">确认导出（已选{{checkData.length}}）</van-col>
+          <van-col class="footer_center" >
+            <span @click="cancelExport">取消导出</span>
+          </van-col>
           <van-col class="footer_bottom" @click="checkAll($event)">
             <input id="quan" class="footer_bottom_icon" type="checkbox" @click="checkAll($event)">
-             <img src="./imgs/Not to choose_icon@2x.png" alt=""> 全选</van-col>
+             <img :src=checkboxImg alt=""> 全选</van-col>
         </van-row>
      </footer>
     </div>
@@ -105,11 +111,10 @@
     </van-popup>
   </div>
 </template>
-
 <script>
 import utils from "../../utils/utils";
 import options from "../../views/options";
-import { Search, Tab, Tabs, Popup } from "vant";
+import { Search, Tab, Tabs, Popup, Dialog } from "vant";
 import {mapState} from 'vuex'
 export default {
   components: {
@@ -117,12 +122,12 @@ export default {
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
     [Popup.name]: Popup,
+    [Dialog.name]: Dialog,
     options
   },
   data() {
     return {
       searchValue: "",
-      bounceup: false,
       active: 0,
       count: 0,
       isLoading: false,
@@ -179,13 +184,17 @@ export default {
         }
       ],
       changeRed: "",
-      checkData: []
+      checkData: [],
+      customerList:[],
+      checkboxImg:require('./imgs/choose_icon@2.png'),
     };
   },
   computed: {
     ...mapState(['title'])
   },
-  created() {},
+  created() {
+    this.Initialization(1)
+  },
   mounted() {
     // window.onresize监听页面高度的变化
     window.onresize = () => {
@@ -196,40 +205,61 @@ export default {
     };
   },
   methods: {
+    inquery(){
+      this.Initialization(1,this.searchValue)
+    },
     // 发信息
-    goMessage() {
-      window.location.href = "sms:" + "18201814187";
+    goMessage(phone) {
+      window.location.href = "sms:" + phone;
     },
     // 拨打电话
-    goPhone() {
-      window.location.href = "tel://" + "18201814187";
+    goPhone(phone) {
+      window.location.href = "tel://" + phone;
     },
     goBack() {
       this.$router.push({ path: "./myshop" });
     },
-    //导出
-    onSearch() {},
-    obtain() {
-      this.bounceup = false;
-    },
-    Lose() {
-      this.bounceup = true;
-    },
-    // 取消
-    cancel() {
-      alert(3);
-    },
     // tab事件
-    onvanTabs() {},
+    onvanTabs() {
+      this.Initialization(1,'')
+    },
+    // 一键推广
+    extension (){
+      Dialog.confirm({
+        title: '',
+        message: '您还没有创建店铺，请先去编辑保存店铺信息'
+      }).then(() => {
+
+      }).catch(() => {
+        // on cancel
+      });
+    },
+    // 取消导出
+    cancelExport(){
+      this.isHide = false
+      this.checkData = []
+      this.checkboxImg =require('./imgs/choose_icon@2.png')
+    },
+    // 初始化数据
+    Initialization(i,user){
+      this.request("wisdom.vshop.vshopLoanUser.queryVshopLoanUserList",{searchStr : user,type :this.active,pageNum:i,pageSize:10}).then(data=>{
+        console.log('莉莉',data)
+        this.customerList = data.data.dataList
+      }).catch(err=>{console.log(err)})
+    },
     //跳转到客户详情页
-    goregisterdetails() {
+    goregisterdetails(code) {
+
       if (this.isHide) {
         // 操作全选功能
       } else {
-        // this.$router.push({ path: "./muserdetails" });
+        this.$router.push({ path: "./muserdetails?code="+code });
       }
     },
     checkAll(e) {
+      this.checkboxImg =require('./imgs/quanxuan@2x.png')
+      console.log(e)
+      console.log(this.checkData)
       // 点击全选事件函数
       var checkObj = document.querySelectorAll(".checkItem"); // 获取所有checkbox项
       if (e.target.checked) {
@@ -242,12 +272,14 @@ export default {
         }
       } else {
         // 如果是去掉全选则清空checkbox选项绑定数组
+        this.checkboxImg =require('./imgs/choose_icon@2.png')
         this.checkData = [];
       }
     },
     //下拉刷新
     onRefresh() {
       setTimeout(() => {
+        this.Initialization(1)
         this.$toast("刷新成功");
         this.isLoading = false;
         this.count++;
@@ -269,7 +301,7 @@ export default {
           that.timer = false;
         }, 20);
       }
-    }
+    },
   },
   watch: {
     showHeight: "inputType"

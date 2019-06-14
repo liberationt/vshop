@@ -79,7 +79,7 @@ export default {
       // 0 我要代理 1 马上赚钱
       switch (num) {
         case 1:
-          this.$router.push({ path: "./mproductdetails?num=" + num+"&code="+code });
+          this.goDetails(code,num)
           break;
         case 0:
           this.moneyShow = true;
@@ -90,7 +90,7 @@ export default {
     },
     // 跳转到详情
     goDetails(code,num) {
-      this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num });
+      this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num+"&type="+0 });
     },
     Initialization(num,i) {
       this.request("wisdom.vshop.product.queryH5AgentProducts", {
@@ -150,7 +150,7 @@ export default {
         if (this.productList0.length <=10) {
           this.finished = true;
         }
-      }, 500);
+      }, 2000);
     }
   },
   mounted() {

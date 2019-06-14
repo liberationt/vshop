@@ -19,25 +19,25 @@
       <van-row class="center_list">
         <van-col span="12" style="text-align:left">产品名称</van-col>
         <van-col span="12">
-          <input type="text" v-model="shopValue.productName" placeholder="请填写产品名称">
+          <input type="text" v-on:input="inputFunc" v-model="shopValue.productName" placeholder="请填写产品名称">
         </van-col>
       </van-row>
       <van-row class="center_list">
-        <van-col span="12" style="text-align:left">月利率范围</van-col>
-        <van-col span="12">
-          <input type="text" v-model="shopValue.MonthlyInterest" placeholder="请填写月利率 如：0.3%-0.5%">
+        <van-col span="10" style="text-align:left">月利率范围</van-col>
+        <van-col span="14">
+          <input type="text" v-on:input="inputFunc" v-model="shopValue.productRate" placeholder="请填写月利率如:0.3%-0.5%">
         </van-col>
       </van-row>
       <van-row class="center_list">
         <van-col span="12" style="text-align:left">最小额度</van-col>
         <van-col span="12">
-          <input type="text" v-model="shopValue.minimumAmount" placeholder="请填写产品最小额度">
+          <input type="text" v-on:input="inputFunc" v-model="shopValue.limitMin" placeholder="请填写产品最小额度">
         </van-col>
       </van-row>
       <van-row class="center_list">
         <van-col span="12" style="text-align:left">最大额度</van-col>
         <van-col span="12">
-          <input type="text" v-model="shopValue.maxAmount" placeholder="请填写产品最大额度">
+          <input type="text" v-on:input="inputFunc" v-model="shopValue.limitMax" placeholder="请填写产品最大额度">
         </van-col>
       </van-row>
       <van-row class="center_list">
@@ -45,7 +45,7 @@
           <span>申请流程</span>
         </p>
         <ul class="center_list_two">
-          <li class="left" v-for="item in processList"> {{item}}</li>
+          <li class="left" :class="{checked:processArr.includes(item.productParamCode)}" v-for="(item,index) in processList" @click="processChange(item.productParamCode)"> {{item.productParamName}}</li>
         </ul>
       </van-row>
       <van-row class="center_list">
@@ -53,7 +53,7 @@
           <span>申请资料</span>
         </p>
         <ul class="center_list_two">
-          <li class="left" v-for="item in materialsList"> {{item}}</li>
+          <li class="left" :class="{checked:materialsArr.includes(item.productParamCode)}" v-for="(item,index) in materialsList" @click="materialsChange(item.productParamCode)"> {{item.productParamName}}</li>
         </ul>
       </van-row>
       <van-row class="center_list">
@@ -61,59 +61,199 @@
           <span>申请条件</span>
         </p>
         <div class="left">
-          <textarea class="shop_tarea" v-model="shopValue.shopIntroduce" placeholder="请填写申请条件"></textarea>
+          <textarea class="shop_tarea" v-model="shopValue.productDetail" placeholder="请填写申请条件"></textarea>
         </div>
       </van-row>
     </div>
     <footer>
-      <button>保存</button>
+      <button :class="flag ? '' :'color'" @click="flag && addProduct()">保存</button>
     </footer>
   </div>
 </template>
 <script>
-import {  Uploader  } from 'vant';
+import { Uploader } from "vant";
 export default {
-  components:{
-    [Uploader.name] : Uploader 
+  components: {
+    [Uploader.name]: Uploader
   },
   data() {
     return {
-      shopValue:{
-        productName:"",
-        MonthlyInterest: "",
-        minimumAmount:"",
-        maxAmount:"",
-        shopIntroduce:""
+      shopValue: {
+        productName: "",
+        productRate: "",
+        limitMin: "",
+        limitMax: "",
+        productDetail: ""
       },
-      processList:[
-        "提交申请",
-        "身份认证",
-        "手机认证",
-        "成功放款"
-      ],
-      materialsList:[
-        "身份证",
-        "银行卡",
-        "手机实名",
-        "芝麻授信"
-      ],
-      topImgUrl: require("./imgs/topimgf.png")
+      processList: [],
+      materialsList: [],
+      materialsArr: [],
+      processArr: [],
+      topImgUrl: require("./imgs/topimgf.png"),
+      productLogo: "",
+      flag: false,
+      isAdd: this.$route.query.isAdd
     };
   },
   methods: {
+    inputFunc() {
+      console.log(33);
+      this.ischeck();
+    },
     ongobanck() {
       this.$router.push({ path: "./mselfsupport" });
     },
-    onReadTop(file){
-      this.upload(file.file).then((data)=>{
-        this.topImgUrl = data.url
-      }).catch(err=>{})
-      
+    // 图片上传
+    onReadTop(file) {
+      this.upload(file.file)
+        .then(data => {
+          this.topImgUrl = data.url;
+          this.productLogo = data.url;
+        })
+        .catch(err => {});
     },
-    // 确认提交
-    editSubmit(){
-      // 提交成功后跳转到首页
-      this.$router.push({path:'./myshop'})
+    // 保存或编辑
+    addProduct() {
+      let apiKey, dataList;
+      if (this.isAdd == "is") {
+        // 添加
+        dataList = Object.assign(this.shopValue, {
+          proprietaryProductSelectReqList: this.arrList(),
+          productLogo: this.productLogo
+        });
+        apiKey = "wisdom.vshop.proprietaryProduct.h5Save";
+      } else {
+        // 编辑
+        dataList = Object.assign(this.shopValue, {
+          proprietaryProductSelectReqList: this.arrList(),
+          productLogo: this.productLogo,
+          proprietaryProductCode: this.$route.query.code
+        });
+        apiKey = "wisdom.vshop.proprietaryProduct.h5UpdateByCode";
+      }
+      this.request(apiKey, dataList)
+        .then(data => {
+          this.$router.push({ path: "./mselfsupport" });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    Initialization() {
+      this.request(
+        "wisdom.vshop.proprietaryProduct.getH5ProprietaryProductByCode",
+        { proprietaryProductCode: this.$route.query.code }
+      )
+        .then(data => {
+          const {
+            productLogo,
+            applicationMaterialList,
+            applicationProcedureList
+          } = data.data;
+          this.shopValue = data.data;
+          this.productLogo = productLogo;
+          this.topImgUrl = productLogo;
+          applicationMaterialList.forEach(v => {
+            this.materialsArr.push(v.productParamCode);
+          });
+          applicationProcedureList.forEach(v => {
+            this.processArr.push(v.productParamCode);
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    processChange(code) {
+      this.changeList(code, this.processArr);
+    },
+    materialsChange(code) {
+      this.changeList(code, this.materialsArr);
+    },
+    changeList(code, arr) {
+      if (arr.includes(code)) {
+        //includes()方法判断是否包含某一元素,返回true或false表示是否包含元素，对NaN一样有效
+        //filter()方法用于把Array的某些元素过滤掉，filter()把传入的函数依次作用于每个元素，然后根据返回值是true还是false决定保留还是丢弃该元素：生成新的数组
+        // arr=arr.filter(function (ele){return ele != i;});
+        arr.forEach((e, index) => {
+          if (e == code) {
+            arr.splice(index, 1);
+          }
+        });
+      } else {
+        arr.push(code);
+      }
+    },
+    arrList() {
+      let arrList = [];
+      this.processArr.forEach(v => {
+        arrList.push({ productParamCode: v, productParamType: 0 });
+      });
+      this.materialsArr.forEach(v => {
+        arrList.push({ productParamCode: v, productParamType: 1 });
+      });
+      return arrList;
+    },
+    objectKeyIsEmpty(obj) {
+      let empty = null;
+      for (const key in obj) {
+        console.log(obj[key])
+        if (obj[key] == null || obj[key] == "") {
+          empty = true;
+        } else {
+          empty = false;
+          break;
+        }
+      }
+      return empty;
+    },
+    // 校验
+    ischeck() {
+      let obj = this.shopValue;
+      console.log(this.objectKeyIsEmpty(this.shopValue))
+      // 带订
+      // shopValue: {
+      //   productName: "",
+      //   productRate: "",
+      //   limitMin: "",
+      //   limitMax: "",
+      //   productDetail: ""
+      // }
+      if (
+        this.shopValue.productName == "" ||
+        // this.productLogo == "" ||
+        this.shopValue.productRate == "" ||
+        this.shopValue.limitMin == "" ||
+        this.shopValue.limitMax == "" ||
+        this.shopValue.productDetail == ""
+        // this.materialsArr.length == 0 ||
+        // this.processArr.length == 0 ||
+      ) {
+        console.log(3);
+        this.flag = false;
+      } else {
+        console.log(4);
+        this.flag = true;
+      }
+    }
+  },
+  mounted() {
+    // 基础参数
+    this.request(
+      "wisdom.vshop.proprietaryProductParam.getProprietaryProductParamBaseData",
+      {}
+    )
+      .then(data => {
+        const { applicationMaterialList, applicationProcedureList } = data.data;
+        this.processList = applicationProcedureList;
+        this.materialsList = applicationMaterialList;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    // 编辑回显
+    if (this.isAdd != "is") {
+      this.Initialization();
     }
   }
 };
@@ -121,6 +261,9 @@ export default {
 <style lang="less" scoped>
 .maddproduct_common {
   padding-bottom: 10px;
+  .color {
+    background-color: #928f8f;
+  }
   .editshop_center {
     padding: 0px 15px;
     .center_list {
@@ -130,28 +273,32 @@ export default {
       color: #000;
       .center_geren {
         height: 70px;
-        line-height:70px;
+        line-height: 70px;
       }
-      .center_list_one{
-        color: #4597FB;
-        font-size:14px;
-        span{
-          border-left: 5px solid #4597FB;/*no*/
+      .center_list_one {
+        color: #4597fb;
+        font-size: 14px;
+        span {
+          border-left: 5px solid #4597fb; /*no*/
           padding-left: 8px;
         }
       }
       .center_list_two {
         padding-top: 14px;
-        li{
+        .checked {
+          background-color: #4597fb;
+          color: #fff;
+        }
+        li {
           width: 80px;
           height: 35px;
           line-height: 35px;
-          background-color: #F4F4F4;
+          background-color: #f4f4f4;
           text-align: center;
-          border-radius:2px;
+          border-radius: 2px;
           margin-right: 8px;
         }
-        :last-child{
+        :last-child {
           margin-right: 0px;
         }
       }
@@ -179,16 +326,16 @@ export default {
       }
     }
   }
-  footer{
-    button{
-      background:rgba(69,151,251,1);
-      box-shadow:0px 0px 5px 0px rgba(69,151,251,0.15);
+  footer {
+    button {
+      background: rgba(69, 151, 251, 1);
+      box-shadow: 0px 0px 5px 0px rgba(69, 151, 251, 0.15);
       width: 375px;
       height: 50px;
-      font-size:16px;
-      font-family:PingFang-SC-Medium;
-      font-weight:500;
-      color:rgba(255,255,255,1);
+      font-size: 16px;
+      font-family: PingFang-SC-Medium;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 1);
       position: fixed;
       bottom: 0px;
     }

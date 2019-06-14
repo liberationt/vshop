@@ -10,35 +10,35 @@
         <ul>
           <li class="message_top">
             <p>
-              <span class="message_one">王大力</span>
-              <span class="message_two">先生</span>
-              <span>上海31岁</span>
+              <span class="message_one">{{userMessage.userName}}</span>
+              <span class="message_two">{{userMessage.gender}}</span>
+              <span>{{userMessage.adNameSecond}}{{userMessage.age}}</span>
             </p>
             <p>
               <span>注册时间：</span>
-              <span>2019-05-10 10:33:40</span>
+              <span>{{userMessage.dataCreateTime}}</span>
             </p>
-            <p>申请记录：<span class="message_color">9笔</span> &nbsp  返佣成功：<span class="message_color">1笔</span></p>
+            <p>申请记录：<span class="message_color">{{userMessage.applyOrderCount}}笔</span> &nbsp  返佣成功：<span class="message_color">{{userMessage.settleCount}}笔</span></p>
           </li>
           <li class="message_center">
             <p>
-              <span class="message_center_one">贷款金额：<span class="message_color">10-20万</span> </span>
-              <span>贷款用途：<span class="message_color">短期周转</span> </span>
+              <span class="message_center_one">贷款金额：<span class="message_color">{{userMessage.loanAmount}}</span> </span>
+              <span>贷款用途：<span class="message_color">{{userMessage.loanUse}}</span> </span>
             </p>
             <p class="message_center_two">
-              <span>贷款期限：<span class="message_color">12个月</span> </span>
+              <span>贷款期限：<span class="message_color">{{userMessage.loanTimeLimit}}个月</span> </span>
             </p>
           </li>
           <li class="message_footer clearfix">
-            <span class="message_text">15********8</span>
-            <span class="right"><img src="./imgs/phone_iconyuan@2x.png" alt=""></span>
+            <span class="message_text">{{userMessage.userPhone}}</span>
+            <span class="right" @click="goPhone(userMessage.userPhone)"><img src="./imgs/phone_iconyuan@2x.png" alt=""></span>
           </li>
         </ul>
       </div>
     </div>
     <div class="muserdetails_bottom">
       <div class="muserdetails_bottom_one white">
-        <span v-for="item in personalInformation">{{item}}</span>
+        <span v-for="item in userMessage.label">{{item}}</span>
       </div>
       <div v-for="item in messgaeList" class="muserdetails_bottom_two white">
         <p class="muserdetails_one">
@@ -53,8 +53,12 @@
 </template>
 <script>
 export default {
+  //workInfoRes (VshopUserSelectWorkInfoRes, optional): 工作信息
+  //baseInfoRes (VshopUserSelectBaseInfoRes, optional): 基本信息 ,
+  //additionalInfoRes (VshopUserSelectAdditionalInfoRes, optional): 补充信息 ,
   data(){
     return {
+      userMessage:{},
       personalInformation:[
         '6-12个月内',
         '后期可回访',
@@ -97,8 +101,21 @@ export default {
       ]
     }
   },
+  methods:{
+    // 初始化数据
+    Initialization(){
+      this.request("wisdom.vshop.vshopLoanUser.queryVshopLoanUserInfo",{data:this.$route.query.code}).then(data=>{
+        console.log('莉莉',data)
+        this.userMessage = data.data
+      }).catch(err=>{console.log(err)})
+    },
+    goPhone(phone){
+       window.location.href = "tel://" + phone;
+    }
+  },
   created(){
     window.scrollTo(0,0);
+    this.Initialization()
   }
 }
 </script>

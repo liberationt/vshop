@@ -255,12 +255,18 @@ export default new Router({
       path: '/mselfsupport',
       name: 'mselfsupport',
       title:'自营产品',
+      meta: {
+        auth: true
+      },
       component: () => import( './pages/myShop/m-selfsupport.vue')  
     },
     {
       path: '/maddproduct',
       name: 'maddproduct',
       title:'添加/编辑自营产品今年',
+      meta: {
+        auth: true
+      },
       component: () => import( './pages/myShop/m-addproduct.vue')  
     },
     {
