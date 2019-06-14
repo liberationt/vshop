@@ -124,7 +124,7 @@
 <script>
 import utils from "../../utils/utils";
 import options from "../../views/options";
-import { Search, Tab, Tabs, Popup, Dialog } from "vant";
+import { Search, Tab, Tabs, Popup, Dialog, Toast } from "vant";
 import { mapState } from "vuex";
 export default {
   components: {
@@ -207,7 +207,8 @@ export default {
       labelTitleName2:[],
       labelName:"",
       labelObj:{},
-      labelArr:[]
+      labelArr:[],
+      generalizeStore:{},
     };
   },
   computed: {
@@ -216,6 +217,8 @@ export default {
   created() {
     this.Initialization(1, "",{});
     this.labelist();
+    // 一键推广链接
+    this.generalizeStoreLink()
   },
   mounted() {
     // window.onresize监听页面高度的变化
@@ -245,13 +248,37 @@ export default {
     onvanTabs() {
       this.Initialization(1, "",{});
     },
+    //一键推广店铺链接
+    generalizeStoreLink(){
+      this.request('wisdom.vshop.vshopStore.generalizeStoreLink',{data:window.location.href}).then(data=>{
+        console.log(data)
+        this.generalizeStore = data.data
+      }).catch(err=>{console.log(err)})
+    },
     // 一键推广
     extension() {
+      let message,generalizeName
+      if(this.generalizeStore.hasStore){
+        message = this.generalizeStore.text+" "+this.generalizeStore.shortLink
+        generalizeName = '去复制内容'
+      } else {
+        message = "您还没有创建店铺，请先去编辑保存店铺信息"
+        generalizeName = '去编辑'
+      }
       Dialog.confirm({
         title: "",
-        message: "您还没有创建店铺，请先去编辑保存店铺信息"
+        message: message,
+        confirmButtonText:generalizeName
       })
-        .then(() => {})
+        .then(() => {
+          if(this.generalizeStore.hasStore){
+            utils.copyContent(this.generalizeStore.text+this.generalizeStore.shortLink)
+            Toast('复制成功')
+          } else {
+            this.$router.push({path:'./meditshop'})
+          }
+          
+        })
         .catch(() => {
           // on cancel
         });
