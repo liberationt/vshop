@@ -91,13 +91,14 @@ export default {
       processArr: [],
       topImgUrl: require("./imgs/topimgf.png"),
       productLogo: "",
-      flag: true,
-      isAdd:this.$route.query.isAdd
+      flag: false,
+      isAdd: this.$route.query.isAdd
     };
   },
   methods: {
     inputFunc() {
-      console.log(222);
+      console.log(33);
+      this.ischeck();
     },
     ongobanck() {
       this.$router.push({ path: "./mselfsupport" });
@@ -126,9 +127,9 @@ export default {
         dataList = Object.assign(this.shopValue, {
           proprietaryProductSelectReqList: this.arrList(),
           productLogo: this.productLogo,
-          proprietaryProductCode:this.$route.query.code
+          proprietaryProductCode: this.$route.query.code
         });
-        apiKey = "wisdom.vshop.proprietaryProduct.h5UpdateByCode"
+        apiKey = "wisdom.vshop.proprietaryProduct.h5UpdateByCode";
       }
       this.request(apiKey, dataList)
         .then(data => {
@@ -138,19 +139,30 @@ export default {
           console.log(err);
         });
     },
-    Initialization(){
-      this.request("wisdom.vshop.proprietaryProduct.getH5ProprietaryProductByCode",{proprietaryProductCode: this.$route.query.code}).then(data=>{
-        const { productLogo , applicationMaterialList, applicationProcedureList } = data.data
-        this.shopValue = data.data
-        this.productLogo = productLogo
-        this.topImgUrl = productLogo
-        applicationMaterialList.forEach(v=>{
-          this.materialsArr.push(v.productParamCode)
+    Initialization() {
+      this.request(
+        "wisdom.vshop.proprietaryProduct.getH5ProprietaryProductByCode",
+        { proprietaryProductCode: this.$route.query.code }
+      )
+        .then(data => {
+          const {
+            productLogo,
+            applicationMaterialList,
+            applicationProcedureList
+          } = data.data;
+          this.shopValue = data.data;
+          this.productLogo = productLogo;
+          this.topImgUrl = productLogo;
+          applicationMaterialList.forEach(v => {
+            this.materialsArr.push(v.productParamCode);
+          });
+          applicationProcedureList.forEach(v => {
+            this.processArr.push(v.productParamCode);
+          });
         })
-        applicationProcedureList.forEach(v=>{
-          this.processArr.push(v.productParamCode)
-        })
-      }).catch(err=>{console.log(err)})
+        .catch(err => {
+          console.log(err);
+        });
     },
     processChange(code) {
       this.changeList(code, this.processArr);
@@ -182,8 +194,23 @@ export default {
       });
       return arrList;
     },
+    objectKeyIsEmpty(obj) {
+      let empty = null;
+      for (const key in obj) {
+        console.log(obj[key])
+        if (obj[key] == null || obj[key] == "") {
+          empty = true;
+        } else {
+          empty = false;
+          break;
+        }
+      }
+      return empty;
+    },
     // 校验
-    check() {
+    ischeck() {
+      let obj = this.shopValue;
+      console.log(this.objectKeyIsEmpty(this.shopValue))
       // 带订
       // shopValue: {
       //   productName: "",
@@ -194,15 +221,19 @@ export default {
       // }
       if (
         this.shopValue.productName == "" ||
-        this.productLogo == "" ||
+        // this.productLogo == "" ||
         this.shopValue.productRate == "" ||
         this.shopValue.limitMin == "" ||
         this.shopValue.limitMax == "" ||
         this.shopValue.productDetail == ""
+        // this.materialsArr.length == 0 ||
+        // this.processArr.length == 0 ||
       ) {
-        this.flag = false
+        console.log(3);
+        this.flag = false;
       } else {
-        this.flag = true
+        console.log(4);
+        this.flag = true;
       }
     }
   },
@@ -221,8 +252,8 @@ export default {
         console.log(err);
       });
     // 编辑回显
-    if(this.isAdd != 'is'){
-      this.Initialization()
+    if (this.isAdd != "is") {
+      this.Initialization();
     }
   }
 };
