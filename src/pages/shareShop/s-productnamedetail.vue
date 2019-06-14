@@ -29,7 +29,7 @@
 			<div class="guesslike">
 				<h3><span></span>猜你喜欢</h3>
 				<div class="guesslikecont">
-					<div v-for="(item,i) in dataobject.vshopProductResList" :key='i'>
+					<div v-for="(item,i) in dataobject.vshopProductResList" :key='i' @click="todetails(item.productCode)">
 						<div class="guessimgs"><img :src=item.productLogo alt=""></div>
 						<p>{{item.productName}}</p>
 					</div>
@@ -54,10 +54,12 @@
 <script>
 import utils from '../../utils/utils'
 export default {
+		inject:['reload'],
     data(){
 			return{
-				city:'上海',
-				dataobject:{}
+				city:'',
+				dataobject:{},
+				inviterCode:''
 			}
 		},
 		methods:{
@@ -81,6 +83,12 @@ export default {
 					}
 				})
 			},
+			//猜你喜欢
+			todetails(productCode){
+				utils.setCookie('ProductCode',productCode)
+				utils.setCookie('InviterCode',this.inviterCode)
+				this.reload()
+			},
 			getdatas(){
 				let data = {
 					inviterCode:utils.getCookie('InviterCode'),
@@ -90,11 +98,15 @@ export default {
 				.then(data=>{
 					if(data.code=='success'){
 						this.dataobject = data.data
+						this.inviterCode = data.data.inviterCode
 					}
 				})
 			}
 		},
 		mounted(){
+			if(utils.getCookie('adNameFirst')){
+				this.city = utils.getCookie('adNameFirst')
+			}
 			if(this.$route.query.city){
 				this.city=this.$route.query.city
 			}

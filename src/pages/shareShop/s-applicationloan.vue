@@ -34,8 +34,10 @@
 		<div class="applyloan">
 			<h3><span></span>贷款期限</h3>
 			<div class="optionstyle">
-				<!-- v-model='loanperiod' -->
-				<options :options="loanperiodList" @toparents='child' ></options>
+				<!-- <options :options="loanperiodList" @toparents='child' ></options> -->
+				<ul class="box">
+					<li v-for="item,index of loanperiodList" :class="{checked:index===indexs}" @click="changeList(item,index)">{{item.label}}</li>
+				</ul>
 			</div>
 			
 		</div>
@@ -86,11 +88,16 @@ export default {
 				{label:'其他',value:6},
 			],
 			value:[],
+			indexs:2
 		}
     },
 	methods:{
 		close(){
 
+		},
+		changeList(item,indexs){
+			this.indexs = indexs
+			console.log(item,indexs)
 		},
 		onSelect(value){
 			this.value1 = value

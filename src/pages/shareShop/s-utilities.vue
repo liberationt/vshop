@@ -10,9 +10,9 @@
 				</div>
 			</div>
 			<div class="utilitslist">
-				<div class="havemoney" v-show="show">
+				<div class="havemoney" v-show="showUMoney">
 					<div class="havamoneyImg" @click="tohavemoney"><img :src=havemoneyImg alt=""></div>
-					<div class="close" @click="closeTost"><img src="./images/close.png" alt=""></div>
+					<div class="close" @click="closeTost" v-show="isshow"><img src="./images/close.png" alt=""></div>
 				</div>
 				<div class="utilistittle">申请多个产品，可大幅度提高贷款成功率</div>
 				<div class="utilisdatalist" @click="tostiflingborrow(item.productCode)" v-for="(item,i) in dataList" :key='i'>
@@ -28,6 +28,7 @@
 </template>
 <script>
 import { Tab, Tabs ,Dialog} from 'vant'
+import utils from '../../utils/utils'
 export default {
 	components:{
 		[Dialog.name]:Dialog
@@ -35,14 +36,15 @@ export default {
 	data(){
 		return{
 			isLoading:false,
-			show:true,
+			showUMoney:true,
 			inviterCode:'',
 			dataList:[],
 			personImg:'',
 			name:'',
 			adNameSecond:'',
 			havemoneyImg:'',
-			realStatus:0
+			realStatus:0,
+			isshow:false
 		}
 	},
 	methods:{
@@ -66,9 +68,9 @@ export default {
 						this.personImg=data.data.personImg
 						this.name = data.data.name
 						this.adNameSecond = data.data.adNameSecond
-						this.show = data.data.showUMoney
 						this.havemoneyImg = data.data.bannerResList[0].bannerUrl
 						this.realStatus = data.data.realStatus
+						this.showUMoney = data.data.showUMoney
 					}
 				})
 			},
@@ -84,13 +86,30 @@ export default {
 				cancelButtonText:'永不提示',
 				message: '确认关闭此提示框吗？'
 			}).then(() => {
-			// on confirm
+				this.closehaveMoney(0)
 			}).catch(() => {
-			// on cancel
+				this.closehaveMoney(1)
 			});
+		},
+		//关闭
+		closehaveMoney(v){
+			let data = {
+				data:v==0?false:true
+			}
+			this.request('wisdom.vshop.vshopStore.closeUMoneyTip',data)
+			.then(data=>{
+				if(data.code=='success'){
+					this.getdatas()
+				}
+			})
 		}
 	},
 	mounted(){
+		if(utils.getCookie('user')){
+			this.isshow = true
+		}else{
+			this.isshow = false
+		}
 		this.getdatas()
 		this.$emit('toparent','实用工具')
 	}
@@ -98,9 +117,8 @@ export default {
 </script>
 <style lang="less" scoped>
   .utilitmain{
-		min-height:500px;
+		min-height:600px;
 		background: #f1f1fb;
-		
 		.utilitop{
 			height:75px;
 			background: #ffffff;

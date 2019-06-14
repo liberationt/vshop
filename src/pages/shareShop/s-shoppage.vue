@@ -78,6 +78,7 @@
 	</div>
 </template>
 <script>
+import utils from '../../utils/utils'
 import { Toast } from 'vant';
 export default {
 	component:{
@@ -87,7 +88,7 @@ export default {
 		return{
 			show:false,
 			dataList:{},
-			tittle:''
+			tittle:'',
 		}
 	},
 	methods:{
@@ -102,6 +103,7 @@ export default {
 				if(data.code=='success'){
 					this.dataList = data.data
 					this.tittle = data.data.storeName
+					utils.setCookie('storeCode',data.data.storeCode)
 					this.$emit('toparent',this.tittle,1)
 				}
 			}).catch(err=>{
@@ -142,8 +144,8 @@ export default {
 		tool(){
 			this.$router.push('/utilities')
 		},
-		todetails(){
-			this.$router.push('')
+		todetails(exhibitionContentCode){
+			this.$router.push('/tweetsdetails?exhibitionContentCode='+exhibitionContentCode)
 		},
 		weixin(){
 			this.show=true
@@ -176,6 +178,7 @@ export default {
    .shoppagemain{
 		background: #f1f1fb;
 		height:100%;
+		margin-top:-4px;
 		// padding-bottom:25px;
 		.personalinfor{
 			padding:15px;

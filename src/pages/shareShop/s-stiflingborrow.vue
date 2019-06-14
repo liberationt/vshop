@@ -6,16 +6,16 @@
 				/>
 			</header>
 			<div class="stiflimg">
-				<img src="" alt="">
+				<img :src=bannerUrl alt="">
 			</div>
 			<div class="applyinfor">
 				<h4><span></span>申请人信息</h4>
 				<div>
 					<p>
 						<span>手机号</span>
-						<input type="number" v-model="userPhone" oninput='if(value.length>11)value=value.slice(0,11)'>
+						<input type="number" :disabled='disableds' v-model="userPhone" oninput='if(value.length>11)value=value.slice(0,11)'>
 					</p>
-					<p>
+					<p v-show="isshow">
 						<span>验证码</span>
 						<input type="number" v-model="verification" style="width:140px;">
 						<i style='color:#4697FB' @click="obtain()&&flag">{{content}}</i>
@@ -46,6 +46,7 @@ import { Toast } from 'vant';
 export default {
 	data(){
 		return{
+			bannerUrl:'',
 			userPhone:'',
 			verification:'',
 			userName:'',
@@ -53,24 +54,44 @@ export default {
 			content:'获取验证码',
 			managerPhone:'',
 			flag:true,
-			seal_control:false
+			seal_control:false,
+			isshow:true,
+			disableds:false
 		}
 	},
 	methods:{
 		//提交
 		confim(){
-			let data={
+			let params={
 				inviterCode:utils.getCookie('InviterCode'),
 				productCode:utils.getCookie('ProductCode'),
 				userPhone:this.userPhone,
 				verifyCode:this.verification,
 				userName :this.userName,
-				idCard:this.idCard
+				idCard:this.idCard,
+				adNameFirst: utils.getCookie('adNameFirst')?utils.getCookie('adNameFirst'):'',
+				adNameSecond:utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):''
 			}
-			this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',data)
+			this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
 			.then(data=>{
 				if(data.code=='success'){
-					// utils.setCookie('usertoken',)
+					if(!utils.getCookie('user')){
+						let str = {
+							token:data.data.token,
+							userId:data.data.userId
+						}
+						utils.setCookie('user',JSON.stringify(str))
+					}
+					if(data.data.productType===3){
+						Toast({
+							message:'提交申请成功',
+							duration:800
+						})
+						this.$router.push('/')
+					}else{
+						// window.location.href = data.data.jumpUrl
+					}
+					
 				}else{
 					Toast({
 						message:data.message,
@@ -163,7 +184,6 @@ export default {
 		},
 		//清楚定时器
     deleteTime() {
-      // this.content = '获取验证码';
       clearInterval(this.timer);
       this.timer = null;
     },
@@ -175,15 +195,23 @@ export default {
 			this.request('wisdom.vshop.product.h5BeforeJumpDetail',data)
 			.then(data=>{
 				if(data.code=='success'){
-					this.managerPhone = data.data.managerPhone
 					this.userPhone=data.data.userPhone
 					this.userName = data.data.userName
 					this.idCard = data.data.idCard
+					this.managerPhone = data.data.managerPhone
+					this.bannerUrl = data.data.bannerUrl
 				}
 			})
 		}
 	},
 	mounted(){
+		if(utils.getCookie('user')){
+			this.isshow = false
+			this.disableds = true
+		}else{
+			this.isshow=true
+			this.disableds = false
+		}
 		this.getdata()
 	}
 }
@@ -195,7 +223,6 @@ export default {
 	}
 	.stiflimg{
 		height:157px;
-		background: red;
 		img{
 			width:100%;
 			height:100%;
@@ -232,6 +259,10 @@ export default {
 				input{
 					height:40px;
 					border:none;
+				}
+				input:disabled {
+					background: #ffffff;
+					color:#999999
 				}
 			}
 		}

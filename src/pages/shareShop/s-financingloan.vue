@@ -8,7 +8,7 @@
 					finished-text="没有更多了"
 					@load="onLoad"
 				>	 -->
-					<div class="financlist" v-for="(item,i) in financList" :key="i" @click="toproductnamedetail()">
+					<div class="financlist" v-for="(item,i) in financList" :key="i" @click="toproductnamedetail(item.proprietaryProductCode)">
 						<div class="financlistbanner"><img :src=item.productLogo alt=""></div>
 						<div class="financlistright">
 							<h4>{{item.productName}}</h4>
@@ -34,7 +34,6 @@ export default {
 			//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
 			onLoad() {
 				setTimeout(() => {
-						// this.getdatas()
 						this.loading = false
 						this.finished = true
 				}, 1);
@@ -50,11 +49,28 @@ export default {
 					if(data.code=='success'){
 						this.financList = data.data.proprietaryProductResList
 						this.inviterCode = data.data.inviterCode
+						
 					}
 				})
 			},
 			toproductnamedetail(productCode){
-				this.$router.push('/productnamedetail?inviterCode='+this.inviterCode)
+				let data = {
+					inviterCode:this.inviterCode,
+					productCode:productCode
+				}
+				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
+				.then(data=>{
+					if(data.code=='success'){
+						if(data.data.state==0){
+							this.$router.push('/mselfshopdetails?inviterCode='+this.inviterCode+'&'+'code='+productCode)
+						}
+						if(data.data.state==1){
+							this.$router.push('/')
+						}
+					}
+				}).catch(err=>{
+					console.log(err)
+				})
 			},
 		},
 		mounted(){

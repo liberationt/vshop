@@ -115,6 +115,12 @@ export default new Router({
       component:()=>import('./pages/shareShop/s-productnamedetail.vue')
     },
     {
+      path:'/errors',
+      name:'errors',
+      tittle:'404',
+      component:()=>import('./pages/shareShop/errors.vue')
+    },
+    {
       path:'/city',
       name:'city',
       tittle:'城市',
@@ -125,6 +131,12 @@ export default new Router({
       name:'citylist',
       tittle:'城市列表',
       component:()=>import('./pages/shareShop/citylist.vue')
+    },
+    {
+      path:'/tweetsdetails',
+      name:'tweetsdetails',
+      tittle:'城市列表',
+      component:()=>import('./pages/shareShop/s-tweetsdetails.vue')
     },
     {
       path:'/stiflingborrow',
