@@ -17,7 +17,7 @@
 					</p>
 					<p v-show="isshow">
 						<span>验证码</span>
-						<input type="number" v-model="verification" style="width:140px;">
+						<input type="number" v-model="verification" style="width:140px;" oninput='if(value.length>6)value=value.slice(0,6)'>
 						<i style='color:#4697FB' @click="obtain()&&flag">{{content}}</i>
 					</p>
 					<p>
@@ -62,45 +62,68 @@ export default {
 	methods:{
 		//提交
 		confim(){
-			let params={
-				inviterCode:utils.getCookie('InviterCode'),
-				productCode:utils.getCookie('ProductCode'),
-				userPhone:this.userPhone,
-				verifyCode:this.verification,
-				userName :this.userName,
-				idCard:this.idCard,
-				adNameFirst: utils.getCookie('adNameFirst')?utils.getCookie('adNameFirst'):'',
-				adNameSecond:utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):''
-			}
-			this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
-			.then(data=>{
-				if(data.code=='success'){
-					if(!utils.getCookie('user')){
-						let str = {
-							token:data.data.token,
-							userId:data.data.userId
-						}
-						utils.setCookie('user',JSON.stringify(str))
-					}
-					if(data.data.productType===3){
-						Toast({
-							message:'提交申请成功',
-							duration:800
-						})
-						this.$router.push('/')
-					}else{
-						// window.location.href = data.data.jumpUrl
-					}
-					
-				}else{
+			let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+			if(!this.obtain()){
+				Toast({
+					message:'请获取验证码',
+					duration:800
+				})
+				return false
+			}else{
+				if(!this.idCard){
 					Toast({
-						message:data.message,
+						message:'请输入身份证号',
 						duration:800
 					})
+					return false
 				}
-			}).catch(err=>{
-				console.log(err)
-			})
+				if(!reg.test(this.idCard)){
+					Toast({
+						message:'请输入正确格式证件号',
+						duration:800
+					})
+					return false
+				}
+				let params={
+					inviterCode:utils.getCookie('InviterCode'),
+					productCode:utils.getCookie('ProductCode'),
+					userPhone:this.userPhone,
+					verifyCode:this.verification,
+					userName :this.userName,
+					idCard:this.idCard,
+					adNameFirst: utils.getCookie('adNameFirst')?utils.getCookie('adNameFirst'):'',
+					adNameSecond:utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):''
+				}
+				this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
+				.then(data=>{
+					if(data.code=='success'){
+						if(!utils.getCookie('user')){
+							let str = {
+								token:data.data.token,
+								userId:data.data.userId
+							}
+							utils.setCookie('user',JSON.stringify(str))
+						}
+						if(data.data.productType===3){
+							Toast({
+								message:'提交申请成功',
+								duration:800
+							})
+							this.$router.push('/')
+						}else{
+							window.location.href = data.data.jumpUrl
+						}
+						
+					}else{
+						Toast({
+							message:data.message,
+							duration:800
+						})
+					}
+				}).catch(err=>{
+					console.log(err)
+				})
+			}
 		},
 		obtain(v){
 			if(!this.userPhone){

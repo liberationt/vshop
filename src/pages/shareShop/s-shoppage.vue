@@ -134,6 +134,9 @@ export default {
 				}
 			};
 			copyToClipboard(content)
+			Toast({
+
+			})
 		},
 		loan(){
 			this.$router.push('/relatedproducts')
@@ -161,8 +164,9 @@ export default {
 		confirm(content){
 			this.copywx(content)
 			Toast({
-						message:'复制成功'
-					});
+					message:'微信ID已复制',
+					duration:800
+				});
 			this.show= false
 		}
 	},
