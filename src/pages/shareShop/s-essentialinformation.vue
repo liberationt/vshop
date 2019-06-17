@@ -26,15 +26,15 @@
 		<div class="forminfor">
 			<p>
 				<label for="">姓名:</label>
-				<input type="text" placeholder="请输入姓名">
+				<input type="text" placeholder="请输入姓名" v-model="username">
 			</p>
 			<p>
 				<label for="">身份证:</label>
-					<input type="text" placeholder="请输入身份证号">
+					<input type="text" placeholder="请输入身份证号" v-model="idcard">
 				</p>
 			<p>
 				<label for="">工作所在地:</label>
-				<input type="text" placeholder="请选择城市">
+				<input type="text" placeholder="请选择城市" @click="tocity" v-model="adNameFirst">
 			</p>
 		</div>
 		<div class="applyloan">
@@ -43,7 +43,6 @@
 		</div>
 		<div class="applyloan">
 			<h3><span></span>婚姻状态</h3>
-			<!-- <options :options="selections1" :isMultiply=true></options> -->
 			<options :options="selections1"></options>
 
 		</div>
@@ -59,14 +58,11 @@ export default {
     data(){
         return{
 					selections: [],
-					selections1: [
-						{label:'慕容冲',value:1},
-						{label:'潘安',value:2},
-						{label:'宋玉',value:3},
-						{label:'卫玠',value:4},
-						{label:'兰陵王',value:5},
-					],
-					value:''
+					selections1: [],
+					value:'',
+					username:'',
+					idcard:'',
+					adNameFirst:''
 				}
     },
     methods:{
@@ -76,22 +72,28 @@ export default {
 			close(){
 
 			},
-			onSelect(){
+			tocity(){
 
 			},
-			todolist(value){
-				this.show = true
-			},
-			//取消
-			onCancel(i){
-				console.log(i)
-			},
-		
 			nextstep(){
-				this.$emit('tosteps',2)
+
+			},
+			getdatainfo(){
+				let data = {
+						pageName:'baseInfo'
+				}
+				this.request('wisdom.vshop.vshopUserSelect.initBaseInfoData',data)
+				.then(data=>{
+					if(data.code= 'success'){
+						let dataobject = data.data
+						this.data
+					}
+				})
 			}
+
     },
     mounted(){
+			this.getdatainfo()
 			this.selections =	[{label:'赵雅芝',value:'1'},
 						{label:'刘雪华',value:'2'},
 						{label:'俞飞鸿',value:'3'},]

@@ -36,16 +36,21 @@
 			<div class="optionstyle">
 				<!-- <options :options="loanperiodList" @toparents='child' ></options> -->
 				<ul class="box">
-					<li v-for="item,index of loanperiodList" :class="{checked:index===indexs}" @click="changeList(item,index)">{{item.label}}</li>
+					<li v-for="item,index of loanperiodList" :class="{checked:item===checked}" @click="changeList(item,index)">{{item.infoOptionName}}</li>
 				</ul>
 			</div>
 			
 		</div>
 		<div class="applyloan">
 			<h3><span></span>贷款用途</h3>
-			<div class="optionstyle">
-				<options :options="loanpurposeList" @toparents='child' v-model='loanpurpose' ref='getloanpurpose'></options>
+			<div class='optionstyle'>
+				<ul class="box">
+					<li v-for="item,index of loanpurposeList" :class="{checked:item===checkeds}" @click="changeloan(item,index)">{{item.infoOptionName}}</li>
+				</ul>
 			</div>
+			<!-- <div class="optionstyle">
+				<options :options="loanpurposeList" @toparents='child' v-model='loanpurpose' ref='getloanpurpose'></options>
+			</div> -->
 		</div>
 		<div @click="nextstep" class="loneNext">下一步</div>
 	</div>
@@ -64,31 +69,17 @@ export default {
 		},
     data(){
 		return{
-			value1:0,
-			option1: [
-				{ text: '1万-2万', value: 0 },
-				{ text: '2万-5万', value: 1 },
-				{ text: '5万以上', value: 2 }
-			],
-			loanperiod:[],
+			value1:'loan_amount_5000-10000',
+			option1: [],
+			loanperiod:'',
 			loanperiodList: [
-				{label:'3个月',value:1},
-				{label:'6个月',value:2},
-				{label:'9个月',value:3},
-				{label:'12个月',value:4},
-				{label:'24个月',value:5},
 			],
-			loanpurpose:[],
+			loanpurpose:'',
 			loanpurposeList: [
-				{label:'日常消费',value:1},
-				{label:'购车',value:2},
-				{label:'购房',value:3},
-				{label:'教育培训',value:4},
-				{label:'短期周转',value:5},
-				{label:'其他',value:6},
 			],
 			value:[],
-			indexs:2
+			checked:'',
+			checkeds:''
 		}
     },
 	methods:{
@@ -96,8 +87,12 @@ export default {
 
 		},
 		changeList(item,indexs){
-			this.indexs = indexs
-			console.log(item,indexs)
+			this.checked = item
+			this.loanperiod = item.infoOptionKey
+		},
+		changeloan(item,indexs){
+			this.checkeds = item
+			this.loanpurpose = item.infoOptionKey
 		},
 		onSelect(value){
 			this.value1 = value
@@ -109,12 +104,54 @@ export default {
 			this.loanperiod= emg
 		},
 		nextstep(){
-			// console.log(this.value)
-			console.log(this.loanperiod)
+			let data = {
+				loanTimeLimit:this.value1,
+				loanAmount:this.loanperiod,
+				loanUse:this.loanpurpose
+			}
+			this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
+			.then(data=>{
+				if(data.code=='success'){
+					this.$router.push('/essentialinformation')
+				}
+			})
+		},
+		getdatalist(){
+			let data = {
+				pageName:'apply'
+			}
+			this.request('wisdom.vshop.vshopUserSelect.initTitleData',data)
+			.then(data=>{
+				if(data.code=='success'){
+					let datalist = data.data.pageData
+					for(let i=0;i<datalist.length;i++){
+						if(datalist[i].infoTitleKey=='loanAmount'){
+							let optionlist=[]
+							optionlist = datalist[i].optionRes
+							for(let j=0;j<optionlist.length;j++){
+								this.option1.push(
+									{
+										text:optionlist[j].infoOptionName,
+										value:optionlist[j].infoOptionKey
+									}
+								)
+							}
+						}
+						if(datalist[i].infoTitleKey=='loanTimeLimit'){
+							this.loanperiodList = datalist[i].optionRes
+						}
+						if(datalist[i].infoTitleKey=='loanUse'){
+							this.loanpurposeList = datalist[i].optionRes
+						}
+					}
+				}
+			}).catch(err=>{
+				console.log(err)
+			})
 		}
 	},
 	mounted(){
-		// this.child()
+		this.getdatalist()
 	}
 }
 </script>

@@ -65,7 +65,7 @@ export default {
 							this.$router.push('/mselfshopdetails?inviterCode='+this.inviterCode+'&'+'code='+productCode)
 						}
 						if(data.data.state==1){
-							this.$router.push('/')
+							this.$router.push('/errors')
 						}
 					}
 				}).catch(err=>{
