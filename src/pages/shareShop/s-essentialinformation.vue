@@ -34,38 +34,54 @@
 				</p>
 			<p>
 				<label for="">工作所在地:</label>
-				<input type="text" placeholder="请选择城市" @click="tocity" v-model="adNameFirst">
+				<input type="text" placeholder="请选择城市" @click="tocity" v-model="adNameSecond">
 			</p>
 		</div>
 		<div class="applyloan">
 			<h3><span></span>学历</h3>
-			<options :options="selections"></options>
+			<div class='optionstyle'>
+				<ul class="box">
+					<li v-for="item,index of educationList" :class="{checked:item.infoOptionKey===education}" @click="changeedu(item,index)">{{item.infoOptionName}}</li>
+				</ul>
+			</div>
 		</div>
 		<div class="applyloan">
 			<h3><span></span>婚姻状态</h3>
-			<options :options="selections1"></options>
-
+			<div class='optionstyle'>
+				<ul class="box">
+					<li v-for="item,index of marriagelist" :class="{checked:item.infoOptionKey===marriage}" @click="changemar(item,index)">{{item.infoOptionName}}</li>
+				</ul>
+			</div>
 		</div>
 		<div @click="nextstep" class="loneNext">下一步</div>
 	</div>
 </template>
 <script>
+import utils from '../../utils/utils'
 import options from '../../views/options.vue'
+import {Toast} from 'vant'
 export default {
 		components:{
 			options
 		},
     data(){
         return{
-					selections: [],
-					selections1: [],
-					value:'',
+					education:'',
+					marriage:'',
+					educationList: [],
+					marriagelist: [],
 					username:'',
 					idcard:'',
-					adNameFirst:''
+					adNameSecond:''
 				}
     },
     methods:{
+			changeedu(item){
+				this.education = item.infoOptionKey
+			},
+			changemar(item){
+				this.marriage = item.infoOptionKey
+			},
 			returngo(){
 				this.$router.go(-1)
 			},
@@ -73,10 +89,72 @@ export default {
 
 			},
 			tocity(){
-
+				this.$router.push('/city?id='+1)
 			},
 			nextstep(){
-
+				let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+				if(!this.username){
+					Toast({
+						message:'请输入姓名',
+						duration:800
+					})
+					return false
+				}
+				if (!/^[\u4E00-\u9FA5]{2,20}$/.test(this.username)) {
+					Toast({
+						message:'姓名有误，请重新输入',
+						duration:800
+					})
+					return false
+      	}
+				if(!this.idcard){
+					Toast({
+						message:'请输入身份证号',
+						duration:800
+					})
+					return false
+				}
+				if(!reg.test(this.idcard)){
+					Toast({
+						message:'请输入正确格式证件号',
+						duration:800
+					})
+					return false
+				}
+				if(!this.adNameSecond){
+					Toast({
+						message:'请选择城市',
+						duration:800
+					})
+					return false
+				}
+				if(!this.education){
+					Toast({
+						message:'请选择学历',
+						duration:800
+					})
+					return false
+				}
+					if(!this.marriage){
+					Toast({
+						message:'请选择婚姻状态',
+						duration:800
+					})
+					return false
+				}
+				let data= {
+					userName :this.username,
+					idCard:this.idcard,
+					adNameSecond:this.adNameSecond,
+					educationBackground:this.education,
+					marriageStatus:this.marriage
+				}
+				this.request('wisdom.vshop.vshopUserSelect.saveBaseInfo',data)
+				.then(data=>{
+					if(data.code=='success'){
+						this.$router.push('/workinformation')
+					}
+				})
 			},
 			getdatainfo(){
 				let data = {
@@ -86,7 +164,19 @@ export default {
 				.then(data=>{
 					if(data.code= 'success'){
 						let dataobject = data.data
-						this.data
+						this.username = dataobject.userName
+						this.idcard = dataobject.idCard
+						this.adNameSecond = dataobject.adNameSecond?dataobject.adNameSecond:utils.getCookie('adNameSecond')
+						for(var i=0;i<dataobject.pageData.length;i++){
+							if(dataobject.pageData[i].infoTitleKey=='educationBackground'){
+								this.educationList = dataobject.pageData[i].optionRes
+								this.education = dataobject.pageData[i].valueKey
+							}
+							if(dataobject.pageData[i].infoTitleKey =='marriageStatus'){
+								this.marriagelist = dataobject.pageData[i].optionRes
+								this.marriage = dataobject.pageData[i].valueKey
+							}
+						}
 					}
 				})
 			}
@@ -94,10 +184,7 @@ export default {
     },
     mounted(){
 			this.getdatainfo()
-			this.selections =	[{label:'赵雅芝',value:'1'},
-						{label:'刘雪华',value:'2'},
-						{label:'俞飞鸿',value:'3'},]
-    }
+		}
 }
 </script>
 <style lang="less" scoped>

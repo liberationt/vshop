@@ -36,7 +36,7 @@
 			<div class="optionstyle">
 				<!-- <options :options="loanperiodList" @toparents='child' ></options> -->
 				<ul class="box">
-					<li v-for="item,index of loanperiodList" :class="{checked:item===checked}" @click="changeList(item,index)">{{item.infoOptionName}}</li>
+					<li v-for="item,index of loanperiodList" :class="{checked:item.infoOptionKey===loanperiod}" @click="changeList(item,index)">{{item.infoOptionName}}</li>
 				</ul>
 			</div>
 			
@@ -45,7 +45,7 @@
 			<h3><span></span>贷款用途</h3>
 			<div class='optionstyle'>
 				<ul class="box">
-					<li v-for="item,index of loanpurposeList" :class="{checked:item===checkeds}" @click="changeloan(item,index)">{{item.infoOptionName}}</li>
+					<li v-for="item,index of loanpurposeList" :class="{checked:item.infoOptionKey===loanpurpose}" @click="changeloan(item,index)">{{item.infoOptionName}}</li>
 				</ul>
 			</div>
 			<!-- <div class="optionstyle">
@@ -57,7 +57,7 @@
 </template>
 <script>
 import options from '../../views/options.vue'
-import { DropdownMenu, DropdownItem,Step, Steps } from 'vant';
+import { DropdownMenu, DropdownItem,Step, Steps ,Toast} from 'vant';
 
 export default {
 		components:{
@@ -69,17 +69,12 @@ export default {
 		},
     data(){
 		return{
-			value1:'loan_amount_5000-10000',
+			value1:'',
 			option1: [],
 			loanperiod:'',
-			loanperiodList: [
-			],
+			loanperiodList: [],
 			loanpurpose:'',
-			loanpurposeList: [
-			],
-			value:[],
-			checked:'',
-			checkeds:''
+			loanpurposeList: [],
 		}
     },
 	methods:{
@@ -87,11 +82,9 @@ export default {
 
 		},
 		changeList(item,indexs){
-			this.checked = item
 			this.loanperiod = item.infoOptionKey
 		},
 		changeloan(item,indexs){
-			this.checkeds = item
 			this.loanpurpose = item.infoOptionKey
 		},
 		onSelect(value){
@@ -104,9 +97,30 @@ export default {
 			this.loanperiod= emg
 		},
 		nextstep(){
+			if(!this.value1){
+				Toast({
+						message:'请选择贷款金额',
+						duration:800
+					})
+					return false
+			}
+			if(!this.loanperiod){
+				Toast({
+						message:'请选择贷款期限',
+						duration:800
+					})
+					return false
+			}
+			if(!this.loanpurpose){
+				Toast({
+						message:'请选择贷款用途',
+						duration:800
+					})
+					return false
+			}
 			let data = {
-				loanTimeLimit:this.value1,
-				loanAmount:this.loanperiod,
+				loanTimeLimit:this.loanperiod,
+				loanAmount:this.value1,
 				loanUse:this.loanpurpose
 			}
 			this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
@@ -126,6 +140,7 @@ export default {
 					let datalist = data.data.pageData
 					for(let i=0;i<datalist.length;i++){
 						if(datalist[i].infoTitleKey=='loanAmount'){
+							this.value1 = datalist[i].valueKey
 							let optionlist=[]
 							optionlist = datalist[i].optionRes
 							for(let j=0;j<optionlist.length;j++){
@@ -139,9 +154,11 @@ export default {
 						}
 						if(datalist[i].infoTitleKey=='loanTimeLimit'){
 							this.loanperiodList = datalist[i].optionRes
+							this.loanperiod = datalist[i].valueKey
 						}
 						if(datalist[i].infoTitleKey=='loanUse'){
 							this.loanpurposeList = datalist[i].optionRes
+							this.loanpurpose = datalist[i].valueKey
 						}
 					}
 				}

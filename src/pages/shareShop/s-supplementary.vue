@@ -24,25 +24,27 @@
 		</div>	
 		<div class="applyloan">
 			<h3><span></span>个人信用情况</h3>
-			<div class='optionstyle'>
-				<options :options="occupationalList"></options>
+			<div class='optionstyles'>
+				<ul class="box">
+					<li v-for="(item,index) in personalCreditList" :key="index" :class="{checked:item.infoOptionKey===personalCredit}" @click="change1(item,index)">{{item.infoOptionName}}</li>
+				</ul>
 			</div>
 		</div>
 		<div class="applyloan">
 			<div class="applyloanhouse">
 				<div>
 					<label>信用状况:</label>
-					<div class="dropdown">
+					<div class="dropdown dropdownstyle">
 						<van-dropdown-menu>
-							<van-dropdown-item v-model="value1" :options="option1" />
+							<van-dropdown-item v-model="creditStatus" :options="creditStatusList" />
 						</van-dropdown-menu>
 					</div>
 				</div>
 				<div>
 					<label>信用卡额度:</label>
-					<div class="dropdown">
+					<div class="dropdown dropdownstyles">
 						<van-dropdown-menu>
-							<van-dropdown-item v-model="value1" :options="option1" />
+							<van-dropdown-item v-model="creditLimit" :options="creditLimitList" />
 						</van-dropdown-menu>
 					</div>
 				</div>
@@ -50,85 +52,95 @@
 		</div>
 		<div class="applyloan">
 			<h3><span></span>寿险缴纳情况</h3>
-			<div class='optionstyle'>
-				<options :options="paymentList" :isMultiply=true></options>
+			<div class='optionstyles'>
+				<ul class="box">
+					<li v-for="(item,index) in guaranteeSlipList" :key="index" :class="{checked:item.infoOptionKey===guaranteeSlip}" @click="change2(item,index)">{{item.infoOptionName}}</li>
+				</ul>
 			</div>
 		</div>
 		<div class="applyloan">
 			<h3><span></span>微粒贷额度</h3>
-			<div class='optionstyle'>
-				<options :options="incomeList" :isMultiply=true></options>
+			<div class='optionstyles'>
+				<ul class="box">
+					<li v-for="(item,index) in weilidaiLimitList" :key="index" :class="{checked:item.infoOptionKey===weilidaiLimit}" @click="change3(item,index)">{{item.infoOptionName}}</li>
+				</ul>
 			</div>
 		</div>
 		<div class="applyloan">
 			<h3><span></span>芝麻信用卡</h3>
-			<div class="optionstyles">
-				<options :options="securityLisr" :cssStyle="object"></options>
+			<div class='optionstyle'>
+				<ul class="box">
+					<li v-for="(item,index) in creditScoreList" :key="index" :class="{checked:item.infoOptionKey===creditScore}" @click="change4(item,index)">{{item.infoOptionName}}</li>
+				</ul>
 			</div>
 		</div>
 		<div class="applyloan">
 			<h3><span></span>房产情况</h3>
-			<div class="optionstyles">
-				<options :options="accumulationList" :isMultiply=true></options>
+			<div class='optionstyles'>
+				<ul class="box">
+					<li v-for="(item,index) in ownHouseStatusList" :key="index" :class="{checked:item.infoOptionKey===ownHouseStatus}" @click="change5(item,index)">{{item.infoOptionName}}</li>
+				</ul>
 			</div>
-			<div class="applyloanhouse">
+			<div class="applyloanhouse" v-if="ownHouseStatus=='have_house'">
 				<div>
 					<label>所在地区:</label>
 					<input type="text" placeholder='请选择'>
 				</div>
 				<div>
 					<label>产权人</label>
-					<div class="dropdown">
+					<div class="dropdown dropdownstyles">
 						<van-dropdown-menu>
-							<van-dropdown-item v-model="houseproperty" :options="housepropertyList" />
+							<van-dropdown-item v-model="ownerHouse" :options="ownerHouseList" />
 						</van-dropdown-menu>
 					</div>
 				</div>
 				<div>
 					<label>房产状态</label>
-					<div class="dropdown">
+					<div class="dropdown dropdownstyles">
 						<van-dropdown-menu>
-							<van-dropdown-item v-model="housestatus" :options="housestatusList" />
+							<van-dropdown-item v-model="houseStatus" :options="houseStatusList" />
 						</van-dropdown-menu>
 					</div>
 				</div>
 				<div>
 					<label>是否抵押</label>
-					<div class="dropdown">
+					<div class="dropdown dropdownstyles">
 						<van-dropdown-menu>
-							<van-dropdown-item v-model="housemortgage" :options="housemortgageList" />
+							<van-dropdown-item v-model="houseIsPledge" :options="houseIsPledgeList" />
 						</van-dropdown-menu>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="applyloan">
-			<h3><span></span>车辆情况</h3>
-			<div class="optionstyles">
-				<options :options="accumulationList" :isMultiply=true></options>
+			<h3><span></span>车产情况</h3>
+			<div class='optionstyles'>
+				<ul class="box">
+					<li v-for="(item,index) in ownCarStatusList" :key="index" :class="{checked:item.infoOptionKey===ownCarStatus}" @click="change6(item,index)">{{item.infoOptionName}}</li>
+				</ul>
 			</div>
-			<div class="applyloanhouse">
+			<div class="applyloanhouse" v-if="ownCarStatus=='have_car'">
 				<div>
 					<label>车产状态:</label>
-					<div class="dropdown">
+					<div class="dropdown dropdownstyles">
 						<van-dropdown-menu>
-							<van-dropdown-item v-model="carstatus" :options="carstatusList" />
+							<van-dropdown-item v-model="carStatus" :options="carStatusList" />
 						</van-dropdown-menu>
 					</div>
 				</div>
 				<div>
 					<label>购车时间:</label>
-					<div class="dropdown">
+					<div class="dropdown dropdownstyless">
 						<van-dropdown-menu>
-							<van-dropdown-item v-model="cartime" :options="cartimeList" />
+							<van-dropdown-item v-model="carTime" :options="carTimeList" />
 						</van-dropdown-menu>
 					</div>
 				</div>
 				<div>
 					<label>是否抵押:</label>
-					<div class="dropdown">
+					<div class="dropdown dropdownstyles">
 						<van-dropdown-menu>
-							<van-dropdown-item v-model="mortgage" :options="mortgageList"/>
+							<van-dropdown-item v-model="carIsPledge" :options="carIsPledgeList"/>
 						</van-dropdown-menu>
 					</div>
 				</div>
@@ -143,7 +155,8 @@
 </template>
 <script>
 import options from '../../views/options.vue'
-import { DropdownMenu, DropdownItem,Checkbox } from 'vant';
+import { DropdownMenu, DropdownItem,Checkbox,Toast } from 'vant';
+import { constants } from 'crypto';
 export default {
 		components:{
 			[DropdownMenu.name]:DropdownMenu,
@@ -155,79 +168,35 @@ export default {
 		return{
 			value1:0,
 			checked:true,
-			option1: [
-				{ text: '全部商品', value: 0 },
-				{ text: '新款商品', value: 1 },
-				{ text: '活动商品', value: 2 }
-			],
-			occupationalList: [],
-			paymentList: [
-				{label:'打卡工资',value:1},
-				{label:'个人转账',value:2},
-				{label:'现金发放',value:3},
-			],
-			incomeList:[
-				{label:'2千以下',value:1},
-				{label:'2千-5千',value:2},
-				{label:'5千-8千',value:3},
-				{label:'8千-1万',value:4},
-				{label:'1万以上',value:5},
-			],
-			securityLisr:[
-				{label:'最近连续缴纳≥6个月',value:1},
-				{label:'最近连续缴纳<6个月',value:1},
-				{label:'没有缴纳',value:1},
-			],
-			accumulationList:[
-					{label:'已购置房产',value:1},
-					{label:'未购置房产',value:2},
-			],
-			//房产人
-			houseproperty:1,
-			housepropertyList:[
-				{text:'本人',value:1},
-				{text:'配偶',value:2},
-				{text:'父母',value:3},
-			],
-			// 房状态
-			housestatus:1,
-			housestatusList:[
-				{text:'全款',value:1},
-				{text:'按揭',value:2},
-				{text:'其他',value:3},
-			],
-			// 房抵押
-			housemortgage:1,
-			housemortgageList:[
-				{text:'不考虑',value:1},
-				{text:'可考虑',value:2}
-			],
-			//车状态
-			carstatus:1,
-			carstatusList:[
-				{text:'全款',value:1},
-				{text:'按揭',value:2},
-				{text:'其他',value:3},
-			],
-			// 车时间
-			cartime:1,
-			cartimeList:[
-				{text:'满三个月',value:1},
-				{text:'不满三个月',value:2},
-			],
-			//车抵押
-			mortgage:1,
-			mortgageList:[
-				{text:'不考虑',value:1},
-				{text:'可考虑',value:2}
-			]
-		}
-	},
-	computed:{
-		object(){
-			return {
-								
-			}
+			personalCredit:'',//个人信用
+			personalCreditList: [],
+			creditStatus:'', //信用状况
+			creditStatusList:[],
+			creditLimit : '', //信用卡额度
+			creditLimitList:[],
+			guaranteeSlip:'', //寿险缴纳情况
+			guaranteeSlipList:'',
+			weilidaiLimit:'', //微粒贷额度
+			weilidaiLimitList:[],
+			creditScore:'',//芝麻信用
+			creditScoreList:[],
+			ownHouseStatus:'', //房产情况
+			ownHouseStatusList:[],
+			ownCarStatus:'',//车产
+			ownCarStatusList:[],
+			ownerHouse:'', //产权人
+			ownerHouseList:[],
+			houseStatus:'',//房产状态
+			houseStatusList:[],
+			houseIsPledge:'',//是否抵押
+			houseIsPledgeList:[],
+			carStatus:'', //车产状态
+			carStatusList:[],
+			carTime:'', //购车时间
+			carTimeList:[],
+			carIsPledge:'', //是否抵押
+			carIsPledgeList:[],
+			houseAdNameSecond:'',
 		}
 	},
     methods:{
@@ -235,7 +204,29 @@ export default {
 
 			},
 			nextstep(){
-				this.$emit('tosteps',3)
+				let data = {
+					personalCredit:this.personalCredit,
+					creditStatus:this.creditStatus,
+					creditLimit:this.creditLimit,
+					guaranteeSlip :this.guaranteeSlip,
+					weilidaiLimit :this.weilidaiLimit,
+					creditScore :this.creditScore,
+					ownHouseStatus:this.ownHouseStatus,
+					houseAdNameSecond:this.houseAdNameSecond,
+					ownerHouse : this.ownerHouse,
+					houseStatus :this.houseStatus ,
+					houseIsPledge:this.houseIsPledge,
+					ownCarStatus:this.ownCarStatus,
+					carStatus:this.carStatus,
+					carTime:this.carTime,
+					carIsPledge :this.carIsPledge 
+				}
+				this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
+				.then(data=>{
+					if(data.code=='success'){
+						alert(1)
+					}
+				})
 			},
 			returngo(){
 
@@ -248,17 +239,176 @@ export default {
 			},
 			privacyAgreement(){
 
+			},
+			getdatainfor(){
+				let data = {
+					pageName :'moreInfo'
+				}
+				this.request('wisdom.vshop.vshopUserSelect.initTitleData',data)
+				.then(data=>{
+					if(data.code=='success'){
+						let arr = data.data.pageData
+						for(let i=0;i<arr.length;i++){
+							if(arr[i].infoTitleKey=='personalCredit'){
+								this.personalCreditList = arr[i].optionRes
+								this.personalCredit = arr[i].valueKey
+							}
+
+							if(arr[i].infoTitleKey=='creditStatus'){
+								this.creditStatus = arr[i].valueKey
+								let optionlist=[]
+								optionlist = arr[i].optionRes
+								for(let j=0;j<optionlist.length;j++){
+									this.creditStatusList.push(
+										{
+											text:optionlist[j].infoOptionName,
+											value:optionlist[j].infoOptionKey
+										}
+									)
+								}
+								console.log(this.creditStatusList)
+							}
+							if(arr[i].infoTitleKey=='creditLimit'){
+								let optionlist=[]
+								optionlist = arr[i].optionRes
+								for(let j=0;j<optionlist.length;j++){
+									this.creditLimitList.push(
+										{
+											text:optionlist[j].infoOptionName,
+											value:optionlist[j].infoOptionKey
+										}
+									)
+								}
+								this.creditLimit = arr[i].valueKey
+							}
+							if(arr[i].infoTitleKey=='guaranteeSlip'){
+								this.guaranteeSlipList = arr[i].optionRes
+								this.guaranteeSlip = arr[i].valueKey
+							}
+							if(arr[i].infoTitleKey=='weilidaiLimit'){
+								this.weilidaiLimitList = arr[i].optionRes
+								this.weilidaiLimit = arr[i].valueKey
+							}
+							if(arr[i].infoTitleKey=='weilidaiLimit'){
+								this.creditScoreList = arr[i].optionRes
+								this.creditScore = arr[i].valueKey
+							}
+							if(arr[i].infoTitleKey=='ownHouseStatus'){
+								this.ownHouseStatusList = arr[i].optionRes
+								this.ownHouseStatus = arr[i].valueKey
+							}
+							if(arr[i].infoTitleKey=='ownCarStatus'){
+								this.ownCarStatusList = arr[i].optionRes
+								this.ownCarStatus = arr[i].valueKey
+							}
+							if(arr[i].infoTitleKey=='ownerHouse'){
+								let optionlist=[]
+								optionlist = arr[i].optionRes
+								for(let j=0;j<optionlist.length;j++){
+									this.ownerHouseList.push(
+										{
+											text:optionlist[j].infoOptionName,
+											value:optionlist[j].infoOptionKey
+										}
+									)
+								}
+								this.ownerHouse = arr[i].valueKey
+							}
+							if(arr[i].infoTitleKey=='houseStatus'){
+								let optionlist=[]
+								optionlist = arr[i].optionRes
+								for(let j=0;j<optionlist.length;j++){
+									this.houseStatusList.push(
+										{
+											text:optionlist[j].infoOptionName,
+											value:optionlist[j].infoOptionKey
+										}
+									)
+								}
+								this.houseStatus = arr[i].valueKey
+							}
+							if(arr[i].infoTitleKey=='houseIsPledge'){
+								let optionlist=[]
+								optionlist = arr[i].optionRes
+								for(let j=0;j<optionlist.length;j++){
+									this.houseIsPledgeList.push(
+										{
+											text:optionlist[j].infoOptionName,
+											value:optionlist[j].infoOptionKey
+										}
+									)
+								}
+								this.houseIsPledge = arr[i].valueKey
+							}
+							if(arr[i].infoTitleKey=='carStatus'){
+								let optionlist=[]
+								optionlist = arr[i].optionRes
+								for(let j=0;j<optionlist.length;j++){
+									this.carStatusList.push(
+										{
+											text:optionlist[j].infoOptionName,
+											value:optionlist[j].infoOptionKey
+										}
+									)
+								}
+								this.carStatus = arr[i].valueKey
+							}
+							if(arr[i].infoTitleKey=='carTime'){
+								let optionlist=[]
+								optionlist = arr[i].optionRes
+								for(let j=0;j<optionlist.length;j++){
+									this.carTimeList.push(
+										{
+											text:optionlist[j].infoOptionName,
+											value:optionlist[j].infoOptionKey
+										}
+									)
+								}
+								this.carTime = arr[i].valueKey
+							}
+							if(arr[i].infoTitleKey=='ownHouse_address'){
+								this.houseAdNameSecond = arr[i].valueKey
+							}
+							if(arr[i].infoTitleKey=='carIsPledge'){
+								let optionlist=[]
+								optionlist = arr[i].optionRes
+								for(let j=0;j<optionlist.length;j++){
+									this.carIsPledgeList.push(
+										{
+											text:optionlist[j].infoOptionName,
+											value:optionlist[j].infoOptionKey
+										}
+									)
+								}
+								this.carIsPledge = arr[i].valueKey
+							}
+						}
+					}
+				})
+			},
+			change1(item){
+				this.personalCredit = item.infoOptionKey
+			},
+			change2(item){
+				this.guaranteeSlip = item.infoOptionKey
+			},
+			change3(item){
+				this.weilidaiLimit = item.infoOptionKey
+			},
+			change4(item){
+				this.creditScore = item.infoOptionKey
+			},
+			change5(item){
+				this.ownHouseStatus = item.infoOptionKey
+			},
+			change6(item){
+				this.ownCarStatus = item.infoOptionKey
+				console.log(item)
 			}
 			
     },
     mounted(){
-			this.occupationalList =	[
-				{label:'上班族',value:'1'},
-				{label:'公务员',value:'2'},
-				{label:'企业法人',value:'3'},
-				{label:'个体户',value:'4'},
-				{label:'自由职业',value:'5'},
-			]
+			this.getdatainfor()
     }
 }
 </script>
@@ -282,4 +432,13 @@ export default {
 					color:#4896FB;
 				}
 			}
+		.dropdownstyle{
+			width:200px;
+		}
+		.dropdownstyles{
+			width:50px
+		}
+		.dropdownstyless{
+			width:70px
+		}
 </style>
