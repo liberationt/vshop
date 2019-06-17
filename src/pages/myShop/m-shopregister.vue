@@ -10,75 +10,50 @@
       />
     </header>
     <div class="shopregister_center">
+      <div class="center_search">
+        <van-search
+          v-model="searchValue"
+          placeholder="请输入姓名或手机号"
+          show-action
+          shape="round"
+          @click="inquery"
+        >
+          <div slot="action" @click="rightShow = true,labelName = '确认'">
+            <img src="./imgs/screening_icon@2x.png" alt="">
+            筛选
+          </div>
+        </van-search>
+      </div>
       <van-pull-refresh v-model="isLoading" class="xialashuaxin" @refresh="onRefresh">
-        <!-- <p>刷新次数: {{ count }}</p> -->
-        <div class="center_search">
-          <van-search
-            v-model="searchValue"
-            placeholder="请输入姓名或手机号"
-            show-action
-            shape="round"
-            @click="inquery"
-          >
-            <div slot="action" @click="rightShow = true,labelName = '确认'">
-              <img src="./imgs/screening_icon@2x.png" alt="">
-              筛选
-            </div>
-          </van-search>
-        </div>
         <div class="shopregister_message">
-          <van-tabs class="vantab_center" @click="onvanTabs"  v-model="active">
-            <div class="shopregister_tips" @click="extension">一键推广店铺链接</div>
-            <van-tab class="shopregister_list" title="微店客户">
-            </van-tab>
-            <van-tab class="shopregister_list" title="导入客户">
-              <!-- <ul>
-                <li v-for="item in 10" @click="goregisterdetails">
-                  <div class="pleace_label">
-                    <span>请选择标签</span>
-                    <span v-if="">...</span>
+          <div class="shopregister_tips" @click="extension">一键推广店铺链接</div>
+            <div class="shopregister_list">
+              <ul>
+                <li v-for="item in customerList" @click="goregisterdetails(item.userCode)">
+                  <div v-if="item.label.length != 0" @click.stop="selectLabels(item.userCode)" class="pleace_label" >
+                    <span v-if="index<3" v-for="(item,index) in item.label">{{item.labelOptionName}}</span>
+                    <span v-if="item.label.length == 3">...</span>
+                  </div>
+                  <div @click.stop="selectLabels(item.userCode)" class="pleace_label" v-else>
+                    <span >请选择标签</span>
                   </div>
                   <div class="shopregister_operation">
-                    <p class="one">2018-03-20 10:20:33</p>
+                    <p class="one">{{item.dataCreateTime}}</p>
                     <p class="two">
-                      <span>黎明演</span>
-                      <span>136 **** 1111</span>
-                      <span class="message_icon"><img src="./imgs/message_icon@2x.png" alt=""></span>
-                      <span class="phone_icon"><img src="./imgs/phone_icon@2x.png" alt=""></span>
+                      <span>{{item.userName}}</span>
+                      <span>{{item.userPhone}}</span>
+                      <span class="message_icon" @click.stop="goMessage(item.userPhone)"><img src="./imgs/message_icon@2x.png" alt=""></span>
+                      <span class="phone_icon" @click.stop="goPhone(item.userPhone)"><img src="./imgs/phone_icon@2x.png" alt=""></span>
                       <span class="biajidianpu"><img src="./imgs/biajidianpu.png" alt=""></span>
                     </p>
                   </div>
+                  <label>        
+                      <!-- v-model 双向数据绑定命令 -->
+                      <input class="checkItem" type="checkbox" :value="item.userCode" v-model="checkData">
+                  </label>
                 </li>
-              </ul> -->
-            </van-tab>
-            <div class="shopregister_list">
-                <ul>
-                  <li v-for="item in customerList" @click="goregisterdetails(item.userCode)">
-                    <div v-if="item.label.length != 0" @click.stop="selectLabels(item.userCode)" class="pleace_label" >
-                      <span v-if="index<3" v-for="(item,index) in item.label">{{item.labelOptionName}}</span>
-                      <span v-if="item.label.length == 3">...</span>
-                    </div>
-                    <div @click.stop="selectLabels(item.userCode)" class="pleace_label" v-else>
-                      <span >请选择标签</span>
-                    </div>
-                    <div class="shopregister_operation">
-                      <p class="one">{{item.dataCreateTime}}</p>
-                      <p class="two">
-                        <span>{{item.userName}}</span>
-                        <span>{{item.userPhone}}</span>
-                        <span class="message_icon" @click.stop="goMessage(item.userPhone)"><img src="./imgs/message_icon@2x.png" alt=""></span>
-                        <span class="phone_icon" @click.stop="goPhone(item.userPhone)"><img src="./imgs/phone_icon@2x.png" alt=""></span>
-                        <span class="biajidianpu"><img src="./imgs/biajidianpu.png" alt=""></span>
-                      </p>
-                    </div>
-                    <label>        
-                        <!-- v-model 双向数据绑定命令 -->
-                        <input class="checkItem" type="checkbox" :value="item.userCode" v-model="checkData">
-                    </label>
-                  </li>
-                </ul>
-              </div>
-          </van-tabs>
+              </ul>
+            </div>
         </div>
       </van-pull-refresh>
      <footer v-if="isHide" class="shopregister_footer" :class="{  'nav-hide': hideClass }">
@@ -111,7 +86,6 @@
               {{item1.labelOptionName}}
             </li>
           </ul>
-          <!-- <options :options=item.optionResList :isMultiply=true></options> -->
         </p>
       </div>
       <van-row class="rightShow_footer">
@@ -140,7 +114,6 @@ export default {
       labelOptionKey:{},
       labelOptionKey1:{},
       searchValue: "",
-      active: 0,
       count: 0,
       isLoading: false,
       docmHeight: document.documentElement.clientHeight, //一开始的屏幕高度
@@ -244,10 +217,6 @@ export default {
     goBack() {
       this.$router.push({ path: "./myshop" });
     },
-    // tab事件
-    onvanTabs() {
-      this.Initialization(1, "",{});
-    },
     //一键推广店铺链接
     generalizeStoreLink(){
       this.request('wisdom.vshop.vshopStore.generalizeStoreLink',{data:window.location.href}).then(data=>{
@@ -294,7 +263,7 @@ export default {
       // console.log('莉莉',)
       this.request("wisdom.vshop.vshopLoanUser.queryVshopLoanUserList", Object.assign({
         searchStr: user,
-        type: this.active,
+        type: 0,
         pageNum: i,
         pageSize: 10
       },data1))
@@ -544,7 +513,6 @@ export default {
     .vantab_center {
       background-color: #f1f1fb;
       padding: 0px 15px;
-      padding-top: 45px;
     }
   }
   .shopregister_list {
