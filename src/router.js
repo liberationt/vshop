@@ -97,6 +97,12 @@ export default new Router({
       component:()=>import('./pages/shareShop/s-essentialinformation.vue')
     },
     {
+      path:'/undershelf',
+      name:'undershelf',
+      tittle:'产品下架',
+      component:()=>import('./pages/myShop/m-undershelf.vue')
+    },
+    {
       path:'/workinformation',
       name:'workinformation',
       tittle:'工作信息',

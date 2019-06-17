@@ -58,7 +58,6 @@ export default {
 				this.$router.go(-1)
 				// this.active = utils.getlocal('active')
 				this.active = this.actives
-				console.log(this.active)
 			},
 			onchange(i){
 				this.active = i
