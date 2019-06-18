@@ -3,7 +3,7 @@
 		<header>
 			<van-nav-bar title='有钱花' left-arrow fixed @click-left="returngo"></van-nav-bar>
 		</header>
-		<div class="applireminder">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
+		<div class="applireminder" v-show="toasttittle">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
 		<div class="applistap">
 			<div class="applistaplist">
 				<div><img src='./images/loanapply.png' alt=""></div>
@@ -55,7 +55,6 @@
 						<li v-for="item,index of securityList" :class="{checked:item.infoOptionKey===socialSecurity}" @click="changesecur(item,index)">{{item.infoOptionName}}</li>
 					</ul>
 				</div>
-				<!-- <options :options="securityLisr" :isMultiply=true></options> -->
 			</div>
 			<div class="applyloan">
 				<h3><span></span>公司代缴公积金</h3>
@@ -64,7 +63,6 @@
 						<li v-for="item,index of accumulationList" :class="{checked:item.infoOptionKey===accumulationFund}" @click="changeaccum(item,index)">{{item.infoOptionName}}</li>
 					</ul>
 				</div>
-				<!-- <options :options="accumulationList" :isMultiply=true></options> -->
 			</div>
 		<div @click="nextstep" class="loneNext">下一步</div>
 	</div>
@@ -84,12 +82,13 @@ export default {
 					salaryType :'',
 					monthlyIncome:'',
 					socialSecurity:'',
-					accumulationFund:''
+					accumulationFund:'',
+					toasttittle:true
 				}
     },
     methods:{
 			close(){
-
+				this.toasttittle = false
 			},
 			returngo(){
 				this.$router.go(-1)

@@ -3,7 +3,7 @@
     <header>
 			<van-nav-bar title='有钱花' left-arrow fixed @click-left="returngo"></van-nav-bar>
 		</header>
-		<div class="applireminder">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
+		<div class="applireminder" v-show="toasttittle">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
 		<div class="applistap">
 			<div class="applistaplist">
 				<div><img src='./images/loanapply.png' alt=""></div>
@@ -82,9 +82,9 @@
 				</ul>
 			</div>
 			<div class="applyloanhouse" v-if="ownHouseStatus=='have_house'">
-				<div>
+				<div @click="shows">
 					<label>所在地区:</label>
-					<input type="text" placeholder='请选择'>
+					<input readonly="readonly" placeholder='请选择' v-model="houseAdNameSecond">
 				</div>
 				<div>
 					<label>产权人</label>
@@ -146,26 +146,31 @@
 				</div>
 			</div>
 		</div>
+		<div v-show="flag" class="citystyle">
+			<van-area :area-list="areaList" :columns-num="2" title="请选择城市" @confirm="onAddrConfirm" @cancel='displar'/>
+		</div>
 		<div class="agree">
 			<van-checkbox icon-size='15px' v-model="checked"></van-checkbox>
 			<p>已阅读并同意<span @click="serviceAgreement">《服务协议》</span>和<span @click="privacyAgreement">《隐私协议》</span></p>
 		</div>
-		<div @click="nextstep" class="loneNext">下一步</div>
+		<div @click="nextstep" class="loneNext">发布申请</div>
 	</div>
 </template>
 <script>
-import options from '../../views/options.vue'
-import { DropdownMenu, DropdownItem,Checkbox,Toast } from 'vant';
-import { constants } from 'crypto';
+import areaList from '../../static/area'
+import { DropdownMenu, DropdownItem,Checkbox,Toast,Dialog,Area } from 'vant';
 export default {
 		components:{
 			[DropdownMenu.name]:DropdownMenu,
 			[DropdownItem.name]:DropdownItem,
 			[Checkbox.name]:Checkbox,
-			options
+			[Area.name]:Area,
+			areaList
 		},
 	data(){
 		return{
+			flag:false,
+			areaList:areaList,
 			value1:0,
 			checked:true,
 			personalCredit:'',//个人信用
@@ -197,13 +202,137 @@ export default {
 			carIsPledge:'', //是否抵押
 			carIsPledgeList:[],
 			houseAdNameSecond:'',
+			toasttittle:true
 		}
 	},
     methods:{
-			onSelect(){
-
-			},
+		shows(){
+			this.flag = true
+		},
+		onAddrConfirm(item){
+			this.houseAdNameSecond = item[1].name
+			this.flag = false
+		},
+		displar(){
+			this.flag = false
+		},
 			nextstep(){
+				if(!this.personalCredit){
+					Toast({
+						message:'请选择个人信用',
+						duration:800
+					})
+					return false
+				}
+				if(!this.creditStatus){
+					Toast({
+						message:'请选择信用状况',
+						duration:800
+					})
+					return false
+				}
+				if(!this.creditLimit){
+					Toast({
+						message:'请选择信用卡额度',
+						duration:800
+					})
+					return false
+				}
+				if(!this.guaranteeSlip){
+					Toast({
+						message:'请选择寿险缴纳情况',
+						duration:800
+					})
+					return false
+				}
+				if(!this.weilidaiLimit){
+					Toast({
+						message:'请选择微粒贷',
+						duration:800
+					})
+					return false
+				}
+				if(!this.creditScore){
+					Toast({
+						message:'请选择芝麻信用卡',
+						duration:800
+					})
+					return false
+				}
+				if(!this.ownHouseStatus){
+					Toast({
+						message:'请选择房产情况',
+						duration:800
+					})
+					return false
+				}
+				if(this.ownHouseStatus =='have_house'){
+					if(!this.houseAdNameSecond){
+						Toast({
+							message:'请选择房产所在地区',
+							duration:800
+						})
+						return false
+					}
+					if(!this.ownerHouse){
+						Toast({
+							message:'请选择房产人',
+							duration:800
+						})
+						return false
+					}
+					if(!this.houseStatus){
+						Toast({
+							message:'请选择房产状态',
+							duration:800
+						})
+						return false
+					}
+					if(!this.houseIsPledge){
+						Toast({
+							message:'请选择房产否是抵押',
+							duration:800
+						})
+						return false
+					}
+				}
+				if(!this.ownCarStatus){
+					Toast({
+						message:'请选择车产情况',
+						duration:800
+					})
+					return false
+				}
+				if(this.ownCarStatus=='have_car'){
+					if(!this.carStatus){
+						Toast({
+							message:'请选择车产状态',
+							duration:800
+						})
+						return false
+					}
+					if(!this.carTime){
+						Toast({
+							message:'请选择购车时间',
+							duration:800
+						})
+						return false
+					}
+					if(!this.carIsPledge){
+						Toast({
+							message:'请选择车产是否抵押',
+							duration:800
+						})
+						return false
+					}
+					
+				}
+				if(this.checked===false){
+						Toast({
+							message:'请同意用户协议',
+							duration:800
+						})
+					}
 				let data = {
 					personalCredit:this.personalCredit,
 					creditStatus:this.creditStatus,
@@ -221,24 +350,35 @@ export default {
 					carTime:this.carTime,
 					carIsPledge :this.carIsPledge 
 				}
+				
 				this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
 				.then(data=>{
 					if(data.code=='success'){
-						alert(1)
+						Dialog.alert({
+							title: '温馨提示',
+							message: 'XXX平台不收取任何费用，信贷经理联系您要求放款前收取费用（例：手续费、保证金、会员费等），切勿盲信！谨防诈骗！'
+						}).then(() => {
+							// on close
+						});
 					}
+				}).catch(err=>{
+					console.log(err)
 				})
 			},
 			returngo(){
-
+				this.$router.go(-1)
 			},
 			close(){
-				
+				this.toasttittle = false
 			},
 			serviceAgreement(){
 
 			},
 			privacyAgreement(){
 
+			},
+			tocity(){
+				this.$router.push('city?id='+3)
 			},
 			getdatainfor(){
 				let data = {
@@ -266,7 +406,6 @@ export default {
 										}
 									)
 								}
-								console.log(this.creditStatusList)
 							}
 							if(arr[i].infoTitleKey=='creditLimit'){
 								let optionlist=[]
@@ -367,7 +506,7 @@ export default {
 								this.carTime = arr[i].valueKey
 							}
 							if(arr[i].infoTitleKey=='ownHouse_address'){
-								this.houseAdNameSecond = arr[i].valueKey
+								this.houseAdNameSecond = this.$route.query.city?this.$route.query.city:arr[i].valueKey
 							}
 							if(arr[i].infoTitleKey=='carIsPledge'){
 								let optionlist=[]
@@ -403,9 +542,7 @@ export default {
 			},
 			change6(item){
 				this.ownCarStatus = item.infoOptionKey
-				console.log(item)
 			}
-			
     },
     mounted(){
 			this.getdatainfor()
@@ -441,4 +578,11 @@ export default {
 		.dropdownstyless{
 			width:70px
 		}
+		.citystyle{
+			position:absolute;
+			bottom:0;
+			width:100%;
+			z-index: 20
+		}
+		
 </style>

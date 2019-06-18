@@ -56,21 +56,49 @@ export default {
 			toamount(){
 				this.$router.push('/loanlist')
 			},
-			toproductnamedetail(productCode){
-				utils.setCookie('ProductCode',productCode)
-				utils.setCookie('InviterCode',this.inviterCode)
-				this.$router.push('/productnamedetail')
-			},
 			//申请
-			apply(){
-				this.$router.push('')
+			toproductnamedetail(productCode){
+				let data = {
+					inviterCode:this.inviterCode,
+					productCode:productCode
+				}
+				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
+				.then(data=>{
+					if(data.code=='success'){
+						if(data.data.state==0){
+							utils.setCookie('ProductCode',productCode)
+							utils.setCookie('InviterCode',this.inviterCode)
+							this.$router.push('/productnamedetail')
+						}
+						if(data.data.state==1){
+							this.$router.push('/undershelf?inviterCode='+this.inviterCode)
+						}
+					}
+				}).catch(err=>{
+					console.log(err)
+				})
 			},
+		
 			//换一批
 			another(){
-
+				let data = {
+					storeCode:'0001',
+					head : false , 
+					type:0
+				}
+				this.request('wisdom.vshop.vshopStore.queryStoreProduct',data)
+				.then(data=>{ 
+					if(data.code=='success'){
+						this.productResList = data.data.productResList
+						this.bannerProductResList = data.data.bannerProductResList
+						this.inviterCode = data.data.inviterCode
+					}
+				}).catch(err=>{
+					console.log(err)
+				})
 			},
 			viewall(){
-				this.$router.push('/loanlist')
+				this.$router.push('/loanlist?inviterCode='+this.inviterCode)
 			},
 			getdatas(){
 				let data = {
@@ -79,14 +107,14 @@ export default {
 					type:0
 				}
 				this.request('wisdom.vshop.vshopStore.queryStoreProduct',data)
-					.then(data=>{ 
-						if(data.code=='success'){
-							this.productResList = data.data.productResList
-							this.bannerProductResList = data.data.bannerProductResList
-							this.inviterCode = data.data.inviterCode
-						}
-					})
-				},
+				.then(data=>{ 
+					if(data.code=='success'){
+						this.productResList = data.data.productResList
+						this.bannerProductResList = data.data.bannerProductResList
+						this.inviterCode = data.data.inviterCode
+					}
+				})
+			},
     },
     mounted(){
 			this.getdatas()

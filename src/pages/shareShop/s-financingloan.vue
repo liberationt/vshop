@@ -62,10 +62,10 @@ export default {
 				.then(data=>{
 					if(data.code=='success'){
 						if(data.data.state==0){
-							this.$router.push('/mselfshopdetails?inviterCode='+this.inviterCode+'&'+'code='+productCode)
+						this.$router.push('/mselfshopdetails?inviterCode='+this.inviterCode+'&'+'code='+productCode)
 						}
 						if(data.data.state==1){
-							this.$router.push('/errors')
+							this.$router.push('/undershelf?inviterCode='+this.inviterCode)
 						}
 					}
 				}).catch(err=>{

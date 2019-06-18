@@ -2,21 +2,14 @@
     <div>
 			<div class="credtittle">各种热门信用卡，批卡率高，下卡快</div>
 			<div>
-				<!-- <van-list
-					v-model="loading"
-					:finished="finished"
-					finished-text="没有更多了"
-					@load="onLoad"
-				>	 -->
-					<div class="credlist" @click="tostiflingborrow(item.productCode)" v-for="(item,i) in cardList" :key="i">
-						<div class="credlistbanner"><img :src=item.productLogo alt=""></div>
-						<div class="credlistright">
-							<h4>{{item.productName}}</h4>
-							<p>{{item.subTitle}}</p>
-							<p>{{item.desc}}</p>
-						</div>
+				<div class="credlist" @click="tostiflingborrow(item.productCode)" v-for="(item,i) in cardList" :key="i">
+					<div class="credlistbanner"><img :src=item.productLogo alt=""></div>
+					<div class="credlistright">
+						<h4>{{item.productName}}</h4>
+						<p>{{item.subTitle}}</p>
+						<p>{{item.desc}}</p>
 					</div>
-				<!-- </van-list> -->
+				</div>
 			</div>
     </div>
 </template>
@@ -25,24 +18,31 @@ import utils from '../../utils/utils'
 export default {
     data(){
 			return{
-				finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
-				loading: false,//控制上拉加载的加载动画
 				cardList:[],
 				inviterCode:''
 			}
 		},
 		methods:{
-			//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
-			onLoad() {
-				setTimeout(() => {
-						this.loading = false
-						this.finished = true
-				}, 500);
-			},
 			tostiflingborrow(productCode){
-				utils.setCookie('ProductCode',productCode)
-				utils.setCookie('InviterCode',this.inviterCode)
-				this.$router.push('/stiflingborrow')
+				let data = {
+					inviterCode:this.inviterCode,
+					productCode:productCode
+				}
+				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
+				.then(data=>{
+					if(data.code=='success'){
+						if(data.data.state==0){
+							utils.setCookie('ProductCode',productCode)
+							utils.setCookie('InviterCode',this.inviterCode)
+							this.$router.push('/stiflingborrow')
+						}
+						if(data.data.state==1){
+							this.$router.push('/undershelf?inviterCode='+this.inviterCode)
+						}
+					}
+				}).catch(err=>{
+					console.log(err)
+				})
 			},
 			getdatas(){
 				let data = {

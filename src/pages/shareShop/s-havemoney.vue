@@ -103,6 +103,7 @@ export default {
     },
 		methods:{
 			returngo(){
+				this.$router.go(-1)
 			},
 			//同意服务协议
 			serviceAgreement(){

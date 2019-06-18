@@ -28,6 +28,10 @@
 						<span>身份证号</span>
 						<input type="text" v-model="idCard">
 					</p>
+					<p class="productcity" @click="tocity">
+						<span>工作城市</span>
+						<input type="text" v-model="city">
+					</p>
 				</div>
 			</div>
 			<div class="comform" @click="confim">
@@ -38,12 +42,19 @@
 				<span><img src="" alt=""></span>
 				<span>推荐人：{{managerPhone}}</span>
 			</div>
+			<div v-show="flags" class="citystyle">
+				<van-area :area-list="areaList" :columns-num="2" title="请选择城市" @confirm="onAddrConfirm" @cancel='displar'/>
+			</div>
     </div>
 </template>
 <script>
 import utils from '../../utils/utils'
-import { Toast } from 'vant';
+import { Toast,Area } from 'vant';
+import areaList from '../../static/area'
 export default {
+	components:{
+		[Area.name]:Area
+	},
 	data(){
 		return{
 			bannerUrl:'',
@@ -56,10 +67,26 @@ export default {
 			flag:true,
 			seal_control:false,
 			isshow:true,
-			disableds:false
+			disableds:false,
+			city:'',
+			flags:false,
+			areaList:areaList
 		}
 	},
 	methods:{
+		//跳转城市
+		tocity(){
+			// this.$router.push(`/city?id=1`)
+			this.flags = true
+		},
+		onAddrConfirm(item){
+				this.city = item[1].name
+				utils.setCookie('adNameSecond',this.city)
+				this.flags = false
+			},
+			displar(){
+				this.flags = false
+			},
 		//提交
 		confim(){
 			let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
@@ -104,6 +131,13 @@ export default {
 				})
 				return false
 			}
+			if(!this.city){
+				Toast({
+					message:'请选择城市',
+					duration:800
+				})
+				return false
+			}
 			let params={
 				inviterCode:utils.getCookie('InviterCode'),
 				productCode:utils.getCookie('ProductCode'),
@@ -111,7 +145,7 @@ export default {
 				verifyCode:this.verification,
 				userName :this.userName,
 				idCard:this.idCard,
-				adNameFirst: utils.getCookie('adNameFirst')?utils.getCookie('adNameFirst'):'',
+				// adNameFirst: utils.getCookie('adNameFirst')?utils.getCookie('adNameFirst'):'',
 				adNameSecond:utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):''
 			}
 			this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
@@ -254,6 +288,9 @@ export default {
 			this.isshow=true
 			this.disableds = false
 		}
+		if(utils.getCookie('adNameSecond')){
+			this.city = utils.getCookie('adNameSecond')
+		}
 		this.getdata()
 	}
 }
@@ -331,4 +368,9 @@ export default {
 			width:35px;height:35px;border-radius: 50%;margin-right: 10px;
 		}
 	}
+	.citystyle{
+			position:absolute;
+			bottom:0;
+			width:100%;
+		}
 </style>

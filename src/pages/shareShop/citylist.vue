@@ -21,7 +21,8 @@ import utils from '../../utils/utils'
 export default {
 	data(){
 		return{
-			cityList:[]
+			cityList:[],
+			number:''
 		}
 	},
 	methods:{
@@ -29,11 +30,22 @@ export default {
 			this.$router.go(-1)
 		},
 		tocitylsit(e){
-			utils.setCookie('adNameSecond',e)
-			this.$router.push('/productnamedetail?city='+e)
+			if(this.number==1){
+				utils.setCookie('adNameSecond',e)
+				this.$router.push('/stiflingborrow')
+			}
+			if(this.number==2){
+				utils.setCookie('adNameSecond',e)
+				this.$router.push('/essentialinformation')
+			}
+			if(this.number==3){
+				this.$router.push('/supplementary?city='+e)
+			}
+			
 		}
 	},
 	created(){
+		this.number = this.$route.query.number
 		this.cityList=require( '../../static/adress_json.json')[`100000,${this.$route.query.id}`];
 
 	}

@@ -11,12 +11,11 @@
 				<p>该产品已下架</p>
 			</div>
 			<div class="havemoneytop" v-show="showUMoney">
-				<div @click="tohavemoney" class="havamoneyImg">测试</div>
+				<div @click="tohavemoney" class="havamoneyImg"><img :src=havemoneyImg alt=""></div>
 				<div class="close" @click="closeTost" v-show="isshow"><img src="../shareShop/images/close.png" alt=""></div>
 			</div>
 			<div class="tittle">
 			<p>申请多个产品，可大幅提高贷款成功率</p>
-			<div @click="another"><img src="../shareShop/images/shuaxin.png" alt="">换一批</div>
 		</div>
 		<div class="listdata" v-for="(item,i) in productResList" :key="i">
 			<div class="listdatatop">
@@ -45,27 +44,99 @@
 	</div>
 </template>
 <script>
+import { Tab, Tabs ,Dialog} from 'vant'
+import utils from '../../utils/utils'
 export default {
+	inject:['reload'],
+	components:{
+		[Tab.name]:Tab,
+		[Tabs.name]:Tabs,
+		[Dialog.name]:Dialog,
+	},
 	data(){
 		return{
-			showUMoney:true,
-			isshow:true,
-			productResList:[1]
+			dayUMoney:'',
+			showUMoney:false,
+			isshow:false,
+			havemoneyImg:'',
+			inviterCode:'',
+			productResList:[]
 		}
 	},
 	methods:{
 		tohavemoney(){
-
+			this.$router.push('/havemoney')
+		},
+		getdatalist(){
+			let data = {
+				inviterCode:'FFFFF'
+			}
+			this.request('wisdom.vshop.product.queryH5RemovedDetail',data)
+			.then(data=>{
+				if(data.code=='success'){
+					this.productResList = data.data.productStoreListResList
+					this.havemoneyImg = data.data.bannerResList[0].bannerUrl
+					this.dayUMoney = data.data.dayUMoney
+					this.showUMoney = data.data.showUMoney
+					this.inviterCode = data.data.inviterCode
+				}
+			})
 		},
 		closeTost(){
+			Dialog.confirm({
+				confirmButtonText:this.dayUMoney+"天内不再提示",
+				cancelButtonText:'永不提示',
+				message: '确认关闭此提示框吗？'
+			}).then(() => {
+				this.closehaveMoney(0)
+			}).catch(() => {
+				this.closehaveMoney(1)
+			});
+		},
+		//关闭
+		closehaveMoney(v){
+			let data = {
+				data:v==0?false:true
+			}
+			this.request('wisdom.vshop.vshopStore.closeUMoneyTip',data)
+			.then(data=>{
+				if(data.code=='success'){
+					this.getdatalist()
+				}
+			})
+		},
+		viewall(){
 
 		},
-		another(){
-
-		},
-		toproductnamedetail(){
-			
+		toproductnamedetail(productCode){
+			let data = {
+					inviterCode:this.inviterCode,
+					productCode:productCode
+				}
+				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
+				.then(data=>{
+					if(data.code=='success'){
+						if(data.data.state==0){
+							utils.setCookie('ProductCode',productCode)
+							utils.setCookie('InviterCode',this.inviterCode)
+							this.$router.push('/productnamedetail')
+						}
+						if(data.data.state==1){
+							this.reload()
+						}
+					}
+				}).catch(err=>{
+					console.log(err)
+				})
 		}
+	},
+	mounted(){
+		if(utils.getCookie('user')){
+			this.isshow = true
+		}else{
+			this.isshow = false
+		}
+		this.getdatalist()
 	}
 }
 </script>

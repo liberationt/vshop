@@ -4,7 +4,7 @@
 			<van-nav-bar title='有钱花' left-arrow fixed @click-left="returngo">
 			</van-nav-bar>
 		</header>
-		<div class="applireminder">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
+		<div class="applireminder" v-show="toasttittle">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
 		<div class="applistap">
 			<div class="applistaplist">
 				<div><img src='./images/loanapply.png' alt=""></div>
@@ -32,9 +32,9 @@
 				<label for="">身份证:</label>
 					<input type="text" placeholder="请输入身份证号" v-model="idcard">
 				</p>
-			<p>
+			<p  @click="shows">
 				<label for="">工作所在地:</label>
-				<input type="text" placeholder="请选择城市" @click="tocity" v-model="adNameSecond">
+				<input readonly="readonly"  placeholder="请选择城市" v-model="adNameSecond">
 			</p>
 		</div>
 		<div class="applyloan">
@@ -54,15 +54,20 @@
 			</div>
 		</div>
 		<div @click="nextstep" class="loneNext">下一步</div>
+		<div v-show="flag" class="citystyle">
+			<van-area :area-list="areaList" :columns-num="2" title="请选择城市" @confirm="onAddrConfirm" @cancel='displar'/>
+		</div>
 	</div>
 </template>
 <script>
 import utils from '../../utils/utils'
 import options from '../../views/options.vue'
-import {Toast} from 'vant'
+import {Toast,Area } from 'vant'
+import areaList from '../../static/area'
 export default {
 		components:{
-			options
+			[Area .name]:Area ,
+			areaList
 		},
     data(){
         return{
@@ -72,10 +77,24 @@ export default {
 					marriagelist: [],
 					username:'',
 					idcard:'',
-					adNameSecond:''
+					adNameSecond:'',
+					toasttittle:true,
+					areaList:areaList,
+					flag:false
 				}
     },
     methods:{
+			onAddrConfirm(item){
+				this.adNameSecond = item[1].name
+				utils.setCookie('adNameSecond',this.adNameSecond)
+				this.flag = false
+			},
+			displar(){
+				this.flag = false
+			},
+			shows(){
+				this.flag = true
+			},
 			changeedu(item){
 				this.education = item.infoOptionKey
 			},
@@ -86,10 +105,10 @@ export default {
 				this.$router.go(-1)
 			},
 			close(){
-
+				this.toasttittle = false
 			},
 			tocity(){
-				this.$router.push('/city?id='+1)
+				this.$router.push('/city?id='+2)
 			},
 			nextstep(){
 				let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
@@ -166,7 +185,7 @@ export default {
 						let dataobject = data.data
 						this.username = dataobject.userName
 						this.idcard = dataobject.idCard
-						this.adNameSecond = dataobject.adNameSecond?dataobject.adNameSecond:utils.getCookie('adNameSecond')
+						this.adNameSecond = utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):dataobject.adNameSecond
 						for(var i=0;i<dataobject.pageData.length;i++){
 							if(dataobject.pageData[i].infoTitleKey=='educationBackground'){
 								this.educationList = dataobject.pageData[i].optionRes
@@ -182,7 +201,7 @@ export default {
 			}
 
     },
-    mounted(){
+    created(){
 			this.getdatainfo()
 		}
 }
@@ -203,5 +222,10 @@ export default {
 					text-align: right;
 				}
 			}
+		}
+		.citystyle{
+			position:absolute;
+			bottom:0;
+			width:100%;
 		}
 </style>

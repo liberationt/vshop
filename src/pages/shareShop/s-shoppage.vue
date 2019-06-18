@@ -62,7 +62,7 @@
 				v-model="show"
 				show-cancel-button
 				cancel-button-text='关闭'
-				confirm-button-text='复制微信ID'
+				confirm-button-text='复制微信'
 				confirmButtonColor=""
 				confirmButtonBackground='red'
 				:beforeClose="beforeClose"
