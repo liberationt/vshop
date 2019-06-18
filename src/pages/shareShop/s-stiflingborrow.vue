@@ -63,67 +63,86 @@ export default {
 		//提交
 		confim(){
 			let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
-			if(!this.obtain()){
+			if(!this.userPhone){
 				Toast({
-					message:'请获取验证码',
+						message:'请输入手机号',
+						duration:800
+					})
+				return false
+			}
+			if(!/^1[34578]\d{9}$/.test(this.userPhone)){
+				Toast({
+					message:'请输入正确格式手机号',
 					duration:800
 				})
 				return false
-			}else{
-				if(!this.idCard){
+			}
+			if(!utils.getCookie('user')){
+				if(!this.verification){
 					Toast({
-						message:'请输入身份证号',
-						duration:800
+							message:'请获取验证码',
+							duration:800
 					})
 					return false
 				}
-				if(!reg.test(this.idCard)){
-					Toast({
-						message:'请输入正确格式证件号',
-						duration:800
-					})
-					return false
+				if (!/^[0-9]*$/.test(this.verification) || this.verification.length < 6) {
+					Toast("验证码有误，请重新输入！");
+					return false;
 				}
-				let params={
-					inviterCode:utils.getCookie('InviterCode'),
-					productCode:utils.getCookie('ProductCode'),
-					userPhone:this.userPhone,
-					verifyCode:this.verification,
-					userName :this.userName,
-					idCard:this.idCard,
-					adNameFirst: utils.getCookie('adNameFirst')?utils.getCookie('adNameFirst'):'',
-					adNameSecond:utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):''
-				}
-				this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
-				.then(data=>{
-					if(data.code=='success'){
-						if(!utils.getCookie('user')){
-							let str = {
-								token:data.data.token,
-								userId:data.data.userId
-							}
-							utils.setCookie('user',JSON.stringify(str))
+			}
+			if(!this.idCard){
+				Toast({
+					message:'请输入身份证号',
+					duration:800
+				})
+				return false
+			}
+			if(!reg.test(this.idCard)){
+				Toast({
+					message:'请输入正确格式证件号',
+					duration:800
+				})
+				return false
+			}
+			let params={
+				inviterCode:utils.getCookie('InviterCode'),
+				productCode:utils.getCookie('ProductCode'),
+				userPhone:this.userPhone,
+				verifyCode:this.verification,
+				userName :this.userName,
+				idCard:this.idCard,
+				adNameFirst: utils.getCookie('adNameFirst')?utils.getCookie('adNameFirst'):'',
+				adNameSecond:utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):''
+			}
+			this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
+			.then(data=>{
+				if(data.code=='success'){
+					if(!utils.getCookie('user')){
+						let str = {
+							token:data.data.token,
+							userId:data.data.userId
 						}
-						if(data.data.productType===3){
-							Toast({
-								message:'提交申请成功',
-								duration:800
-							})
-							this.$router.push('/')
-						}else{
-							window.location.href = data.data.jumpUrl
-						}
-						
-					}else{
+						utils.setCookie('user',JSON.stringify(str))
+					}
+					if(data.data.productType===3){
 						Toast({
-							message:data.message,
+							message:'提交申请成功',
 							duration:800
 						})
+						this.$router.push('/')
+					}else{
+						window.location.href = data.data.jumpUrl
 					}
-				}).catch(err=>{
-					console.log(err)
-				})
-			}
+					
+				}else{
+					Toast({
+						message:data.message,
+						duration:800
+					})
+				}
+			}).catch(err=>{
+				console.log(err)
+			})
 		},
 		obtain(v){
 			if(!this.userPhone){

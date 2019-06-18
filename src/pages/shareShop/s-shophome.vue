@@ -31,7 +31,7 @@ export default {
 		},
 		data(){
 			return{
-				active:1,
+				active:'1',
 				tittle:'',
 				number:'',
 				isLoading:false,

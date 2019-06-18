@@ -10,7 +10,7 @@
 				<p>申请借款</p>
 			</div>
 			<div class="applistaplist">
-				<div><img src='./images/basic1.png' alt=""></div>
+				<div><img src='./images/basic2.png' alt=""></div>
 				<p>基本信息</p>
 			</div>
 			<div class="applistaplist">
@@ -24,62 +24,70 @@
 		</div>
 			<div class="applyloan">
 				<h3><span></span>职业类型</h3>
-				<options :options="occupationalList"></options>
+				<div class='optionstyle'>
+					<ul class="box">
+						<li v-for="item,index of occupationalList" :class="{checked:item.infoOptionKey===jobType}" @click="changejob(item,index)">{{item.infoOptionName}}</li>
+					</ul>
+				</div>
 			</div>
 			<div class="applyloan">
 				<h3><span></span>工资发放形式</h3>
-				<options :options="paymentList" :isMultiply=true></options>
+				<div class='optionstyle'>
+					<ul class="box">
+						<li v-for="item,index of paymentList" :class="{checked:item.infoOptionKey===salaryType}" @click="changeoffer(item,index)">{{item.infoOptionName}}</li>
+					</ul>
+				</div>
+				<!-- <options :options="paymentList" :isMultiply=true></options> -->
 			</div>
 			<div class="applyloan">
 				<h3><span></span>月收入</h3>
-				<options :options="incomeList" :isMultiply=true></options>
+				<div class='optionstyle'>
+					<ul class="box">
+						<li v-for="item,index of incomeList" :class="{checked:item.infoOptionKey===monthlyIncome}" @click="changeincome(item,index)">{{item.infoOptionName}}</li>
+					</ul>
+				</div>
+				<!-- <options :options="incomeList" :isMultiply=true></options> -->
 			</div>
 			<div class="applyloan">
 				<h3><span></span>公司代缴社保</h3>
-				<options :options="securityLisr" :isMultiply=true></options>
+				<div class='optionstyles'>
+					<ul class="box">
+						<li v-for="item,index of securityList" :class="{checked:item.infoOptionKey===socialSecurity}" @click="changesecur(item,index)">{{item.infoOptionName}}</li>
+					</ul>
+				</div>
+				<!-- <options :options="securityLisr" :isMultiply=true></options> -->
 			</div>
 			<div class="applyloan">
 				<h3><span></span>公司代缴公积金</h3>
-				<options :options="accumulationList" :isMultiply=true></options>
+				<div class='optionstyles'>
+					<ul class="box">
+						<li v-for="item,index of accumulationList" :class="{checked:item.infoOptionKey===accumulationFund}" @click="changeaccum(item,index)">{{item.infoOptionName}}</li>
+					</ul>
+				</div>
+				<!-- <options :options="accumulationList" :isMultiply=true></options> -->
 			</div>
 		<div @click="nextstep" class="loneNext">下一步</div>
 	</div>
 </template>
 <script>
-import options from '../../views/options.vue'
+import utils from '../../utils/utils'
+import {Toast} from 'vant'
 export default {
-		components:{
-			options
-		},
     data(){
         return{
 					occupationalList: [],
-					paymentList: [
-						{label:'打卡工资',value:1},
-						{label:'个人转账',value:2},
-						{label:'现金发放',value:3},
-					],
-					incomeList:[
-						{label:'2千以下',value:1},
-						{label:'2千-5千',value:2},
-						{label:'5千-8千',value:3},
-						{label:'8千-1万',value:4},
-						{label:'1万以上',value:5},
-					],
-					securityLisr:[
-						{label:'最近连续缴纳≥6个月',value:1},
-						{label:'最近连续缴纳<6个月',value:1},
-						{label:'没有缴纳',value:1},
-					],
-					accumulationList:[
-						
-					]
+					paymentList: [],
+					incomeList:[],
+					securityList:[],
+					accumulationList:[],
+					jobType:'',
+					salaryType :'',
+					monthlyIncome:'',
+					socialSecurity:'',
+					accumulationFund:''
 				}
     },
     methods:{
-			onSelect(){
-
-			},
 			close(){
 
 			},
@@ -87,17 +95,110 @@ export default {
 				this.$router.go(-1)
 			},
 			nextstep(){
-				this.$emit('tosteps',3)
+				if(!this.jobType){
+					Toast({
+						message:'请选择职业类型',
+						duration:800
+					})
+					return false
+				}
+				if(!this.salaryType){
+					Toast({
+						message:'请选择工资发放形式',
+						duration:800
+					})
+					return false
+				}
+				if(!this.monthlyIncome){
+					Toast({
+						message:'请选择月收入',
+						duration:800
+					})
+					return false
+				}
+				if(!this.socialSecurity){
+					Toast({
+						message:'请选择公司代缴社保',
+						duration:800
+					})
+					return false
+				}
+				if(!this.accumulationFund){
+					Toast({
+						message:'请选择公司代缴公积金',
+						duration:800
+					})
+					return false
+				}
+				let data={
+					jobType:this.jobType,
+					salaryType :this.salaryType,
+					monthlyIncome:this.monthlyIncome,
+					socialSecurity:this.socialSecurity,
+					accumulationFund:this.accumulationFund
+				}
+				this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
+				.then(data=>{
+					if(data.code=='success'){
+						this.$router.push('/supplementary')
+					}
+				})
+			},
+			changejob(item){
+				this.jobType = item.infoOptionKey
+			},
+			//工资
+			changeoffer(item){
+				this.salaryType = item.infoOptionKey
+			},
+			//收入
+			changeincome(item){
+				this.monthlyIncome = item.infoOptionKey
+			},
+			//社保
+			changesecur(item){
+				this.socialSecurity = item.infoOptionKey
+			},
+			//公积金
+			changeaccum(item){
+				this.accumulationFund = item.infoOptionKey
+			},
+			getdatainfor(){
+				let data={
+					pageName : 'workinfo'
+				}
+				this.request('wisdom.vshop.vshopUserSelect.initTitleData',data)
+				.then(data=>{
+					if(data.code = 'success'){
+						let datalist = data.data.pageData
+						for(let i=0;i<datalist.length;i++){
+							if(datalist[i].infoTitleKey=='jobType'){
+								this.occupationalList = datalist[i].optionRes
+								this.jobType = datalist[i].valueKey
+							}
+							if(datalist[i].infoTitleKey=='salaryType'){
+								this.paymentList = datalist[i].optionRes
+								this.salaryType = datalist[i].valueKey
+							}
+							if(datalist[i].infoTitleKey=='monthlyIncome'){
+								this.incomeList = datalist[i].optionRes
+								this.monthlyIncome = datalist[i].valueKey
+							}
+							if(datalist[i].infoTitleKey=='socialSecurity'){
+								this.securityList = datalist[i].optionRes
+								this.socialSecurity = datalist[i].valueKey
+							}
+							if(datalist[i].infoTitleKey=='accumulationFund'){
+								this.accumulationList = datalist[i].optionRes
+								this.accumulationFund = datalist[i].valueKey
+							}
+						}
+					}
+				})
 			}
     },
     mounted(){
-			this.occupationalList =	[
-						{label:'上班族',value:'1'},
-						{label:'公务员',value:'2'},
-						{label:'企业法人',value:'3'},
-						{label:'个体户',value:'4'},
-						{label:'自由职业',value:'5'},
-					]
+			this.getdatainfor()
     }
 }
 </script>

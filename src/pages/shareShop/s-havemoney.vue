@@ -21,7 +21,7 @@
 			<div class="backgroundcolor"></div>
 			<div class="havemoneymain">
 				<p class="havemoneymaintop"><img src='./images/circle.png'/>已经帮助 <span>2,789,233</span> 用户成功申请贷款<img src="./images/circle.png" alt=""></p>
-				<div class="phoneinfor">
+				<div class="phoneinfor" v-show="isshow">
 					<p>
 						<input type="number"  pattern='[0-9]*' placeholder="请输入手机号码" v-model="phonenumber" oninput='if(value.length>11)value=value.slice(0,11)'>
 					</p>
@@ -39,6 +39,7 @@
 </template>
 <script>
 import { NavBar,Field ,Toast, Checkbox } from 'vant';
+import utils from '../../utils/utils'
 export default {
 		components:{
 			[NavBar.name] : NavBar,
@@ -54,6 +55,8 @@ export default {
 				countext:'获取验证码',
 				countNumber:1,
 				checked:true,
+				seal_control:false,
+				isshow:false,
 				listData: [
           {"user": "用户159****1713邀请5位用户，已赚取265赞豆"},
           {"user": "用户182****6911邀请1位用户，已赚取35赞豆"},
@@ -93,7 +96,8 @@ export default {
         return {
           step: 0.2,
           limitMoveNum: 3,
-          openTouch: false 
+					openTouch: false ,
+					
         };
       }
     },
@@ -106,6 +110,11 @@ export default {
 			},
 			privacyAgreement(){
 				this.$router.push('/')
+			},
+			//清楚定时器
+			deleteTime() {
+				clearInterval(this.timer);
+				this.timer = null;
 			},
       //获取验证码
       obtain(v){
@@ -190,21 +199,59 @@ export default {
 		},
 		//立即领取
 		immediately(){
-			if(!this.obtain()){
+			if(utils.getCookie('user')){
+					this.$router.push('/applicationloan')
+			}else{
+			if(!this.phonenumber){
+				Toast({
+						message:'请输入手机号',
+						duration:800
+					})
+				return false
+			}
+			if(!/^1[34578]\d{9}$/.test(this.phonenumber)){
+				Toast({
+					message:'请输入正确格式手机号',
+					duration:800
+				})
+				return false
+			}
+			if(!this.verification){
 				Toast({
 						message:'请获取验证码',
 						duration:800
 				})
 				return false
 			}
-			if(!this.verification){
-				Toast({
-						message:'请输入验证码',
-						duration:800
-				})
-				return false
+			if (!/^[0-9]*$/.test(this.verification) || this.verification.length < 6) {
+				Toast("验证码有误，请重新输入！");
+				return false;
 			}
-			
+			let data={
+				captchaCode:this.verification,
+				phone:this.phonenumber
+			}
+			this.request('wisdom.vshop.vshopLoanUser.captchaLogin',data)
+			.then(data=>{
+				if(data.code=='success'){
+					if(!utils.getCookie('user')){
+							let str = {
+								token:data.data.token,
+								userId:data.data.userId
+							}
+							utils.setCookie('user',JSON.stringify(str))
+						}
+					this.$router.push('/applicationloan')
+				}
+			})
+		}
+		}
+	},
+	mounted(){
+		if(utils.getCookie('user')){
+			this.isshow = false
+		}else{
+			this.isshow=true
 		}
 	}
 }
