@@ -16,22 +16,22 @@
           <van-tab title="提现失败"></van-tab>
           <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
             <div class="loanFacility_common"> 
-              <div class="with_center" @click="goDetails(item.userDetailStatus,item.userCode)" v-for="item in 3">
+              <div class="with_center" @click="goDetails(item.userDetailStatus,item.userCode)" v-for="item in shopPapplyList">
                 <van-row class="van-row">
                   <van-col span="8">提现编号</van-col> 
-                  <van-col span="16">TX23333333E0303</van-col> 
+                  <van-col span="16">{{item.customerOrderNo}}</van-col> 
                 </van-row  class="van-row">  
                 <van-row class="van-row">
                   <van-col span="8">申请时间</van-col> 
-                  <van-col span="16">2018-04-10 19:20:44</van-col> 
+                  <van-col span="16">{{item.applyTime}}</van-col> 
                 </van-row>  
                 <van-row class="van-row">
                   <van-col span="8">提现金额</van-col> 
-                  <van-col span="16">50.00元</van-col> 
+                  <van-col span="16">{{item.amount}}元</van-col> 
                 </van-row>  
                 <van-row class="van-row">
                   <van-col span="8">申请状态</van-col> 
-                  <van-col span="16">待审核</van-col> 
+                  <van-col span="16">{{item.withdrawStatus}}</van-col> 
                 </van-row>  
               </div>
             </div>
@@ -62,7 +62,7 @@ export default {
       active: 0,
       count: 0,
       isLoading: false,
-      shopPapplyList: {}
+      shopPapplyList: []
     };
   },
   mounted() {
@@ -97,6 +97,7 @@ export default {
         pageSize: 10,
       })
         .then(data => {
+          this.shopPapplyList = data.data
           console.log(data);
         })
         .catch(err => {

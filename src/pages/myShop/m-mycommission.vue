@@ -18,10 +18,10 @@
 			</div>
 		</div>
 		<div>
-			<div class="cashdetail">
+			<div class="cashdetail" @click="goMingxi"> 
 				<div>
 					<img src="./imgs/xianjinming.png" alt="">
-					<router-link to="./cashdetails"><span>现金明细</span></router-link>
+					<span>现金明细</span>
 				</div>
 				<div>
 					<van-icon name="arrow" class="cashdetailArrow" color='#4597FB' />
@@ -96,6 +96,9 @@ export default {
 				this.$router.push({path:'./commissionwithdrawal'})  //提现
 			}
 			
+		},
+		goMingxi(){
+			this.$router.push({path:'./cashdetails'})
 		},
 		// 数据初始化
 		Initialization(){
