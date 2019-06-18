@@ -2,7 +2,7 @@
 	<div class="main">
 		 <header class="pddingTop navbarrighttext">
 			<van-nav-bar
-				title="推文详情"
+				:title=tittle
 				left-arrow
 				@click-left="onClickLeft"
 			/> 
@@ -50,7 +50,8 @@ export default {
 	data(){
 		return{
 			responseData:{},
-			exhibitionUserRes:''
+      exhibitionUserRes:'',
+      tittle:''
 		}
 	},
 	methods:{
@@ -66,7 +67,8 @@ export default {
 			.then(data=>{
 				if(data.code=='success'){
 					this.responseData = data.data
-					this.exhibitionUserRes = data.data.exhibitionUserRes
+          this.exhibitionUserRes = data.data.exhibitionUserRes
+          this.tittle= data.data.contentTitle
 					this.qrcode()
 				}
 			})

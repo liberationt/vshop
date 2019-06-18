@@ -52,10 +52,12 @@ export default {
 				'重庆',
 				'厦门'
 			],
-			provinceList:[]
+			provinceList:[],
+			munber:''
     };
 	},
 	created() {
+		this.number=this.$route.query.id
 		this.provinceList.push(require( '../../static/adress_json.json')[100000]);
 	},
 	methods: {
@@ -63,12 +65,21 @@ export default {
 			this.$router.go(-1)
 		},
 		hotcitys(e){
-			utils.setCookie('adNameFirst',e)
-			this.$router.push('/productnamedetail?city='+e)
+			if(this.number==1){
+				utils.setCookie('adNameSecond',e)
+				this.$router.push('/stiflingborrow')
+			}
+			if(this.number==2){
+				utils.setCookie('adNameSecond',e)
+				this.$router.push('/essentialinformation')
+			}
+			if(this.number==3){
+				this.$router.push('/supplementary?city='+e)
+			}
 		},
 		province(item,i){
 			utils.setCookie('adNameFirst',item)
-			this.$router.push('/citylist?id='+i)
+			this.$router.push("/citylist?id="+i+'&number='+this.number)
 		}
 	}
 };

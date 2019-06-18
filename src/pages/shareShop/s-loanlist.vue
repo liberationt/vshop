@@ -34,7 +34,7 @@
 						<p>期限：<span>{{item.limit}}个月</span></p>
 						<p>最快当天到账</p>
 					</div>
-					<div class="apply" @click="apply">立即申请</div>
+					<div class="apply" @click="apply(item.productCode)">立即申请</div>
 				</div>
 			</div>
 		</van-list>
@@ -60,11 +60,30 @@ export default {
 			loading: false,//控制上拉加载的加载动画
 			pageNum:1,
 			pageSize:10,
+			inviterCode:'',
 		}
 	},
 	methods:{
-		apply(){
-
+		apply(productCode){
+			let data = {
+					inviterCode:this.$route.query.inviterCode,
+					productCode:productCode
+				}
+				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
+				.then(data=>{
+					if(data.code=='success'){
+						if(data.data.state==0){
+							utils.setCookie('ProductCode',productCode)
+							utils.setCookie('InviterCode',this.inviterCode)
+							this.$router.push('/productnamedetail')
+						}
+						if(data.data.state==1){
+							this.$router.push('/undershelf?inviterCode='+this.$route.query.inviterCode)
+						}
+					}
+				}).catch(err=>{
+					console.log(err)
+				})
 		},
 		adds(i){
 			let data = {
@@ -104,9 +123,7 @@ export default {
 				.then(data=>{ 
 					if(data.code=='success'){
 						let options = data.data.productDetailTypeBean
-						let options2=[
-							
-						]
+						let options2=[]
 						for(var i=0;i<options.length;i++){
 							options2.push(
 								{
@@ -119,7 +136,8 @@ export default {
 						this.pageNum++
 						this.loading = false
 						this.dataList = this.dataList.concat(data.data.dataList)
-						if(data.data.dataList.length>=3){
+						console.log(this.dataList.length)
+						if(data.data.dataList.length<=5){
 							this.finished = true
 						}
 					}

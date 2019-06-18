@@ -20,10 +20,6 @@
 					<h3><span></span>申请条件</h3>
 					<p v-for="(item,i) in dataobject.applyCondition" :key="i">{{item}}</p>
 				</div>
-				<div class="productcity" @click="tocity">
-					<label><img src="./images/positioncity.png" alt=""><span>工作城市</span></label>
-					<input type="text" placeholder="请选择城市" v-model="city">
-				</div>
 				<div class="rightapply" @click="apply">立即申请</div>
 			</div>
 			<div class="guesslike">
@@ -38,7 +34,7 @@
 			<div class="recommend">
 				<h3><span></span>推荐阅读</h3>
 				<ul>
-					<li v-for="(item,i) in dataobject.exhibitionContentList" :key="i">
+					<li v-for="(item,i) in dataobject.exhibitionContentList" :key="i" @click='totweets(item.exhibitionContentCode)'>
 						<div>
 							<img :src=item.photoPath alt="">
 						</div>
@@ -63,8 +59,8 @@ export default {
 			}
 		},
 		methods:{
-			tocity(){
-				this.$router.push('/city')
+			totweets(exhibitionContentCode){
+				this.$router.push('/tweetsdetails?exhibitionContentCode='+exhibitionContentCode)
 			},
 			onClickLeft(){
 				this.$router.go(-1)
@@ -104,12 +100,6 @@ export default {
 			}
 		},
 		mounted(){
-			if(utils.getCookie('adNameFirst')){
-				this.city = utils.getCookie('adNameFirst')
-			}
-			if(this.$route.query.city){
-				this.city=this.$route.query.city
-			}
 			this.getdatas()
 		}
 }

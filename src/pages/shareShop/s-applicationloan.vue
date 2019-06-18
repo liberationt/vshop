@@ -4,7 +4,7 @@
 			<van-nav-bar title='有钱花' left-arrow fixed @click-left="returngo">
 			</van-nav-bar>
 		</header>
-		<div class="applireminder">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
+		<div class="applireminder" v-show="toasttittle">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
 		<div class="applistap">
 			<div class="applistaplist">
 				<div><img src='./images/loanapply.png' alt=""></div>
@@ -75,11 +75,12 @@ export default {
 			loanperiodList: [],
 			loanpurpose:'',
 			loanpurposeList: [],
+			toasttittle:true
 		}
     },
 	methods:{
 		close(){
-
+			this.toasttittle = false
 		},
 		changeList(item,indexs){
 			this.loanperiod = item.infoOptionKey
