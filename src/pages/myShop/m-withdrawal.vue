@@ -91,14 +91,13 @@ export default {
       }
     },
     Initialization(i) {
-      this.request("wisdom.vshop.productOrder.queryPageListByType", {
-        productType: this.active,
+      this.request("wisdom.vshop.withdraw.getCashRecordListByTab", {
+        recordType: this.active,
         pageNum: i,
         pageSize: 10,
       })
         .then(data => {
           console.log(data);
-          this.shopPapplyList = data.data.dataList;
         })
         .catch(err => {
           console.log(err);

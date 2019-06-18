@@ -33,7 +33,7 @@ export default {
 			this.$router.go(-1)
 		},
 		returngo(){
-			this.$router.go(-1)
+			this.$router.push({path:'./mycommission'})
 		},
 	},
 	mounted(){

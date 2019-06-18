@@ -16,14 +16,15 @@
 							finished-text="没有更多了"
 							@load="onLoad"
 						>
-							<div class="details" @click="todetails">
+							<div v-for="item in cashdetailsList.dataList" class="details" @click="todetails(item.flowCode)">
 								<div>
-									<p>佣金结算</p>
-									<p class="detailsmoney">余额：2300元</p>
+									<p>佣金结算{{item.bizDesc}}</p>
+									<p class="detailsmoney">余额：{{item.balanceAsFormat}}{{item.unit}}
+									</p>
 								</div>
 								<div class="detailsright">
-									<p>+200</p>
-									<p class="datailstimer">2018-02-28 10:59:01</p>
+									<p :class="item.type == 0? 'jiedong' : 'success' ">{{item.type==0?'+' : '-'}}{{item.amountAsFormat}}</p>
+									<p class="datailstimer">{{item.time}}</p>
 								</div>
 							</div>
 						</van-list>
@@ -33,20 +34,22 @@
     </div>
 </template>
 <script>
+import { Toast } from 'vant';
 export default {
 	data(){
 		return{
 			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
 			isLoading: false,//控制下拉刷新的加载动画
 			loading: false,//控制上拉加载的加载动画
+			cashdetailsList:{},
 		}
 	},
 	methods:{
 		onClickLeft(){
 			this.$router.go(-1)
 		},
-		todetails(){
-			this.$router.push('/readydetails')
+		todetails(code){
+			this.$router.push('/readydetails?code='+code)
 		},
 			// 获取数据
 		getdataList(){
@@ -55,6 +58,8 @@ export default {
 		//下拉刷新
 		onRefresh() {
 			setTimeout(() => {
+					this.Initialization(1)
+					this.$toast("刷新成功");
 				 this.isLoading = false; //关闭下拉刷新效果
 			}, 500);
 		},
@@ -66,19 +71,25 @@ export default {
 			}, 500);
 		},
 		// 数据初始化
-		Initialization(){
-      this.request("wisdom.vshop.account.flowList",{}).then(data=>{
+		Initialization(i){
+      this.request("wisdom.vshop.account.flowList",{pageNum :i,pageSize: 10}).then(data=>{
 				console.log(data)
-				// this.mycommission = data.data
+				this.cashdetailsList = data.data.flowList
       }).catch(err=>{console.log(err)})
     }
 	},
 	mounted(){
-		this.Initialization()
+		this.Initialization(1)
 	}
 }
 </script>
 <style lang="less" scoped>
+		.success{
+			color: #FF514C;
+		}
+		.jiedong{
+			color: #3DD624;
+		}
 	.details{
 		display: flex;
 		justify-content:space-between;
