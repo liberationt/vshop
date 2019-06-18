@@ -48,7 +48,17 @@ export default {
 			},
 			onClickRight(){
 
+			},
+			// 数据初始化
+			Initialization(){
+				this.request("wisdom.vshop.withdraw.click",{}).then(data=>{
+					console.log(data)
+					// this.mycommission = data.data
+				}).catch(err=>{console.log(err)})
 			}
+		},
+		mounted(){
+			this.Initialization()
 		}
 }
 </script>

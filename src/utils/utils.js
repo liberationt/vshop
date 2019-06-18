@@ -85,9 +85,23 @@ export function sealControl(captchaId,subCallback) {
 	});
 }
 // 微信分享
-// export default function wxShare(){
-  
-// }
+export function wxShare(data){
+  console.log(data,2222)
+  wx.config({
+    debug:false,// 是否开启调试模式
+    appId:data.appId,//appid
+    timestamp:data.timestamp,// 时间戳
+    nonceStr:data.nonceStr,// 随机字符串
+    signature:data.signature,// 签名
+    jsApiList:[
+      'onMenuShareTimeline',   
+      'onMenuShareAppMessage',   
+      'onMenuShareQQ', 
+      'onMenuShareWeibo',
+          'onMenuShareQZone'
+        ]// 需要使用的JS接口列表
+  })
+}
 
 export default {
   getCookie,
@@ -97,5 +111,6 @@ export default {
   getlocal,
   selectFrom,
   copyContent,
-  sealControl
+  sealControl,
+  wxShare
 }

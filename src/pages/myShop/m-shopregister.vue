@@ -58,7 +58,7 @@
       </van-pull-refresh>
      <footer v-if="isHide" class="shopregister_footer" :class="{  'nav-hide': hideClass }">
         <van-row>
-          <van-col class="footer_top">确认导出（已选{{checkData.length}}）</van-col>
+          <van-col class="footer_top" @click.native="exportAll">确认导出（已选{{checkData.length}}）</van-col>
           <van-col class="footer_center" >
             <span @click="cancelExport">取消导出</span>
           </van-col>
@@ -257,6 +257,10 @@ export default {
       this.isHide = false;
       this.checkData = [];
       this.checkboxImg = require("./imgs/choose_icon@2.png");
+    },
+    // 确认导出
+    exportAll(){
+      // 复制粘贴
     },
     // 初始化数据
     Initialization(i, user, data1) {

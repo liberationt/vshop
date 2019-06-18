@@ -105,7 +105,6 @@ export default {
     // 初始化数据
     Initialization(){
       this.request("wisdom.vshop.vshopLoanUser.queryVshopLoanUserInfo",{data:this.$route.query.code}).then(data=>{
-        console.log('莉莉',data)
         this.userMessage = data.data
       }).catch(err=>{console.log(err)})
     },

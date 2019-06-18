@@ -198,12 +198,18 @@ export default new Router({
       path: '/commissionwithdrawal',
       name: 'commissionwithdrawal',
       title:'佣金提现',
+      meta: {
+        auth: true
+      },
       component: () => import( './pages/myShop/m-commissionwithdrawal.vue')  
     },
     {
       path: '/bankcard',
       name: 'bankcard',
       title:'添加银行卡',
+      meta: {
+        auth: true
+      },
       component: () => import( './pages/myShop/m-bankcard.vue')  
     },
     {
@@ -216,12 +222,18 @@ export default new Router({
       path: '/commissiondetails',
       name: 'commissiondetails',
       title:'佣金明细',
+      meta: {
+        auth: true
+      },
       component: () => import( './pages/myShop/m-commissiondetails.vue')  
     },
     {
       path: '/cashdetails',
       name: 'cashdetails',
       title:'现金明细',
+      meta: {
+        auth: true
+      },
       component: () => import( './pages/myShop/m-cashdetails.vue')  
     },
     {
@@ -285,7 +297,19 @@ export default new Router({
       path: '/mshopapply',
       name: 'mshopapply',
       title:'我的订单',
+      meta: {
+        auth: true
+      },
       component: () => import( './pages/myShop/m-shopapply.vue')  
+    },
+    {
+      path: '/mwithdrawal',
+      name: 'mwithdrawal',
+      title:'提现记录',
+      meta: {
+        auth: true
+      },
+      component: () => import( './pages/myShop/m-withdrawal.vue')  
     },
     {
       path: '/mshopapplydetails',
