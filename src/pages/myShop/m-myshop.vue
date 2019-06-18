@@ -123,9 +123,10 @@ export default {
       //     }
       //   });
       // });
-      this.request('wisdom.vshop.vshopStoreManager.getShareRes',{}).then(data=>{
-        // console.log(data.data.inviterCode)
-        window.location.href = window.location.origin+'/#/shoppage?storeCode='+data.data.inviterCode
+      this.request('wisdom.vshop.wechatOpen.getJsconf',{url:window.location.origin+'/#/shoppage'}).then(data=>{
+        console.log(data.data)
+        utils.wxShare(data.data)
+        // window.location.href = window.location.origin+'/#/shoppage?storeCode='+data.data.inviterCode
       }).catch(err=>{console.log(err)})
     }
   },

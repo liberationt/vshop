@@ -61,14 +61,20 @@ export default {
 		//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
     onLoad() {
 			setTimeout(() => {
-					alert(1)
 					this.loading = false
 					this.finished = true
 			}, 500);
-		}
+		},
+		// 数据初始化
+		Initialization(){
+      this.request("wisdom.vshop.account.flowList",{}).then(data=>{
+				console.log(data)
+				// this.mycommission = data.data
+      }).catch(err=>{console.log(err)})
+    }
 	},
 	mounted(){
-
+		this.Initialization()
 	}
 }
 </script>

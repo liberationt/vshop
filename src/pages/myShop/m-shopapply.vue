@@ -7,47 +7,73 @@
         @click-left="onGoback"
       />
     </header>
-    <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
-      <!-- <p>刷新次数: {{ count }}</p> -->
-      <div class="mshopapply_center">
-        <van-tabs class="vantab_center" @click="onvanTabs"  v-model="active">
-          <div class="search">
-            <van-row>
-              <van-col span="18" class="inputserch">
-                <input type="text" placeholder="请输入姓名或手机号">
-							  <div @click="search"><img src="./imgs/sousuo.png" alt=""></div>
-              </van-col>
-              <van-dropdown-menu>
-                <van-dropdown-item v-model="value1" :options="option1" />
-              </van-dropdown-menu>
-              <!-- <van-col span="6" class="inputserch_img">所有状态 <img src="./imgs/pull-down@2x.png" alt=""> </van-col> -->
-            </van-row>
-					</div>
-          <div class="Recommend">
-            <img src="./imgs/Recommend.png" alt="">
-            {{RecommendText}}
-          </div>
-          <div class="vantTab_center">
-            <van-tab @click="parentMethod" title="贷款申请">
-              <loanFacility ref="loanFacility"></loanFacility>
-            </van-tab>
-            <van-tab title="信用卡申请">
-              <loanFacility></loanFacility>
-            </van-tab>
-            <van-tab title="实用工具">
-              <loanFacility></loanFacility>
-            </van-tab>
-          </div>
-        </van-tabs>
-      </div>
-    </van-pull-refresh>
-    <footer class="footer_button">
-      <button>一键代理推广赚工资</button>
-    </footer>
+    <!-- <p>刷新次数: {{ count }}</p> -->
+    <div class="mshopapply_center">
+      <van-tabs class="vantab_center" @click="onvanTabs"  v-model="active">
+        <div class="search">
+          <van-row>
+            <van-col span="18" class="inputserch">
+              <input type="text" v-model="nameOphone" placeholder="请输入姓名或手机号">
+              <div @click="search"><img src="./imgs/sousuo.png" alt=""></div>
+            </van-col>
+            <van-dropdown-menu>
+              <van-dropdown-item @change="changeMenu" v-model="orderStatus" :options="option1" />
+            </van-dropdown-menu>
+          </van-row>
+        </div>
+        <div class="Recommend">
+          <img src="./imgs/Recommend.png" alt="">
+          {{RecommendText}}
+        </div>
+        <div class="vantTab_center">
+          <van-tab title="贷款申请"></van-tab>
+          <van-tab title="信用卡申请"></van-tab>
+          <van-tab title="实用工具"></van-tab>
+          <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
+            <div class="loanFacility_common"> 
+              <div class="loanFacility_center" @click="goDetails(item.userDetailStatus,item.userCode)" v-for="item in shopPapplyList">
+                <div>
+                  <van-row>
+                    <van-col>
+                      <img :src=item.productLogo alt="">
+                    </van-col>
+                    <van-col>
+                      <p class="product_one">{{item.productName}}</p>
+                      <p class="product_two"> <span>{{item.userName}}</span> &nbsp&nbsp&nbsp <span>{{item.userPhoneEncrypt}}</span></p>
+                      <p class="product_three" v-if="item.orderStatus == 2">结算金额：{{item.commission}}</p>
+                      <p class="product_three">申请时间：{{item.dataCreateTime}}</p>
+                      <p class="product_three" v-if="item.orderStatus == 2">结算时间：{{item.settleDate}}</p>
+                    </van-col>
+                    <van-col class="right  van-col_right" :class="item.orderStatus ==2 ?'buttonAsh' : item.orderStatus ==0 ? 'buttonBlue' : 'buttonYellow'" >
+                      {{item.orderStatusDesc}}
+                    </van-col>  
+                  </van-row>  
+                </div>
+              </div>
+              <!-- 弹窗 -->
+              <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
+                <div>
+                  <p class="product_message">确认代理后您将获得该产品 专属推广链接，是否确认？</p>
+                  <p class="product_radio">
+                    <van-radio-group v-model="radioName">
+                      <van-radio name="1">已阅读并同意<span style="color:#4597FB;">《XX代理协议》</span></van-radio>
+                    </van-radio-group>
+                  </p>
+                  <p class="product_button">
+                    <button @click="moneyShow = false">取消</button>
+                    <button @click="">确定</button>
+                  </p>
+                </div>
+              </van-popup>
+            </div>
+          </van-pull-refresh>
+        </div>
+      </van-tabs>
+    </div>
   </div>
 </template>
 <script>
-import { Tab, Tabs, Search, DropdownMenu, DropdownItem } from "vant";
+import { Tab, Tabs, Search, DropdownMenu, DropdownItem, Popup, RadioGroup, Radio, Progress  } from "vant";
 import loanFacility from "./ordertools/loanFacility.vue";
 export default {
   components: {
@@ -56,7 +82,11 @@ export default {
     [Tabs.name]: Tabs,
     [Search.name]: Search,
     [DropdownMenu.name]: DropdownMenu,
-    [DropdownItem.name]: DropdownItem
+    [DropdownItem.name]: DropdownItem,
+    [Popup.name]: Popup,
+    [RadioGroup.name]: RadioGroup,
+    [Radio.name]: Radio,
+    [Progress.name]: Progress,
   },
   data() {
     return {
@@ -64,34 +94,55 @@ export default {
       RecommendText: "请尽快协助客户完成整个申领流程",
       count: 0,
       isLoading: false,
-      value1: 0,
+      orderStatus: "''",
       option1: [
-        { text: "全部商品", value: 0 },
-        { text: "新款商品", value: 1 },
-        { text: "活动商品", value: 2 }
-      ]
+        { text: "所有状态", value: "''" },
+        { text: "未结算", value: 0 },
+        { text: "已结算", value: 2 }
+      ],
+      moneyShow: false,
+      radioName: "",
+      shopPapplyList:{},
+      nameOphone:""
     };
   },
   mounted() {
     console.log(this.$refs.hahah);
+    this.Initialization(1)
   },
   methods: {
+    changeMenu(){
+      this.Initialization(1)
+    },
     parentMethod() {
-      this.$refs.loanFacility.makeMoney(); //过this.$refs.ref.method调用
+      // this.$refs.loanFacility.makeMoney(); //过this.$refs.ref.method调用
     },
     onGoback() {
       this.$router.push({ path: "./myshop" });
     },
     onvanTabs(v) {
-      console.log(v);
+      this.Initialization(1)
     },
-    search() {},
+    search() { this.Initialization(1) },
     onRefresh() {
       setTimeout(() => {
+        this.Initialization(1)
         this.$toast("刷新成功");
         this.isLoading = false;
         this.count++;
       }, 500);
+    },
+    // 跳转到详情
+    goDetails(code,userCode) {
+      if(code == 1){
+        this.$router.push({ path: "./muserdetails?code="+userCode });
+      }
+    },
+    Initialization(i){
+      this.request("wisdom.vshop.productOrder.queryPageListByType",{queryStr :this.nameOphone,productType:this.active, pageNum:i,pageSize:10,orderStatus:this.orderStatus == "''"?"":this.orderStatus}).then(data=>{
+        console.log(data)
+        this.shopPapplyList = data.data.dataList
+      }).catch(err=>{console.log(err)})
     }
   }
 };
@@ -161,18 +212,72 @@ export default {
       padding-bottom: 62px;
     }
   }
-  .footer_button {
-    button {
-      width: 375px;
-      height: 52px;
-      line-height: 52px;
-      background-color: #4597fb;
-      font-size: 16px;
+}
+.loanFacility_common {
+    .van-col_right{
+      height: 22px;
+      width: 60px;
+      border-radius:3px;
+      line-height: 22px;
+      font-size: 12px;
       font-weight: bold;
-      position: fixed;
-      bottom: 0px;
-      color: rgba(255, 255, 255, 1);
+      text-align: center;
+      position: absolute;
+      right: 15px;
+      top: 15px;
     }
+  .buttonBlue {
+    border: 1px solid #4597FB;/*no*/
+    color: #4897FF;
+    background-color: #E3EFFE;
+  }
+  .buttonAsh {
+    border: 1px solid #CFCFCF;/*no*/
+    color: #999999;
+    background-color: #EEEEEE;
+  }
+  .buttonYellow {
+    border: 1px solid #FE951E;/*no*/
+    color: #FE951E;
+    background-color: #FEF1E3;
+  }
+  .loanFacility_center {
+      background-color: #fff;
+      width: 345px;
+      border-radius: 5px;
+      padding: 19px 15px;
+    .van-row {
+      img {
+        width: 70px;
+        height: 70px;
+        margin-right: 15px;
+      }
+      line-height: 26px;
+      .product_one {
+       font-size:17px;
+        font-family:PingFang-SC-Bold;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+        margin-top: -8px;
+      }
+      .product_two {
+        font-size:14px;
+        font-family:PingFang-SC-Medium;
+        font-weight:bold;
+        color:rgba(51,51,51,1);
+      }
+      .product_three{
+        font-size:12px;
+        font-family:PingFang-SC-Regular;
+        font-weight:bold;
+        color:rgba(153,153,153,1);
+        line-height: 18px;
+      }
+      .buttonyellow {
+        background-color: #f3b13e;
+      }
+    }
+    margin-bottom: 10px;
   }
 }
 </style>
