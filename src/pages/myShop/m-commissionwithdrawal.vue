@@ -9,8 +9,17 @@
 					@click-right="onClickRight"
 				/> 
 			</header>
-			<div class="commissbanner">
-				<img src="" alt="">
+			<div class="commissbanner" :style="{backgroundImage: 'url(' + withdrawalList.bankBackground + ')', backgroundSize:'contain'}">
+				<van-row>
+					<van-col> <img :src=withdrawalList.bankLogo alt=""> </van-col>
+					<van-col>
+						<p>
+							<span class="p_top">招商银行</span>
+							<span>{{withdrawalList.bankcardNo}}</span>
+						</p>
+						<p>可提现金额：{{withdrawalList.balanceAmountAsFormat}}元</p>
+					</van-col>
+				</van-row>
 			</div>
 			<div class="withdrawal">
 				<p>
@@ -19,107 +28,422 @@
 				</p>
 				<div class="withdrawalmoney">
 					<span>￥</span>
-					<input type="text" v-model="money">
+					<input type="text" placeholder="请输入提现金额" v-model="money">
 					<span>元</span>
 				</div>
-				<div class="deduction">扣除提现手续费2%，实际到账 498元</div>
+				<div class="deduction">{{withdrawalList.promptExplain}}{{actualAmount}}元</div>
 			</div>
-			<div class="config">确认提现</div>
+			<div class="config" @click="flag && withdrawal()">确认提现</div>
 			<div class="txsm">
 				<p>提现说明</p>
-				<p>1. 提现时会验证交易密码，<span>设置或修改交易密码</span></p>
-				<p>2. 单笔最小提现金额10元，单笔最大提现金额500元</p>
-				<p>3. 每月提现上限5000元</p>
-				<p>4. 提现每笔手续费2元，实际到账金额是提现金额减2元</p>
+				<p>1. 提现时会验证交易密码，<span class="setUp" @click="setUp">设置或修改交易密码</span></p>
+				<p>2. 单笔最小提现金额{{withdrawalList.singleMinAmountAsFormat}}元，单笔最大提现金额{{withdrawalList.singleMaxAmountAsFormat}}元</p>
+				<p>3. 每月提现上限{{withdrawalList.monthMaxAmountAsFormat}}元</p>
+				<p>4. 提现每笔手续费{{withdrawalList.feeAsFormat}}元，实际到账金额是提现金额减{{withdrawalList.feeAsFormat}}元</p>
 				<p>5. 提交提现申请后，通常1~3个工作日内到账</p>
 			</div>
+			<!-- 设置密码框 -->
+			<van-popup v-model="psdshow" :close-on-click-overlay=false class="password">
+				<div v-if="stepNum ==1">
+					<p class="pwdTitle">设置交易密码</p>
+					<p class="pwdText">发送至{{withdrawalList.shoujihao}}</p>
+					<div class="getCode">
+						<p class="pwdInput">
+							<span> <input type="number" v-model="codeNum" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码"> </span>
+							<span class="ongetCode" v-show="getCodeshow" @click="flag && getCode()">获取</span>
+				      <span class="ongetCode" v-show="!getCodeshow" >{{count}} s后获取</span>	
+						</p>
+						<div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
+					</div>
+					<p class="getCoodeCaozuo"><span @click="getCancel">取消</span> <span @click="nextStep">下一步</span></p>
+				</div>
+				<div v-if="stepNum ==2">
+					<p class="pwdTitle">请输入交易密码</p>
+					<p>
+						<van-password-input
+							:value="passwordo"
+							info=""
+							@focus="transactionPwd(1)"
+						/>
+					</p>
+					<p class="getCoodeCaozuo"><span @click="getCancel">取消</span> <span @click="nextStep1">确认</span></p>
+				</div>
+				<div v-if="stepNum ==3">
+					<p class="pwdTitle">请再次输入交易密码</p>
+					<p>
+						<van-password-input
+							:value="passwordT"
+							info=""
+							@focus="transactionPwd(2)"
+						/>
+					</p>
+					<p class="getCoodeCaozuo"><span @click="getCancel">取消</span> <span @click="nextStep2">完成</span></p>
+				</div>
+				
+			</van-popup>
+			<!-- 自定义键盘 -->
+			<van-number-keyboard
+				:show="showKeyboard"
+				extra-key="."
+				close-button-text="完成"
+				@blur="showKeyboard = false"
+				@input="onInput"
+				@delete="onDelete"
+			/>
     </div>
 </template>
 <script>
+import utils from "../../utils/utils";
+import { PasswordInput, NumberKeyboard, Popup, Toast } from "vant";
 export default {
-		data(){
-			return{
-				money:600
-			}
-		},
-		methods:{
-			onClickLeft(){
-				this.$router.go(-1)
-			},
-			onClickRight(){
-
-			},
-			// 数据初始化
-			Initialization(){
-				this.request("wisdom.vshop.withdraw.click",{}).then(data=>{
-					console.log(data)
-					// this.mycommission = data.data
-				}).catch(err=>{console.log(err)})
-			}
-		},
-		mounted(){
-			this.Initialization()
-		}
-}
+  components: {
+    [PasswordInput.name]: PasswordInput,
+    [NumberKeyboard.name]: NumberKeyboard,
+    [Popup.name]: Popup,
+    [Toast.name]: Toast
+  },
+  data() {
+    return {
+      money: "",
+      withdrawalList: {},
+      actualAmount: "",
+      flag: true,
+      psdshow: false,
+      codeNum: "",
+      passwordo: "",
+      passwordT: "",
+      showKeyboard: false,
+      transactionNum: "",
+      stepNum: 1,
+      getCodeshow: true,
+      count: 0,
+      seal_control: false,
+      pwdNum: 0
+    };
+  },
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    },
+    onClickRight() {},
+    // 确认提现
+    withdrawal() {
+      if (this.withdrawalList.havePayPassword == 0) {
+        //havePayPassword 0未设置，1已设置
+        this.psdshow = true;
+        this.pwdNum = 0;
+      } else {
+				// if(this.money <= this.withdrawalList.singleMaxAmount || this.money >= this.withdrawalList.singleMinAmount){
+				// 	Toast('请输入'+this.withdrawalList.singleMinAmountAsFormat+'到'+this.withdrawalList.singleMaxAmountAsFormat+'范围内提现金额')
+				// } else {
+					this.psdshow = true;
+					this.stepNum = 2;
+					this.pwdNum = 2;
+				// }
+      }
+    },
+    // 设置密码
+    setUp() {},
+    // 取消
+    getCancel() {
+      this.psdshow = false;
+    },
+    // 交易密码弹框
+    transactionPwd(v) {
+      this.showKeyboard = true;
+      this.transactionNum = v;
+    },
+    // 获取验证码
+    getCode(v) {
+      let params = v
+        ? v
+        : {
+            captchaId: "",
+            verifyCode: "",
+            phone: "13733190754",
+            type: 1
+          };
+      this.setTimeout();
+      this.request("wisdom.vshop.sms.sendSmsForRisk", params)
+        .then(data => {
+          if (data.code == "success") {
+            Toast("短信发送成功");
+          } else if (data.code == "110019") {
+            this.deleteTime();
+            this.seal_control = true;
+            utils.sealControl(data.data.captchaId, (err, ret, captchaId) => {
+              let that = this;
+              if (ret != undefined) {
+                // 风控关闭
+                that.seal_control = false;
+                //调用定时器
+                that.setTimeout();
+                that.getCodeshow = false;
+                // 接口入参
+                let data = {
+                  captchaId: captchaId,
+                  phone: "13733190754",
+                  verifyCode: ret.validate,
+                  type: 1
+                };
+                // console.log(params , '带风控')
+                that.getCode(data);
+              }
+            });
+            this.deleteTime();
+          } else {
+            this.deleteTime();
+          }
+        })
+        .catch(err => {
+          this.deleteTime(), console.log(err);
+        });
+    },
+    //下一步
+    nextStep() {
+      if (this.codeNum == "") {
+        Toast("请输入验证码");
+      } else {
+        this.request("wisdom.vshop.password.judgeSms", {
+          verifyCode: this.codeNum,
+          phone: 13733190754,
+          smsType: 1
+        })
+          .then(data => {
+            this.stepNum = 2;
+            this.deleteTime();
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    },
+    nextStep1() {
+      if (this.passwordo == "" || this.passwordo.length < 6) {
+        Toast("交易密码有误！请重新输入");
+      } else {
+        this.stepNum = 3;
+      }
+    },
+    nextStep2() {
+      if (this.passwordT == "" || this.passwordT.length < 6) {
+        Toast("交易密码有误！请重新输入");
+      } else if (this.passwordT != this.passwordo) {
+        Toast("两次密码不一致！请重新输入");
+      } else {
+        if (this.pwdNum == 2) { // 设置过密码 提现
+          this.flag = false;
+          this.request("wisdom.vshop.withdraw.apply", {amount : this.money , password :this.passwordT})
+            .then(data => {
+							console.log(data);
+							this.$router.push({path:'./successfulwithdrawals'})
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else { // 设置交易密码
+          this.request("wisdom.vshop.password.save", {
+            password: this.passwordT,
+            phone: 13733190754,
+            verifyCode: this.codeNum
+          })
+            .then(data => {
+              console.log(data);
+              this.stepNum = 1;
+              this.psdshow = false;
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
+      }
+    },
+    onInput(key) {
+      if (this.transactionNum == 1) {
+        this.passwordo = (this.passwordo + key).slice(0, 6);
+      } else {
+        this.passwordT = (this.passwordT + key).slice(0, 6);
+      }
+    },
+    onDelete() {
+      if (this.transactionNum == 1) {
+        this.passwordo = this.passwordo.slice(0, this.passwordo.length - 1);
+      } else {
+        this.passwordT = this.passwordT.slice(0, this.passwordT.length - 1);
+      }
+    },
+    // 数据初始化
+    Initialization() {
+      this.request("wisdom.vshop.withdraw.show", {})
+        .then(data => {
+          console.log(data);
+          this.withdrawalList = data.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // 定时器
+    setTimeout() {
+      const TIME_COUNT = 60;
+      if (!this.timer) {
+        this.count = TIME_COUNT;
+        this.getCodeshow = false;
+        this.timer = setInterval(() => {
+          if (this.count > 0 && this.count <= TIME_COUNT) {
+            this.count--;
+          } else {
+            this.getCodeshow = true;
+            clearInterval(this.timer);
+            this.timer = null;
+          }
+        }, 1000);
+      }
+    },
+    //清除定时器
+    deleteTime() {
+      this.getCodeshow = true;
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  },
+  mounted() {
+    this.Initialization();
+  }
+};
 </script>
 <style lang="less">
-  .commissbanner{
-		height:120px;background: #000;
-		margin:10px 15px;
-	}  
-	.withdrawal{
-		padding:15px 0;
-		margin:0 15px;
-		font-size:14px;
-		color:#333333;
-		p{
-			display: flex;
-			align-items: center;
-			span{
-				display: inline-block;
-				height:18px;width:3px;
-				background: #4597FB;
-				border-radius: 1px;
-				margin-right: 8px;
-			}
-		}
-		.withdrawalmoney{
-			padding:15px 0;
-			display: flex;
-			justify-content: space-between;
-			font-size:17px;
-			color:#999999;
-			align-items: center;
-			border-bottom:1px solid #F1F1FB;
-			input{
-				font-size:24px;
-				color:#0C85FE;
-				width:85%;
-			}
-		}
-		.deduction{
-			text-align: right;
-			font-size:12px;
-			color:#333333;
-			padding:14px 0;
-		}
-	}
-	.config{
-		height:45px;
-		background: #4597FB;
-		margin:30px 15px 35px;
-		line-height:45px;
-		text-align:center;
-		color:#ffffff;
-		font-size:15px;
-		border-radius: 25px;
-	}
-	.txsm{
-		margin:0 15px;
-		font-size:12px;
-		color:#999999;
-		p{
-			margin-bottom: 5px;
-		}
-	}
+.commissbanner {
+  height: 120px;
+  margin: 10px 15px;
+  padding: 35px 0px 0px 21px;
+  .p_top {
+    font-weight: bold;
+    font-size: 17px;
+    margin-right: 15px;
+  }
+  p {
+    color: #fff;
+    font-size: 15px;
+    margin-bottom: 13px;
+  }
+  img {
+    width: 55px;
+    height: 55px;
+    margin-right: 11px;
+  }
+}
+.setUp {
+  color: #4597fb;
+  border-bottom: 1px solid #4597fb; /*no*/
+}
+.password {
+  width: 289px;
+  border-radius: 5px;
+  text-align: center;
+  padding: 25px 17px;
+  font-size: 14px;
+  z-index: 1001 !important;
+  .pwdTitle {
+    margin-bottom: 6px;
+    font-size: 17px;
+    color: #333333;
+  }
+  .pwdText {
+    color: #4597fb;
+    font-size: 11px;
+    margin-bottom: 9px;
+  }
+  .pwdInput {
+    width: 256px;
+    border: 1px solid #e5e5e5; /*no*/
+    padding: 5px 0px 5px 10px;
+    text-align: left;
+  }
+  .ongetCode {
+    color: #4597fb;
+    border-left: 1px solid #c0c0c0; /*no*/
+    padding-left: 10px;
+  }
+  input {
+    width: 60%;
+    margin-right: 10px;
+    color: #333;
+    height: 30px;
+  }
+  .getCoodeCaozuo {
+    margin-top: 25px;
+    span {
+      display: inline-block;
+      width: 118px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 17px;
+      border-radius: 20px;
+      border: 1px solid #4597fb; /*no*/
+      color: #4597fb;
+    }
+    span:nth-last-child(1) {
+      background-color: #4597fb;
+      color: #fff;
+      margin-left: 10px;
+    }
+  }
+}
+.withdrawal {
+  padding: 15px 0;
+  margin: 0 15px;
+  font-size: 14px;
+  color: #333333;
+  p {
+    display: flex;
+    align-items: center;
+    span {
+      display: inline-block;
+      height: 18px;
+      width: 3px;
+      background: #4597fb;
+      border-radius: 1px;
+      margin-right: 8px;
+    }
+  }
+  .withdrawalmoney {
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 17px;
+    color: #999999;
+    align-items: center;
+    border-bottom: 1px solid #f1f1fb;
+    input {
+      font-size: 24px;
+      color: #0c85fe;
+      width: 85%;
+    }
+  }
+  .deduction {
+    text-align: right;
+    font-size: 12px;
+    color: #333333;
+    padding: 14px 0;
+  }
+}
+.config {
+  height: 45px;
+  background: #4597fb;
+  margin: 30px 15px 35px;
+  line-height: 45px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 15px;
+  border-radius: 25px;
+}
+.txsm {
+  margin: 0 15px;
+  font-size: 12px;
+  color: #999999;
+  p {
+    margin-bottom: 5px;
+  }
+}
 </style>

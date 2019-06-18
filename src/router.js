@@ -216,6 +216,9 @@ export default new Router({
       path: '/successfulwithdrawals',
       name: 'successfulwithdrawals',
       title:'提现成功',
+      meta: {
+        auth: true
+      },
       component: () => import( './pages/myShop/m-successfulwithdrawals.vue')  
     },
     {

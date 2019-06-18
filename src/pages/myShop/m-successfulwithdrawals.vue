@@ -34,7 +34,7 @@ export default {
 		},
 		returngo(){
 			this.$router.go(-1)
-		}
+		},
 	},
 	mounted(){
 
