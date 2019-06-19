@@ -59,11 +59,23 @@
 			</div>
 		</div>
 		<div class="applyloan">
-			<h3><span></span>微粒贷额度</h3>
+			<h3><span></span>微粒贷情况</h3>
 			<div class='optionstyles'>
 				<ul class="box">
-					<li v-for="(item,index) in weilidaiLimitList" :key="index" :class="{checked:item.infoOptionKey===weilidaiLimit}" @click="change3(item,index)">{{item.infoOptionName}}</li>
+					<li v-for="(item,index) in weilidaiStatusList" :key="index" :class="{checked:item.infoOptionKey===weilidaiStatus}" @click="change3(item,index)">{{item.infoOptionName}}</li>
 				</ul>
+			</div>
+		</div>
+		<div class="applyloan" v-if="weilidaiStatus=='have_used'">
+			<div class="applyloanhouse">
+				<div>
+					<label>微粒贷额度:</label>
+					<div class="dropdown dropdownstyle">
+						<van-dropdown-menu>
+							<van-dropdown-item v-model="weilidaiLimit" :options="weilidaiLimitList" />
+						</van-dropdown-menu>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="applyloan">
@@ -181,6 +193,8 @@ export default {
 			creditLimitList:[],
 			guaranteeSlip:'', //寿险缴纳情况
 			guaranteeSlipList:'',
+			weilidaiStatus:'', //微粒贷
+			weilidaiStatusList:[],
 			weilidaiLimit:'', //微粒贷额度
 			weilidaiLimitList:[],
 			creditScore:'',//芝麻信用
@@ -245,12 +259,21 @@ export default {
 					})
 					return false
 				}
-				if(!this.weilidaiLimit){
+				if(!this.weilidaiStatus){
 					Toast({
-						message:'请选择微粒贷',
+						message:'请选择微粒贷情况',
 						duration:800
 					})
 					return false
+				}
+				if(this.weilidaiStatus=='have_used'){
+					if(!this.weilidaiLimit){
+						Toast({
+							message:'请选择微粒贷',
+							duration:800
+						})
+						return false
+					}
 				}
 				if(!this.creditScore){
 					Toast({
@@ -338,19 +361,19 @@ export default {
 					creditStatus:this.creditStatus,
 					creditLimit:this.creditLimit,
 					guaranteeSlip :this.guaranteeSlip,
+					weilidaiStatus:this.weilidaiStatus,
 					weilidaiLimit :this.weilidaiLimit,
 					creditScore :this.creditScore,
 					ownHouseStatus:this.ownHouseStatus,
-					houseAdNameSecond:this.houseAdNameSecond,
-					ownerHouse : this.ownerHouse,
-					houseStatus :this.houseStatus ,
-					houseIsPledge:this.houseIsPledge,
+					houseAdNameSecond:this.ownHouseStatus =='have_house'?this.houseAdNameSecond:'',
+					ownerHouse :this.ownHouseStatus =='have_house'?this.ownerHouse:'',
+					houseStatus :this.ownHouseStatus =='have_house'?this.houseStatus:'' ,
+					houseIsPledge:this.ownHouseStatus =='have_house'?this.houseIsPledge:'',
 					ownCarStatus:this.ownCarStatus,
-					carStatus:this.carStatus,
-					carTime:this.carTime,
-					carIsPledge :this.carIsPledge 
+					carStatus:this.ownCarStatus=='have_car'?this.carStatus:'',
+					carTime:this.ownCarStatus=='have_car'?this.carTime:'',
+					carIsPledge :this.ownCarStatus=='have_car'?this.carIsPledge:''
 				}
-				
 				this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
 				.then(data=>{
 					if(data.code=='success'){
@@ -424,8 +447,21 @@ export default {
 								this.guaranteeSlipList = arr[i].optionRes
 								this.guaranteeSlip = arr[i].valueKey
 							}
+							if(arr[i].infoTitleKey=='weilidaiStatus'){
+								this.weilidaiStatusList = arr[i].optionRes
+								this.weilidaiStatus = arr[i].valueKey
+							}
 							if(arr[i].infoTitleKey=='weilidaiLimit'){
-								this.weilidaiLimitList = arr[i].optionRes
+								let optionlist=[]
+								optionlist = arr[i].optionRes
+								for(let j=0;j<optionlist.length;j++){
+									this.weilidaiLimitList.push(
+										{
+											text:optionlist[j].infoOptionName,
+											value:optionlist[j].infoOptionKey
+										}
+									)
+								}
 								this.weilidaiLimit = arr[i].valueKey
 							}
 							if(arr[i].infoTitleKey=='weilidaiLimit'){
@@ -505,7 +541,7 @@ export default {
 								}
 								this.carTime = arr[i].valueKey
 							}
-							if(arr[i].infoTitleKey=='ownHouse_address'){
+							if(arr[i].infoTitleKey=='houseAdNameSecond'){
 								this.houseAdNameSecond = this.$route.query.city?this.$route.query.city:arr[i].valueKey
 							}
 							if(arr[i].infoTitleKey=='carIsPledge'){
@@ -532,7 +568,7 @@ export default {
 				this.guaranteeSlip = item.infoOptionKey
 			},
 			change3(item){
-				this.weilidaiLimit = item.infoOptionKey
+				this.weilidaiStatus = item.infoOptionKey
 			},
 			change4(item){
 				this.creditScore = item.infoOptionKey
@@ -584,5 +620,10 @@ export default {
 			width:100%;
 			z-index: 20
 		}
-		
+		.applywld{
+			display: flex;
+			padding:0 15px;
+			background: #ffffff;
+			justify-content: space-between;
+		}
 </style>

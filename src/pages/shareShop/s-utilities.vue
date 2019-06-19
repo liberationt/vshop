@@ -6,7 +6,7 @@
 				<div class="utiliright">
 					<span>{{adNameSecond}}</span>
 					<span>{{name}}</span>
-					<p v-show='realStatus==1'>身份认证</p>
+					<p v-show='realStatus==1'><img src="./images/shenfenrenzheng.png"/>身份认证</p>
 				</div>
 			</div>
 			<div class="utilitslist">
@@ -36,7 +36,7 @@ export default {
 	data(){
 		return{
 			isLoading:false,
-			showUMoney:true,
+			showUMoney:false,
 			inviterCode:'',
 			dataList:[],
 			personImg:'',
@@ -150,6 +150,9 @@ export default {
 					font-size:10px;border-radius: 3px;
 					text-align: center;
 					line-height: 17px;
+					img{
+						width:10px;height:12px;margin-right: 5px;margin-top: -1px;
+					}
 				}
 			}
 		}
