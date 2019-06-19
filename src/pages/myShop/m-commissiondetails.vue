@@ -11,11 +11,11 @@
 				<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功'>
 					<div class="search">
 						<div class="inputserch">
-							<input type="text" placeholder="请输入姓名或手机号">
+							<input type="text" v-model="phoneOname" placeholder="请输入姓名或手机号">
 							<div @click="search"><img src="./imgs/sousuo.png" alt=""></div>
 						</div>
 						<van-dropdown-menu>
-							<van-dropdown-item v-model="value1" :options="option1" />
+							<van-dropdown-item v-model="value1" @change="onenquiries" :options="option1" />
 						</van-dropdown-menu>
 					</div>
 					<div>
@@ -27,23 +27,23 @@
 						>
 							<div class="details">
 								<ul>
-									<li>
+									<li v-for="item in commissiondList">
 										<div class='detailstop'>
-											<h4>李光宇138****7897</h4>
-											<span>2019-05-08  12:12:50</span>
+											<h4>{{item.userName}}{{item.userPhone}}</h4>
+											<span>{{item.dataCreateTime}}</span>
 										</div>
 										<div class="datailslist">
 											<div>
 												<h5>贷款产品</h5>
-												<p>人人贷</p>
+												<p>{{item.productName}}</p>
 											</div>
 											<div>
-												<h5>贷款金额(元）</h5>
-												<p>500000.00</p>
+												<h5>贷款金额（元）</h5>
+												<p>{{item.loanRealityAmount}}</p>
 											</div>
 											<div>
-												<h5>返佣金额(元）</h5>
-												<p>200.00</p>
+												<h5>返佣金额（元）</h5>
+												<p>{{item.commission}}</p>
 											</div>
 										</div>
 									</li>
@@ -75,9 +75,11 @@ export default {
 			option1: [
         { text: '贷款', value: 0 },
         { text: '信用卡', value: 1 },
-        { text: '工具', value: 2 }
+        { text: '信贷工具', value: 2 }
 			],
-			value1:0
+			value1:0,
+			phoneOname:"",
+			commissiondList:{}
 		}
 	},
 	methods:{
@@ -85,10 +87,14 @@ export default {
 			this.$router.go(-1)
 		},
 		search(){
+			this.Initialization(1)
 		},
 		// 获取数据
 		getdataList(){
 
+		},
+		onenquiries(){
+			this.Initialization(1)
 		},
 		//下拉刷新
 		onRefresh() {
@@ -106,12 +112,14 @@ export default {
 		},
 		Initialization(i) {
       this.request("wisdom.vshop.productOrder.queryCommissonOrderForH5", {
-        queryStr : '',
+        queryStr : this.phoneOname,
+				productType: this.value1,
         pageNum: i,
         pageSize: 10,
       })
         .then(data => {
           console.log(data);
+					this.commissiondList = data.data.dataList
         })
         .catch(err => {
           console.log(err);
