@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import utils from './utils/utils' 
+import wx from 'weixin-js-sdk'
 // import http from './utils/http'
 import Api from './utils/api'
 import 'lib-flexible'
@@ -20,6 +21,7 @@ Vue.use(Dialog)
 Vue.use(List)
 Vue.use(Toast)
 Vue.use(scroll)
+Vue.use(wx)
 //兼容ie10 以上
 import '@babel/polyfill'
 if (!store.state.actives ) {

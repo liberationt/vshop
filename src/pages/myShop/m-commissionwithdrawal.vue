@@ -125,7 +125,9 @@ export default {
     onClickLeft() {
       this.$router.go(-1);
     },
-    onClickRight() {},
+    onClickRight() {
+      this.$router.push({path:'./mwithdrawal'})
+    },
     // 确认提现
     withdrawal() {
       if (this.withdrawalList.havePayPassword == 0) {

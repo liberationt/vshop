@@ -89,11 +89,11 @@ export default {
     },
     iwantagent() {
       if(!inviterCode){ // 立即分享
-        this.request("wisdom.vshop.proprietaryProduct.getH5ProprietaryProductByCode",{proprietaryProductCode: this.$route.query.code}).then(data=>{
+        this.request("wisdom.vshop.proprietaryProduct.shareProprietaryProductH5",{productCode: this.$route.query.code,url:window.location.origin+'/#/shoppage'}).then(data=>{
           console.log(data)
           this.shopdetailsData = data.data
         }).catch(err=>{console.log(err)})
-      } else {
+      } else { // 立即申请
         this.$router.push({path:'./stiflingborrow?type='+3})
         utils.setCookie('InviterCode',this.InviterCode)
         utils.setCookie('ProductCode',this.code)

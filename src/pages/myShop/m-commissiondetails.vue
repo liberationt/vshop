@@ -11,9 +11,12 @@
 				<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功'>
 					<div class="search">
 						<div class="inputserch">
-							<input type="text" placeholder="请输入姓名或手机号">
+							<input type="text" v-model="phoneOname" placeholder="请输入姓名或手机号">
 							<div @click="search"><img src="./imgs/sousuo.png" alt=""></div>
 						</div>
+						<van-dropdown-menu>
+							<van-dropdown-item v-model="value1" @change="onenquiries" :options="option1" />
+						</van-dropdown-menu>
 					</div>
 					<div>
 						<van-list
@@ -24,23 +27,23 @@
 						>
 							<div class="details">
 								<ul>
-									<li>
+									<li v-for="item in commissiondList">
 										<div class='detailstop'>
-											<h4>李光宇138****7897</h4>
-											<span>2019-05-08  12:12:50</span>
+											<h4>{{item.userName}}{{item.userPhone}}</h4>
+											<span>{{item.dataCreateTime}}</span>
 										</div>
 										<div class="datailslist">
 											<div>
 												<h5>贷款产品</h5>
-												<p>人人贷</p>
+												<p>{{item.productName}}</p>
 											</div>
 											<div>
-												<h5>贷款金额(元）</h5>
-												<p>500000.00</p>
+												<h5>贷款金额（元）</h5>
+												<p>{{item.loanRealityAmount}}</p>
 											</div>
 											<div>
-												<h5>返佣金额(元）</h5>
-												<p>200.00</p>
+												<h5>返佣金额（元）</h5>
+												<p>{{item.commission}}</p>
 											</div>
 										</div>
 									</li>
@@ -53,11 +56,13 @@
     </div>
 </template>
 <script>
-import { PullRefresh,List } from 'vant';
+import { PullRefresh,List,DropdownMenu,DropdownItem } from 'vant';
 export default {
 	components:{
 		[PullRefresh.name]:PullRefresh,
-		[List.name]:List
+		[List.name]:List,
+		[DropdownMenu.name]:DropdownMenu,
+		[DropdownItem.name]:DropdownItem,
 
 	},
 	data(){
@@ -66,7 +71,15 @@ export default {
 			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
 			isLoading: false,//控制下拉刷新的加载动画
 			loading: false,//控制上拉加载的加载动画
-      finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
+			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
+			option1: [
+        { text: '贷款', value: 0 },
+        { text: '信用卡', value: 1 },
+        { text: '信贷工具', value: 2 }
+			],
+			value1:0,
+			phoneOname:"",
+			commissiondList:{}
 		}
 	},
 	methods:{
@@ -74,10 +87,14 @@ export default {
 			this.$router.go(-1)
 		},
 		search(){
+			this.Initialization(1)
 		},
 		// 获取数据
 		getdataList(){
 
+		},
+		onenquiries(){
+			this.Initialization(1)
 		},
 		//下拉刷新
 		onRefresh() {
@@ -88,14 +105,29 @@ export default {
 		//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
     onLoad() {
 			setTimeout(() => {
-					alert(1)
+					// alert(1)
 					this.loading = false
 					this.finished = true
 			}, 500);
-		}
+		},
+		Initialization(i) {
+      this.request("wisdom.vshop.productOrder.queryCommissonOrderForH5", {
+        queryStr : this.phoneOname,
+				productType: this.value1,
+        pageNum: i,
+        pageSize: 10,
+      })
+        .then(data => {
+          console.log(data);
+					this.commissiondList = data.data.dataList
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
 	},
 	mounted(){
-	
+		this.Initialization(1)
 	}
 }
 </script>
@@ -105,17 +137,24 @@ export default {
 	height:100%;
 	.search{
 		background: #ffffff;
-		padding:8px 15px;;
+		
+		padding-top: 8px;
+		border-top: 1px solid #F1F1FB;/*no*/
+		margin-top: 1px;
 	}
 }
 	.inputserch{
 		background: #EEEEEE;
+		width: 345px;
+		margin: 0 auto;
 		height:34px;
 		font-size:12px;
 		color:#aaaaaa;
 		line-height: 34px;
 		border-radius: 17px;
 		position: relative;
+		margin-bottom: 8px;
+		
 		input{
 			background:#eeeeee;
 			border-radius: 17px;
@@ -133,6 +172,8 @@ export default {
 		padding:0 15px;
 		li{
 			background: #ffffff;
+			margin-top: 10px;
+			border-radius: 5px;
 			.detailstop{
 				height:40px;
 				display: flex;

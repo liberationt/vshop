@@ -243,6 +243,9 @@ export default new Router({
       path:'/readydetails',
       name:'readydetails',
       title:'流水详情',
+      meta: {
+        auth: true
+      },
       component:()=>import('./pages/myShop/m-readydetails.vue')
     },
     {
