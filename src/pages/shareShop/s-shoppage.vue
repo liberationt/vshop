@@ -11,7 +11,7 @@
 					<div>
 						<span>{{dataList.adNameSecond}}</span>
 						<span>{{dataList.name}}</span>
-						<span class="identity" v-show="dataList.realStatus==1">身份认证</span>
+						<span class="identity" v-show="dataList.realStatus==1"><img src="./images/shenfenrenzheng.png"/>身份认证</span>
 					</div>
 					<span class="headerbot">{{dataList.storeDesc}}</span>
 				</div>
@@ -244,6 +244,12 @@ export default {
 						height:17px;
 						line-height: 17px !important;
 						border-radius: 3px;
+						img{
+							width:10px;
+							height:12px;
+							margin-right: 5px;
+							margin-top: -1px;
+						}
 					}
 				}
 				.headerbot{

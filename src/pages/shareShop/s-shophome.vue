@@ -52,7 +52,7 @@ export default {
 				this.number = number
 			},
 			toshare(){
-
+				
 			},
 			onClickLeft(){
 				this.$router.go(-1)
