@@ -1,5 +1,5 @@
 <template>
-  <div class="mselfsupport_common pddingTop">
+  <div class="mselfsupport_common pddingTop"  :class="{heightCommon: selfsupportList.length<=5}">
     <header>
       <van-nav-bar
         title="自营产品"
