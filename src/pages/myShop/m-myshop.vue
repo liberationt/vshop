@@ -94,7 +94,8 @@
   </div>
 </template>
 <script>
-import utils from '../../utils/utils'
+import utils from "../../utils/utils";
+import wx from 'weixin-js-sdk'
 export default {
   components: {},
   data() {
@@ -110,47 +111,80 @@ export default {
     },
     // 分享
     onShare() {
+      alert('点击了分享按钮')
+      //console.log(wx)
+      wx.ready(function() {
+        wx.onMenuShareAppMessage({
+          title: '割让个人', // 分享标题
+          desc: '割让个人', // 分享描述
+          link: window.location.origin + "/#/shoppage?inviterCode=" + inviterCode, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          imgUrl: '', // 分享图标
+          type: '', // 分享类型,music、video或link，不填默认为link
+          dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+          success: function () {
+            // 用户点击了分享后执行的回调函数
+            alert('分享成功回调')
+          },
+          fail: function(e){
+            alert('分享失败回调')
+          },
+          complete: function(){
+            alert('按钮已经点击')
+          },
+          cancel: function(err){
+            alert('分享取消回调')
+          }
+        });
+      }) 
+      
+
       // wx.ready(function() {
-      //   //需在用户可能点击分享按钮前就先调用
-      //   wx.updateAppMessageShareData({
-      //     title: "割让个人", // 分享标题
-      //     desc: "割让个人", // 分享描述
-      //     link: "www.baidu.com", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+      //   wx.onMenuShareTimeline({
+      //     title: "", // 分享标题
+      //     desc: "", // 分享描述
+      //     link:
+      //       , // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
       //     imgUrl: "", // 分享图标
-      //     success: function() {
+      //     success: function(res) {
       //       // 设置成功
-      //       alert(3)
+      //       alert(3);
+      //     },
+      //     cancel: function(res){
+      //       alert(res)
       //     }
       //   });
       // });
-      this.request('wisdom.vshop.wechatOpen.getJsconf',{url:window.location.origin+'/#/shoppage'}).then(data=>{
-        console.log(data.data)
-        utils.wxShare(data.data)
-        // window.location.href = window.location.origin+'/#/shoppage?storeCode='+data.data.inviterCode
-      }).catch(err=>{console.log(err)})
+    },
+    wxShare(inviterCode) {
+      this.request("wisdom.vshop.wechatOpen.getJsconf", {
+        url: window.location.origin + "/#/shoppage?inviterCode=" + inviterCode
+      })
+        .then(data => {
+          utils.wxShare(data.data);
+          wx.error(function(res){
+            alert(JSON.stringify(res))
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   mounted() {
-    wx.config({
-      debug: false, // 是否开启调试模式
-      appId: "wxe4774bd3b82abe4c", //appid
-      timestamp: "1560397025", // 时间戳
-      nonceStr: 'dfewfwe', // 随机字符串
-      signature: 'vrgrgre', // 签名
-      jsApiList: [
-        "onMenuShareTimeline",
-        "onMenuShareAppMessage",
-        "onMenuShareQQ",
-        "onMenuShareWeibo",
-        "onMenuShareQZone"
-      ] // 需要使用的JS接口列表
-    });
+    this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
+      .then(data => {
+        this.wxShare(data.data.inviterCode);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+      
   },
   created() {
     this.request("wisdom.vshop.vshopStoreManager.getVshopStoreDetail", {})
       .then(data => {
         this.userMessage = data.data;
-        utils.setCookie('userMessage',JSON.stringify(data.data))
+        utils.setCookie("userMessage", JSON.stringify(data.data));
       })
       .catch(err => {
         console.log(err);
