@@ -12,11 +12,11 @@
         <van-row class="center_list">
           <van-col span="12" style="text-align:left;" class="center_geren">个人形象照</van-col>
           <van-col span="12" style="text-align:right">
-              <img :src="userMessage.headImage? userMessage.headImage:topImgUrl" alt="">
+              <img :src="shopValue.personImage? shopValue.personImage:topImgUrl" alt="">
           </van-col>
         </van-row>
         <van-row class="center_list">
-          <van-col span="12" style="text-align:left">微店招牌</van-col>
+          <van-col span="12" style="text-align:left">微店微店招牌</van-col>
           <van-col span="12" class="center_arrow" style="text-align:right">
             <router-link to="mshopsign">{{imgData? imgData.bannerName : '未选择'}} <img src='./imgs/biajidianpu.png' class="biajidianpu" alt=""></router-link>
           </van-col>
@@ -24,13 +24,13 @@
         <van-row class="center_list">
           <van-col span="12" style="text-align:left">店铺名称</van-col>
           <van-col span="12">
-            <input type="text" v-model="shopValue.storeName" placeholder="请填写店铺名称">
+            <input type="text" @input="onInput" v-model="shopValue.storeName" placeholder="请填写店铺名称">
           </van-col>
         </van-row>
         <van-row class="center_list">
           <van-col span="12" style="text-align:left">微信号</van-col>
           <van-col span="12">
-            <input type="text" v-model="shopValue.weixinNumber" placeholder="请填写微信号">
+            <input type="text" @input="onInput" v-model="shopValue.weixinNumber" placeholder="请填写微信号">
           </van-col>
         </van-row>
         <van-row class="center_list">
@@ -44,13 +44,13 @@
         <van-row class="center_list">
           <div span="12" style="text-align:left">店铺介绍</div>
           <div class="left">
-            <textarea class="shop_tarea" v-model="shopValue.storeDesc" placeholder="请填写一句话店铺介绍 ，30字内"></textarea>
+            <textarea class="shop_tarea" @input="onInput" v-model="shopValue.storeDesc" placeholder="请填写一句话店铺介绍 ，30字内"></textarea>
           </div>
         </van-row>
       </div>
     </div>
     <footer>
-      <button class="editSubmit" @click="editSubmit">确认提交</button>
+      <button class="editSubmit" :class="flag? 'editSubmitB' : 'editSubmitW'" @click=" flag && editSubmit()">确认提交</button>
     </footer>
   </div>
 </template>
@@ -72,7 +72,8 @@ export default {
       topImgUrl: require("./imgs/topimgf.png"),
       userMessage: utils.getCookie('userMeaasge'),
       imgData:utils.getlocal('bannerData'),
-      weixinImg:'2222'
+      weixinImg:'',
+      flag:true
     }
   },
   methods:{
@@ -83,12 +84,27 @@ export default {
       if(file){
         this.upload(file.file).then((data)=>{
           this.wxImgurl = data.url
+          this.weixinImg = data.url
+          this.isCheck()// 校验
         }).catch(err=>{})
       }
     },
     // 确认提交
     editSubmit(){
       // 提交成功后跳转到首页
+      if (!/^[\u4E00-\u9FA5]{2,20}$/.test(this.shopValue.storeName)) {
+        this.$toast('姓名输入有误，请重新输入')
+        return false;
+      }
+      if (!/^[a-zA-Z]([-_a-zA-Z0-9]{5,29})+$/.test(this.shopValue.weixinNumber)) {
+        this.$toast('微信号输入有误，请重新输入')
+        return false;
+      }
+      if (!/^[\u4E00-\u9FA5]{1,30}$/.test(this.shopValue.storeDesc)) {
+        this.$toast('请输入1-30个字的店铺介绍')
+        return false;
+      }
+      this.flag = false
       let parameter =  Object.assign(
         this.shopValue,{
           storeLogo:this.imgData.bannerUrl,
@@ -96,19 +112,38 @@ export default {
         }
       )
       this.request('wisdom.vshop.vshopStoreManager.updateStoreByManager',parameter).then(data=>{
+        this.flag = true
         this.$router.push({path:'./myshop'})
       }).catch(err=>{console.log(err)})
 
     },
-    // 编辑店铺获取参数
-    getImg(){
-      utils.getlocal('bannerData')
+    // 数据初始化
+    Initialization(){
+      this.request('wisdom.vshop.vshopStoreManager.getVshopStore',{}).then(data=>{
+        this.shopValue = data.data
+        this.weixinImg = data.data.weixinImg
+        this.wxImgurl = data.data.weixinImg
+        // this.weixinImg = data.data.weixinImg
+        if(utils.getlocal('bannerData')){
+          this.isCheck()
+        }
+      }).catch(err=>{console.log(err)})
+    },
+    // input监听
+    onInput(){
+      this.isCheck()
+    },
+    isCheck(){
+      if(!this.imgData || this.shopValue.storeName == "" || this.shopValue.weixinNumber == "" ||this.weixinImg == "" || this.shopValue.storeDesc == ""){
+        this.flag = false
+      } else {
+        this.flag = true
+      }
     }
   },
   mounted(){
-    if(utils.getlocal('bannerData')){
-
-    }
+    this.Initialization()
+    
     console.log(this.userMessage)
   }
 }
@@ -161,11 +196,16 @@ export default {
     .editSubmit {
       width: 100%;
       height: 55px;
-      background-color: #4597fb;
       font-size:16px;
       color: #fff;
       position: absolute;
       bottom: 0px;
+    }
+    .editSubmitB{
+      background-color: #4597fb;
+    }
+    .editSubmitW{
+      background-color: #bdbfc2;
     }
   }
 </style>

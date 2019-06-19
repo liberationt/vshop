@@ -111,56 +111,28 @@ export default {
     },
     // 分享
     onShare() {
-      alert('点击了分享按钮')
-      //console.log(wx)
-      wx.ready(function() {
-        wx.onMenuShareAppMessage({
-          title: '割让个人', // 分享标题
-          desc: '割让个人', // 分享描述
-          link: window.location.origin + "/#/shoppage?inviterCode=" + inviterCode, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-          imgUrl: '', // 分享图标
-          type: '', // 分享类型,music、video或link，不填默认为link
-          dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-          success: function () {
-            // 用户点击了分享后执行的回调函数
-            alert('分享成功回调')
-          },
-          fail: function(e){
-            alert('分享失败回调')
-          },
-          complete: function(){
-            alert('按钮已经点击')
-          },
-          cancel: function(err){
-            alert('分享取消回调')
-          }
-        });
-      }) 
+      wx.onMenuShareAppMessage({
+        title: '割让个人', // 分享标题
+        desc: '割让个人', // 分享描述
+        link: window.location.origin + "/#/shoppage?inviterCode=" + inviterCode, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        imgUrl: '', // 分享图标
+        type: '', // 分享类型,music、video或link，不填默认为link
+        dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+        success: function () {
+          // 用户点击了分享后执行的回调函数
+          alert('分享成功回调')
+        },
+        cancel: function(err){
+          alert('分享取消回调')
+        }
+      });
       
-
-      // wx.ready(function() {
-      //   wx.onMenuShareTimeline({
-      //     title: "", // 分享标题
-      //     desc: "", // 分享描述
-      //     link:
-      //       , // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-      //     imgUrl: "", // 分享图标
-      //     success: function(res) {
-      //       // 设置成功
-      //       alert(3);
-      //     },
-      //     cancel: function(res){
-      //       alert(res)
-      //     }
-      //   });
-      // });
     },
     wxShare(inviterCode) {
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
-        url: window.location.origin + "/#/shoppage?inviterCode=" + inviterCode
-      })
-        .then(data => {
-          utils.wxShare(data.data);
+        url: window.location.origin + "/"
+      }).then(data => {
+          utils.wxShare(data.data)
           wx.error(function(res){
             alert(JSON.stringify(res))
           });

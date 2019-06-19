@@ -91,6 +91,17 @@ module.exports = {
           '/api/proxy': ''
         }
       }
-    } // 代理转发配置，用于调试环境
+    }, // 代理转发配置，用于调试环境
+    disableHostCheck: true,
   },
 }
+// 压缩js方法
+// module.exports = merge(baseWebpackConfig,{
+//   plugins: [
+//     new webpack.optimize.UglifyjsPlugin({
+//       compress:{
+//         warnings:false
+//       }
+//     })
+//   ] 
+// })

@@ -87,9 +87,9 @@ export function sealControl(captchaId,subCallback) {
 // 微信分享
 import wx from 'weixin-js-sdk'
 export function wxShare(data){
-  console.log(data,2222,wx)
+  //console.log(data,2222,wx)
   wx.config({
-    debug:false,// 是否开启调试模式
+    debug:true,// 是否开启调试模式
     appId:data.appId,//appid
     timestamp:data.timestamp,// 时间戳
     nonceStr:data.nonceStr,// 随机字符串
@@ -99,7 +99,7 @@ export function wxShare(data){
       'onMenuShareAppMessage',   
       'onMenuShareQQ', 
       'onMenuShareWeibo',
-          'onMenuShareQZone'
+      'onMenuShareQZone'
         ]// 需要使用的JS接口列表
   })
 }

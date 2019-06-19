@@ -9,6 +9,9 @@ import {
 } from 'vant';
 import MD5 from "js-md5";
 
+// TOKEN_ERROR("300011", "登录已过期，请重新登录！"),
+	// USER_FREEZE("300012", "您的账户已被冻结，具体详情请关注微信公众号咨询！"),
+	// USER_SQUEEZE("300013", "您的账号在其他设备上登录！"),
 // 公共言
 let saltcomm = "*(&!*(Q#IUHAX89y19823h*&(YQ#($(*AGFsd"
 
@@ -23,7 +26,7 @@ export function request(apiKey, data = {}, isShowError = true) {
       } else if (response.code == '110019') {
         console.log('response=====> ' + JSON.stringify(response))
         resolve && resolve(response)
-      } else if (response.code == '300013') {
+      } else if (response.code == '300013' || response.code == '300011' || response.code == '300013') {
         console.log('response=====> ' + JSON.stringify(response))
         window.location.href = window.location.origin+'/#/mlogin'
       }  else {
