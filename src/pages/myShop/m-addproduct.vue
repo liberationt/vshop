@@ -61,7 +61,7 @@
           <span>申请条件</span>
         </p>
         <div class="left">
-          <textarea class="shop_tarea" v-model="shopValue.productDetail" placeholder="请填写申请条件"></textarea>
+          <textarea class="shop_tarea" v-on:input="inputFunc" v-model="shopValue.productDetail" placeholder="请填写申请条件"></textarea>
         </div>
       </van-row>
     </div>
@@ -97,7 +97,6 @@ export default {
   },
   methods: {
     inputFunc() {
-      console.log(33);
       this.ischeck();
     },
     ongobanck() {
@@ -109,12 +108,25 @@ export default {
         .then(data => {
           this.topImgUrl = data.url;
           this.productLogo = data.url;
+          this.ischeck()
         })
         .catch(err => {});
     },
     // 保存或编辑
     addProduct() {
       let apiKey, dataList;
+      if(!/^[\u4E00-\u9FA5]{2,20}$/.test(this.shopValue.productName)){
+        this.$toast('产品名称范围2-20个字')
+        return false;
+      }
+      if(!/^(?:[1-4]\d{6}|[1-9]\d{0,5})$/.test(this.shopValue.limitMin) || !/^\d+$|^\d+[.]?\d+$/.test(this.shopValue.limitMax)){
+        this.$toast('最小额度或最大额度1-5000000')
+        return false;
+      }
+      if(!/^[\u4E00-\u9FA5]{1,500}$/.test(this.shopValue.productDetail)){
+        this.$toast('申请条件最多500个字')
+        return false;
+      }
       if (this.isAdd == "is") {
         // 添加
         dataList = Object.assign(this.shopValue, {
@@ -183,6 +195,7 @@ export default {
       } else {
         arr.push(code);
       }
+      this.ischeck()
     },
     arrList() {
       let arrList = [];
@@ -210,29 +223,18 @@ export default {
     // 校验
     ischeck() {
       let obj = this.shopValue;
-      console.log(this.objectKeyIsEmpty(this.shopValue))
-      // 带订
-      // shopValue: {
-      //   productName: "",
-      //   productRate: "",
-      //   limitMin: "",
-      //   limitMax: "",
-      //   productDetail: ""
-      // }
       if (
         this.shopValue.productName == "" ||
-        // this.productLogo == "" ||
+        this.productLogo == "" ||
         this.shopValue.productRate == "" ||
         this.shopValue.limitMin == "" ||
         this.shopValue.limitMax == "" ||
-        this.shopValue.productDetail == ""
-        // this.materialsArr.length == 0 ||
-        // this.processArr.length == 0 ||
+        this.shopValue.productDetail == ""||
+        this.materialsArr.length == 0 ||
+        this.processArr.length == 0
       ) {
-        console.log(3);
         this.flag = false;
       } else {
-        console.log(4);
         this.flag = true;
       }
     }
