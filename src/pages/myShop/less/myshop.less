@@ -222,6 +222,9 @@
     font-size:14px;
   }
 }
+.detailsmain .van-pull-refresh {
+  overflow: visible !important;
+}
 
 // 信用卡
 .productCard_common{
@@ -317,10 +320,14 @@
   background-color: #f1f1fb;
 }
 .mwithdrawal_common {
+  .van-pull-refresh{
+    overflow: visible;
+  }
   .van-tabs__line{
     background-color: #4597FB;
   }
 }
+
 // 提现
 .commissmain{
   .van-number-keyboard{
@@ -339,6 +346,12 @@
 }
 
 .commissdetailmain {
+  .xialashuaxin.van-pull-refresh {
+    overflow: visible;
+  }
+  .van-pull-refresh__head{
+    z-index: -1;
+  }
   .van-dropdown-menu__item{
     text-align: left;
     -webkit-justify-content:left;

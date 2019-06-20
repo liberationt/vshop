@@ -256,6 +256,7 @@ export default {
     // 编辑回显
     if (this.isAdd != "is") {
       this.Initialization();
+      this.flag = true
     }
   }
 };

@@ -3,7 +3,7 @@
     <div class="edishop_fff">
       <header>
         <van-nav-bar
-          title="添加/编辑自营产品"
+          title="编辑店铺"
           left-arrow
           @click-left="onGomyshop"
         />

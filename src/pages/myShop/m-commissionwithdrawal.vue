@@ -46,11 +46,11 @@
 			<van-popup v-model="psdshow" :close-on-click-overlay=false class="password">
 				<div v-if="stepNum ==1">
 					<p class="pwdTitle">设置交易密码</p>
-					<p class="pwdText">发送至{{withdrawalList.shoujihao}}</p>
+					<p class="pwdText">发送至{{withdrawalList.phone}}</p>
 					<div class="getCode">
 						<p class="pwdInput">
 							<span> <input type="number" v-model="codeNum" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码"> </span>
-							<span class="ongetCode" v-show="getCodeshow" @click="flag && getCode()">获取</span>
+							<span class="ongetCode" v-show="getCodeshow" @click="flag && getCode()">获取验证码</span>
 				      <span class="ongetCode" v-show="!getCodeshow" >{{count}} s后获取</span>	
 						</p>
 						<div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
@@ -118,7 +118,7 @@ export default {
       getCodeshow: true,
       count: 0,
       seal_control: false,
-      pwdNum: 0
+      pwdNum: 0,
     };
   },
   methods: {
@@ -145,7 +145,9 @@ export default {
       }
     },
     // 设置密码
-    setUp() {},
+    setUp() {
+      this.psdshow = true
+    },
     // 取消
     getCancel() {
       this.psdshow = false;
@@ -162,7 +164,7 @@ export default {
         : {
             captchaId: "",
             verifyCode: "",
-            phone: "13733190754",
+            phone: this.withdrawalList.phone,
             type: 1
           };
       this.setTimeout();
@@ -184,7 +186,7 @@ export default {
                 // 接口入参
                 let data = {
                   captchaId: captchaId,
-                  phone: "13733190754",
+                  phone: that.withdrawalList.phone,
                   verifyCode: ret.validate,
                   type: 1
                 };

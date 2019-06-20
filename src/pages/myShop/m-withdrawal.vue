@@ -1,5 +1,5 @@
 <template>
-  <div class="mwithdrawal_common pddingTop">
+  <div class="mwithdrawal_common pddingTop" :class="{heightCommon: shopPapplyList.length <=3}">
     <header>
       <van-nav-bar
         title="提现记录"
@@ -31,7 +31,7 @@
                 </van-row>  
                 <van-row class="van-row">
                   <van-col span="8">申请状态</van-col> 
-                  <van-col span="16">{{item.withdrawStatus}}</van-col> 
+                  <van-col span="16" :class="active == 0 ?'He' : active == 1 ?'Lv' : 'wr'">{{item.withdrawStatus}}</van-col> 
                 </van-row>  
               </div>
             </div>
@@ -109,6 +109,16 @@ export default {
 </script>
 <style lang="less" scoped>
 .mwithdrawal_common {
+  background-color: #f1f1fb;
+  .Lv{
+    color: #3DD624;
+  }
+  .Wr{
+    color: #FF514C;
+  }
+  .He {
+    color: #333333;
+  }
   .van-row{
     line-height: 28px;
   }

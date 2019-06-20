@@ -8,59 +8,51 @@
 				/> 
 			</header>
 			<div class="commissdetailmaincenter">
-				<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功'>
-					<div class="search">
-						<div class="inputserch">
-							<input type="text" v-model="phoneOname" placeholder="请输入姓名或手机号">
-							<div @click="search"><img src="./imgs/sousuo.png" alt=""></div>
-						</div>
-						<van-dropdown-menu>
-							<van-dropdown-item v-model="value1" @change="onenquiries" :options="option1" />
-						</van-dropdown-menu>
+				<div class="search">
+					<div class="inputserch">
+						<input type="text" v-model="phoneOname" placeholder="请输入姓名或手机号">
+						<div @click="search"><img src="./imgs/sousuo.png" alt=""></div>
 					</div>
-					<div>
-						<van-list
-							v-model="loading"
-							:finished="finished"
-							finished-text="没有更多了"
-							@load="onLoad"
-						>
-							<div class="details">
-								<ul>
-									<li v-for="item in commissiondList">
-										<div class='detailstop'>
-											<h4>{{item.userName}}{{item.userPhone}}</h4>
-											<span>{{item.dataCreateTime}}</span>
+					<van-dropdown-menu>
+						<van-dropdown-item v-model="value1" @change="onenquiries" :options="option1" />
+					</van-dropdown-menu>
+				</div>
+				<div>
+					<van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh" success-text='刷新成功'>
+						<div class="details">
+							<ul>
+								<li v-for="item in commissiondList">
+									<div class='detailstop'>
+										<h4>{{item.userName}}{{item.userPhone}}</h4>
+										<span>{{item.dataCreateTime}}</span>
+									</div>
+									<div class="datailslist">
+										<div>
+											<h5>贷款产品</h5>
+											<p>{{item.productName}}</p>
 										</div>
-										<div class="datailslist">
-											<div>
-												<h5>贷款产品</h5>
-												<p>{{item.productName}}</p>
-											</div>
-											<div>
-												<h5>贷款金额（元）</h5>
-												<p>{{item.loanRealityAmount}}</p>
-											</div>
-											<div>
-												<h5>返佣金额（元）</h5>
-												<p>{{item.commission}}</p>
-											</div>
+										<div>
+											<h5>贷款金额（元）</h5>
+											<p>{{item.loanRealityAmount}}</p>
 										</div>
-									</li>
-								</ul>
-							</div>
-						</van-list>
-					</div>
-  			</van-pull-refresh>
+										<div>
+											<h5>返佣金额（元）</h5>
+											<p>{{item.commission}}</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+						 </div>
+						</van-pull-refresh>
+				</div>
 			</div>
     </div>
 </template>
 <script>
-import { PullRefresh,List,DropdownMenu,DropdownItem } from 'vant';
+import { PullRefresh,DropdownMenu,DropdownItem } from 'vant';
 export default {
 	components:{
 		[PullRefresh.name]:PullRefresh,
-		[List.name]:List,
 		[DropdownMenu.name]:DropdownMenu,
 		[DropdownItem.name]:DropdownItem,
 
@@ -99,15 +91,9 @@ export default {
 		//下拉刷新
 		onRefresh() {
 			setTimeout(() => {
+					this.Initialization()
+					this.$toast('刷新成功')
 				 this.isLoading = false; //关闭下拉刷新效果
-			}, 500);
-		},
-		//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
-    onLoad() {
-			setTimeout(() => {
-					// alert(1)
-					this.loading = false
-					this.finished = true
 			}, 500);
 		},
 		Initialization(i) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="shopregister_common">
+  <div class="shopregister_common" :class="{heightCommon: customerList.length<=3}">
     <header>
       <van-nav-bar
         :title=title

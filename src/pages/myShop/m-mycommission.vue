@@ -210,6 +210,7 @@ export default {
 		li{
 			background: #ffffff;
 			margin-bottom: 8px;
+			border-radius: 5px;
 			.detailstop{
 				height:40px;
 				display: flex;

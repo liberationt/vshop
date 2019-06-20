@@ -1,5 +1,5 @@
 <template>
-  <div class="mshopapply_common pddingTop">
+  <div class="mshopapply_common pddingTop" :class="{heightCommon: !shopPapplyList || shopPapplyList.length<=3}" >
     <header>
       <van-nav-bar
         title="微店订单"
@@ -107,7 +107,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$refs.hahah);
     this.Initialization(1)
   },
   methods: {
@@ -150,6 +149,7 @@ export default {
 <style lang="less" scoped>
 .mshopapply_common {
   display: block;
+  background-color: #f1f1fb;
   .search {
     background: #ffffff;
     padding: 8px 15px;
@@ -224,7 +224,7 @@ export default {
       text-align: center;
       position: absolute;
       right: 15px;
-      top: 15px;
+      // top: 15px;
     }
   .buttonBlue {
     border: 1px solid #4597FB;/*no*/

@@ -10,24 +10,17 @@
 			<div class="detailsmain">
 				<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功' class="xialashuaxin">
 					<div>
-						<van-list
-							v-model="loading"
-							:finished="finished"
-							finished-text="没有更多了"
-							@load="onLoad"
-						>
-							<div v-for="item in cashdetailsList.dataList" class="details" @click="todetails(item.flowCode)">
-								<div>
-									<p>佣金结算{{item.bizDesc}}</p>
-									<p class="detailsmoney">余额：{{item.balanceAsFormat}}{{item.unit}}
-									</p>
-								</div>
-								<div class="detailsright">
-									<p :class="item.type == 0? 'jiedong' : 'success' ">{{item.type==0?'+' : '-'}}{{item.amountAsFormat}}</p>
-									<p class="datailstimer">{{item.time}}</p>
-								</div>
+						<div v-for="item in cashdetailsList.dataList" class="details" @click="todetails(item.flowCode)">
+							<div>
+								<p>佣金结算{{item.bizDesc}}</p>
+								<p class="detailsmoney">余额：{{item.balanceAsFormat}}{{item.unit}}
+								</p>
 							</div>
-						</van-list>
+							<div class="detailsright">
+								<p :class="item.type == 0? 'jiedong' : 'success' ">{{item.type==0?'+' : '-'}}{{item.amountAsFormat}}</p>
+								<p class="datailstimer">{{item.time}}</p>
+							</div>
+						</div>
 					</div>
   			</van-pull-refresh>
 			</div>
