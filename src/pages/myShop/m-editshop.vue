@@ -18,7 +18,7 @@
         <van-row class="center_list">
           <van-col span="12" style="text-align:left">微店微店招牌</van-col>
           <van-col span="12" class="center_arrow" style="text-align:right">
-            <router-link to="mshopsign">{{imgData? imgData.bannerName : '未选择'}} <img src='./imgs/biajidianpu.png' class="biajidianpu" alt=""></router-link>
+            <router-link to="mshopsign">{{shopValue.storeLogoName? '修改店铺招牌' : '请选择'}} <img src='./imgs/biajidianpu.png' class="biajidianpu" alt=""></router-link>
           </van-col>
         </van-row>
         <van-row class="center_list">
@@ -37,7 +37,7 @@
           <van-col span="12" style="text-align:left" class="center_geren">微信二维码</van-col>
           <van-col span="12">
             <van-uploader :after-read="onRead" class="right">
-              <img :src=wxImgurl class="right" alt="">
+              <img :src="weixinImg ===''? wxImgurl : weixinImg" class="right" alt="">
             </van-uploader>
           </van-col>
         </van-row>
@@ -73,7 +73,7 @@ export default {
       userMessage: utils.getCookie('userMeaasge'),
       imgData:utils.getlocal('bannerData'),
       weixinImg:'',
-      flag:true
+      flag:true,
     }
   },
   methods:{
@@ -93,10 +93,10 @@ export default {
     editSubmit(){
       // 提交成功后跳转到首页
       if (!/^[\u4E00-\u9FA5]{2,20}$/.test(this.shopValue.storeName)) {
-        this.$toast('姓名输入有误，请重新输入')
+        this.$toast('店铺名称输入有误，请重新输入')
         return false;
       }
-      if (!/^[a-zA-Z]([-_a-zA-Z0-9]{5,29})+$/.test(this.shopValue.weixinNumber)) {
+      if (!/^[a-zA-Z0-9_]+$/.test(this.shopValue.weixinNumber)) {
         this.$toast('微信号输入有误，请重新输入')
         return false;
       }
@@ -107,10 +107,12 @@ export default {
       this.flag = false
       let parameter =  Object.assign(
         this.shopValue,{
-          storeLogo:this.imgData.bannerUrl,
-          weixinImg : this.weixinImg 
+          storeLogo: this.imgData.bannerUrl,
+          weixinImg : this.weixinImg,
+          storeLogoCode : this.imgData.bannerCode
         }
       )
+      console.log()
       this.request('wisdom.vshop.vshopStoreManager.updateStoreByManager',parameter).then(data=>{
         this.flag = true
         this.$router.push({path:'./myshop'})
@@ -122,11 +124,10 @@ export default {
       this.request('wisdom.vshop.vshopStoreManager.getVshopStore',{}).then(data=>{
         this.shopValue = data.data
         this.weixinImg = data.data.weixinImg
-        this.wxImgurl = data.data.weixinImg
-        // this.weixinImg = data.data.weixinImg
-        if(utils.getlocal('bannerData')){
-          this.isCheck()
+        if(this.$route.query.id != 1){
+          utils.putlocal('bannerData',data.data.storeBannerRes)
         }
+        this.isCheck()
       }).catch(err=>{console.log(err)})
     },
     // input监听
@@ -139,12 +140,13 @@ export default {
       } else {
         this.flag = true
       }
+      console.log(this.flag,this.weixinImg,'====')
     }
   },
   mounted(){
     this.Initialization()
     
-    console.log(this.userMessage)
+    console.log(this.weixinImg)
   }
 }
 </script>
