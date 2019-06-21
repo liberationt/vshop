@@ -18,7 +18,7 @@
         <van-row class="center_list">
           <van-col span="12" style="text-align:left">微店微店招牌</van-col>
           <van-col span="12" class="center_arrow" style="text-align:right">
-            <router-link to="mshopsign">{{imgData? imgData.bannerName : '未选择'}} <img src='./imgs/biajidianpu.png' class="biajidianpu" alt=""></router-link>
+            <router-link to="mshopsign">{{shopValue.storeLogoName? '修改店铺招牌' : '请选择'}} <img src='./imgs/biajidianpu.png' class="biajidianpu" alt=""></router-link>
           </van-col>
         </van-row>
         <van-row class="center_list">
@@ -108,7 +108,8 @@ export default {
       let parameter =  Object.assign(
         this.shopValue,{
           storeLogo:this.imgData.bannerUrl,
-          weixinImg : this.weixinImg 
+          weixinImg : this.weixinImg,
+          storeLogoCode : this.imgData.bannerCode
         }
       )
       this.request('wisdom.vshop.vshopStoreManager.updateStoreByManager',parameter).then(data=>{

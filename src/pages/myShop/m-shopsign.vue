@@ -1,5 +1,5 @@
 <template>
-  <div class="shopsign_common pddingTop">
+  <div class="shopsign_common pddingTop" :class="{heightCommon: imgList.length<4}">
     <header>
       <van-nav-bar
         title="微店招牌"
@@ -11,13 +11,8 @@
       <van-radio-group v-model="radio">
         <div class="center_radio left" v-for="(item,index) in imgList"  @click="imgChange(index,item)">
           <img :src=item.bannerUrl alt="">
-          <van-radio class="radio" name="1" />
+          <van-radio class="radio" :name=index />
           <p class="img_name">{{item.bannerName}}</p>
-        </div>
-        <div class="center_radio left" @click="radio = '2'">
-          <img src="./imgs/topimgf.png" alt="">
-          <van-radio class="radio" name="2" />
-          <p class="img_name">图片名称2</p>
         </div>
       </van-radio-group>
     </div>
@@ -53,7 +48,7 @@ export default {
       this.$router.push({path:'./meditshop'})
     },
     imgChange(i,data){
-      this.radio = i+1+''
+      this.radio = i
       this.bannerNmae = name
       utils.putlocal('bannerData',data)
     },
@@ -62,6 +57,11 @@ export default {
       this.request('wisdom.vshop.vshopStoreManager.queryStoreBanner',{}).then(data=>{
         console.log(data)
         this.imgList = data.data.dataList
+        this.imgList.forEach((v,i)=>{
+          if(v.select == 1){
+            this.radio = i
+          }
+        })
       }).catch(err=>{console.log(err)})
     }
   },
