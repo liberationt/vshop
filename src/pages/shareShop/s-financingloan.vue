@@ -21,6 +21,7 @@
     </div>
 </template>
 <script>
+import { statistics } from "wisdom-h5";
 export default {
     data(){
 			return{
@@ -61,6 +62,7 @@ export default {
 				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
+						statistics.click("tap", "financingloan","getnumbers");
 						if(data.data.state==0){
 						this.$router.push('/mselfshopdetails?inviterCode='+this.inviterCode+'&'+'code='+productCode)
 						}
@@ -75,6 +77,7 @@ export default {
 		},
 		mounted(){
 			this.getdatas()
+			statistics.page("financingloan", "getnumber");
 		}
 }
 </script>

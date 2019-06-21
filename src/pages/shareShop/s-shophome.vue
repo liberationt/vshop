@@ -76,7 +76,7 @@ export default {
 			 ...mapState(['actives'])
 		},
 	mounted(){
-		this.active = this.actives
+		this.active = this.actives?this.actives:'1'
 	}
 }
 </script>

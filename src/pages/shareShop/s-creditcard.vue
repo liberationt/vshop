@@ -15,6 +15,7 @@
 </template>
 <script>
 import utils from '../../utils/utils'
+import { statistics } from "wisdom-h5";
 export default {
     data(){
 			return{
@@ -31,6 +32,7 @@ export default {
 				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
+						statistics.click("tap", "creditcard","getnumbers");
 						if(data.data.state==0){
 							utils.setCookie('ProductCode',productCode)
 							utils.setCookie('InviterCode',this.inviterCode)
@@ -61,6 +63,7 @@ export default {
 		},
 		mounted(){
 			this.getdatas()
+			statistics.page("creditcard", "getnumber");
 		}
 }
 </script>

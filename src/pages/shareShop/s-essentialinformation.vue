@@ -64,6 +64,7 @@ import utils from '../../utils/utils'
 import options from '../../views/options.vue'
 import {Toast,Area } from 'vant'
 import areaList from '../../static/area'
+import { statistics } from "wisdom-h5";
 export default {
 		components:{
 			[Area .name]:Area ,
@@ -71,139 +72,142 @@ export default {
 		},
     data(){
         return{
-					education:'',
-					marriage:'',
-					educationList: [],
-					marriagelist: [],
-					username:'',
-					idcard:'',
-					adNameSecond:'',
-					toasttittle:true,
-					areaList:areaList,
-					flag:false
-				}
+			education:'',
+			marriage:'',
+			educationList: [],
+			marriagelist: [],
+			username:'',	
+			idcard:'',
+			adNameSecond:'',
+			toasttittle:true,
+			areaList:areaList,
+			flag:false
+		}
     },
     methods:{
-			onAddrConfirm(item){
-				this.adNameSecond = item[1].name
-				utils.setCookie('adNameSecond',this.adNameSecond)
-				this.flag = false
-			},
-			displar(){
-				this.flag = false
-			},
-			shows(){
-				this.flag = true
-			},
-			changeedu(item){
-				this.education = item.infoOptionKey
-			},
-			changemar(item){
-				this.marriage = item.infoOptionKey
-			},
-			returngo(){
-				this.$router.go(-1)
-			},
-			close(){
-				this.toasttittle = false
-			},
-			tocity(){
-				this.$router.push('/city?id='+2)
-			},
-			nextstep(){
-				let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
-				if(!this.username){
-					Toast({
-						message:'请输入姓名',
-						duration:800
-					})
-					return false
-				}
-				if (!/^[\u4E00-\u9FA5]{2,20}$/.test(this.username)) {
-					Toast({
-						message:'姓名有误，请重新输入',
-						duration:800
-					})
-					return false
-      	}
-				if(!this.idcard){
-					Toast({
-						message:'请输入身份证号',
-						duration:800
-					})
-					return false
-				}
-				if(!reg.test(this.idcard)){
-					Toast({
-						message:'请输入正确格式证件号',
-						duration:800
-					})
-					return false
-				}
-				if(!this.adNameSecond){
-					Toast({
-						message:'请选择城市',
-						duration:800
-					})
-					return false
-				}
-				if(!this.education){
-					Toast({
-						message:'请选择学历',
-						duration:800
-					})
-					return false
-				}
-					if(!this.marriage){
-					Toast({
-						message:'请选择婚姻状态',
-						duration:800
-					})
-					return false
-				}
-				let data= {
-					userName :this.username,
-					idCard:this.idcard,
-					adNameSecond:this.adNameSecond,
-					educationBackground:this.education,
-					marriageStatus:this.marriage
-				}
-				this.request('wisdom.vshop.vshopUserSelect.saveBaseInfo',data)
-				.then(data=>{
-					if(data.code=='success'){
-						this.$router.push('/workinformation')
-					}
+		onAddrConfirm(item){
+			this.adNameSecond = item[1].name
+			utils.setCookie('adNameSecond',this.adNameSecond)
+			this.flag = false
+		},
+		displar(){
+			this.flag = false
+		},
+		shows(){
+			this.flag = true
+		},
+		changeedu(item){
+			this.education = item.infoOptionKey
+		},
+		changemar(item){
+			this.marriage = item.infoOptionKey
+		},
+		returngo(){
+			this.$router.go(-1)
+		},
+		close(){
+			this.toasttittle = false
+		},
+		tocity(){
+			this.$router.push('/city?id='+2)
+		},
+		nextstep(){
+			let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+			if(!this.username){
+				Toast({
+					message:'请输入姓名',
+					duration:800
 				})
-			},
-			getdatainfo(){
-				let data = {
-						pageName:'baseInfo'
+				return false
+			}
+			if (!/^[\u4E00-\u9FA5]{2,20}$/.test(this.username)) {
+				Toast({
+					message:'姓名有误，请重新输入',
+					duration:800
+				})
+				return false
+			}
+			if(!this.idcard){
+				Toast({
+					message:'请输入身份证号',
+					duration:800
+				})
+				return false
+			}
+			if(!reg.test(this.idcard)){
+				Toast({
+					message:'请输入正确格式证件号',
+					duration:800
+				})
+				return false
+			}
+			if(!this.adNameSecond){
+				Toast({
+					message:'请选择城市',
+					duration:800
+				})
+				return false
+			}
+			if(!this.education){
+				Toast({
+					message:'请选择学历',
+					duration:800
+				})
+				return false
+			}
+				if(!this.marriage){
+				Toast({
+					message:'请选择婚姻状态',
+					duration:800
+				})
+				return false
+			}
+			let data= {
+				userName :this.username,
+				idCard:this.idcard,
+				adNameSecond:this.adNameSecond,
+				educationBackground:this.education,
+				marriageStatus:this.marriage
+			}
+			this.request('wisdom.vshop.vshopUserSelect.saveBaseInfo',data)
+			.then(data=>{
+				if(data.code=='success'){
+					statistics.click("tap", "essentialinformation","getnumbers");
+					this.$router.push('/workinformation')
 				}
-				this.request('wisdom.vshop.vshopUserSelect.initBaseInfoData',data)
-				.then(data=>{
-					if(data.code= 'success'){
-						let dataobject = data.data
-						this.username = dataobject.userName
-						this.idcard = dataobject.idCard
-						this.adNameSecond = utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):dataobject.adNameSecond
-						for(var i=0;i<dataobject.pageData.length;i++){
-							if(dataobject.pageData[i].infoTitleKey=='educationBackground'){
-								this.educationList = dataobject.pageData[i].optionRes
-								this.education = dataobject.pageData[i].valueKey
-							}
-							if(dataobject.pageData[i].infoTitleKey =='marriageStatus'){
-								this.marriagelist = dataobject.pageData[i].optionRes
-								this.marriage = dataobject.pageData[i].valueKey
-							}
+			})
+		},
+		getdatainfo(){
+			let data = {
+					pageName:'baseInfo'
+			}
+			this.request('wisdom.vshop.vshopUserSelect.initBaseInfoData',data)
+			.then(data=>{
+				if(data.code= 'success'){
+					let dataobject = data.data
+					this.username = dataobject.userName
+					this.idcard = dataobject.idCard
+					this.adNameSecond = utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):dataobject.adNameSecond
+					for(var i=0;i<dataobject.pageData.length;i++){
+						if(dataobject.pageData[i].infoTitleKey=='educationBackground'){
+							this.educationList = dataobject.pageData[i].optionRes
+							this.education = dataobject.pageData[i].valueKey
+						}
+						if(dataobject.pageData[i].infoTitleKey =='marriageStatus'){
+							this.marriagelist = dataobject.pageData[i].optionRes
+							this.marriage = dataobject.pageData[i].valueKey
 						}
 					}
-				})
-			}
+				}
+			})
+		}
 
     },
     created(){
-			this.getdatainfo()
-		}
+		this.getdatainfo()
+		statistics.page("essentialinformation", "getnumbers");
+
+	}
 }
 </script>
 <style lang="less" scoped>

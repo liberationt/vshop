@@ -39,6 +39,7 @@
 </template>
 <script>
 import { NavBar,Field ,Toast, Checkbox } from 'vant';
+import { statistics } from "wisdom-h5";
 import utils from '../../utils/utils'
 export default {
 		components:{
@@ -94,31 +95,32 @@ export default {
       // 轮播图
       classOption1() {
         return {
-          step: 0.2,
-          limitMoveNum: 3,
-					openTouch: false ,
+         	step: 0.2,
+          	limitMoveNum: 3,
+			openTouch: false ,
 					
         };
       }
     },
-		methods:{
-			returngo(){
-				this.$router.go(-1)
-			},
-			//同意服务协议
-			serviceAgreement(){
-				this.$router.push('/')
-			},
-			privacyAgreement(){
-				this.$router.push('/')
-			},
-			//清楚定时器
-			deleteTime() {
-				clearInterval(this.timer);
-				this.timer = null;
-			},
-      //获取验证码
-      obtain(v){
+	methods:{
+		returngo(){
+			this.$router.go(-1)
+		},
+		//同意服务协议
+		serviceAgreement(){
+			this.$router.push('/')
+		},
+		privacyAgreement(){
+			this.$router.push('/')
+		},
+		//清楚定时器
+		deleteTime() {
+			clearInterval(this.timer);
+			this.timer = null;
+		},
+		//获取验证码
+		obtain(v){
+			statistics.click("tap", "havemoney","getobtainsnum");
 			if(!this.phonenumber){
 				Toast({
 						message:'请输入手机号',
@@ -183,25 +185,26 @@ export default {
 		setTimeout(){
     	const TIME_COUNT = 60;
     	this.flag = false
-      if(!this.timer) {
-        this.count = TIME_COUNT;
-        this.timer = setInterval(() => {
-	        if(this.count > 0 && this.count <= TIME_COUNT) {
-	          this.count--;
-						this.countext = this.count+' s后获取';
-	        } else {
-						this.countext = '获取验证码';
-						this.flag = true;
-		        clearInterval(this.timer);
-		        this.timer = null;
-	         }
-         }, 1000)
-       }
+	      if(!this.timer) {
+	        this.count = TIME_COUNT;
+	        this.timer = setInterval(() => {
+		        if(this.count > 0 && this.count <= TIME_COUNT) {
+		          this.count--;
+							this.countext = this.count+' s后获取';
+		        } else {
+							this.countext = '获取验证码';
+							this.flag = true;
+			        clearInterval(this.timer);
+			        this.timer = null;
+		         }
+	         }, 1000)
+	       }
 		},
 		//立即领取
 		immediately(){
 			if(utils.getCookie('user')){
-					this.$router.push('/applicationloan')
+				statistics.click("tap", "havemoney","todetails");
+				this.$router.push('/applicationloan')
 			}else{
 			if(!this.phonenumber){
 				Toast({
@@ -235,6 +238,7 @@ export default {
 			this.request('wisdom.vshop.vshopLoanUser.captchaLogin',data)
 			.then(data=>{
 				if(data.code=='success'){
+					statistics.click("tap", "havemoney","todetails");
 					if(!utils.getCookie('user')){
 							let str = {
 								token:data.data.token,
@@ -254,6 +258,7 @@ export default {
 		}else{
 			this.isshow=true
 		}
+		statistics.page("havemoney", "getnumber");
 	}
 }
 </script>

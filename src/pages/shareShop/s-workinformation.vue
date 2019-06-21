@@ -69,22 +69,23 @@
 </template>
 <script>
 import utils from '../../utils/utils'
+import { statistics } from "wisdom-h5";
 import {Toast} from 'vant'
 export default {
     data(){
         return{
-					occupationalList: [],
-					paymentList: [],
-					incomeList:[],
-					securityList:[],
-					accumulationList:[],
-					jobType:'',
-					salaryType :'',
-					monthlyIncome:'',
-					socialSecurity:'',
-					accumulationFund:'',
-					toasttittle:true
-				}
+			occupationalList: [],
+			paymentList: [],
+			incomeList:[],
+			securityList:[],
+			accumulationList:[],
+			jobType:'',
+			salaryType :'',
+			monthlyIncome:'',
+			socialSecurity:'',
+			accumulationFund:'',
+			toasttittle:true
+		}
     },
     methods:{
 			close(){
@@ -139,6 +140,7 @@ export default {
 				this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
 				.then(data=>{
 					if(data.code=='success'){
+						statistics.click("tap", "workinformation","getnumbers");
 						this.$router.push('/supplementary')
 					}
 				})
@@ -197,7 +199,8 @@ export default {
 			}
     },
     mounted(){
-			this.getdatainfor()
+		this.getdatainfor()
+		statistics.page("workinformation", "getnumbers");
     }
 }
 </script>

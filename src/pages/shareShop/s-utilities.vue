@@ -27,6 +27,7 @@
 	</van-pull-refresh>
 </template>
 <script>
+import { statistics } from "wisdom-h5";
 import { Tab, Tabs ,Dialog} from 'vant'
 import utils from '../../utils/utils'
 export default {
@@ -78,6 +79,7 @@ export default {
 			this.$router.push('/havemoney')
 		},
 		tostiflingborrow(productCode){
+				statistics.click("tap", "utilities","getnumber");
 				this.$router.push('/stiflingborrow?productCode='+productCode+'&'+'inviterCode='+this.inviterCode)
 		},
 		closeTost(){
@@ -111,7 +113,7 @@ export default {
 			this.isshow = false
 		}
 		this.getdatas()
-		this.$emit('toparent','实用工具')
+		statistics.page("utilities", "gatnum");
 	}
 }
 </script>
