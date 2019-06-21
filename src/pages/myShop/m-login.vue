@@ -30,7 +30,7 @@
         </van-tab>
       </van-tabs>
       <div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
-      <div class="login_login" @click="goLogin">
+      <div class="login_login" @click="flag && goLogin()">
         登录
       </div>
       <div class="login_footer">
@@ -130,6 +130,7 @@ export default {
       if (!this.isCheck(1)) {
         return false;
       }
+      this.flag = false
       if (this.tabactive == 0) {
         this.request("wisdom.vshop.vshopStoreManager.captchaLogin", {
           captchaCode: this.phoneCode,
@@ -137,6 +138,7 @@ export default {
         })
           .then(data => {
             utils.setCookie("user", JSON.stringify(data.data));
+            this.flag = true
             this.$router.push({ path: "./myshop" });
           })
           .catch(err => {
@@ -149,6 +151,7 @@ export default {
         })
           .then(data => {
             utils.setCookie("user", JSON.stringify(data.data));
+            this.flag = true  
             this.$router.push({ path: "./myshop" });
           })
           .catch(err => {
