@@ -3,7 +3,6 @@
 		<div class='tochiose'>
 			<div class="netloan" @click="tonetloan" v-for="(item,i) in bannerProductResList" :key="i">
 				<img :src=item.bannerUrl alt="">
-				<p>{{item.bannerName}}</p>
 			</div>
 		</div>
 		<div class="tittle">

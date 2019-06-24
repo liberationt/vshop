@@ -56,7 +56,6 @@ export default {
 			},
 			onClickLeft(){
 				this.$router.go(-1)
-				// this.active = utils.getlocal('active')
 				this.active = this.actives
 			},
 			onchange(i){

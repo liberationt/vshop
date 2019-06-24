@@ -1,40 +1,41 @@
 <template>
     <div>
-			<header class="pddingTop navbarrighttext">
-				<van-nav-bar
-					title="有钱花"
-					left-arrow
-					@click-left="returngo"
-				/> 
-			</header> 
-			<div class="havemoneybanner"><img src="./images/havebanner.png" alt=""></div>
+		<header class="pddingTop navbarrighttext">
+			<van-nav-bar
+				title="有钱花"
+				left-arrow
+				@click-left="returngo"
+			/> 
+		</header> 
+		<div class="havemoneybanner"><img src="./images/havebanner.png" alt=""></div>
 			<!-- 轮播图 -->
-			<div class="swiper">
-				<vue-seamless-scroll :data="listData" :class-option="classOption1" class="seamless-warp">
-					<ul class="item">
-						<li v-for="(item,i) in listData" :key="i">
-							<span class="title" v-text="item.user"></span>
-						</li>
-					</ul>
-				</vue-seamless-scroll>
-			</div>
-			<div class="backgroundcolor"></div>
-			<div class="havemoneymain">
-				<p class="havemoneymaintop"><img src='./images/circle.png'/>已经帮助 <span>2,789,233</span> 用户成功申请贷款<img src="./images/circle.png" alt=""></p>
-				<div class="phoneinfor" v-show="isshow">
-					<p>
-						<input type="number"  pattern='[0-9]*' placeholder="请输入手机号码" v-model="phonenumber" oninput='if(value.length>11)value=value.slice(0,11)'>
-					</p>
+		<div class="swiper">
+			<div class="laba"><img src="./images/laba.png" alt=""></div>
+			<vue-seamless-scroll :data="listData" :class-option="classOption1" class="seamless-warp">
+				<ul class="item">
+					<li v-for="(item,i) in listData" :key="i">
+						<span class="title" v-text="item.user"></span>
+					</li>
+				</ul>
+			</vue-seamless-scroll>
+		</div>
+		<div class="backgroundcolor"></div>
+		<div class="havemoneymain">
+		<p class="havemoneymaintop"><img src='./images/circle.png'/>已经帮助 <span>2,789,233</span> 用户成功申请贷款<img src="./images/circle.png" alt=""></p>
+		<div class="phoneinfor" v-show="isshow">
+			<p>
+				<input type="number"  pattern='[0-9]*' placeholder="请输入手机号码" v-model="phonenumber" oninput='if(value.length>11)value=value.slice(0,11)'>
+			</p>
        		<p>
-						<input type="number"  pattern='[0-9]*' placeholder="请输入短信验证码" v-model='verification' oninput='if(value.length>6)value=value.slice(0,6)'>
-						<span class="get_number" @click="flag && obtain()">{{countext}}</span>
+				<input type="number"  pattern='[0-9]*' placeholder="请输入短信验证码" v-model='verification' oninput='if(value.length>6)value=value.slice(0,6)'>
+				<span class="get_number" @click="flag && obtain()">{{countext}}</span>
         	</p>
-				</div>
-				<div class="agree">
-					<van-checkbox icon-size='15px' v-model="checked">已阅读并同意<span @click="serviceAgreement">《服务协议》</span>和<span @click="privacyAgreement">《隐私协议》</span></van-checkbox>
-				</div>
-				<div class="rightapply" @click='immediately'>立即申请贷款</div>
+		</div>
+			<div class="agree">
+				<van-checkbox icon-size='15px' v-model="checked">已阅读并同意<span @click="serviceAgreement">《服务协议》</span>和<span @click="privacyAgreement">《隐私协议》</span></van-checkbox>
 			</div>
+			<div class="rightapply" @click='immediately'>立即申请贷款</div>
+		</div>
     </div>
 </template>
 <script>
@@ -49,16 +50,16 @@ export default {
 			[Checkbox.name] : Checkbox,
 		},
     data(){
-			return{
-				phonenumber:'',
-				verification:'',
-				flag:true,
-				countext:'获取验证码',
-				countNumber:1,
-				checked:true,
-				seal_control:false,
-				isshow:false,
-				listData: [
+		return{
+			phonenumber:'',
+			verification:'',
+			flag:true,
+			countext:'获取验证码',
+			countNumber:1,
+			checked:true,
+			seal_control:false,
+			isshow:false,
+			listData: [
           {"user": "用户159****1713邀请5位用户，已赚取265赞豆"},
           {"user": "用户182****6911邀请1位用户，已赚取35赞豆"},
           {"user": "用户188****2752邀请6位用户，已赚取245赞豆"},
@@ -120,7 +121,6 @@ export default {
 		},
 		//获取验证码
 		obtain(v){
-			statistics.click("tap", "havemoney","getobtainsnum");
 			if(!this.phonenumber){
 				Toast({
 						message:'请输入手机号',
@@ -145,6 +145,7 @@ export default {
 			this.request('wisdom.vshop.vshopLoanUser.sendCaptcha',data)
 			.then(data=>{
 				if(data.code=='success'){
+					statistics.click("tap", "havemoney","getobtainsnum");
 					Toast({
 						message:'短信发送成功',
 						duration:800
@@ -190,10 +191,10 @@ export default {
 	        this.timer = setInterval(() => {
 		        if(this.count > 0 && this.count <= TIME_COUNT) {
 		          this.count--;
-							this.countext = this.count+' s后获取';
+						this.countext = this.count+' s后获取';
 		        } else {
-							this.countext = '获取验证码';
-							this.flag = true;
+						this.countext = '获取验证码';
+						this.flag = true;
 			        clearInterval(this.timer);
 			        this.timer = null;
 		         }
@@ -320,13 +321,25 @@ export default {
 				border-radius:25px;
 			}
 		}
-		.seamless-warp {
-        height: 40px;
-        overflow: hidden;
-				font-size:14px;
-				padding-left:15px;
-				li{
-					line-height:40px;
+		.swiper{
+			padding-left:15px;
+			position: relative;
+			.laba{
+				height:40px;
+				line-height: 40px;
+				position: absolute;
+				img{
+					width:14px;height:12px;
 				}
-    }
+			}
+		}
+		.seamless-warp {
+      		height: 40px;
+			font-size:14px;
+			padding-left:20px;
+			overflow: hidden;
+			li{
+				line-height:40px;
+			}
+ 		}
 </style>
