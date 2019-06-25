@@ -98,7 +98,7 @@ export default {
 		},
 		getDatas(){
 			let data ={
-				data : '0001'
+				data : this.$route.query.inviterCode?this.$route.query.inviterCode:''
 			}
 			this.request('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
 				if(data.code=='success'){
