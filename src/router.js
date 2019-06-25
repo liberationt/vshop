@@ -7,7 +7,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: Home,
       meta: {
@@ -25,7 +25,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue')  
     },
     {
-      path: '/mlogin',
+      path: '/',
       name: 'mlogin',
       tittle:'登陆页面',
       component: () => import( './pages/myShop/m-login.vue')

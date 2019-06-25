@@ -142,6 +142,7 @@ export default {
             this.$router.push({ path: "./myshop" });
           })
           .catch(err => {
+            this.flag = true
             console.log("111====>err:   ", err);
           });
       } else {
@@ -155,6 +156,7 @@ export default {
             this.$router.push({ path: "./myshop" });
           })
           .catch(err => {
+            this.flag = true
             console.log("111====>err:   ", err);
           });
       }
