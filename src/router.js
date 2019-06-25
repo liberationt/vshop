@@ -121,6 +121,12 @@ export default new Router({
       component:()=>import('./pages/shareShop/s-productnamedetail.vue')
     },
     {
+      path:'/serviceagreement',
+      name:'serviceagreement',
+      tittle:'服务协议',
+      component:()=>import('./pages/shareShop/s-serviceagreement.vue')
+    },
+    {
       path:'/errors',
       name:'errors',
       tittle:'404',
