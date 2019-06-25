@@ -13,11 +13,11 @@
 					<div class="backcardname">
 						<p>
 							<label>姓名</label>
-							<input type="text" v-model="bankCardList.realName" placeholder="请输入姓名">
+							<input type="text" @input="inputC" v-model="bankCardList.realName" placeholder="请输入姓名">
 						</p>
 						<p>
 							<label>身份证</label>
-							<input type="text" v-model="bankCardList.idCard" placeholder="请输入身份证">
+							<input type="text" @input="inputC" v-model="bankCardList.idCard" placeholder="请输入身份证">
 						</p>
 					</div>
 				</div>
@@ -26,15 +26,15 @@
 					<div class="backcardname">
 						<p>
 							<label>银行卡号</label>
-							<input type="number" oninput='if(value.length>19)value=value.slice(0,19)' v-model="bankCardList.bankCardNo" placeholder="请输入银行卡号">
+							<input type="number" @input="inputC" oninput='if(value.length>19)value=value.slice(0,19)' v-model="bankCardList.bankCardNo" placeholder="请输入银行卡号">
 						</p>
 						<p>
 							<label>预留手机</label>
-							<input type="number" oninput='if(value.length>11)value=value.slice(0,11)' v-model="bankCardList.mobile" placeholder="请输入预留手机号">
+							<input type="number" @input="inputC" oninput='if(value.length>11)value=value.slice(0,11)' v-model="bankCardList.mobile" placeholder="请输入预留手机号">
 						</p>
 						<p>
 							<label>验证码</label>
-							<input type="number" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码" v-model="bankCardList.vCode">
+							<input type="number" @input="inputC" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码" v-model="bankCardList.vCode">
 							<span v-show="show" @click="flag && getCode()">获取</span>
 				      <span v-show="!show" >{{count}} s后获取</span>	
 						</p>
@@ -44,7 +44,7 @@
 				<div class=backcardtot>
 					均加密保存，仅用于银行验证
 				</div>
-				<div class="addback"  @click="addback">
+				<div class="addback" :class="{Wr: !flag}" @click="flag && addback()">
 					添加
 				</div>
 			</div>
@@ -60,14 +60,14 @@ export default {
   data() {
     return {
       bankCardList: {
-        realName: "司虎标",
-        idCard: "410322199402164713",
-        bankCardNo: "6214832166965769",
-        mobile: "13733190754",
+        realName: "",
+        idCard: "",
+        bankCardNo: "",
+        mobile: "",
         vCode: ""
       },
       seal_control: false,
-      flag: true,
+      flag: false,
       show: true,
       count: ""
     };
@@ -77,7 +77,15 @@ export default {
       this.$router.go(-1);
     },
     addback() {
-			console.log(this.bankCardList);
+      if(!/^[\u4E00-\u9FA5]{2,20}$/.test(this.bankCardList.realName)){
+        this.$toast('姓名输入有误，请重新输入')
+        return false;
+      }
+      if(!/^(\d{17}([0-9]|X|x))$/.test(this.bankCardList.idCard)){
+        this.$toast('身份证号输入有误，请重新输入')
+        return false;
+      }
+      
 			this.request('wisdom.vshop.bankcard.bind',this.bankCardList).then(data=>{
 				this.$router.push({path:'./commissionwithdrawal'})
 			}).catch(err=>{console.log(err)})
@@ -156,6 +164,20 @@ export default {
         }, 1000);
       }
     },
+    inputC(){
+      this.isCheck()
+    },
+    isCheck(){
+      for(var i in this.bankCardList){
+        // console.log(i)    //输出属性
+        // console.log(this.bankCardList[i])    //输出属性对应的值
+        if(this.bankCardList[i] == ''){
+          this.flag = false
+        } else {
+          this.flag = true
+        }
+      }
+    },
     //清除定时器
     deleteTime() {
       this.show = true;
@@ -232,6 +254,9 @@ export default {
       text-align: center;
       line-height: 45px;
       color: #ffffff;
+    }
+    .Wr{
+      background-color: #c2bebe;
     }
   }
 }
