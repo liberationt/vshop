@@ -78,6 +78,7 @@
 	</div>
 </template>
 <script>
+import { statistics } from "wisdom-h5";
 import utils from '../../utils/utils'
 import { Toast } from 'vant';
 export default {
@@ -111,7 +112,8 @@ export default {
 			})
 		},
 		gophone(item){
-			 window.location.href = "tel://" + "18201814187";
+			statistics.click("tap", "shappage","phonenum");
+			window.location.href = "tel://" + "18201814187";
 		},
 		copywx(content){
 			const copyToClipboard = str => {
@@ -135,23 +137,28 @@ export default {
 			};
 			copyToClipboard(content)
 			Toast({
-
+				
 			})
 		},
 		loan(){
+			statistics.click('tap','shappage','loan')
 			this.$router.push('/relatedproducts')
 		},
 		card(){
+			statistics.click('tap','shappage','card')
 			this.$router.push('/relatedproducts')
 		},
 		tool(){
+			statistics.click('tap','shappage','tool')
 			this.$router.push('/utilities')
 		},
 		todetails(exhibitionContentCode){
+			statistics.click('tap','shappage','todetails')
 			this.$router.push('/tweetsdetails?exhibitionContentCode='+exhibitionContentCode)
 		},
 		weixin(){
 			this.show=true
+			statistics.click("tap","shappage","weixinnum")
 		},
 		beforeClose(action,down){
 				if(action==='confirm'){
@@ -163,6 +170,7 @@ export default {
 		},
 		confirm(content){
 			this.copywx(content)
+			statistics.click('tap','shappage','copywx')
 			Toast({
 					message:'微信ID已复制',
 					duration:800
@@ -174,7 +182,7 @@ export default {
 		this.getDatas()
 	},
 	mounted(){
-		
+		statistics.page("shoppage", "shppagenum");
 	}
 }
 </script>

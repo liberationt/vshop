@@ -171,6 +171,7 @@
 <script>
 import areaList from '../../static/area'
 import { DropdownMenu, DropdownItem,Checkbox,Toast,Dialog,Area } from 'vant';
+import { statistics } from "wisdom-h5";
 export default {
 		components:{
 			[DropdownMenu.name]:DropdownMenu,
@@ -230,358 +231,362 @@ export default {
 		displar(){
 			this.flag = false
 		},
-			nextstep(){
-				if(!this.personalCredit){
-					Toast({
-						message:'请选择个人信用',
-						duration:800
-					})
-					return false
-				}
-				if(!this.creditStatus){
-					Toast({
-						message:'请选择信用状况',
-						duration:800
-					})
-					return false
-				}
-				if(!this.creditLimit){
-					Toast({
-						message:'请选择信用卡额度',
-						duration:800
-					})
-					return false
-				}
-				if(!this.guaranteeSlip){
-					Toast({
-						message:'请选择寿险缴纳情况',
-						duration:800
-					})
-					return false
-				}
-				if(!this.weilidaiStatus){
-					Toast({
-						message:'请选择微粒贷情况',
-						duration:800
-					})
-					return false
-				}
-				if(this.weilidaiStatus=='have_used'){
-					if(!this.weilidaiLimit){
-						Toast({
-							message:'请选择微粒贷',
-							duration:800
-						})
-						return false
-					}
-				}
-				if(!this.creditScore){
-					Toast({
-						message:'请选择芝麻信用卡',
-						duration:800
-					})
-					return false
-				}
-				if(!this.ownHouseStatus){
-					Toast({
-						message:'请选择房产情况',
-						duration:800
-					})
-					return false
-				}
-				if(this.ownHouseStatus =='have_house'){
-					if(!this.houseAdNameSecond){
-						Toast({
-							message:'请选择房产所在地区',
-							duration:800
-						})
-						return false
-					}
-					if(!this.ownerHouse){
-						Toast({
-							message:'请选择房产人',
-							duration:800
-						})
-						return false
-					}
-					if(!this.houseStatus){
-						Toast({
-							message:'请选择房产状态',
-							duration:800
-						})
-						return false
-					}
-					if(!this.houseIsPledge){
-						Toast({
-							message:'请选择房产否是抵押',
-							duration:800
-						})
-						return false
-					}
-				}
-				if(!this.ownCarStatus){
-					Toast({
-						message:'请选择车产情况',
-						duration:800
-					})
-					return false
-				}
-				if(this.ownCarStatus=='have_car'){
-					if(!this.carStatus){
-						Toast({
-							message:'请选择车产状态',
-							duration:800
-						})
-						return false
-					}
-					if(!this.carTime){
-						Toast({
-							message:'请选择购车时间',
-							duration:800
-						})
-						return false
-					}
-					if(!this.carIsPledge){
-						Toast({
-							message:'请选择车产是否抵押',
-							duration:800
-						})
-						return false
-					}
-					
-				}
-				if(this.checked===false){
-						Toast({
-							message:'请同意用户协议',
-							duration:800
-						})
-					}
-				let data = {
-					personalCredit:this.personalCredit,
-					creditStatus:this.creditStatus,
-					creditLimit:this.creditLimit,
-					guaranteeSlip :this.guaranteeSlip,
-					weilidaiStatus:this.weilidaiStatus,
-					weilidaiLimit :this.weilidaiLimit,
-					creditScore :this.creditScore,
-					ownHouseStatus:this.ownHouseStatus,
-					houseAdNameSecond:this.ownHouseStatus =='have_house'?this.houseAdNameSecond:'',
-					ownerHouse :this.ownHouseStatus =='have_house'?this.ownerHouse:'',
-					houseStatus :this.ownHouseStatus =='have_house'?this.houseStatus:'' ,
-					houseIsPledge:this.ownHouseStatus =='have_house'?this.houseIsPledge:'',
-					ownCarStatus:this.ownCarStatus,
-					carStatus:this.ownCarStatus=='have_car'?this.carStatus:'',
-					carTime:this.ownCarStatus=='have_car'?this.carTime:'',
-					carIsPledge :this.ownCarStatus=='have_car'?this.carIsPledge:''
-				}
-				this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
-				.then(data=>{
-					if(data.code=='success'){
-						Dialog.alert({
-							title: '温馨提示',
-							message: 'XXX平台不收取任何费用，信贷经理联系您要求放款前收取费用（例：手续费、保证金、会员费等），切勿盲信！谨防诈骗！'
-						}).then(() => {
-							// on close
-						});
-					}
-				}).catch(err=>{
-					console.log(err)
+		nextstep(){
+			if(!this.personalCredit){
+				Toast({
+					message:'请选择个人信用',
+					duration:800
 				})
-			},
-			returngo(){
-				this.$router.go(-1)
-			},
-			close(){
-				this.toasttittle = false
-			},
-			serviceAgreement(){
-
-			},
-			privacyAgreement(){
-
-			},
-			tocity(){
-				this.$router.push('city?id='+3)
-			},
-			getdatainfor(){
-				let data = {
-					pageName :'moreInfo'
+				return false
+			}
+			if(!this.creditStatus){
+				Toast({
+					message:'请选择信用状况',
+					duration:800
+				})
+				return false
+			}
+			if(!this.creditLimit){
+				Toast({
+					message:'请选择信用卡额度',
+					duration:800
+				})
+				return false
+			}
+			if(!this.guaranteeSlip){
+				Toast({
+					message:'请选择寿险缴纳情况',
+					duration:800
+				})
+				return false
+			}
+			if(!this.weilidaiStatus){
+				Toast({
+					message:'请选择微粒贷情况',
+					duration:800
+				})
+				return false
+			}
+			if(this.weilidaiStatus=='have_used'){
+				if(!this.weilidaiLimit){
+					Toast({
+						message:'请选择微粒贷',
+						duration:800
+					})
+					return false
 				}
-				this.request('wisdom.vshop.vshopUserSelect.initTitleData',data)
-				.then(data=>{
-					if(data.code=='success'){
-						let arr = data.data.pageData
-						for(let i=0;i<arr.length;i++){
-							if(arr[i].infoTitleKey=='personalCredit'){
-								this.personalCreditList = arr[i].optionRes
-								this.personalCredit = arr[i].valueKey
-							}
+			}
+			if(!this.creditScore){
+				Toast({
+					message:'请选择芝麻信用卡',
+					duration:800
+				})
+				return false
+			}
+			if(!this.ownHouseStatus){
+				Toast({
+					message:'请选择房产情况',
+					duration:800
+				})
+				return false
+			}
+			if(this.ownHouseStatus =='have_house'){
+				if(!this.houseAdNameSecond){
+					Toast({
+						message:'请选择房产所在地区',
+						duration:800
+					})
+					return false
+				}
+				if(!this.ownerHouse){
+					Toast({
+						message:'请选择房产人',
+						duration:800
+					})
+					return false
+				}
+				if(!this.houseStatus){
+					Toast({
+						message:'请选择房产状态',
+						duration:800
+					})
+					return false
+				}
+				if(!this.houseIsPledge){
+					Toast({
+						message:'请选择房产否是抵押',
+						duration:800
+					})
+					return false
+				}
+			}
+			if(!this.ownCarStatus){
+				Toast({
+					message:'请选择车产情况',
+					duration:800
+				})
+				return false
+			}
+			if(this.ownCarStatus=='have_car'){
+				if(!this.carStatus){
+					Toast({
+						message:'请选择车产状态',
+						duration:800
+					})
+					return false
+				}
+				if(!this.carTime){
+					Toast({
+						message:'请选择购车时间',
+						duration:800
+					})
+					return false
+				}
+				if(!this.carIsPledge){
+					Toast({
+						message:'请选择车产是否抵押',
+						duration:800
+					})
+					return false
+				}
+				
+			}
+			if(this.checked===false){
+					Toast({
+						message:'请同意用户协议',
+						duration:800
+					})
+				}
+			let data = {
+				personalCredit:this.personalCredit,
+				creditStatus:this.creditStatus,
+				creditLimit:this.creditLimit,
+				guaranteeSlip :this.guaranteeSlip,
+				weilidaiStatus:this.weilidaiStatus,
+				weilidaiLimit :this.weilidaiLimit,
+				creditScore :this.creditScore,
+				ownHouseStatus:this.ownHouseStatus,
+				houseAdNameSecond:this.ownHouseStatus =='have_house'?this.houseAdNameSecond:'',
+				ownerHouse :this.ownHouseStatus =='have_house'?this.ownerHouse:'',
+				houseStatus :this.ownHouseStatus =='have_house'?this.houseStatus:'' ,
+				houseIsPledge:this.ownHouseStatus =='have_house'?this.houseIsPledge:'',
+				ownCarStatus:this.ownCarStatus,
+				carStatus:this.ownCarStatus=='have_car'?this.carStatus:'',
+				carTime:this.ownCarStatus=='have_car'?this.carTime:'',
+				carIsPledge :this.ownCarStatus=='have_car'?this.carIsPledge:''
+			}
+			this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
+			.then(data=>{
+				if(data.code=='success'){
+					statistics.click("tap", "supplementary","getnumbers");
+					Dialog.alert({
+						title: '温馨提示',
+						message: 'XXX平台不收取任何费用，信贷经理联系您要求放款前收取费用（例：手续费、保证金、会员费等），切勿盲信！谨防诈骗！'
+					}).then(() => {
+						statistics.click("tap", "supplementary","closegetnumber");
+						// on close
+					});
+				}
+			}).catch(err=>{
+				console.log(err)
+			})
+		},
+		returngo(){
+			this.$router.go(-1)
+		},
+		close(){
+			this.toasttittle = false
+		},
+		serviceAgreement(){
+			
+		},
+		privacyAgreement(){
 
-							if(arr[i].infoTitleKey=='creditStatus'){
-								this.creditStatus = arr[i].valueKey
-								let optionlist=[]
-								optionlist = arr[i].optionRes
-								for(let j=0;j<optionlist.length;j++){
-									this.creditStatusList.push(
-										{
-											text:optionlist[j].infoOptionName,
-											value:optionlist[j].infoOptionKey
-										}
-									)
-								}
-							}
-							if(arr[i].infoTitleKey=='creditLimit'){
-								let optionlist=[]
-								optionlist = arr[i].optionRes
-								for(let j=0;j<optionlist.length;j++){
-									this.creditLimitList.push(
-										{
-											text:optionlist[j].infoOptionName,
-											value:optionlist[j].infoOptionKey
-										}
-									)
-								}
-								this.creditLimit = arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='guaranteeSlip'){
-								this.guaranteeSlipList = arr[i].optionRes
-								this.guaranteeSlip = arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='weilidaiStatus'){
-								this.weilidaiStatusList = arr[i].optionRes
-								this.weilidaiStatus = arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='weilidaiLimit'){
-								let optionlist=[]
-								optionlist = arr[i].optionRes
-								for(let j=0;j<optionlist.length;j++){
-									this.weilidaiLimitList.push(
-										{
-											text:optionlist[j].infoOptionName,
-											value:optionlist[j].infoOptionKey
-										}
-									)
-								}
-								this.weilidaiLimit = arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='weilidaiLimit'){
-								this.creditScoreList = arr[i].optionRes
-								this.creditScore = arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='ownHouseStatus'){
-								this.ownHouseStatusList = arr[i].optionRes
-								this.ownHouseStatus = arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='ownCarStatus'){
-								this.ownCarStatusList = arr[i].optionRes
-								this.ownCarStatus = arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='ownerHouse'){
-								let optionlist=[]
-								optionlist = arr[i].optionRes
-								for(let j=0;j<optionlist.length;j++){
-									this.ownerHouseList.push(
-										{
-											text:optionlist[j].infoOptionName,
-											value:optionlist[j].infoOptionKey
-										}
-									)
-								}
-								this.ownerHouse = arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='houseStatus'){
-								let optionlist=[]
-								optionlist = arr[i].optionRes
-								for(let j=0;j<optionlist.length;j++){
-									this.houseStatusList.push(
-										{
-											text:optionlist[j].infoOptionName,
-											value:optionlist[j].infoOptionKey
-										}
-									)
-								}
-								this.houseStatus = arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='houseIsPledge'){
-								let optionlist=[]
-								optionlist = arr[i].optionRes
-								for(let j=0;j<optionlist.length;j++){
-									this.houseIsPledgeList.push(
-										{
-											text:optionlist[j].infoOptionName,
-											value:optionlist[j].infoOptionKey
-										}
-									)
-								}
-								this.houseIsPledge = arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='carStatus'){
-								let optionlist=[]
-								optionlist = arr[i].optionRes
-								for(let j=0;j<optionlist.length;j++){
-									this.carStatusList.push(
-										{
-											text:optionlist[j].infoOptionName,
-											value:optionlist[j].infoOptionKey
-										}
-									)
-								}
-								this.carStatus = arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='carTime'){
-								let optionlist=[]
-								optionlist = arr[i].optionRes
-								for(let j=0;j<optionlist.length;j++){
-									this.carTimeList.push(
-										{
-											text:optionlist[j].infoOptionName,
-											value:optionlist[j].infoOptionKey
-										}
-									)
-								}
-								this.carTime = arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='houseAdNameSecond'){
-								this.houseAdNameSecond = this.$route.query.city?this.$route.query.city:arr[i].valueKey
-							}
-							if(arr[i].infoTitleKey=='carIsPledge'){
-								let optionlist=[]
-								optionlist = arr[i].optionRes
-								for(let j=0;j<optionlist.length;j++){
-									this.carIsPledgeList.push(
-										{
-											text:optionlist[j].infoOptionName,
-											value:optionlist[j].infoOptionKey
-										}
-									)
-								}
-								this.carIsPledge = arr[i].valueKey
+		},
+		tocity(){
+			this.$router.push('city?id='+3)
+		},
+		getdatainfor(){
+			let data = {
+				pageName :'moreInfo'
+			}
+			this.request('wisdom.vshop.vshopUserSelect.initTitleData',data)
+			.then(data=>{
+				if(data.code=='success'){
+					let arr = data.data.pageData
+					for(let i=0;i<arr.length;i++){
+						if(arr[i].infoTitleKey=='personalCredit'){
+							this.personalCreditList = arr[i].optionRes
+							this.personalCredit = arr[i].valueKey
+						}
+
+						if(arr[i].infoTitleKey=='creditStatus'){
+							this.creditStatus = arr[i].valueKey
+							let optionlist=[]
+							optionlist = arr[i].optionRes
+							for(let j=0;j<optionlist.length;j++){
+								this.creditStatusList.push(
+									{
+										text:optionlist[j].infoOptionName,
+										value:optionlist[j].infoOptionKey
+									}
+								)
 							}
 						}
+						if(arr[i].infoTitleKey=='creditLimit'){
+							let optionlist=[]
+							optionlist = arr[i].optionRes
+							for(let j=0;j<optionlist.length;j++){
+								this.creditLimitList.push(
+									{
+										text:optionlist[j].infoOptionName,
+										value:optionlist[j].infoOptionKey
+									}
+								)
+							}
+							this.creditLimit = arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='guaranteeSlip'){
+							this.guaranteeSlipList = arr[i].optionRes
+							this.guaranteeSlip = arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='weilidaiStatus'){
+							this.weilidaiStatusList = arr[i].optionRes
+							this.weilidaiStatus = arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='weilidaiLimit'){
+							let optionlist=[]
+							optionlist = arr[i].optionRes
+							for(let j=0;j<optionlist.length;j++){
+								this.weilidaiLimitList.push(
+									{
+										text:optionlist[j].infoOptionName,
+										value:optionlist[j].infoOptionKey
+									}
+								)
+							}
+							this.weilidaiLimit = arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='weilidaiLimit'){
+							this.creditScoreList = arr[i].optionRes
+							this.creditScore = arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='ownHouseStatus'){
+							this.ownHouseStatusList = arr[i].optionRes
+							this.ownHouseStatus = arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='ownCarStatus'){
+							this.ownCarStatusList = arr[i].optionRes
+							this.ownCarStatus = arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='ownerHouse'){
+							let optionlist=[]
+							optionlist = arr[i].optionRes
+							for(let j=0;j<optionlist.length;j++){
+								this.ownerHouseList.push(
+									{
+										text:optionlist[j].infoOptionName,
+										value:optionlist[j].infoOptionKey
+									}
+								)
+							}
+							this.ownerHouse = arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='houseStatus'){
+							let optionlist=[]
+							optionlist = arr[i].optionRes
+							for(let j=0;j<optionlist.length;j++){
+								this.houseStatusList.push(
+									{
+										text:optionlist[j].infoOptionName,
+										value:optionlist[j].infoOptionKey
+									}
+								)
+							}
+							this.houseStatus = arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='houseIsPledge'){
+							let optionlist=[]
+							optionlist = arr[i].optionRes
+							for(let j=0;j<optionlist.length;j++){
+								this.houseIsPledgeList.push(
+									{
+										text:optionlist[j].infoOptionName,
+										value:optionlist[j].infoOptionKey
+									}
+								)
+							}
+							this.houseIsPledge = arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='carStatus'){
+							let optionlist=[]
+							optionlist = arr[i].optionRes
+							for(let j=0;j<optionlist.length;j++){
+								this.carStatusList.push(
+									{
+										text:optionlist[j].infoOptionName,
+										value:optionlist[j].infoOptionKey
+									}
+								)
+							}
+							this.carStatus = arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='carTime'){
+							let optionlist=[]
+							optionlist = arr[i].optionRes
+							for(let j=0;j<optionlist.length;j++){
+								this.carTimeList.push(
+									{
+										text:optionlist[j].infoOptionName,
+										value:optionlist[j].infoOptionKey
+									}
+								)
+							}
+							this.carTime = arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='houseAdNameSecond'){
+							this.houseAdNameSecond = this.$route.query.city?this.$route.query.city:arr[i].valueKey
+						}
+						if(arr[i].infoTitleKey=='carIsPledge'){
+							let optionlist=[]
+							optionlist = arr[i].optionRes
+							for(let j=0;j<optionlist.length;j++){
+								this.carIsPledgeList.push(
+									{
+										text:optionlist[j].infoOptionName,
+										value:optionlist[j].infoOptionKey
+									}
+								)
+							}
+							this.carIsPledge = arr[i].valueKey
+						}
 					}
-				})
-			},
-			change1(item){
-				this.personalCredit = item.infoOptionKey
-			},
-			change2(item){
-				this.guaranteeSlip = item.infoOptionKey
-			},
-			change3(item){
-				this.weilidaiStatus = item.infoOptionKey
-			},
-			change4(item){
-				this.creditScore = item.infoOptionKey
-			},
-			change5(item){
-				this.ownHouseStatus = item.infoOptionKey
-			},
-			change6(item){
-				this.ownCarStatus = item.infoOptionKey
-			}
+				}
+			})
+		},
+		change1(item){
+			this.personalCredit = item.infoOptionKey
+		},
+		change2(item){
+			this.guaranteeSlip = item.infoOptionKey
+		},
+		change3(item){
+			this.weilidaiStatus = item.infoOptionKey
+		},
+		change4(item){
+			this.creditScore = item.infoOptionKey
+		},
+		change5(item){
+			this.ownHouseStatus = item.infoOptionKey
+		},
+		change6(item){
+			this.ownCarStatus = item.infoOptionKey
+		}
     },
     mounted(){
-			this.getdatainfor()
+		this.getdatainfor()
+		statistics.page("supplementary", "getnumbers");
+
     }
 }
 </script>

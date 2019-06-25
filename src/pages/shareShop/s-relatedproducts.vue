@@ -32,6 +32,7 @@
 	</van-pull-refresh>
 </template>
 <script>
+import { statistics } from "wisdom-h5";
 import utils from '../../utils/utils'
 import financingloan from './s-financingloan'
 import officialloans from './s-officialloans'
@@ -70,13 +71,16 @@ export default {
 			this.$router.push('/havemoney')
 		},
 		closeTost(){
+			statistics.click("tap", "relatedproducts","getnumber");
 			Dialog.confirm({
 				confirmButtonText:this.dayUMoney+"天内不再提示",
 				cancelButtonText:'永不提示',
 				message: '确认关闭此提示框吗？'
 			}).then(() => {
+				statistics.click("tap", "relatedproducts","closeone");
 				this.closehaveMoney(0)
 			}).catch(() => {
+				statistics.click("tap", "relatedproducts","closetwo");
 				this.closehaveMoney(1)
 			});
 		},

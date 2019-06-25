@@ -42,6 +42,7 @@
 	</van-pull-refresh>
 </template>
 <script>
+import { statistics } from "wisdom-h5";
 import { DropdownMenu, DropdownItem } from 'vant';
 export default {
 	components:{
@@ -72,6 +73,7 @@ export default {
 				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
+						statistics.click("tap", "loanlist","getnumber");
 						if(data.data.state==0){
 							utils.setCookie('ProductCode',productCode)
 							utils.setCookie('InviterCode',this.inviterCode)
@@ -146,6 +148,7 @@ export default {
 		},
 	},
 	mounted(){
+		statistics.page("loanlist", "shppagenum");
 	}
 }
 </script>

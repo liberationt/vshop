@@ -56,7 +56,6 @@ export default {
 			},
 			onClickLeft(){
 				this.$router.go(-1)
-				// this.active = utils.getlocal('active')
 				this.active = this.actives
 			},
 			onchange(i){
@@ -76,7 +75,7 @@ export default {
 			 ...mapState(['actives'])
 		},
 	mounted(){
-		this.active = this.actives
+		this.active = this.actives?this.actives:'1'
 	}
 }
 </script>

@@ -57,8 +57,8 @@
 </template>
 <script>
 import options from '../../views/options.vue'
+import { statistics } from "wisdom-h5";
 import { DropdownMenu, DropdownItem,Step, Steps ,Toast} from 'vant';
-
 export default {
 		components:{
 			[DropdownMenu.name]:DropdownMenu,
@@ -127,6 +127,7 @@ export default {
 			this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
 			.then(data=>{
 				if(data.code=='success'){
+					statistics.click("tap", "applicationloan","getnumbers");
 					this.$router.push('/essentialinformation')
 				}
 			})
@@ -170,6 +171,7 @@ export default {
 	},
 	mounted(){
 		this.getdatalist()
+		statistics.page("applicationlian", "getnumbers");
 	}
 }
 </script>
