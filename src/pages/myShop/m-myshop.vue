@@ -138,9 +138,9 @@ export default {
         url: window.location.origin + "/"
       }).then(data => {
           utils.wxShare(data.data)
-          wx.error(function(res){
-            alert("授权失败："+JSON.stringify(res))
-          });
+          // wx.error(function(res){
+          //   alert("授权失败："+JSON.stringify(res))
+          // });
           wx.ready(function(){
             alert('授权成功,ready')
           })
