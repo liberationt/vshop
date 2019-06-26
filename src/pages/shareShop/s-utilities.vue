@@ -57,7 +57,7 @@ export default {
 		},
 		getdatas(){
 			let data = {
-				storeCode:'0001',
+				storeCode:utils.getCookie('storeCode'),
 				head : true , 
 				type:2
 			}

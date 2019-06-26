@@ -21,6 +21,7 @@
     </div>
 </template>
 <script>
+import utils from '../../utils/utils'
 import { statistics } from "wisdom-h5";
 export default {
     data(){
@@ -41,7 +42,7 @@ export default {
 			},
 			getdatas(){
 				let data = {
-					storeCode:'0001',
+					storeCode:utils.getCookie('storeCode'),
 					head : true , 
 					type:3
 				}

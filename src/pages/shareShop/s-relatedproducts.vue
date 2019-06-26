@@ -105,7 +105,7 @@ export default {
 		//获取数据
 		getdatas(){
 			let data = {
-				storeCode:'0001',
+				storeCode:utils.getCookie('storeCode'),
 				head : true , 
 				type:1
 			}

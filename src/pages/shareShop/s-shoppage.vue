@@ -98,7 +98,7 @@ export default {
 		},
 		getDatas(){
 			let data ={
-				data : this.$route.query.inviterCode?this.$route.query.inviterCode:''
+				data : this.$route.query.storeCode?this.$route.query.storeCode:''
 			}
 			this.request('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
 				if(data.code=='success'){
@@ -179,6 +179,7 @@ export default {
 		}
 	},
 	created(){
+		utils.setCookie('storeCode',this.$route.query.storeCode)
 		this.getDatas()
 	},
 	mounted(){

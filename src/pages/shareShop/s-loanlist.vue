@@ -42,6 +42,7 @@
 	</van-pull-refresh>
 </template>
 <script>
+import utils from '../../utils/utils'
 import { statistics } from "wisdom-h5";
 import { DropdownMenu, DropdownItem } from 'vant';
 export default {
@@ -89,7 +90,7 @@ export default {
 		},
 		adds(i){
 			let data = {
-				storeCode:'0001',
+				storeCode:utils.getCookie('storeCode'),
 				productDetailType:i,
 				filter:false
 			}
@@ -115,7 +116,7 @@ export default {
 			// let that = this
 			setTimeout(() => {
 				let data = {
-				storeCode:'0001',
+				storeCode:utils.getCookie('storeCode'),
 				productDetailType:this.value1,
 				pageNum:this.pageNum,
 				pageSize:this.pageSize,

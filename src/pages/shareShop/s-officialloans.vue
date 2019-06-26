@@ -83,7 +83,7 @@ export default {
 		//换一批
 		another(){
 			let data = {
-				storeCode:'0001',
+				storeCode:utils.getCookie('storeCode'),
 				head : false , 
 				type:0
 			}
@@ -103,7 +103,7 @@ export default {
 		},
 		getdatas(){
 			let data = {
-				storeCode:'0001',
+				storeCode:utils.getCookie('storeCode'),
 				head : true , 
 				type:0
 			}
