@@ -20,7 +20,7 @@
         <van-tab title="普通登录">
           <div class="login_dynamic">
             <p>
-              <input type="number" v-model="phoneNum" oninput='if(value.length>11)value=value.slice(0,11)' placeholder="请输入手机号">
+              <input type="number" class="inputD" v-model="phoneNum" oninput='if(value.length>11)value=value.slice(0,11)' placeholder="请输入手机号">
             </p>
             <p>
               <input :type=typeText v-model="phonePwd" oninput='if(value.length>6)value=value.slice(0,18)' placeholder="请输入6-18位登录密码">
@@ -247,6 +247,9 @@ export default {
     padding: 0px 40px;
     text-align: left;
     padding-top: 20px;
+    .inputD{
+      width: 80%;
+    }
     input {
       color: #333;
       font-size: 15px;

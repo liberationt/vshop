@@ -80,7 +80,7 @@
     <footer>
       <van-row class="myshop_footer">
         <van-col span="12">
-          <button> <router-link to="/shoppage"><img src="./imgs/eye.png" alt="" class="footer_eye"> 预览微店</router-link> </button>
+          <button @click="goLookShop"><img src="./imgs/eye.png" alt="" class="footer_eye"> 预览微店 </button>
         </van-col>
         <van-col span="12">
           <button @click="onShare"> <img src="./imgs/share.png" alt="" class="footer_share"> 分享微店 </button>
@@ -108,6 +108,10 @@ export default {
     //返回登录页
     onGologo() {
       this.$router.push({ path: "./mlogin" });
+    },
+    // 预览微店
+    goLookShop(){
+      this.$router.push({ path: "./shoppage?storeCode="+this.userMessage.storeCode });
     },
     // 分享
     onShare() {
