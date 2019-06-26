@@ -144,7 +144,7 @@ export default {
               title: '急用钱？请找我，专业贷款！', // 分享标题
               desc: '*经理向您推荐了自己的微店，提供工资贷、社保贷、消费贷、公积金贷、车贷房贷……规渠正规安全，服务专业周到，快来看看吧！', // 分享描述
               link: window.location.origin + "/#/shoppage", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: './imgs/advance_icon@2x.png', // 分享图标
+              imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/ZOfgNPVEofm6wGcqrYFDwxAhllW0k3wUom1HXIlmoeQYPf8YX0FkagGibAvcE9dlyLXIRlbicpjacA9wDDR6yU8g/132', // 分享图标
               success: function () {
                 // 用户点击了分享后执行的回调函数
                 alert('分享成功回调')
