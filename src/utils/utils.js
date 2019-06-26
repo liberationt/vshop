@@ -88,7 +88,7 @@ export function sealControl(captchaId,subCallback) {
 import wx from 'weixin-js-sdk'
 export function wxShare(data){
   //console.log(data,2222,wx)
-  wx.config({
+  wx.config({ //errMsg:config ok
     debug:true,// 是否开启调试模式
     appId:data.appId,//appid
     timestamp:data.timestamp,// 时间戳
@@ -99,7 +99,8 @@ export function wxShare(data){
       'onMenuShareAppMessage',   
       'onMenuShareQQ', 
       'onMenuShareWeibo',
-      'onMenuShareQZone'
+      'onMenuShareQZone',
+      'updateAppMessageShareData'
         ]// 需要使用的JS接口列表
   })
 }
