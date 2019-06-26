@@ -115,6 +115,7 @@ export default {
     },
     // 分享
     onShare() {
+      alert('调用分享')
       wx.onMenuShareAppMessage({
         title: '割让个人', // 分享标题
         desc: '割让个人', // 分享描述
