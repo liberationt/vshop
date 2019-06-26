@@ -54,7 +54,7 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       // 未登录,跳转到登陆页面。
-      next({ path: '/mlogin'})
+      next({ path: '/'})
     }
   } else {
     next()

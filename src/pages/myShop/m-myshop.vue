@@ -107,7 +107,7 @@ export default {
   methods: {
     //返回登录页
     onGologo() {
-      this.$router.push({ path: "./mlogin" });
+      this.$router.push({ path: "./" });
     },
     // 预览微店
     goLookShop(){
@@ -118,7 +118,7 @@ export default {
       wx.onMenuShareAppMessage({
         title: '割让个人', // 分享标题
         desc: '割让个人', // 分享描述
-        link: window.location.origin + "/#/shoppage?inviterCode=" + inviterCode, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+        link: window.location.origin + "/#/shoppage", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
         imgUrl: '', // 分享图标
         type: '', // 分享类型,music、video或link，不填默认为link
         dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空

@@ -334,6 +334,12 @@ export default new Router({
       name: 'mquanxuan',
       title:'订单详情',
       component: () => import( './pages/myShop/m-xuanxuan.vue')  
+    },
+    {
+      path: '/share',
+      name: 'share',
+      title:'分享',
+      component: () => import( './pages/myShop/share.vue')  
     }
   ]
 })
