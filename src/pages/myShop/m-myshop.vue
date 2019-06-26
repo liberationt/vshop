@@ -45,7 +45,7 @@
         </van-col>
         <van-col span="8">
           <router-link to="/mycommission">
-            <p class="navbar_text">{{userMessage.realStatus}}</p>
+            <p class="navbar_text">{{userMessage.commissionAmount}}</p>
             <p>我的佣金(元)</p>  
           </router-link>
         </van-col>
@@ -139,8 +139,11 @@ export default {
       }).then(data => {
           utils.wxShare(data.data)
           wx.error(function(res){
-            alert(JSON.stringify(res))
+            alert("授权失败："+JSON.stringify(res))
           });
+          wx.ready(function(){
+            alert('授权成功,ready')
+          })
         })
         .catch(err => {
           console.log(err);
