@@ -157,7 +157,6 @@ export default {
           })
           .catch(err => {
             this.flag = true
-            console.log("111====>err:   ", err);
           });
       }
 
@@ -191,7 +190,7 @@ export default {
           Toast("密码不能为空，请重新输入！");
           return false;
         }
-        if (this.phonePwd.length <= 6) {
+        if (this.phonePwd.length < 6) {
           Toast("密码输入有误，请重新输入！");
           return false;
         }

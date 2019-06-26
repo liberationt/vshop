@@ -89,7 +89,7 @@ import wx from 'weixin-js-sdk'
 export function wxShare(data){
   //console.log(data,2222,wx)
   wx.config({ //errMsg:config ok
-    debug:true,// 是否开启调试模式
+    debug:false,// 是否开启调试模式
     appId:data.appId,//appid
     timestamp:data.timestamp,// 时间戳
     nonceStr:data.nonceStr,// 随机字符串
