@@ -90,6 +90,7 @@ let getRequestInfo = (apiKey = '', data = {}) => {
         appVersion: "1.0.0",
         channel: "",
         identifier: "weidian",
+        hardware:"weidian"
       },
     }
   // 取用户信息
