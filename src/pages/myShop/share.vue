@@ -35,9 +35,9 @@ export default {
         url: window.location.origin + "/"
       }).then(data => {
           utils.wxShare(data.data)
-          wx.error(function(res){
-            alert(JSON.stringify(res))
-          });
+          // wx.error(function(res){
+          //   alert(JSON.stringify(res))
+          // });
         })
         .catch(err => {
           console.log(err);
