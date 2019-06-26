@@ -147,10 +147,10 @@ export default {
               imgUrl: './imgs/advance_icon@2x.png', // 分享图标
               success: function () {
                 // 用户点击了分享后执行的回调函数
-                // alert('分享成功回调')z
+                alert('分享成功回调')
               },
               cancel: function(err){
-                // alert('分享取消回调')
+                alert('分享取消回调')
               }
             });
           })
