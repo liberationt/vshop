@@ -137,7 +137,7 @@ export default {
     wxShare(inviterCode) {
       console.log(window.location)
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
-        url: window.location.origin + "/#/shoppage?storeCode="+this.userMessage.storeCode
+        url: window.location.origin + "/shoppage?storeCode="+this.userMessage.storeCode
       }).then(data => {
           utils.wxShare(data.data)
           wx.ready(function(){
