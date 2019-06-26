@@ -115,34 +115,27 @@ export default {
     },
     // 分享
     onShare() {
-      alert('调用分享')
-      wx.updateAppMessageShareData({
-        title: '割让个人', // 分享标题
-        desc: '割让个人', // 分享描述
-        link: window.location.origin + "/#/shoppage", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-        imgUrl: '', // 分享图标
-        //type: '', // 分享类型,music、video或link，不填默认为link
-        //dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-        success: function () {
-          // 用户点击了分享后执行的回调函数
-          alert('分享成功回调')
-        },
-        cancel: function(err){
-          alert('分享取消回调')
-        }
-      });
-      
+      // 引导用户去分享
     },
     wxShare(inviterCode) {
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
         url: window.location.origin + "/"
       }).then(data => {
           utils.wxShare(data.data)
-          // wx.error(function(res){
-          //   alert("授权失败："+JSON.stringify(res))
-          // });
           wx.ready(function(){
-            alert('授权成功,ready')
+            wx.updateAppMessageShareData({
+              title: '割让个人', // 分享标题
+              desc: '割让个人', // 分享描述
+              link: window.location.origin + "/#/shoppage", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+              imgUrl: '', // 分享图标
+              success: function () {
+                // 用户点击了分享后执行的回调函数
+                alert('分享成功回调')
+              },
+              cancel: function(err){
+                alert('分享取消回调')
+              }
+            });
           })
         })
         .catch(err => {
@@ -158,7 +151,6 @@ export default {
       .catch(err => {
         console.log(err);
       });
-      
   },
   created() {
     this.request("wisdom.vshop.vshopStoreManager.getVshopStoreDetail", {})

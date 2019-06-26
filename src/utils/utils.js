@@ -96,8 +96,7 @@ export function wxShare(data){
     signature:data.signature,// 签名
     jsApiList:[
       'onMenuShareTimeline',   
-      'onMenuShareAppMessage',   
-      'onMenuShareQQ', 
+      'onMenuShareAppMessage',
       'onMenuShareWeibo',
       'onMenuShareQZone',
       'updateAppMessageShareData'
