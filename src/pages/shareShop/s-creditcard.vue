@@ -1,16 +1,16 @@
 <template>
     <div>
-			<div class="credtittle">各种热门信用卡，批卡率高，下卡快</div>
-			<div>
-				<div class="credlist" @click="tostiflingborrow(item.productCode)" v-for="(item,i) in cardList" :key="i">
-					<div class="credlistbanner"><img :src=item.productLogo alt=""></div>
-					<div class="credlistright">
-						<h4>{{item.productName}}</h4>
-						<p>{{item.subTitle}}</p>
-						<p>{{item.desc}}</p>
-					</div>
+		<div class="credtittle">各种热门信用卡，批卡率高，下卡快</div>
+		<div>
+			<div class="credlist" @click="tostiflingborrow(item.productCode)" v-for="(item,i) in cardList" :key="i">
+				<div class="credlistbanner"><img :src=item.productLogo alt=""></div>
+				<div class="credlistright">
+					<h4>{{item.productName}}</h4>
+					<p>{{item.subTitle}}</p>
+					<p>{{item.desc}}</p>
 				</div>
 			</div>
+		</div>
     </div>
 </template>
 <script>
