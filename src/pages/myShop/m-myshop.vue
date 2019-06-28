@@ -105,7 +105,8 @@ export default {
   data() {
     return {
       topImg: require("./imgs/topimg.png"),
-      userMessage: []
+      userMessage: [],
+      inviterCode:""
     };
   },
   methods: {
@@ -127,7 +128,7 @@ export default {
           
         })
       } else {
-        this.$router.push({ path: "./shoppage?inviterCode="+this.userMessage.inviterCode });
+        this.$router.push({ path: "./shoppage?inviterCode="+this.inviterCode });
       }
     },
     // 分享
@@ -164,6 +165,7 @@ export default {
   mounted() {
     this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
     .then(data => {
+      this.inviterCode = data.data.inviterCode
       this.wxShare(data.data.inviterCode);
     })
     .catch(err => {
