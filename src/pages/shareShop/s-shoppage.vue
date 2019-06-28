@@ -99,7 +99,8 @@ export default {
 		},
 		getDatas(){
 			let data ={
-				data : this.$route.query.inviterCode
+				inviterCode : this.$route.query.inviterCode,
+				storeCode:''
 			}
 			this.request('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
 				if(data.code=='success'){
