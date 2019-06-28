@@ -117,6 +117,8 @@
 <script>
 import { qrcanvas } from 'qrcanvas';
 import { Popup, RadioGroup, Radio,} from 'vant';
+import utils from "../../utils/utils";
+import wx from 'weixin-js-sdk'
 export default {
   components: {
     [Popup.name] : Popup,
@@ -143,7 +145,26 @@ export default {
       this.operationType(1)
     },
     recommenduser(){
-       alert('推荐用户')
+      this.request('wisdom.vshop.product.createProductPoster',{url: window.location.origin+'/essentialinformation',operationType:2,productCode:this.$route.query.code}).then(data=>{
+        let dataList = data.data
+        utils.wxShare(dataList.wechatJsConfRes)
+        console.log(dataList.wechatJsConfRes)
+        wx.ready(function(){
+            wx.updateAppMessageShareData({
+              title: dataList.shareTitle, // 分享标题
+              desc: dataList.shareDescribe, // 分享描述
+              link: dataList.url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+              imgUrl: dataList.bannerUrl, // 分享图标
+              success: function () {
+                // 用户点击了分享后执行的回调函数
+                alert('分享成功回调')
+              },
+              cancel: function(err){
+                alert('分享取消回调')
+              }
+            });
+          })
+      }).catch(err=>{console.log(err)})
     },
     // 确认代理
     confirm(){
@@ -160,7 +181,7 @@ export default {
     },
     // operationType操作类型：1产品海报，2推荐用户
     operationType(num){
-      this.request("wisdom.vshop.product.createProductPoster",{productCode:this.$route.query.code,operationType:num}).then(data=>{
+      this.request("wisdom.vshop.product.createProductPoster",{productCode:this.$route.query.code,operationType:num,url: window.location.href}).then(data=>{
         switch(num){
           case 1:
             this.showPosterList = data.data
@@ -332,7 +353,6 @@ export default {
       width: 35px;
       height: 36px;
     }
-
   }
 }
 </style>
