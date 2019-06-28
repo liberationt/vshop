@@ -213,9 +213,6 @@ export default {
       } else {
         this.flag = true
       }
-      
-      console.log(this.flag)
-      // return true;
     },
     // 定时器
     setTimeout() {
