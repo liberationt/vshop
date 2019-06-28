@@ -8,11 +8,11 @@
         <van-tab title="动态获取验证码">
           <div class="login_dynamic clearfix">
             <p>
-              <input type="number" v-model="phoneNum" oninput='if(value.length>11)value=value.slice(0,11)' placeholder="请输入手机号">
+              <input type="number" v-model="phoneNum" @input="onInput" oninput='if(value.length>11)value=value.slice(0,11)' placeholder="请输入手机号">
             </p>
             <p>
-              <input type="number" v-model="phoneCode" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码">
-              <span v-show="show" class="login_getcode right" @click="flag && getcode()">获取验证码</span>
+              <input type="number" v-model="phoneCode" @input="onInput" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码">
+              <span v-show="show" class="login_getcode right" @click="getcode()">获取验证码</span>
 				      <span v-show="!show" class="login_getcode right">{{count}} s后获取</span>	
             </p>
           </div>
@@ -20,17 +20,17 @@
         <van-tab title="普通登录">
           <div class="login_dynamic">
             <p>
-              <input type="number" class="inputD" v-model="phoneNum" oninput='if(value.length>11)value=value.slice(0,11)' placeholder="请输入手机号">
+              <input type="number" class="inputD" v-model="phoneNum" @input="onInputM" oninput='if(value.length>11)value=value.slice(0,11)' placeholder="请输入手机号">
             </p>
             <p>
-              <input :type=typeText v-model="phonePwd" oninput='if(value.length>6)value=value.slice(0,18)' placeholder="请输入6-18位登录密码">
+              <input :type=typeText v-model="phonePwd" @input="onInputM" oninput='if(value.length>6)value=value.slice(0,18)' placeholder="请输入6-18位登录密码">
               <span class="login_img right" @click="onLookImg"> <img :src= " look == 1? nolookImg : lookImg " alt=""> </span>
             </p>
           </div>
         </van-tab>
       </van-tabs>
       <div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
-      <div class="login_login" @click="flag && goLogin()">
+      <div class="login_login" :class="!flag ? 'login_w' : 'login_b'" @click="flag && goLogin()">
         登录
       </div>
       <div class="login_footer">
@@ -62,12 +62,14 @@ export default {
       typeText: "password",
       count: "",
       show: true,
-      flag: true,
-      seal_control: false
+      flag: false,
+      seal_control: false,
     };
   },
   methods: {
-    onClick() {},
+    onClick(v) {
+      this.isCheck(v)
+    },
     onLookImg() {
       if (this.look == 1) {
         this.look = 2;
@@ -79,7 +81,11 @@ export default {
     },
     // 获取验证码
     getcode(v) {
-      if (!this.isCheck(3)) {
+      if (this.phoneNum == "") {
+        Toast("请输入手机号！");
+        return false;
+      } else if (!/(1([3-9])[0-9]{9})/.test(this.phoneNum)) {
+        Toast("手机号有误，请重新输入！");
         return false;
       }
       this.setTimeout();
@@ -127,9 +133,9 @@ export default {
     },
     // 登录
     goLogin() {
-      if (!this.isCheck(1)) {
-        return false;
-      }
+      // if (!this.isCheck(1)) {
+      //   return false;
+      // }
       this.flag = false
       if (this.tabactive == 0) {
         this.request("wisdom.vshop.vshopStoreManager.captchaLogin", {
@@ -163,39 +169,53 @@ export default {
       // this.$router.push({ path: "./myshop" });
     },
     goAgree() {
-      window.location.href = "http://qdx.zanfin.com/promotion/#/agreement    ";
+      window.location.href = "http://qdx.zanfin.com/promotion/#/agreement";
+    },
+    onInput(){
+      this.isCheck(0)
+    },
+    onInputM(){
+      this.isCheck(3)
     },
     isCheck(num) {
       // 手机号校验
       if (this.phoneNum == "") {
-        Toast("请输入手机号！");
-        return false;
-      }
-      if (!/(1([3-9])[0-9]{9})/.test(this.phoneNum)) {
-        Toast("手机号有误，请重新输入！");
-        return false;
-      }
-      if (this.tabactive == 0 && num == 1) {
+        this.flag =false;
+        // Toast("请输入手机号！");
+        // return false;
+      } else if (!/(1([3-9])[0-9]{9})/.test(this.phoneNum)) {
+        this.flag =false;
+        // Toast("手机号有误，请重新输入！");
+        // return false;
+      } else if (this.tabactive == 0 && num == 0) {
         if (this.phoneCode == "") {
-          Toast("验证码不能为空，请重新输入！");
-          return false;
+          // Toast("验证码不能为空，请重新输入！");
+          // return false;
+        } else if (!/^[0-9]*$/.test(this.phoneCode) || this.phoneCode.length < 6) {
+          this.flag =false;
+          // Toast("验证码有误，请重新输入！");
+          // return false;
+        } else {
+          this.flag = true
         }
-        if (!/^[0-9]*$/.test(this.phoneCode) || this.phoneCode.length < 6) {
-          Toast("验证码有误，请重新输入！");
-          return false;
-        }
-      }
-      if (this.tabactive == 1) {
+      } else if (this.tabactive == 1) {
         if (this.phonePwd == "") {
-          Toast("密码不能为空，请重新输入！");
-          return false;
+          this.flag =false;
+          // Toast("密码不能为空，请重新输入！");
+          // return false;
+        } else if (this.phonePwd.length < 6) {
+          this.flag =false;
+          // Toast("密码输入有误，请重新输入！");
+          // return false;
+        } else {
+          this.flag = true
         }
-        if (this.phonePwd.length < 6) {
-          Toast("密码输入有误，请重新输入！");
-          return false;
-        }
+      } else {
+        this.flag = true
       }
-      return true;
+      
+      console.log(this.flag)
+      // return true;
     },
     // 定时器
     setTimeout() {
@@ -275,12 +295,17 @@ export default {
   .login_login {
     color: #ffffff;
     font-size: 18px;
-    background-color: #4597fb;
     width: 295px;
     height: 50px;
     border-radius: 25px;
     line-height: 50px;
     margin: 30px auto 0px auto;
+  }
+  .login_b{
+    background-color: #4597fb;
+  }
+  .login_w{
+    background-color: #c4c6c9;
   }
   .login_footer {
     width: 100%;

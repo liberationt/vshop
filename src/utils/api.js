@@ -79,6 +79,10 @@ export function upload(file = {}) {
     });
   })
 }
+// ios 和 安卓
+let u = navigator.userAgent;
+// let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
 // 公共参数的封装
 let getRequestInfo = (apiKey = '', data = {}) => {
     let baseParams = {
@@ -91,7 +95,7 @@ let getRequestInfo = (apiKey = '', data = {}) => {
         appVersion: "1.0.0",
         channel: "",
         identifier: "weidian",
-        hardware:"weidian"
+        hardware: isiOS ? "weidian-IOS" : "weidian-Android"
       },
     }
     
