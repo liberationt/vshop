@@ -133,6 +133,7 @@ export default {
 			this.active = this.$route.query.index
 		}
 		this.getdatas()
+		
 	}
 }
 </script>
