@@ -145,7 +145,7 @@ export default {
       this.operationType(1)
     },
     recommenduser(){
-      this.request('wisdom.vshop.product.createProductPoster',{url: window.location.origin+'/stiflingborrow',operationType:2,productCode:this.$route.query.code}).then(data=>{
+      this.request('wisdom.vshop.product.createProductPoster',{url: window.location.origin+'/productnamedetail',operationType:2,productCode:this.$route.query.code}).then(data=>{
         let dataList = data.data
         utils.wxShare(dataList.wechatJsConfRes)
         console.log(dataList.wechatJsConfRes)
