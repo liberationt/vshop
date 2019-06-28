@@ -138,7 +138,7 @@ export default {
   },
   methods:{
     onGoback(){
-      this.$router.push({path:'./magentproduct'})
+      this.$router.push({path:'/magentproduct'})
     },
     productposter(){
       // this.showPoster = true
