@@ -90,6 +90,7 @@ export default {
 			show:false,
 			dataList:{},
 			tittle:'',
+			inviterCode:'',
 			bannerimg:require('./images/s-shoppageban.png')
 		}
 	},
@@ -99,7 +100,7 @@ export default {
 		},
 		getDatas(){
 			let data ={
-				inviterCode : this.$route.query.inviterCode,
+				inviterCode:this.$route.query.inviterCode?this.$route.query.inviterCode:utils.getCookie('inviterCode'),
 				storeCode:''
 			}
 			this.request('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
@@ -202,6 +203,9 @@ export default {
 		}
 	},
 	created(){
+		if(this.$route.query.inviterCode){
+			utils.setCookie('inviterCode',this.$route.query.inviterCode)
+		}
 		this.getDatas()
 	},
 	mounted(){
@@ -285,7 +289,7 @@ export default {
 					}
 				}
 				.headerbot{
-					color:#666666;
+					color:#ffffff;
 					font-size:14px;
 				}
 			}

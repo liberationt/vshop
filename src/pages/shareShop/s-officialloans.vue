@@ -52,10 +52,6 @@ export default {
 		tonetloan(){
 			this.$router.push('/loanlist')
 		},
-		//大额
-		toamount(){
-			this.$router.push('/loanlist')
-		},
 		//申请
 		toproductnamedetail(productCode){
 			let data = {
@@ -132,6 +128,7 @@ export default {
 		div{
 			width:166px;height:51px;
 			font-size:20px;
+			margin-bottom:10px;
 			line-height: 51px;
 			color:#ffffff;
 			font-weight:bold;
