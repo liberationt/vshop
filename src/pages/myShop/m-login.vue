@@ -34,7 +34,7 @@
         登录
       </div>
       <div class="login_footer">
-        点击“登录”代表您已经同意 <span style="color:#4697FB" @click="goAgree">《抢单侠用户协议》</span>
+        点击“登录”代表您已经同意 <span style="color:#4697FB; z-index:9" @click="goAgree">《抢单侠用户协议》</span>
       </div>
     </div>
     
@@ -307,13 +307,11 @@ export default {
   .login_footer {
     width: 100%;
     height: 20px;
-    position: absolute;
-    bottom: 25px;
     width: 100%;
     text-align: center;
     font-size: 10px;
     color: #999;
-    z-index: -1;
+    margin-top: 15px;
   }
 }
 </style>
