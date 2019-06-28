@@ -163,12 +163,12 @@ export default {
   },
   mounted() {
     this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
-      .then(data => {
-        this.wxShare(data.data.inviterCode);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    .then(data => {
+      this.wxShare(data.data.inviterCode);
+    })
+    .catch(err => {
+      console.log(err);
+    });
   },
   created() {
     this.request("wisdom.vshop.vshopStoreManager.getVshopStoreDetail", {})

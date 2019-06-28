@@ -87,7 +87,6 @@ export function sealControl(captchaId,subCallback) {
 // 微信分享
 import wx from 'weixin-js-sdk'
 export function wxShare(data){
-  //console.log(data,2222,wx)
   wx.config({ //errMsg:config ok
     debug:true,// 是否开启调试模式
     appId:data.appId,//appid
