@@ -200,8 +200,10 @@ export default {
           size:65,
           colorDark:'red'
         })
+        var img = document.createElement( 'img' );
+        img.src = canvas.toDataURL( 'image/png', 1 );  //1表示质量(无损压缩)
         document.getElementById("qrcode").innerHTML = '',
-        document.getElementById("qrcode").appendChild(canvas)
+        document.getElementById("qrcode").appendChild(img)
       })
     }
   },
