@@ -28,6 +28,7 @@ export function request(apiKey, data = {}, isShowError = true) {
         resolve && resolve(response)
       } else if (response.code == '300013' || response.code == '300011' || response.code == '300013') {
         console.log('response=====> ' + JSON.stringify(response))
+        Toast(response.code)
         window.location.href = window.location.origin+'/#/'
       }  else {
         handleError(apiKey, response, reject, isShowError)
@@ -93,6 +94,7 @@ let getRequestInfo = (apiKey = '', data = {}) => {
         hardware:"weidian"
       },
     }
+    
   // 取用户信息
   if(utils.getCookie('user')){
     let userInfo = JSON.parse(utils.getCookie('user')) // 获取本地内容

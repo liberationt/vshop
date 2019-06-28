@@ -54,6 +54,7 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       // 未登录,跳转到登陆页面。
+      Toast('没获取到用户信息')
       next({ path: '/'})
     }
   } else {
