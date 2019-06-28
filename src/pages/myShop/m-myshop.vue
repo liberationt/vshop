@@ -127,7 +127,7 @@ export default {
           
         })
       } else {
-        this.$router.push({ path: "./shoppage?storeCode="+this.userMessage.storeCode });
+        this.$router.push({ path: "./shoppage?inviterCode="+this.userMessage.inviterCode });
       }
     },
     // 分享
