@@ -101,7 +101,7 @@ export default {
 		getDatas(){
 			let data ={
 				inviterCode:this.$route.query.inviterCode?this.$route.query.inviterCode:utils.getCookie('inviterCode'),
-				storeCode:''
+				storeCode:'20190629135304170038287676841'
 			}
 			this.request('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
 				if(data.code=='success'){
@@ -116,7 +116,7 @@ export default {
 		},
 		gophone(item){
 			statistics.click("tap", "shappage","phonenum");
-			window.location.href = "tel://" + "18201814187";
+			window.location.href = "tel://" + item;
 		},
 		copywx(content){
 			const copyToClipboard = str => {
@@ -146,7 +146,7 @@ export default {
 		},
 		card(){
 			statistics.click('tap','shappage','card')
-			this.$router.push('/relatedproducts')
+			this.$router.push('/relatedproducts?disabled='+'信用卡')
 		},
 		tool(){
 			statistics.click('tap','shappage','tool')
