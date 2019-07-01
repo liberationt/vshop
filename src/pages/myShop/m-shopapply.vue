@@ -98,7 +98,8 @@ export default {
       option1: [
         { text: "所有状态", value: "''" },
         { text: "未结算", value: 0 },
-        { text: "已结算", value: 2 }
+        { text: "已结算", value: 2 },
+        { text: "已失效", value: 3 }
       ],
       moneyShow: false,
       radioName: "",
