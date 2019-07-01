@@ -134,16 +134,10 @@ export default {
     // 分享
     onShare() {
       alert('请点击右上角去分享')
-      this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
-      .then(data => {
-        this.inviterCode = data.data.inviterCode
-        this.wxShare(data.data.inviterCode);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      
     },
     wxShare(inviterCode) {
+      alert(window.location.href)
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
         url: window.location.href
       }).then(data => {
@@ -179,6 +173,14 @@ export default {
         console.log(err);
       });
     
+    this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
+    .then(data => {
+      this.inviterCode = data.data.inviterCode
+      this.wxShare(data.data.inviterCode);
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
 };
 </script>
