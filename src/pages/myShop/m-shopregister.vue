@@ -10,7 +10,7 @@
       />
     </header>
     <div class="shopregister_center">
-      <div class="center_search">
+      <div class="center_search_center">
         <van-search
           v-model="searchValue"
           placeholder="请输入姓名或手机号"
@@ -489,7 +489,7 @@ export default {
       font-size: 14px;
     }
   }
-  .center_search {
+  .center_search_center {
     position: fixed;
     top: 46px;
     z-index: 999;
