@@ -41,7 +41,7 @@
                     <p class="one">{{item.dataCreateTime}}</p>
                     <p class="two">
                       <span>{{item.userName}}</span>
-                      <span>{{item.userPhone}}</span>
+                      <span>{{item.textPhone}}</span>
                       <span class="message_icon" @click.stop="goMessage(item.userPhone)"><img src="./imgs/message_icon@2x.png" alt=""></span>
                       <span class="phone_icon" @click.stop="goPhone(item.userPhone)"><img src="./imgs/phone_icon@2x.png" alt=""></span>
                       <span class="biajidianpu"><img src="./imgs/biajidianpu.png" alt=""></span>
@@ -241,7 +241,7 @@ export default {
       })
         .then(() => {
           if(this.generalizeStore.hasStore){
-            utils.copyContent(this.generalizeStore.text+this.generalizeStore.shortLink)
+            utils.copyContent(this.generalizeStore.text + this.generalizeStore.shortLink)
             Toast('复制成功')
           } else {
             this.$router.push({path:'./meditshop'})

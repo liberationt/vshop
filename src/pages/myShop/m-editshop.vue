@@ -100,7 +100,6 @@ export default {
         this.$toast('微信号输入有误，请重新输入')
         return false;
       }
-      console.log(this.shopValue.storeDesc.length)
       if (this.shopValue.storeDesc.length > 30 || this.shopValue.storeDesc.length <=1) {
         this.$toast('请输入1-30个字的店铺介绍')
         return false;
