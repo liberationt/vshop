@@ -16,7 +16,7 @@
           </van-col>
         </van-row>
         <van-row class="center_list">
-          <van-col span="12" style="text-align:left">微店微店招牌</van-col>
+          <van-col span="12" style="text-align:left">微店招牌</van-col>
           <van-col span="12" class="center_arrow" style="text-align:right">
             <router-link to="mshopsign">{{shopValue.storeLogoName? '修改店铺招牌' : '请选择'}} <img src='./imgs/biajidianpu.png' class="biajidianpu" alt=""></router-link>
           </van-col>
