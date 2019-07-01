@@ -45,7 +45,7 @@
     <footer class="productdetail_footer">
       <van-row>
         <van-col class="van_daili" span="8">
-          代理后推荐用户 赚 <span style="color:#FE951E">2.6%</span> 佣金
+          代理后推荐用户 赚 <span style="color:#FE951E">{{productList.agentContent}}</span> 佣金
         </van-col>
         <div v-if="this.$route.query.num == 1">
           <van-col span="8">
