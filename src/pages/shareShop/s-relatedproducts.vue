@@ -6,10 +6,6 @@
 				<div class="bannerudius"><img :src= personImg alt=""></div>
 				<div class="srelate_menu">
 					<van-tabs type="card" @click='onClick' v-model="active">
-						<!-- <van-tab class='van-tab van-tab--active' title="官方贷款"></van-tab> -->
-						<!-- <van-tab title="官方贷款"></van-tab>
-						<van-tab title="信用卡"></van-tab>
-						<van-tab title="自营贷款"></van-tab> -->
 						<van-tab v-for="(item,i) in loanlist" :title = item.label :key='i'></van-tab>
 					</van-tabs>
 				</div>
@@ -22,9 +18,9 @@
 				<div class="close" @click="closeTost" v-show="isshow"><img src="./images/close.png" alt=""></div>
 			</div>
 			<div>
-				<officialloans v-if="disabled=='贷款'"></officialloans>
-				<creditcard  v-if="disabled=='信用卡'"></creditcard>
-				<financingloan  v-if="disabled=='自营'"></financingloan>
+				<officialloans v-show="disabled=='贷款'"></officialloans>
+				<creditcard  v-show="disabled=='信用卡'"></creditcard>
+				<financingloan  v-show="disabled=='自营'"></financingloan>
 			</div>
 		</div>
 		
@@ -38,6 +34,7 @@ import financingloan from './s-financingloan'
 import officialloans from './s-officialloans'
 import creditcard from './s-creditcard'
 import { Tab, Tabs ,Dialog} from 'vant'
+import { constants } from 'crypto';
 export default {
 	components:{
 		[Tab.name]:Tab,
@@ -49,8 +46,7 @@ export default {
 	},
 	data(){
 		return{
-			active:'',
-			index:0,
+			active:'0',
 			inviterCode:'',
 			isLoading:false,
 			loanlist:[],
@@ -66,7 +62,6 @@ export default {
 		onClick(i,v){
 			this.disabled = v
 		},
-		
 		tohavemoney(){
 			this.$router.push('/havemoney')
 		},
@@ -114,11 +109,15 @@ export default {
 				this.loanlist = data.data.searchOptionBeanList
 				this.inviterCode = data.data.inviterCode
 				this.personImg = data.data.personImg
-				this.disabled = this.loanlist[0].label
 				this.havemoneyImg = data.data.bannerResList[0].bannerUrl
 				this.dayUMoney = data.data.dayUMoney
 				this.showUMoney = data.data.showUMoney
 				this.$emit('toparent',data.data.storeName,1)
+				if(this.$route.query.disbaled){
+					this.disabled=decodeURI(this.$route.query.disbaled)
+				}else{
+					this.disabled = this.loanlist[0].label
+				}
 			})
 		}
 	},
@@ -129,8 +128,7 @@ export default {
 			this.isshow = false
 		}
 		if(this.$route.query.index){
-			this.index= Number(this.$route.query.index)
-			this.active = this.$route.query.index
+			this.active =String(this.$route.query.index)
 		}
 		this.getdatas()
 		

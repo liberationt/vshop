@@ -91,6 +91,7 @@ export default {
 			dataList:{},
 			tittle:'',
 			inviterCode:'',
+			searchOptionBeanList:[],
 			bannerimg:require('./images/s-shoppageban.png')
 		}
 	},
@@ -101,14 +102,15 @@ export default {
 		getDatas(){
 			let data ={
 				inviterCode:this.$route.query.inviterCode?this.$route.query.inviterCode:utils.getCookie('inviterCode'),
-				storeCode:'20190629135304170038287676841'
+				storeCode:''
 			}
 			this.request('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
 				if(data.code=='success'){
 					this.dataList = data.data
 					this.tittle = data.data.storeName
+					this.searchOptionBeanList = data.data.searchOptionBeanList
 					utils.setCookie('storeCode',data.data.storeCode)
-					this.$emit('toparent',this.tittle)
+					this.$emit('toparent',this.tittle,1)
 				}
 			}).catch(err=>{
 				console.log(err)
@@ -142,11 +144,23 @@ export default {
 		},
 		loan(){
 			statistics.click('tap','shappage','loan')
-			this.$router.push('/relatedproducts')
+			let index 
+			for(var i=0;i<this.searchOptionBeanList.length;i++){
+				if(this.searchOptionBeanList[i].value=='loan'){
+					index = this.searchOptionBeanList[i].order-1
+				}
+			}
+			this.$router.push('/relatedproducts?disbaled='+encodeURI('贷款')+'&'+'index='+index)
 		},
 		card(){
 			statistics.click('tap','shappage','card')
-			this.$router.push('/relatedproducts?disabled='+'信用卡')
+			let index 
+			for(var i=0;i<this.searchOptionBeanList.length;i++){
+				if(this.searchOptionBeanList[i].value=='card'){
+					index = this.searchOptionBeanList[i].order-1
+				}
+			}
+			this.$router.push('/relatedproducts?index='+index)
 		},
 		tool(){
 			statistics.click('tap','shappage','tool')
