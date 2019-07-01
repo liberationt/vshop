@@ -67,6 +67,7 @@
 <script>
 import { Popup, Dialog } from "vant";
 import utils from '../../utils/utils'
+import wx from 'weixin-js-sdk'
 export default {
   components: {
     [Popup.name]: Popup,
@@ -88,10 +89,25 @@ export default {
       alert("推荐用户");
     },
     iwantagent() {
-      if(!inviterCode){ // 立即分享
-        this.request("wisdom.vshop.proprietaryProduct.shareProprietaryProductH5",{productCode: this.$route.query.code,url:window.location.origin+'/#/shoppage'}).then(data=>{
-          console.log(data)
-          this.shopdetailsData = data.data
+      if(!this.inviterCode){ // 立即分享
+        this.request("wisdom.vshop.proprietaryProduct.shareProprietaryProductH5",{proprietaryProductCode: this.$route.query.code,url:window.location.origin+'/shoppage'}).then(data=>{
+          let dataList = data.data
+          utils.wxShare(dataList.wechatJsConfRes)
+          wx.ready(function(){
+            wx.updateAppMessageShareData({
+              title: dataList.shareTitle, // 分享标题
+              desc: dataList.shareDescribe, // 分享描述
+              link: dataList.url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+              imgUrl: dataList.bannerUrl, // 分享图标
+              success: function () {
+                // 用户点击了分享后执行的回调函数
+                alert('分享成功回调')
+              },
+              cancel: function(err){
+                alert('分享取消回调')
+              }
+            });
+          })
         }).catch(err=>{console.log(err)})
       } else { // 立即申请
         this.$router.push({path:'./stiflingborrow?type='+3})
