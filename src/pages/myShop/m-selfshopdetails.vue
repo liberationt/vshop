@@ -90,6 +90,7 @@ export default {
     },
     iwantagent() {
       if(!this.inviterCode){ // 立即分享
+      alert('点击右上角分享')
         this.request("wisdom.vshop.proprietaryProduct.shareProprietaryProductH5",{proprietaryProductCode: this.$route.query.code,url:window.location.origin+'/shoppage'}).then(data=>{
           let dataList = data.data
           utils.wxShare(dataList.wechatJsConfRes)
