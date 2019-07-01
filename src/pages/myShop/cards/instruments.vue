@@ -3,13 +3,13 @@
     <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
       <div v-for="item in productList2" class="product_center" @click="goDetails(item.productCode,item.agentStatus)">
         <van-row class="clearfix">
-          <div class="left">
+          <div>
             <div class="left">
               <img :src=item.productLogo  alt="">
             </div>
             <div class="left common_left">
               <p class="product_title">{{item.productName}}</p>
-              <p class="product_money">{{item.productIntroduction}}发二娃发二娃发个人</p>
+              <p class="product_money">{{item.productIntroduction}}</p>
             </div>
           </div>
           <div class=" product_label_common left">
