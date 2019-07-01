@@ -133,6 +133,7 @@ export default {
     },
     // 分享
     onShare() {
+      alert('请点击右上角去分享')
       // 引导用户去分享
     },
     wxShare(inviterCode) {
