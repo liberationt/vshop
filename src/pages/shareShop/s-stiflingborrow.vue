@@ -30,7 +30,7 @@
 					</p>
 					<p class="productcity" @click="tocity">
 						<span>工作城市</span>
-						<input type="text" v-model="city">
+						<input type="text" v-model="city" readonly="value">
 					</p>
 				</div>
 			</div>
@@ -66,7 +66,7 @@ export default {
 			managerPhone:'',
 			flag:true,
 			seal_control:false,
-			isshow:true,
+			isshow:false,
 			disableds:false,
 			city:'',
 			flags:false,
@@ -117,6 +117,21 @@ export default {
 					return false;
 				}
 			}
+			if(!this.userName){
+				Toast({
+					message:'请输入姓名',
+					duration:800
+				})
+				return false
+			}
+			if(!/^[\u4e00-\u9fa5]{1,10}$/.test(this.userName)){
+				Toast({
+					message:'请输入中文姓名',
+					duration:800
+				})
+				return false
+			}
+			/^[\u4e00-\u9fa5]{1,50}$/
 			if(!this.idCard){
 				Toast({
 					message:'请输入身份证号',
@@ -290,7 +305,13 @@ export default {
 		}
 		if(utils.getCookie('adNameSecond')){
 			this.city = utils.getCookie('adNameSecond')
-		}
+		}else{
+            utils.ip(e=>{
+                this.city = e
+            },data=>{
+                // this.city = sessionStorage.getItem("city")
+            })
+        }
 		this.getdata()
 	}
 }

@@ -6,7 +6,7 @@
 			</van-nav-bar>
 		</header>
 		<div>
-			<router-view></router-view>
+			<router-view @toparent='getdata'></router-view>
 		</div>
 		<footer class="shophome">
 			<van-tabbar v-model="active" @change="onchange">
@@ -47,10 +47,9 @@ export default {
 		},
 		methods:{
 			...mapMutations(["getactive"]),
-			// getdata(msg,number){
-			// 	this.tittle = msg
-			// 	this.number = number
-			// },
+			getdata(msg){
+				this.tittle = msg
+			},
 			onClickLeft(){
 				this.$router.go(-1)
 				this.active = this.actives
