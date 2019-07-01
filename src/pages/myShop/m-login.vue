@@ -23,7 +23,7 @@
               <input type="number" class="inputD" v-model="phoneNum" @input="onInputM" oninput='if(value.length>11)value=value.slice(0,11)' placeholder="请输入手机号">
             </p>
             <p>
-              <input :type=typeText v-model="phonePwd" @input="onInputM" oninput='if(value.length>6)value=value.slice(0,18)' placeholder="请输入6-18位登录密码">
+              <input :type=typeText v-model="phonePwd" class="phonePwd" @input="onInputM" oninput='if(value.length>6)value=value.slice(0,18)' placeholder="请输入6-18位登录密码">
               <span class="login_img right" @click="onLookImg"> <img :src= " look == 1? nolookImg : lookImg " alt=""> </span>
             </p>
           </div>
@@ -265,6 +265,9 @@ export default {
     padding-top: 20px;
     .inputD{
       width: 80%;
+    }
+    .phonePwd{
+      width: 85%;
     }
     input {
       color: #333;
