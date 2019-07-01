@@ -125,7 +125,7 @@ export default {
       }
     },
      goDetails(code,num) {
-      this.showPoster = true
+      
       this.operationType(code)
       // this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num+"&type="+1 });
     },
@@ -134,7 +134,7 @@ export default {
         this.showPosterList = data.data
         this.showPoster = true
         this.qrcode(data.data.url)
-      }).catch(err=>{console.log(err)})
+      }).catch(err=>{this.showPoster = false})
     },
     // 确认代理
     confirm(){
@@ -186,6 +186,19 @@ export default {
           this.total = data.total
         }
       }).catch(err=>{console.log(err)})
+    },
+    qrcode(url){
+       this.$nextTick(()=>{
+        var canvas = qrcanvas({
+          data:url,
+          size:65,
+          colorDark:'red'
+        })
+        var img = document.createElement( 'img' );
+        img.src = canvas.toDataURL( 'image/png', 1 );  //1表示质量(无损压缩)
+        document.getElementById("qrcode").innerHTML = '',
+        document.getElementById("qrcode").appendChild(img)
+      })
     }
   },
   created(){
