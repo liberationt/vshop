@@ -108,7 +108,7 @@
         </p>
         <p class="product_button">
           <button @click="moneyShow = false">取消</button>
-          <button @click="confirm">确定</button>
+          <button @click="flag && confirm()">确定</button>
         </p>
       </div>
     </van-popup>
@@ -132,6 +132,7 @@ export default {
       showPosterList:{},
       moneyShow: false,
       radioName:"",
+      flag:true
     }
   },
   created(){
@@ -168,9 +169,11 @@ export default {
     },
     // 确认代理
     confirm(){
+      this.flag = false
       let agentStatusData = [{productCode:this.$route.query.code,productType:this.$route.query.type}]
       this.request('wisdom.vshop.product.batchAgentProducts',{queryH5UserProductDetailReqList:agentStatusData}).then(data=>{
         this.moneyShow =  false
+        this.flag = true
         this.$router.push({path:"./magentproduct"})
       }).catch(err=>{console.log(err)})
     },
