@@ -330,7 +330,7 @@ export default {
           optionUpdateReqList : this.labelTitleName2,
           userCode : this.userCode
         }
-        this.request('wisdom.vshop.userLabel.updateUserLabel',).then(data=>{
+        this.request('wisdom.vshop.userLabel.updateUserLabel',parmise).then(data=>{
           this.rightShow = false
           this.Initialization(1,'',{})
         }).catch(err=>{console.log(err)})
