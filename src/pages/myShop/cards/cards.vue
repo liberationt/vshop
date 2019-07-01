@@ -24,6 +24,7 @@
             <van-col>
               <p class="product_label">
                 <span>{{item.rebate}}</span>
+                <span>{{item.settle}}</span>
               </p>
             </van-col>
             <van-col :class="item.agentStatus == 0 ?'buttonBlue right van-col_right':'buttonyellow right van-col_right'">
@@ -273,6 +274,7 @@ export default {
         background-color: #fef1e3;
         padding: 6px 8px;
         border-radius: 2px;
+        margin-right: 5px;
       }
     }
     .van-col_right{

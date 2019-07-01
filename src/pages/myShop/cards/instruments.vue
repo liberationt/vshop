@@ -3,20 +3,24 @@
     <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
       <div v-for="item in productList2" class="product_center" @click="goDetails(item.productCode,item.agentStatus)">
         <van-row class="clearfix">
-          <van-col>
-            <img :src=item.productLogo  alt="">
-          </van-col>
-          <van-col>
-            <p class="product_title">{{item.productName}}</p>
-            <p class="product_money">{{item.productIntroduction}}</p>
+          <div class="left">
+            <div class="left">
+              <img :src=item.productLogo  alt="">
+            </div>
+            <div class="left common_left">
+              <p class="product_title">{{item.productName}}</p>
+              <p class="product_money">{{item.productIntroduction}}发二娃发二娃发个人</p>
+            </div>
+          </div>
+          <div class=" product_label_common left">
             <p class="product_label">
               <span>{{item.rebate}}</span>
+              <span>{{item.settle}}</span>
             </p>
-          </van-col>
-          <van-col class="right">
-            <button :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
-          </van-col>
+            <button class="buttonleft right" :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
+          </div>
         </van-row>  
+       
       </div>
     </van-pull-refresh>
     <!-- 下拉刷新 -->
@@ -247,7 +251,6 @@ export default {
   .van-row {
     background-color: #fff;
     width: 345px;
-    height: 110px;
     border-radius:5px;
     padding: 20px 10px;
     img {
@@ -261,6 +264,7 @@ export default {
       font-weight:bold;
       color:rgba(51,51,51,1);
       line-height:18px;
+      width: 80%;
     }
     .product_money {
       font-size: 14px;
@@ -268,31 +272,13 @@ export default {
       color: #333333;
       line-height:18px;
       margin: 6px 17px 7px 0px;
+      width: 80%;
       span {
         color: #FE951E;
         font-weight: bold;
       }
     }
-    .product_label {
-      color: #FE951E;
-      font-size:11px;
-      line-height:18px;
-      span {
-        background-color: #FEF1E3;
-        padding: 6px 8px;
-        border-radius: 2px;
-      }
-    }
-    button{
-      width: 70px;
-      border-radius:15px;
-      height: 29px;
-      line-height: 29px;
-      font-size:12px;
-      font-weight:bold;
-      color:rgba(255,255,255,1);
-      margin-top: 41px;
-    }
+    
     .buttonBlue{
       background-color: #4597FB;
     }
@@ -300,8 +286,36 @@ export default {
       background-color: #F3B13E;
     }
   }
+  .product_label_common{
+    margin-top: 12px;
+    width: 100%;
+  }
+  .product_label {
+      color: #FE951E;
+      font-size:11px;
+      line-height:18px;
+      span {
+        background-color: #FEF1E3;
+        padding: 6px 8px;
+        border-radius: 2px;
+        margin-right: 5px;
+      }
+    }
+    .buttonleft{
+      width: 70px;
+      border-radius:15px;
+      height: 29px;
+      line-height: 29px;
+      font-size:12px;
+      font-weight:bold;
+      color:rgba(255,255,255,1);
+      margin-top: -24px;
+    }
   .product_center {
     margin-bottom: 10px;
+    .common_left{
+      width: 66%;
+    }
   }
 }
 </style>
