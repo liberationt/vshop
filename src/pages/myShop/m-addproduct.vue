@@ -9,7 +9,7 @@
     </header>
     <div class="editshop_center clearfix">
       <van-row class="center_list">
-        <van-col span="12" style="text-align:left;" class="center_geren">公司LOGO</van-col>
+        <van-col span="12" style="text-align:left;" class="center_geren">产品LOGO</van-col>
         <van-col span="12" style="text-align:right">
           <van-uploader :after-read="onReadTop" class="right">
             <img :src=topImgUrl alt="">
@@ -318,6 +318,7 @@ export default {
         text-align: right;
         color: #333;
         float: right;
+        width: 92%;
       }
       .shop_tarea {
         border: none;
