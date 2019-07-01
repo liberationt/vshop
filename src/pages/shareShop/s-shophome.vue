@@ -2,7 +2,7 @@
   <div class="shopmain pddingTop">
 		<header>
 			<van-nav-bar :title='tittle' left-text="" :left-arrow="this.active!=1" fixed @click-left="onClickLeft">
-				<!-- <span slot="right" style='color:#4597FB' v-show='number==1' @click="toshare"> 分享微店</span> -->
+				<span slot="right" style='color:#4597FB' v-show='number==1' @click="toshare"> 分享微店</span>
 			</van-nav-bar>
 		</header>
 		<div>
@@ -47,7 +47,8 @@ export default {
 		},
 		methods:{
 			...mapMutations(["getactive"]),
-			getdata(msg){
+			getdata(msg,num){
+				this.number = num
 				this.tittle = msg
 			},
 			onClickLeft(){
@@ -58,6 +59,9 @@ export default {
 				this.active = i
 				utils.putlocal('actives',i)
 				this.getactive(i)
+			},
+			toshare(){
+				alert(1)
 			}
 		},
 		watch:{
