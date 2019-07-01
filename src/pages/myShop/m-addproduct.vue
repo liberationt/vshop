@@ -123,8 +123,12 @@ export default {
         this.$toast('最小额度或最大额度1-5000000')
         return false;
       }
-      if(!/^[\u4E00-\u9FA5]{1,500}$/.test(this.shopValue.productDetail)){
+      if(this.shopValue.productDetail.length >500){
         this.$toast('申请条件最多500个字')
+        return false;
+      }
+      if(this.shopValue.limitMax < shopValue.limitMin){
+        this.$toast('最小额度不能大于最大额度')
         return false;
       }
       if (this.isAdd == "is") {

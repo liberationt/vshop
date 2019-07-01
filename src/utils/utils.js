@@ -51,6 +51,7 @@ const isAndroid = () => {
 
 // 拒绝input框弹出 顶起底部按钮 暂无用
 export function copyContent(content){
+  console.log(content)
   const copyToClipboard = str => {
     const el = document.createElement('textarea'); // Create a <textarea> element
     el.value = str; // Set its value to the string that you want copied
@@ -63,7 +64,13 @@ export function copyContent(content){
     ? document.getSelection().getRangeAt(0) // Store selection if found
     : false; // Mark as false to know no selection existed before
     el.select(); // Select the <textarea> content
-    document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
+//     document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
+    var a = document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
+    alert(a)
+    if (!a){
+        el.select();
+        el.setSelectionRange(0, el.value.length), document.execCommand('Copy');// 执行浏览器复制命令
+    }
     document.body.removeChild(el); // Remove the <textarea> element
     if (selected) { // If a selection existed before copying
     document.getSelection().removeAllRanges(); // Unselect everything on the HTML document
