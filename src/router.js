@@ -185,6 +185,16 @@ export default new Router({
       component: () => import( './pages/myShop/m-shopsign.vue')  
     },
     {
+      path: '/Proxyagreement',
+      name: 'Proxyagreement',
+      title:'微店代理协议',
+      meta: {
+        auth: true
+      },
+      component: () => import( './pages/myShop/m-proxyagreement.vue')  
+    },
+    
+    {
       path: '/mshopregister',
       name: 'mshopregister',
       meta: {
