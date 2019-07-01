@@ -45,7 +45,7 @@
     <footer class="productdetail_footer">
       <van-row>
         <van-col class="van_daili" span="8">
-          代理后推荐用户 赚 <span style="color:#FE951E">2.6%</span> 佣金
+          代理后推荐用户 赚 <span style="color:#FE951E">{{productList.agentContent}}</span> 佣金
         </van-col>
         <div v-if="this.$route.query.num == 1">
           <van-col span="8">
@@ -103,12 +103,12 @@
         <p class="product_message">确认代理后您将获得该产品 专属推广链接，是否确认？</p>
         <p class="product_radio">
           <van-radio-group v-model="radioName">
-            <van-radio name="1">已阅读并同意<span style="color:#4597FB;">《XX代理协议》</span></van-radio>
+            <van-radio name="1">已阅读并同意<router-link to="/Proxyagreement"><span style="color:#4597FB;">《微店代理协议》</span></router-link></van-radio>
           </van-radio-group>
         </p>
         <p class="product_button">
           <button @click="moneyShow = false">取消</button>
-          <button @click="confirm">确定</button>
+          <button @click="flag && confirm()">确定</button>
         </p>
       </div>
     </van-popup>
@@ -132,13 +132,14 @@ export default {
       showPosterList:{},
       moneyShow: false,
       radioName:"",
+      flag:true
     }
   },
   created(){
   },
   methods:{
     onGoback(){
-      this.$router.push({path:'./magentproduct'})
+      this.$router.push({path:'/magentproduct'})
     },
     productposter(){
       // this.showPoster = true
@@ -168,9 +169,11 @@ export default {
     },
     // 确认代理
     confirm(){
+      this.flag = false
       let agentStatusData = [{productCode:this.$route.query.code,productType:this.$route.query.type}]
       this.request('wisdom.vshop.product.batchAgentProducts',{queryH5UserProductDetailReqList:agentStatusData}).then(data=>{
         this.moneyShow =  false
+        this.flag = true
         this.$router.push({path:"./magentproduct"})
       }).catch(err=>{console.log(err)})
     },
@@ -200,8 +203,10 @@ export default {
           size:65,
           colorDark:'red'
         })
+        var img = document.createElement( 'img' );
+        img.src = canvas.toDataURL( 'image/png', 1 );  //1表示质量(无损压缩)
         document.getElementById("qrcode").innerHTML = '',
-        document.getElementById("qrcode").appendChild(canvas)
+        document.getElementById("qrcode").appendChild(img)
       })
     }
   },

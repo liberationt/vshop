@@ -100,7 +100,8 @@ export default {
         this.$toast('微信号输入有误，请重新输入')
         return false;
       }
-      if (!/^[\u4E00-\u9FA5]{1,30}$/.test(this.shopValue.storeDesc)) {
+      console.log(this.shopValue.storeDesc.length)
+      if (this.shopValue.storeDesc.length > 30 || this.shopValue.storeDesc.length <=1) {
         this.$toast('请输入1-30个字的店铺介绍')
         return false;
       }

@@ -44,12 +44,12 @@
     >
     </van-list>
     <!-- 弹窗 -->
-    <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
+    <van-popup class="ziying van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
       <div>
         <p class="product_message">确认代理后您将获得该产品 专属推广链接，是否确认？</p>
         <p class="product_radio">
           <van-radio-group v-model="radioName">
-            <van-radio name="1">已阅读并同意<span style="color:#4597FB;">《XX代理协议》</span></van-radio>
+            <van-radio name="1">已阅读并同意<router-link to="/Proxyagreement"><span style="color:#4597FB;">《微店代理协议》</span></router-link> </van-radio>
           </van-radio-group>
         </p>
         <p class="product_button">
@@ -61,10 +61,41 @@
     <footer v-if="showStatus == 1" class="footer_button" @click="moneyShow = true">
       <button>一键代理推广赚工资</button>
     </footer>
+    <!-- 弹出层 -->
+    <van-popup v-model="showPoster" :close-on-click-overlay=false>
+      <div class="popup_img_op">
+        <img :src=showPosterList.bannerUrl alt="">
+      </div>
+      <div class="popup_center">
+        <div id="qrcode" ></div>
+        <!-- <img :src=showPosterList.productLogo alt=""> -->
+        <p>长按识别二维码马上申请</p>
+      </div>
+      <div class="popu_footer">
+        <van-row >
+          <van-col span="16">
+            <van-col class="popuf_img">
+              <img :src="showPosterList.personImg?showPosterList.personImg:'./imgs/topimg.png'" alt="">
+            </van-col>
+            <van-col class="popuf_text">
+              <p>欢迎咨询</p>
+              <p>{{showPosterList.phone}}</p>
+            </van-col>
+          </van-col>
+          <van-col class="popuf_logo clearfix" span="8">
+            <img src="../imgs/logo@2x.png" alt="">
+          </van-col>
+        </van-row>
+      </div>
+      <div class="popu_close" @click="showPoster = false">
+        <img src="../imgs/turn_off@2x.png" alt="">
+      </div>
+    </van-popup>
   </div>
 </template>
 <script>
-import { Popup, RadioGroup, Radio, Progress, Toast, List  } from "vant";
+import { qrcanvas } from 'qrcanvas';
+import { Popup, RadioGroup,  Radio, Progress, Toast, List  } from "vant";
 export default {
   components: {
     [Popup.name]: Popup,
@@ -76,7 +107,7 @@ export default {
   data() {
     return {
       moneyShow: false,
-      radioName: "",
+      radioName: "1",
       productList1:[],
       isLoading:false,
       showStatus:"",
@@ -85,6 +116,8 @@ export default {
       loading:false,
       finished:false,
       agentStatus:"",
+      showPoster: false,
+      showPosterList:{},
     };
   },
   methods: {
@@ -105,7 +138,9 @@ export default {
     },
     // 跳转到详情
     goDetails(code,num) {
-      this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num+"&type="+1 });
+      this.showPoster = true
+      this.operationType(code)
+      // this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num+"&type="+1 });
     },
     // 确认代理
     confirm(){
@@ -123,6 +158,17 @@ export default {
         Toast.success('代理成功');
         this.moneyShow =  false
         this.Initialization(1)
+      }).catch(err=>{console.log(err)})
+    },
+    productposter(){
+      // this.showPoster = true
+      this.operationType(1)
+    },
+    operationType(code){
+      this.request("wisdom.vshop.product.createProductPoster",{productCode:code,operationType:1,url:window.location.href}).then(data=>{
+        this.showPosterList = data.data
+        this.showPoster = true
+        this.qrcode(data.data.url)
       }).catch(err=>{console.log(err)})
     },
     onRefresh() {
@@ -165,6 +211,59 @@ export default {
 </script>
 <style lang="less" scoped>
 .productCard_common {
+  .van-popup {
+    border-radius: 5px 5px 0px 0px;
+    width: 289px;
+    background-color: transparent;
+  }
+  .popup_img_op {
+    background-color: #fff;
+    img{
+      width: 289px;
+      height: 233px;
+    }
+  }
+  .popup_center {
+    background-color: #fff;
+    text-align: center;
+    padding-top: 15px;
+    font-size:12px;
+    color: #333333;
+    #qrcode {
+      margin-bottom: 10px;
+    }
+  }
+  .popu_footer {
+    background-color: #fff;
+    padding: 18px 15px 20px 16px;
+    border-radius: 0px 0px 5px 5px;
+    .popuf_img {
+      width: 48px;
+      height: 48px;
+    }
+    .popuf_text {
+      font-size:15px;
+      color: #333;
+      padding-left: 8px;
+      line-height: 25px;
+    }
+    .popuf_logo {
+      img{
+        width: 38px;
+        height: 38px;
+        float: right;
+        margin-top: 5px;
+      }
+    }
+  }
+  .popu_close{
+    text-align: center;
+    margin-top: 34px;
+    img {
+      width: 35px;
+      height: 36px;
+    }
+  }
   .product_label {
       color: #fe951e;
       font-size: 11px;

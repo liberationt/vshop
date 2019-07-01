@@ -133,10 +133,10 @@ export default {
     },
     // 分享
     onShare() {
+      alert('请点击右上角去分享')
       // 引导用户去分享
     },
     wxShare(inviterCode) {
-      console.log(window.location)
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
         url: window.location.href
       }).then(data => {
@@ -162,21 +162,19 @@ export default {
         });
     }
   },
-  mounted() {
-    this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
-    .then(data => {
-      this.inviterCode = data.data.inviterCode
-      this.wxShare(data.data.inviterCode);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  },
   created() {
     this.request("wisdom.vshop.vshopStoreManager.getVshopStoreDetail", {})
       .then(data => {
         this.userMessage = data.data;
         utils.setCookie("userMessage", JSON.stringify(data.data));
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
+      .then(data => {
+        this.inviterCode = data.data.inviterCode
+        this.wxShare(data.data.inviterCode);
       })
       .catch(err => {
         console.log(err);

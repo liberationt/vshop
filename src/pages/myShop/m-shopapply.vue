@@ -56,7 +56,7 @@
                   <p class="product_message">确认代理后您将获得该产品 专属推广链接，是否确认？</p>
                   <p class="product_radio">
                     <van-radio-group v-model="radioName">
-                      <van-radio name="1">已阅读并同意<span style="color:#4597FB;">《XX代理协议》</span></van-radio>
+                      <van-radio name="1">已阅读并同意<router-link to="/Proxyagreement"><span style="color:#4597FB;">《微店代理协议》</span></router-link></van-radio>
                     </van-radio-group>
                   </p>
                   <p class="product_button">

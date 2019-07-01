@@ -11,6 +11,7 @@
             <p class="product_money">贷款额度:  <span>{{item.amount}}</span></p>
             <p class="product_label">
               <span>{{item.rebate}}</span>
+              <span>{{item.settle}}</span>
             </p>
           </van-col>
           <van-col class="right">
@@ -35,7 +36,7 @@
         <p class="product_message">确认代理后您将获得该产品 专属推广链接，是否确认？</p>
         <p class="product_radio">
           <van-radio-group v-model="radioName">
-            <van-radio name="1">已阅读并同意<span style="color:#4597FB;">《XX代理协议》</span></van-radio>
+            <van-radio name="1">已阅读并同意<router-link to="/Proxyagreement"><span style="color:#4597FB;">《微店代理协议》</span></router-link></van-radio>
           </van-radio-group>
         </p>
         <p class="product_button">
@@ -61,7 +62,7 @@ export default {
   data() {
     return {
       moneyShow: false,
-      radioName: "",
+      radioName: "1",
       productList0: [],
       loading:false,
       finished:false,
@@ -165,11 +166,11 @@ export default {
     width: 345px;
     height: 110px;
     border-radius: 5px;
-    padding: 20px 10px;
+    padding: 20px 8px;
     img {
       width: 70px;
       height: 70px;
-      margin: 0px 15px 0px 5px;
+      margin: 0px 10px 0px 5px;
     }
     .product_title {
       font-size: 17px;
@@ -197,6 +198,7 @@ export default {
         background-color: #fef1e3;
         padding: 6px 8px;
         border-radius: 2px;
+        margin-right: 5px;
       }
     }
     button {
