@@ -2,7 +2,7 @@
     <div class="maincontent">
 			<header class="pddingTop">
 				<van-nav-bar
-					title="产品名称"
+					:title='tittle'
 					left-arrow
 					@click-left="onClickLeft"
 				/>
@@ -55,7 +55,8 @@ export default {
 			return{
 				city:'',
 				dataobject:{},
-				inviterCode:''
+				inviterCode:'',
+				tittle:''
 			}
 		},
 		methods:{
@@ -95,6 +96,7 @@ export default {
 					if(data.code=='success'){
 						this.dataobject = data.data
 						this.inviterCode = data.data.inviterCode
+						this.tittle = data.data.productName
 					}
 				})
 			}

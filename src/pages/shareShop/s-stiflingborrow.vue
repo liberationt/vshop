@@ -2,7 +2,7 @@
     <div class="stiflmain">
 			<header class="pddingTop">
 				<van-nav-bar
-					title="虫虫借钱"
+					:title='tittle'
 				/>
 			</header>
 			<div class="stiflimg">
@@ -57,6 +57,7 @@ export default {
 	},
 	data(){
 		return{
+			tittle:'',
 			bannerUrl:'',
 			userPhone:'',
 			verification:'',
@@ -160,7 +161,6 @@ export default {
 				verifyCode:this.verification,
 				userName :this.userName,
 				idCard:this.idCard,
-				// adNameFirst: utils.getCookie('adNameFirst')?utils.getCookie('adNameFirst'):'',
 				adNameSecond:utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):''
 			}
 			this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
@@ -291,6 +291,8 @@ export default {
 					this.idCard = data.data.idCard
 					this.managerPhone = data.data.managerPhone
 					this.bannerUrl = data.data.bannerUrl
+					this.tittle = data.data.productName
+					this.city = data.data.adNameSecond
 				}
 			})
 		}
@@ -303,16 +305,14 @@ export default {
 			this.isshow=true
 			this.disableds = false
 		}
-		if(utils.getCookie('adNameSecond')){
-			this.city = utils.getCookie('adNameSecond')
-		}else{
-            utils.ip(e=>{
-                this.city = e
-            },data=>{
-                // this.city = sessionStorage.getItem("city")
-            })
-        }
 		this.getdata()
+		utils.ip(e=>{
+			this.city = e
+		},data=>{
+			if(utils.getCookie('adNameSecond')){
+				this.city = utils.getCookie('adNameSecond')
+			}
+		})
 	}
 }
 </script>
