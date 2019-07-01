@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="officamain">
 		<div class='tochiose'>
 			<div class="netloan" @click="tonetloan" v-for="(item,i) in bannerProductResList" :key="i">
 				<img :src=item.bannerUrl alt="">
@@ -120,6 +120,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.officamain{
+	padding-bottom:20px;
+}
 	.tochiose{
 		display: flex;
 		justify-content: space-between;

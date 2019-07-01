@@ -39,7 +39,7 @@
 				<div class="apply" @click="toproductnamedetail(item.productCode)">立即申请</div>
 			</div>
 		</div>
-		<div class="viewall" v-if="productResList.length>1" @click="viewall">查看全部</div>
+		<div class="viewall" v-if="productResList.length>1" @click="viewall">查看更多</div>
 		</div>
 	</div>
 </template>
@@ -69,7 +69,7 @@ export default {
 		},
 		getdatalist(){
 			let data = {
-				inviterCode:'FFFFF'
+				inviterCode:this.$route.query.inviterCode
 			}
 			this.request('wisdom.vshop.product.queryH5RemovedDetail',data)
 			.then(data=>{
@@ -106,7 +106,7 @@ export default {
 			})
 		},
 		viewall(){
-
+			this.$router.push('/loanlist')
 		},
 		toproductnamedetail(productCode){
 			let data = {

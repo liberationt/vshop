@@ -130,7 +130,7 @@ export default {
 						for(var i=0;i<options.length;i++){
 							options2.push(
 								{
-									text:	options[i].label,
+									text:options[i].label,
 									value:options[i].code
 								}
 							)
@@ -139,12 +139,11 @@ export default {
 						this.pageNum++
 						this.loading = false
 						this.dataList = this.dataList.concat(data.data.dataList)
-						console.log(this.dataList.length)
 						if(data.data.dataList.length<=5){
 							this.finished = true
 						}
 					}
-			})
+				})
 			}, 500);
 		},
 	},
