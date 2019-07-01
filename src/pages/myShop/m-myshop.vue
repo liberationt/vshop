@@ -133,11 +133,19 @@ export default {
     },
     // 分享
     onShare() {
-      alert('请点击右上角去分享')
-      
+      if(this.userMessage.storeStatus == 0){
+        Dialog.confirm({
+          title: '温馨提示',
+          message: '请先完善店铺信息'
+        }).then(() => {
+          
+        })
+      } else {
+        alert('请点击右上角去分享')
+      }
     },
     wxShare(inviterCode) {
-      alert(window.location.href)
+      // alert(window.location.href)
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
         url: window.location.href
       }).then(data => {
