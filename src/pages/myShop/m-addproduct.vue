@@ -127,10 +127,10 @@ export default {
         this.$toast('申请条件最多500个字')
         return false;
       }
-      if(this.shopValue.limitMax < this.shopValue.limitMin){
-        this.$toast('最小额度不能大于最大额度')
-        return false;
-      }
+      // if(this.shopValue.limitMax < this.shopValue.limitMin){
+      //   this.$toast('最小额度不能大于最大额度')
+      //   return false;
+      // }
       if (this.isAdd == "is") {
         // 添加
         dataList = Object.assign(this.shopValue, {
@@ -147,8 +147,10 @@ export default {
         });
         apiKey = "wisdom.vshop.proprietaryProduct.h5UpdateByCode";
       }
+      this.flag = false
       this.request(apiKey, dataList)
         .then(data => {
+          this.flag = true
           this.$router.push({ path: "./mselfsupport" });
         })
         .catch(err => {
