@@ -76,9 +76,7 @@ export default {
 					if(data.code=='success'){
 						statistics.click("tap", "loanlist","getnumber");
 						if(data.data.state==0){
-							utils.setCookie('ProductCode',productCode)
-							utils.setCookie('InviterCode',this.inviterCode)
-							this.$router.push('/productnamedetail')
+							this.$router.push('/productnamedetail?productCode='+productCode+'&'+'inviterCode='+this.inviterCode)
 						}
 						if(data.data.state==1){
 							this.$router.push('/undershelf?inviterCode='+this.$route.query.inviterCode)
@@ -114,7 +112,11 @@ export default {
 		//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
 		onLoad() {
 			// let that = this
+			
 			setTimeout(() => {
+				if(this.$route.query.productDetailType){
+					this.value1=this.$route.query.productDetailType
+				}
 				let data = {
 				storeCode:utils.getCookie('storeCode'),
 				productDetailType:this.value1,
@@ -168,7 +170,7 @@ export default {
 			}
 		}
 		.dropdown{
-			width:100px;
+			width:50px;
 		}
 		.listdata{
 			margin:15px;

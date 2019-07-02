@@ -80,9 +80,7 @@ export default {
 		},
 		tostiflingborrow(productCode){
 				statistics.click("tap", "utilities","getnumber");
-				utils.setCookie('ProductCode',productCode)
-				utils.setCookie('InviterCode',this.inviterCode)
-				this.$router.push('/stiflingborrow')
+				this.$router.push('/stiflingborrow?inviterCode='+this.inviterCode+'&'+'productCode='+productCode)
 		},
 		closeTost(){
 			Dialog.confirm({

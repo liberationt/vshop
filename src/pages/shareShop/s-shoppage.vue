@@ -42,7 +42,7 @@
 					<div>
 						<h4>实用小工具</h4>
 						<p>查征信 查网贷黑名单</p>
-						<p>在线实时查询%</p>
+						<p>在线实时查询</p>
 					</div>
 				</div>
 			</div>
@@ -168,7 +168,7 @@ export default {
 					index = this.searchOptionBeanList[i].order-1
 				}
 			}
-			this.$router.push('/relatedproducts?index='+index)
+			this.$router.push('/relatedproducts?disbaled='+encodeURI('信用卡')+'&index='+index)
 		},
 		tool(){
 			statistics.click('tap','shappage','tool')

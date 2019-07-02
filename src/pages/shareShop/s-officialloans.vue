@@ -1,7 +1,7 @@
 <template>
 	<div class="officamain">
 		<div class='tochiose'>
-			<div class="netloan" @click="tonetloan" v-for="(item,i) in bannerProductResList" :key="i">
+			<div class="netloan" @click="tonetloan(item.bannerCode)" v-for="(item,i) in bannerProductResList" :key="i">
 				<img :src=item.bannerUrl alt="">
 			</div>
 		</div>
@@ -9,14 +9,14 @@
 			<p>申请多个产品，可大幅提高贷款成功率</p>
 			<div @click="another"><img src="./images/shuaxin.png" alt="">换一批</div>
 		</div>
-		<div class="listdata" v-for="(item,i) in productResList" :key="i">
+		<div class="listdata" v-for="(item,i) in productResList" :key="i"  @click="toproductnamedetail(item.productCode)">
 			<div class="listdatatop">
 				<div>
 					<div><img :src=item.productLogo alt=""></div>
 				</div>
 				<div>
 					<h4>{{item.productName}}</h4>
-					<p>{{item.subTitle}}</p>
+					<p>{{item.desc}}</p>
 				</div>
 			</div>
 			<div class="listdatabot">
@@ -28,7 +28,7 @@
 					<p>期限：<span>{{item.limit}}个月</span></p>
 					<p>最快当天到账</p>
 				</div>
-				<div class="apply" @click="toproductnamedetail(item.productCode)">立即申请</div>
+				<div class="apply">立即申请</div>
 			</div>
 		</div>
 		<div class="viewall" v-if="productResList.length>1" @click="viewall">查看全部</div>
@@ -49,8 +49,8 @@ export default {
 		todolist(){
 		},
 		//网贷
-		tonetloan(){
-			this.$router.push('/loanlist')
+		tonetloan(bannerCode){
+			this.$router.push('/loanlist?productDetailType='+bannerCode)
 		},
 		//申请
 		toproductnamedetail(productCode){
@@ -63,9 +63,7 @@ export default {
 				if(data.code=='success'){
 					statistics.click("tap", "officialloans","todetailsnum");
 					if(data.data.state==0){
-						utils.setCookie('ProductCode',productCode)
-						utils.setCookie('InviterCode',this.inviterCode)
-						this.$router.push('/productnamedetail')
+						this.$router.push('/productnamedetail?inviterCode='+this.inviterCode+'&'+'productCode='+productCode)
 					}
 					if(data.data.state==1){
 						this.$router.push('/undershelf?inviterCode='+this.inviterCode)
@@ -88,7 +86,6 @@ export default {
 				if(data.code=='success'){
 					this.productResList = data.data.productResList
 					this.bannerProductResList = data.data.bannerProductResList
-					this.inviterCode = data.data.inviterCode
 				}
 			}).catch(err=>{
 				console.log(err)

@@ -87,7 +87,6 @@ export default {
     methods:{
 		onAddrConfirm(item){
 			this.adNameSecond = item[1].name
-			utils.setCookie('adNameSecond',this.adNameSecond)
 			this.flag = false
 		},
 		displar(){
@@ -172,6 +171,7 @@ export default {
 			this.request('wisdom.vshop.vshopUserSelect.saveBaseInfo',data)
 			.then(data=>{
 				if(data.code=='success'){
+					utils.setCookie('adNameSecond',this.adNameSecond)
 					statistics.click("tap", "essentialinformation","getnumbers");
 					this.$router.push('/workinformation')
 				}

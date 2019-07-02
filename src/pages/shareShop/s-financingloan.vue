@@ -96,6 +96,7 @@ export default {
 	 .financlist{
 		 display: flex;
 		 height:90px;
+		 margin-bottom:10px;
 		 align-items: center;
 		 background: #ffffff;
 		 padding-left:15px;
@@ -104,8 +105,11 @@ export default {
 		 .financlistbanner{
 			 width:60px;
 			 height:60px;
-			 background: red;
 			 margin-right: 15px;
+			 img{
+				 width:100%;
+				 height:100%;
+			 }
 		 }
 		 .financlistright{
 			 h4{

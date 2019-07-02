@@ -384,7 +384,7 @@ export default {
 						message: 'XXX平台不收取任何费用，信贷经理联系您要求放款前收取费用（例：手续费、保证金、会员费等），切勿盲信！谨防诈骗！'
 					}).then(() => {
 						statistics.click("tap", "supplementary","closegetnumber");
-						// on close
+						this.$router.push('/loanlist')
 					});
 				}
 			}).catch(err=>{
@@ -419,7 +419,6 @@ export default {
 							this.personalCreditList = arr[i].optionRes
 							this.personalCredit = arr[i].valueKey
 						}
-
 						if(arr[i].infoTitleKey=='creditStatus'){
 							this.creditStatus = arr[i].valueKey
 							let optionlist=[]
@@ -467,7 +466,7 @@ export default {
 							}
 							this.weilidaiLimit = arr[i].valueKey
 						}
-						if(arr[i].infoTitleKey=='weilidaiLimit'){
+						if(arr[i].infoTitleKey=='creditScore'){
 							this.creditScoreList = arr[i].optionRes
 							this.creditScore = arr[i].valueKey
 						}
