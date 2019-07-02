@@ -111,7 +111,7 @@ export default {
           })
         }).catch(err=>{console.log(err)})
       } else { // 立即申请
-        this.$router.push({path:'./stiflingborrow?type='+3})
+        this.$router.push({path:'./stiflingborrow?productType='+3+"&inviterCode="+ this.inviterCode})
         utils.setCookie('InviterCode',this.InviterCode)
         utils.setCookie('ProductCode',this.code)
       }
