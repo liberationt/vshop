@@ -112,7 +112,11 @@ export default {
 		//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
 		onLoad() {
 			// let that = this
+			
 			setTimeout(() => {
+				if(this.$route.query.productDetailType){
+					this.value1=this.$route.query.productDetailType
+				}
 				let data = {
 				storeCode:utils.getCookie('storeCode'),
 				productDetailType:this.value1,
@@ -166,7 +170,7 @@ export default {
 			}
 		}
 		.dropdown{
-			width:100px;
+			width:50px;
 		}
 		.listdata{
 			margin:15px;

@@ -177,7 +177,7 @@ export default {
 							message:'提交申请成功',
 							duration:800
 						})
-						this.$router.push('/')
+						this.$router.push('/relatedproducts?index='+2)
 					}else{
 						window.location.href = data.data.jumpUrl
 					}

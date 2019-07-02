@@ -1,7 +1,7 @@
 <template>
 	<div class="officamain">
 		<div class='tochiose'>
-			<div class="netloan" @click="tonetloan" v-for="(item,i) in bannerProductResList" :key="i">
+			<div class="netloan" @click="tonetloan(item.bannerCode)" v-for="(item,i) in bannerProductResList" :key="i">
 				<img :src=item.bannerUrl alt="">
 			</div>
 		</div>
@@ -49,8 +49,8 @@ export default {
 		todolist(){
 		},
 		//网贷
-		tonetloan(){
-			this.$router.push('/loanlist')
+		tonetloan(bannerCode){
+			this.$router.push('/loanlist?productDetailType='+bannerCode)
 		},
 		//申请
 		toproductnamedetail(productCode){
@@ -86,7 +86,6 @@ export default {
 				if(data.code=='success'){
 					this.productResList = data.data.productResList
 					this.bannerProductResList = data.data.bannerProductResList
-					this.inviterCode = data.data.inviterCode
 				}
 			}).catch(err=>{
 				console.log(err)
