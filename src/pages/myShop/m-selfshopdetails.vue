@@ -51,7 +51,7 @@
           <p>申请条件</p>
         </div>
         <ul class="process_text">
-          <li v-for="(item,index) in shopdetailsData.applyCondition">{{index+1+'、'+item}}</li>
+          <li>{{shopdetailsData.productDetail}}</li>
         </ul>
       </div>
     </div>
