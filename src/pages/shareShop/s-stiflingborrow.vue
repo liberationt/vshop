@@ -153,8 +153,8 @@ export default {
 				return false
 			}
 			let params={
-				inviterCode:utils.getCookie('InviterCode'),
-				productCode:utils.getCookie('ProductCode'),
+				inviterCode:this.$route.query.inviterCode,
+				productCode:this.$route.query.productCode,
 				userPhone:this.userPhone,
 				verifyCode:this.verification,
 				userName :this.userName,
