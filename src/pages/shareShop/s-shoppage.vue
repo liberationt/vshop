@@ -3,7 +3,7 @@
 		<div class="personalinfor" :style="{backgroundImage:'url('+bannerimg+')'}">
 			<header>
 				<div class="headerlift">
-					<div class="personal"> <img :src=dataList.personImg alt=""></div>
+					<div class="personal"><img :src=personImg alt=""></div>
 					<p>邀请码{{dataList.inviterCode}}</p>
 				</div>
 				<div class="headerright">
@@ -91,6 +91,7 @@ export default {
 			dataList:{},
 			tittle:'',
 			inviterCode:'',
+			personImg:require('./images/touxiangban.png'),
 			searchOptionBeanList:[],
 			bannerimg:require('./images/s-shoppageban.png')
 		}
@@ -108,6 +109,8 @@ export default {
 				if(data.code=='success'){
 					this.dataList = data.data
 					this.tittle = data.data.storeName
+					this.personImg = (data.data.personImg==""?this.personImg:data.data.personImg)
+					this.bannerimg = (data.data.backgroundImg.bannerUrl==""?this.bannerimg:data.data.backgroundImg.bannerUrl)
 					this.searchOptionBeanList = data.data.searchOptionBeanList
 					utils.setCookie('storeCode',data.data.storeCode)
 					this.$emit('toparent',this.tittle,1)
@@ -133,7 +136,12 @@ export default {
 				? document.getSelection().getRangeAt(0) // Store selection if found
 				: false; // Mark as false to know no selection existed before
 				el.select(); // Select the <textarea> content
-				document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
+				var a = document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
+				if (!a){
+					el.select();
+					el.setSelectionRange(0, el.value.length), document.execCommand('Copy');// 执行浏览器复制命令
+				}
+				// document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
 				document.body.removeChild(el); // Remove the <textarea> element
 				if (selected) { // If a selection existed before copying
 				document.getSelection().removeAllRanges(); // Unselect everything on the HTML document
@@ -245,7 +253,6 @@ export default {
 				.personal{
 					width:80px;
 					height:80px;
-					background: #000;
 					border-radius: 50%;
 					margin:0 auto;
 					overflow: hidden;
@@ -415,6 +422,10 @@ export default {
 		.dialog{
 			.dialogbanner{
 				height:166px;
+				img{
+					width:100%;
+					height:166px;
+				}
 			}
 			p{
 				text-align: center;

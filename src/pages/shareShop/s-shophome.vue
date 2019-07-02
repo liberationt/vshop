@@ -13,7 +13,7 @@
 				<van-tabbar-item name="1"><router-link to="/shoppage"><div class="footbar"><img :src='this.active==1?srcs1:nosrc1'><span>店铺首页</span></div></router-link></van-tabbar-item>
 				<van-tabbar-item name="2"><router-link to="/relatedproducts"><div class="footbar"><img :src='this.active==2?srcs2:nosrc2'><span>相关产品</span></div></router-link></van-tabbar-item>
 				<van-tabbar-item name="3"><router-link to="/utilities"><div class="footbar"><img :src='this.active==3?srcs3:nosrc3'><span>实用工具</span></div></router-link></van-tabbar-item>
-				<van-tabbar-item name="4"><router-link to="/"><div class="footbar"><img :src='this.active==4?srcs4:nosrc4'><span>我要开店</span></div></router-link></van-tabbar-item>
+				<van-tabbar-item name="4"><div class="footbar" @click='toinvit'><img :src='this.active==4?srcs4:nosrc4'><span>我要开店</span></div></van-tabbar-item>
 			</van-tabbar>
 		</footer>
     </div>
@@ -50,6 +50,9 @@ export default {
 			getdata(msg,num){
 				this.number = num
 				this.tittle = msg
+			},
+			toinvit(){
+				window.location.href='http://qdx.zanfin.com/main/#/register'
 			},
 			onClickLeft(){
 				this.$router.go(-1)

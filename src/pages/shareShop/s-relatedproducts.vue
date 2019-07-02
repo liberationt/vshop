@@ -51,7 +51,7 @@ export default {
 			isLoading:false,
 			loanlist:[],
 			disabled:'',
-			personImg:'',
+			personImg:require('./images/touxiangban.png'),
 			havemoneyImg:'',
 			showUMoney:false,
 			dayUMoney:'',
@@ -108,8 +108,10 @@ export default {
 			.then(data=>{ 
 				this.loanlist = data.data.searchOptionBeanList
 				this.inviterCode = data.data.inviterCode
-				this.personImg = data.data.personImg
-				this.havemoneyImg = data.data.bannerResList[0].bannerUrl
+				this.personImg = (data.data.personImg==""?this.personImg:data.data.personImg)
+				if(data.data.bannerResList.length){
+					this.havemoneyImg=data.data.bannerResList[0].bannerUrl
+				}
 				this.dayUMoney = data.data.dayUMoney
 				this.showUMoney = data.data.showUMoney
 				this.$emit('toparent',data.data.storeName,1)

@@ -77,12 +77,10 @@ export default {
 	methods:{
 		//跳转城市
 		tocity(){
-			// this.$router.push(`/city?id=1`)
 			this.flags = true
 		},
 		onAddrConfirm(item){
 				this.city = item[1].name
-				utils.setCookie('adNameSecond',this.city)
 				this.flags = false
 			},
 			displar(){
@@ -166,6 +164,7 @@ export default {
 			this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
 			.then(data=>{
 				if(data.code=='success'){
+					utils.setCookie('adNameSecond',this.city)
 					if(!utils.getCookie('user')){
 						let str = {
 							token:data.data.token,
