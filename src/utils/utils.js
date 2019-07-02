@@ -66,7 +66,6 @@ export function copyContent(content){
     el.select(); // Select the <textarea> content
 //     document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
     var a = document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
-    alert(a)
     if (!a){
         el.select();
         el.setSelectionRange(0, el.value.length), document.execCommand('Copy');// 执行浏览器复制命令
