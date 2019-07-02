@@ -68,30 +68,35 @@
       </van-row>
     </footer>
     <!-- 弹出层 -->
-    <van-popup v-model="showPoster" :close-on-click-overlay=false>
-      <div class="popup_img_op">
-        <img :src=showPosterList.bannerUrl alt="">
-      </div>
-      <div class="popup_center">
-        <div id="qrcode" ></div>
-        <!-- <img :src=showPosterList.productLogo alt=""> -->
-        <p>长按识别二维码马上申请</p>
-      </div>
-      <div class="popu_footer">
-        <van-row >
-          <van-col span="16">
-            <van-col class="popuf_img">
-              <img :src="showPosterList.personImg?showPosterList.personImg:'./imgs/topimg.png'" alt="">
+    <van-popup v-model="showPoster"  :close-on-click-overlay=false>
+      <div v-if="logoUrl == ''" ref="imageWrapper">
+        <div class="popup_img_op">
+          <img :src="'data:image/png;base64,'+showPosterList.bannerUrl" alt="">
+        </div>
+        <div class="popup_center">
+          <div id="qrcode" ></div>
+          <!-- <img :src=showPosterList.productLogo alt=""> -->
+          <p>长按识别二维码马上申请</p>
+        </div>
+        <div class="popu_footer">
+          <van-row >
+            <van-col span="16">
+              <van-col class="popuf_img">
+                <img :src="showPosterList.personImg?showPosterList.personImg:require('./imgs/topimg.png')" alt="">
+              </van-col>
+              <van-col class="popuf_text">
+                <p>欢迎咨询</p>
+                <p>{{showPosterList.phone}}</p>
+              </van-col>
             </van-col>
-            <van-col class="popuf_text">
-              <p>欢迎咨询</p>
-              <p>{{showPosterList.phone}}</p>
+            <van-col class="popuf_logo clearfix" span="8">
+              <img src="./imgs/logo@2x.png" alt="">
             </van-col>
-          </van-col>
-          <van-col class="popuf_logo clearfix" span="8">
-            <img src="./imgs/logo@2x.png" alt="">
-          </van-col>
-        </van-row>
+          </van-row>
+        </div>
+      </div>
+      <div  v-if="logoUrl != ''" class="haibaoIMg">
+        <img :src=logoUrl alt="">
       </div>
       <div class="popu_close" @click="showPoster = false">
         <img src="./imgs/turn_off@2x.png" alt="">
@@ -115,6 +120,7 @@
   </div>
 </template>
 <script>
+import html2canvas from 'html2canvas'
 import { qrcanvas } from 'qrcanvas';
 import { Popup, RadioGroup, Radio,} from 'vant';
 import utils from "../../utils/utils";
@@ -131,8 +137,9 @@ export default {
       productList:[],
       showPosterList:{},
       moneyShow: false,
-      radioName:"",
-      flag:true
+      radioName:"1",
+      flag:true,
+      logoUrl:""
     }
   },
   created(){
@@ -190,6 +197,10 @@ export default {
             this.showPosterList = data.data
             this.showPoster = true
             this.qrcode(data.data.url)
+            setTimeout(() => {
+              this.rrrr()
+　　　　     }, 500)
+            
             break;
           case 2:
             break;
@@ -208,6 +219,22 @@ export default {
         document.getElementById("qrcode").innerHTML = '',
         document.getElementById("qrcode").appendChild(img)
       })
+    },
+    // 生成图片
+    rrrr () {
+      html2canvas(this.$refs.imageWrapper,{
+        backgroundColor: null,    // 解决生成的图片有白边
+        // useCORS:true,
+        // allowTaint:true,
+        // width:180,
+        // height:200
+        // WINDOWWIDTH: Window.innerWidth
+        }).then((canvas) => {
+        // canvas.width=500
+          let dataURL = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url
+          this.logoUrl = dataURL
+          console.log(dataURL)
+       })
     }
   },
   mounted(){
@@ -222,7 +249,7 @@ export default {
   background-color: #f1f1fb;
   padding-bottom: 76px;
   .productdetails_header {
-    .header_img{
+    .header_img {
       img {
         width: 375px;
         height: 157px;
@@ -232,31 +259,31 @@ export default {
   .productdetails_process {
     background-color: #fff;
     margin-bottom: 8px;
-    .process{
+    .process {
       height: 40px;
       padding: 11px;
-      color: #4597FB;
-      font-size:14px;
-      border-bottom: 1px solid rgba(231,231,231,1);/*no*/
+      color: #4597fb;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(231, 231, 231, 1); /*no*/
       padding-left: 15px;
       p {
-        border-left: 5px solid #4597FB; /*no*/
+        border-left: 5px solid #4597fb; /*no*/
         padding-left: 8px;
-        border-radius:1px;
+        border-radius: 1px;
       }
     }
     .process_img {
       padding: 10px 0px 15px 15px;
       li {
         color: #333333;
-        font-size:13px;
+        font-size: 13px;
         .img_top {
           width: 26px;
           height: 28px;
           margin: 0px 13px 10px 13px;
         }
-        .img_bottom{
-          img{
+        .img_bottom {
+          img {
             width: 26px;
             height: 9px;
             margin-top: 9px;
@@ -279,30 +306,30 @@ export default {
     bottom: 0px;
     width: 375px;
     height: 65px;
-    background: url('./imgs/dibutouying.png') no-repeat;
+    background: url("./imgs/dibutouying.png") no-repeat;
     background-size: 100%;
     padding-top: 13px;
     padding-right: 5px;
-    .van_daili{
+    .van_daili {
       padding: 9px 17px 0px 18px;
       text-align: center;
-      font-size:12px;
+      font-size: 12px;
     }
     .button_userc {
       width: 240px;
     }
     button {
-      font-size:15px;
+      font-size: 15px;
       width: 120px;
       height: 44px;
       color: #fff;
-      background-color: #F3B13E;
-      border-radius:3px;
+      background-color: #f3b13e;
+      border-radius: 3px;
     }
-    .button_user{
-      background-color: #4597FB;
-      :nth-child(2){
-        font-size:11px;
+    .button_user {
+      background-color: #4597fb;
+      :nth-child(2) {
+        font-size: 11px;
       }
     }
   }
@@ -313,7 +340,7 @@ export default {
   }
   .popup_img_op {
     background-color: #fff;
-    img{
+    img {
       width: 289px;
       height: 233px;
     }
@@ -322,7 +349,7 @@ export default {
     background-color: #fff;
     text-align: center;
     padding-top: 15px;
-    font-size:12px;
+    font-size: 12px;
     color: #333333;
     #qrcode {
       margin-bottom: 10px;
@@ -337,13 +364,13 @@ export default {
       height: 48px;
     }
     .popuf_text {
-      font-size:15px;
+      font-size: 15px;
       color: #333;
       padding-left: 8px;
       line-height: 25px;
     }
     .popuf_logo {
-      img{
+      img {
         width: 38px;
         height: 38px;
         float: right;
@@ -351,7 +378,7 @@ export default {
       }
     }
   }
-  .popu_close{
+  .popu_close {
     text-align: center;
     margin-top: 34px;
     img {
