@@ -31,10 +31,11 @@
 				<span class="get_number" @click="flag && obtain()">{{countext}}</span>
         	</p>
 		</div>
-			<div class="agree">
-				<van-checkbox icon-size='15px' v-model="checked">已阅读并同意<span @click="serviceAgreement">《服务协议》</span></van-checkbox>
-			</div>
-			<div class="rightapply" @click='immediately'>立即申请贷款</div>
+		<div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
+		<div class="agree">
+			<van-checkbox icon-size='15px' v-model="checked">已阅读并同意<span @click="serviceAgreement">《服务协议》</span></van-checkbox>
+		</div>
+		<div class="rightapply" @click='immediately'>立即申请贷款</div>
 		</div>
     </div>
 </template>
@@ -115,7 +116,7 @@ export default {
 					})
 				return false
 			}
-			if(!/^1[34578]\d{9}$/.test(this.phonenumber)){
+			if(!/^1[345678]\d{9}$/.test(this.phonenumber)){
 				Toast({
 					message:'请输入正确格式手机号',
 					duration:800
@@ -138,26 +139,26 @@ export default {
 						duration:800
 					})
 				}else if (data.code == "110019") {
-            this.deleteTime();
-            this.seal_control = true;
-            utils.sealControl(data.data.captchaId, (err, ret, captchaId) => {
-              let that = this;
-              if (ret != undefined) {
-                // 风控关闭
-                that.seal_control = false;
-                //调用定时器
-                that.setTimeout();
-                // 接口入参
-                let data = {
-                  captchaId: captchaId,
-                  phone: that.userPhone,
-                  verifyCode: ret.validate
-                };
-                // console.log(params , '带风控')
-                that.obtain(data);
-              }
-            });
-            this.deleteTime();
+                   	this.deleteTime();
+           			this.seal_control = true;
+            		utils.sealControl(data.data.captchaId, (err, ret, captchaId) => {
+              			let that = this;
+						if (ret != undefined) {
+							// 风控关闭
+							that.seal_control = false;
+							//调用定时器
+							that.setTimeout();
+							// 接口入参
+							let data = {
+							captchaId: captchaId,
+							phone: that.phonenumber,
+							verifyCode: ret.validate
+							};
+							// console.log(params , '带风控')
+							that.obtain(data);
+						}
+					});
+            		this.deleteTime();
 				}else{
 					Toast({
 						message:data.message,

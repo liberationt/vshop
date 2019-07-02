@@ -1,8 +1,7 @@
 <template>
     <div class="stiflmain">
 			<header class="pddingTop">
-				<van-nav-bar
-					:title='tittle'
+				<van-nav-bar left-arrow fixed @click-left="onClickLeft" :title='tittle'
 				/>
 			</header>
 			<div class="stiflimg">
@@ -26,7 +25,7 @@
 					</p>
 					<p>
 						<span>身份证号</span>
-						<input type="text" v-model="idCard">
+						<input type="text" v-model="idCard" oninput='if(value.length>18)value=value.slice(0,18)'>
 					</p>
 					<p class="productcity" @click="tocity">
 						<span>工作城市</span>
@@ -34,10 +33,10 @@
 					</p>
 				</div>
 			</div>
+			<div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
 			<div class="comform" @click="confim">
 				确认资料
 			</div>
-			<div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
 			<div class="recommender">
 				<span><img src="" alt=""></span>
 				<span>推荐人：{{managerPhone}}</span>
@@ -76,6 +75,9 @@ export default {
 	},
 	methods:{
 		//跳转城市
+		onClickLeft(){
+			this.$router.go(-1)
+		},
 		tocity(){
 			this.flags = true
 		},
@@ -125,7 +127,7 @@ export default {
 			}
 			if(!/^[\u4e00-\u9fa5]{1,10}$/.test(this.userName)){
 				Toast({
-					message:'请输入中文姓名',
+					message:'请输入正确姓名',
 					duration:800
 				})
 				return false

@@ -168,7 +168,7 @@ export default {
 					index = this.searchOptionBeanList[i].order-1
 				}
 			}
-			this.$router.push('/relatedproducts?index='+index)
+			this.$router.push('/relatedproducts?disbaled='+encodeURI('信用卡')+'&index='+index)
 		},
 		tool(){
 			statistics.click('tap','shappage','tool')
