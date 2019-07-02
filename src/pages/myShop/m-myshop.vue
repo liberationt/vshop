@@ -51,21 +51,21 @@
         </van-col>
       </van-row>
       <div class="navbar"></div>
-      <van-row class="center_product">
+      <van-row class="center_product" @click.native = "centerzidai('magentproduct')">
         <van-col>
           <img src="./imgs/dailichanpin.png" alt="">
         </van-col>
         <van-col class="center_zidai">
-          <router-link to="magentproduct">
+          <!-- <router-link to="magentproduct"> -->
             <p class="zidai_blod">代理产品</p>
             <p>多种贷超和信贷工具等你领佣金</p>
             <p class="center_agentproduct">免费代理</p>
-          </router-link>
+          <!-- </router-link> -->
         </van-col>
       </van-row>
       <div class="navbar"></div>
-      <van-row class="center_product">
-        <router-link to="mselfsupport">
+      <van-row class="center_product"  @click.native = "centerzidai('mselfsupport')">
+        <!-- <router-link to="mselfsupport"> -->
           <van-col>
             <img src="./imgs/ziyingchanpin.png" alt="">
           </van-col>
@@ -73,7 +73,7 @@
             <p class="zidai_blod">自营产品</p>
             <p>自定义添加个人或公司的信贷产品</p>
           </van-col>
-        </router-link>
+        <!-- </router-link> -->
       </van-row>
       <div class="navbar"></div>
     </div>
@@ -134,18 +134,29 @@ export default {
     // 分享
     onShare() {
       if(this.userMessage.storeStatus == 0){
-        Dialog.confirm({
+        this.tanchuang()
+      } else {
+        alert('请点击右上角去分享')
+        this.wxShare(this.inviterCode);
+      }
+    },
+    centerzidai(name) {
+      if(this.userMessage.storeStatus == 0){
+        this.tanchuang()
+      } else {
+        this.$router.push({ path: "/"+name });
+      }
+    },
+    tanchuang(){
+      Dialog.confirm({
           title: '温馨提示',
           message: '请先完善店铺信息'
         }).then(() => {
           
         })
-      } else {
-        alert('请点击右上角去分享')
-      }
     },
     wxShare(inviterCode) {
-      // alert(window.location.href)
+      console.log(window.location.href)
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
         url: window.location.href
       }).then(data => {
@@ -184,7 +195,6 @@ export default {
     this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
     .then(data => {
       this.inviterCode = data.data.inviterCode
-      this.wxShare(data.data.inviterCode);
     })
     .catch(err => {
       console.log(err);

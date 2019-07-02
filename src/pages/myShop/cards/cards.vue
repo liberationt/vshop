@@ -10,7 +10,7 @@
             <van-col>
               <p class="product_title">{{item.productName}}</p>
               <p class="product_people">申请人数: <span>{{item.applyNum}}</span></p>
-              <p class="product_people">批卡率: <span>{{item.batchRate}}</span>
+              <p class="product_people" >批卡率: <span>{{item.batchRate}}</span>
                 <van-progress
                   color="#F3B13E"
                   :percentage='item.batchRateIcon? item.batchRateIcon : 0'
