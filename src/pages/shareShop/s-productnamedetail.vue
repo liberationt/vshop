@@ -7,8 +7,9 @@
 					@click-left="onClickLeft"
 				/>
 			</header>
-      <div class="productbannerimg">
+      		<div class="productbannerimg">
 				<img :src=dataobject.productLogo alt="">
+				<p>{{tittle}}</p>
 			</div>
 			<!-- 信息 -->
 			<div class="productinfor">
@@ -113,10 +114,19 @@ export default {
 	background: #f1f1fb
 }
     .productbannerimg{
+			padding-top:10px;
 			height:126px;
+			background: #ffffff;
+			text-align: center;
 			img{
-				width:100%;
-				height:100%;
+				width:72px;
+				height:72px;
+			}
+			p{
+				font-size:10px;
+				color:#E7493B;
+				font-weight: bold;
+				margin-top: 10px;
 			}
 		}
 		.productinfor{
