@@ -40,7 +40,7 @@ export default {
 			showUMoney:false,
 			inviterCode:'',
 			dataList:[],
-			personImg:'',
+			personImg:require('./images/touxiangban.png'),
 			name:'',
 			adNameSecond:'',
 			havemoneyImg:'',
@@ -66,7 +66,7 @@ export default {
 					if(data.code=='success'){
 						this.dataList = data.data.productResList
 						this.inviterCode = data.data.inviterCode
-						this.personImg=data.data.personImg
+						this.personImg=(data.data.personImg==""?this.personImg:data.data.personImg)
 						this.name = data.data.name
 						this.adNameSecond = data.data.adNameSecond
 						this.havemoneyImg = data.data.bannerResList[0].bannerUrl

@@ -58,7 +58,8 @@ export default {
 			toproductnamedetail(productCode){
 				let data = {
 					inviterCode:this.inviterCode,
-					productCode:productCode
+					productCode:productCode,
+					productType:3
 				}
 				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
