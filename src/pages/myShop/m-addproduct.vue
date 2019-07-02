@@ -154,6 +154,7 @@ export default {
           this.$router.push({ path: "./mselfsupport" });
         })
         .catch(err => {
+          this.flag = true
           console.log(err);
         });
     },
