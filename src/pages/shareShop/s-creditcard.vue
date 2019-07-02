@@ -34,9 +34,7 @@ export default {
 					if(data.code=='success'){
 						statistics.click("tap", "creditcard","getnumbers");
 						if(data.data.state==0){
-							utils.setCookie('ProductCode',productCode)
-							utils.setCookie('InviterCode',this.inviterCode)
-							this.$router.push('/stiflingborrow')
+							this.$router.push('/stiflingborrow?inviterCode='+this.inviterCode+'&'+'productCode='+productCode)
 						}
 						if(data.data.state==1){
 							this.$router.push('/undershelf?inviterCode='+this.inviterCode)

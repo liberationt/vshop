@@ -279,8 +279,11 @@ export default {
     },
 		getdata(){
 			let data = {
-				inviterCode:utils.getCookie('InviterCode'),
-				productCode:utils.getCookie('ProductCode')
+				inviterCode:this.$route.query.inviterCode,
+				productCode:this.$route.query.productCode
+			}
+			if(this.$route.query.productType){
+				data.productType = this.$route.query.productType
 			}
 			this.request('wisdom.vshop.product.h5BeforeJumpDetail',data)
 			.then(data=>{

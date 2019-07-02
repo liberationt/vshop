@@ -56,7 +56,8 @@ export default {
 				city:'',
 				dataobject:{},
 				inviterCode:'',
-				tittle:''
+				tittle:'',
+				productCode:''
 			}
 		},
 		methods:{
@@ -70,26 +71,26 @@ export default {
 			apply(){
 				let data = {
 					productType:0,
-					inviterCode:utils.getCookie('InviterCode'),
-					productCode:utils.getCookie('ProductCode')
+					inviterCode:this.$route.query.inviterCode,
+					productCode:this.productCode
 				}	
 				this.request('wisdom.vshop.product.h5BeforeJumpDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
-						this.$router.push('/stiflingborrow')
+						this.$router.push('/stiflingborrow?inviterCode='+this.$route.query.inviterCode+'&'+'productCode='+this.productCode)
 					}
 				})
 			},
 			//猜你喜欢
 			todetails(productCode){
-				utils.setCookie('ProductCode',productCode)
-				utils.setCookie('InviterCode',this.inviterCode)
-				this.reload()
+				this.productCode = productCode
+				this.getdatas()
+				// this.reload()
 			},
 			getdatas(){
 				let data = {
-					inviterCode:utils.getCookie('InviterCode'),
-					productCode:utils.getCookie('ProductCode')
+					inviterCode:this.$route.query.inviterCode,
+					productCode:this.productCode
 				}
 				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
@@ -102,6 +103,7 @@ export default {
 			}
 		},
 		mounted(){
+			this.productCode=this.$route.query.productCode
 			this.getdatas()
 		}
 }
