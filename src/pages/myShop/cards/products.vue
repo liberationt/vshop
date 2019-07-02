@@ -71,7 +71,7 @@ export default {
       showStatus:"",
       showStatus:"",
       productCode:"",
-      agentStatus:0
+      agentStatus:1,//我要代理
     };
   },
   methods: {
@@ -114,7 +114,7 @@ export default {
     // 确认代理
     confirm(){
       let agentStatusData = []
-      if(this.agentStatus == 0){ // 不是一键代理
+      if(this.agentStatus == 0){ // 我要代理
         agentStatusData = [{productCode:this.productCode,productType:0}]
       } else {
         this.productList0.forEach(v=>{
@@ -127,7 +127,7 @@ export default {
         Toast.success('代理成功');
         this.moneyShow =  false
         this.Initialization(0)
-      }).catch(err=>{console.log(err)})
+      }).catch(err=>{this.moneyShow =  false})
     },
     onRefresh() {
       setTimeout(() => {
