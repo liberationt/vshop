@@ -159,7 +159,7 @@ export default {
 				verifyCode:this.verification,
 				userName :this.userName,
 				idCard:this.idCard,
-				adNameSecond:utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):''
+				adNameSecond:this.city
 			}
 			this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
 			.then(data=>{
@@ -262,10 +262,10 @@ export default {
         this.timer = setInterval(() => {
 	        if(this.count > 0 && this.count <= TIME_COUNT) {
 	          this.count--;
-						this.content = this.count+' s后获取';
+				this.content = this.count+' s后获取';
 	        } else {
-						this.content = '获取验证码';
-						this.flag = true;
+				this.content = '获取验证码';
+				this.flag = true;
 		        clearInterval(this.timer);
 		        this.timer = null;
 	         }
@@ -273,10 +273,10 @@ export default {
        }
 		},
 		//清楚定时器
-    deleteTime() {
-      clearInterval(this.timer);
-      this.timer = null;
-    },
+		deleteTime() {
+		clearInterval(this.timer);
+		this.timer = null;
+		},
 		getdata(){
 			let data = {
 				inviterCode:this.$route.query.inviterCode,
@@ -312,7 +312,7 @@ export default {
 			this.city = e
 		},data=>{
 			if(utils.getCookie('adNameSecond')){
-				this.city = utils.getCookie('adNameSecond')
+				this.city = utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):this.city 
 			}
 		})
 	}
