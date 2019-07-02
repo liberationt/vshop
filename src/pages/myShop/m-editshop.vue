@@ -17,8 +17,8 @@
         </van-row>
         <van-row class="center_list">
           <van-col span="12" style="text-align:left">微店招牌</van-col>
-          <van-col span="12" class="center_arrow" style="text-align:right">
-            <router-link to="mshopsign">{{shopValue.storeLogoName? '修改店铺招牌' : '请选择'}} <img src='./imgs/biajidianpu.png' class="biajidianpu" alt=""></router-link>
+          <van-col span="12" class="center_arrow" @click.native="Firma" style="text-align:right">
+            {{imgData.bannerName? '修改店铺招牌' : '请选择'}} <img src='./imgs/biajidianpu.png' class="biajidianpu" alt="">
           </van-col>
         </van-row>
         <van-row class="center_list">
@@ -37,7 +37,7 @@
           <van-col span="12" style="text-align:left" class="center_geren">微信二维码</van-col>
           <van-col span="12">
             <van-uploader :after-read="onRead" class="right">
-              <img :src="weixinImg ===''? wxImgurl : weixinImg" class="right" alt="">
+              <img :src="!weixinImg? wxImgurl : weixinImg" class="right" alt="">
             </van-uploader>
           </van-col>
         </van-row>
@@ -71,7 +71,7 @@ export default {
       wxImgurl: require("./imgs/erwei ma@2x.png"),
       topImgUrl: require("./imgs/topimgf.png"),
       userMessage: utils.getCookie('userMeaasge'),
-      imgData:utils.getlocal('bannerData'),
+      imgData:{},
       weixinImg:'',
       flag:true,
     }
@@ -80,11 +80,19 @@ export default {
     onGomyshop(){
       this.$router.push({path:'./myshop'})
     },
+    // 招牌
+    Firma(){
+      utils.putlocal('shopValue',this.shopValue)
+      this.isCheck()
+      this.$router.push({path:'/mshopsign'})
+    },
     onRead(file) {
       if(file){
         this.upload(file.file).then((data)=>{
           this.wxImgurl = data.url
           this.weixinImg = data.url
+          utils.putlocal('weixinImg',data.url)
+          utils.putlocal('shopValue',this.shopValue)
           this.isCheck()// 校验
         }).catch(err=>{})
       }
@@ -112,21 +120,24 @@ export default {
           storeLogoCode : this.imgData.bannerCode
         }
       )
-      console.log()
       this.request('wisdom.vshop.vshopStoreManager.updateStoreByManager',parameter).then(data=>{
         this.flag = true
         this.$router.push({path:'./myshop'})
+        localStorage.removeItem("shopValue")
+        localStorage.removeItem("weixinImg")
+        localStorage.removeItem("bannerData")
       }).catch(err=>{console.log(err)})
 
     },
     // 数据初始化
     Initialization(){
       this.request('wisdom.vshop.vshopStoreManager.getVshopStore',{}).then(data=>{
-        this.shopValue = data.data
-        this.weixinImg = data.data.weixinImg
-        if(this.$route.query.id != 1){
-          utils.putlocal('bannerData',data.data.storeBannerRes)
-        }
+        // this.weixinImg = data.data.weixinImg
+        utils.putlocal('shopValue',data.data)
+        utils.putlocal('weixinImg',data.data.weixinImg)
+        // this.shopValue = data.data
+        utils.putlocal('bannerData',data.data.storeBannerRes)
+        this.fuzhi()
         this.isCheck()
       }).catch(err=>{console.log(err)})
     },
@@ -135,18 +146,26 @@ export default {
       this.isCheck()
     },
     isCheck(){
-      if(!this.imgData || this.shopValue.storeName == "" || this.shopValue.weixinNumber == "" ||this.weixinImg == "" || this.shopValue.storeDesc == ""){
+      if(!this.imgData || this.shopValue.storeName == "" || this.shopValue.weixinNumber == "" || !this.weixinImg || !this.shopValue.storeDesc){
         this.flag = false
       } else {
         this.flag = true
       }
       console.log(this.flag,this.weixinImg,'====')
+    },
+    fuzhi(){
+      this.shopValue = !utils.getlocal('shopValue') ? {} : utils.getlocal('shopValue')
+      this.weixinImg = !utils.getlocal('weixinImg') ? "" : utils.getlocal('weixinImg')
+      this.imgData = !utils.getlocal('bannerData') ? {} : utils.getlocal('bannerData')
     }
   },
   mounted(){
-    this.Initialization()
-    
-    console.log(this.weixinImg)
+    this.fuzhi()
+    console.log('imgData',this.imgData)
+    if(this.$route.query.id != 1){
+      this.Initialization()
+    }
+    this.isCheck()
   }
 }
 </script>
