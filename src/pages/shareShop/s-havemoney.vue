@@ -202,7 +202,7 @@ export default {
 					})
 				return false
 			}
-			if(!/^1[34578]\d{9}$/.test(this.phonenumber)){
+			if(!/^1[345678]\d{9}$/.test(this.phonenumber)){
 				Toast({
 					message:'请输入正确格式手机号',
 					duration:800
