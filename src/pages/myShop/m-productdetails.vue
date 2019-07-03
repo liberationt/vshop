@@ -163,7 +163,7 @@ export default {
           url = window.location.origin+'/myshop'
         }
       } else {
-        url = window.location.origin+window.location.pathname
+        url = window.location.href
       }
       console.log(window.location.origin+window.location.pathname)
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
