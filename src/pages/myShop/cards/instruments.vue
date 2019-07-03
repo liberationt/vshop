@@ -1,5 +1,5 @@
 <template>
-  <div :class="productList2.length<=4? 'height product_common': 'product_common'" > 
+  <div :class="productList2.length<3? 'height product_common': 'product_common'" > 
     <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
       <div v-for="item in productList2" class="product_center" @click="makeMoney(item.agentStatus,item.productCode)">
         <van-row class="clearfix">
