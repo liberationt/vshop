@@ -91,7 +91,9 @@ export default {
     },
     // 跳转到详情
     goDetails(code,num) {
-      this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num+"&type="+0 });
+      this.request("wisdom.vshop.product.queryH5ProductMarketDetail",{productCode:code}).then(data=>{
+        this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num+"&type="+0 });
+      }).catch(err=>{console.log(err)})
     },
     Initialization(num,i) {
       this.request("wisdom.vshop.product.queryH5AgentProducts", {
