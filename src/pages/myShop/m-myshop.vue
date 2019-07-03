@@ -109,7 +109,6 @@ export default {
       inviterCode:""
     };
   },
-  inject:['reload'],
   methods: {
     //返回登录页
     onGologo() {
@@ -157,16 +156,16 @@ export default {
         })
     },
     wxShare(inviterCode) {
-      let url=  window.location.href
-      // if( !utils.isAndroid1() ){
-      //   if(this.$route.query.id ==1) {
-      //     url = window.location.origin+'/mlogin'
-      //   } else {
-      //     url = window.location.origin+'/myshop'
-      //   }
-      // } else {
-      //   url = window.location.href
-      // }
+      let url
+      if( !utils.isAndroid1() ){
+        if(this.$route.query.id ==1) {
+          url = window.location.origin+'/mlogin'
+        } else {
+          url = window.location.origin+'/myshop'
+        }
+      } else {
+        url = window.location.href
+      }
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
         url: url
       }).then(data => {
@@ -204,7 +203,6 @@ export default {
       .catch(err => {
         console.log(err);
       });
-    this.reload()
   }
 };
 </script>
