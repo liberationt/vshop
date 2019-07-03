@@ -172,7 +172,7 @@ export default {
       this.operationType(1)
     },
     operationType(code){
-      this.request("wisdom.vshop.product.createProductPoster",{productCode:code,operationType:1,url:window.location.href}).then(data=>{
+      this.request("wisdom.vshop.product.createProductPoster",{productCode:code,operationType:1,url:window.location.origin+'/stiflingborrow'}).then(data=>{
         this.showPosterList = data.data
         this.showPoster = true
         setTimeout(() => {

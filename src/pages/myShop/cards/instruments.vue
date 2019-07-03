@@ -128,7 +128,6 @@ export default {
           this.moneyShow = true;
           this.agentStatus = 6
           this.productCode = code
-          this.rrr()
           break;
       }
     },
@@ -138,10 +137,13 @@ export default {
       // this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num+"&type="+1 });
     },
     operationType(code){
-      this.request("wisdom.vshop.product.createProductPoster",{productCode:code,operationType:1,url:window.location.href}).then(data=>{
+      this.request("wisdom.vshop.product.createProductPoster",{productCode:code,operationType:1,url:window.location.origin+'/stiflingborrow'}).then(data=>{
         this.showPosterList = data.data
         this.showPoster = true
         this.qrcode(data.data.url)
+        setTimeout(() => {
+              this.rrrr()
+　　　　     }, 500)
       }).catch(err=>{this.showPoster = false})
     },
     // 确认代理
