@@ -145,7 +145,7 @@ export default {
           .then(data => {
             utils.setCookie("user", JSON.stringify(data.data));
             this.flag = true
-            this.$router.push({ path: "./myshop" });
+            this.$router.push({ path: "./myshop?id="+'1' });
           })
           .catch(err => {
             this.flag = true
@@ -159,7 +159,7 @@ export default {
           .then(data => {
             utils.setCookie("user", JSON.stringify(data.data));
             this.flag = true  
-            this.$router.push({ path: "./myshop" });
+            this.$router.push({ path: "./myshop?id="+'1' });
           })
           .catch(err => {
             this.flag = true
