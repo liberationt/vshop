@@ -197,20 +197,20 @@ export default {
     this.request("wisdom.vshop.vshopStoreManager.getVshopStoreDetail", {})
       .then(data => {
         this.userMessage = data.data;
+        this.inviterCode = data.data.inviterCode
         utils.setCookie("userMessage", JSON.stringify(data.data));
       })
       .catch(err => {
         console.log(err);
       });
-    // utils.
     // 获取邀请码
-    this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
-    .then(data => {
-      this.inviterCode = data.data.inviterCode
-    })
-    .catch(err => {
-      console.log(err);
-    });
+    // this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
+    // .then(data => {
+    //   this.inviterCode = data.data.inviterCode
+    // })
+    // .catch(err => {
+    //   console.log(err);
+    // });
   }
 };
 </script>

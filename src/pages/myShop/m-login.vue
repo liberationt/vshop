@@ -146,6 +146,7 @@ export default {
             utils.setCookie("user", JSON.stringify(data.data));
             this.flag = true
             this.$router.push({ path: "./myshop?id="+'1' });
+            utils.putlocal('mlogoid','1' ) //判断从哪个页面进入
           })
           .catch(err => {
             this.flag = true
@@ -160,6 +161,7 @@ export default {
             utils.setCookie("user", JSON.stringify(data.data));
             this.flag = true  
             this.$router.push({ path: "./myshop?id="+'1' });
+            utils.putlocal('mlogoid','1' ) //判断从哪个页面进入
           })
           .catch(err => {
             this.flag = true
