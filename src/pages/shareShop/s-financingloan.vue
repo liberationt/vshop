@@ -34,12 +34,12 @@ export default {
 		},
 		methods:{
 			//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
-			onLoad() {
-				setTimeout(() => {
-						this.loading = false
-						this.finished = true
-				}, 1);
-			},
+			// onLoad() {
+			// 	setTimeout(() => {
+			// 			this.loading = false
+			// 			this.finished = true
+			// 	}, 1);
+			// },
 			getdatas(){
 				let data = {
 					storeCode:utils.getCookie('storeCode'),
