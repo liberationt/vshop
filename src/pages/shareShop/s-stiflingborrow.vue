@@ -154,7 +154,7 @@ export default {
 				})
 				return false
 			}
-			let ={
+			let params={
 				inviterCode:this.$route.query.inviterCode,
 				productCode:this.$route.query.productCode,
 				useparamsrPhone:this.userPhone,
