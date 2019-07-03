@@ -221,7 +221,7 @@ export default {
 				return false;
 			}
 			let data={
-				inviterCode:utils.getCookie('inviterCode'),
+				inviterCode:this.$route.query.inviterCode,
 				captchaCode:this.verification,
 				phone:this.phonenumber
 			}
@@ -243,6 +243,7 @@ export default {
 		}
 	},
 	mounted(){
+		window.scrollTo(0,0);
 		if(utils.getCookie('user')){
 			this.isshow = false
 		}else{

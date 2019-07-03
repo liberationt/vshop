@@ -63,7 +63,7 @@ export default {
 			this.disabled = v
 		},
 		tohavemoney(){
-			this.$router.push('/havemoney')
+			this.$router.push('/havemoney?inviterCode='+this.inviterCode)
 		},
 		closeTost(){
 			statistics.click("tap", "relatedproducts","getnumber");

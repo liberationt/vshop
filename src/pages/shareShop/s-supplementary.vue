@@ -583,6 +583,7 @@ export default {
 		}
     },
     mounted(){
+		window.scrollTo(0,0);
 		this.getdatainfor()
 		statistics.page("supplementary", "getnumbers");
 

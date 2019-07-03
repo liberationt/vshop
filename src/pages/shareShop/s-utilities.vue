@@ -52,6 +52,7 @@ export default {
 		onRefresh(){
 			setTimeout(() => {
 				// 加载状态结束
+				this.getdatas()
 				this.isLoading = false;
 			}, 500);
 		},
@@ -76,7 +77,7 @@ export default {
 				})
 			},
 		tohavemoney(){
-			this.$router.push('/havemoney')
+			this.$router.push('/havemoney?inviterCode='+this.inviterCode)
 		},
 		tostiflingborrow(productCode){
 				statistics.click("tap", "utilities","getnumber");
