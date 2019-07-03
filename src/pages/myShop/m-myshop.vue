@@ -109,6 +109,7 @@ export default {
       inviterCode:""
     };
   },
+  inject:['reload'],
   methods: {
     //返回登录页
     onGologo() {
@@ -156,16 +157,16 @@ export default {
         })
     },
     wxShare(inviterCode) {
-      let url
-      if( !utils.isAndroid1() ){
-        if(this.$route.query.id ==1) {
-          url = window.location.origin+'/mlogin'
-        } else {
-          url = window.location.origin+'/myshop'
-        }
-      } else {
-        url = window.location.href
-      }
+      let url=  window.location.href
+      // if( !utils.isAndroid1() ){
+      //   if(this.$route.query.id ==1) {
+      //     url = window.location.origin+'/mlogin'
+      //   } else {
+      //     url = window.location.origin+'/myshop'
+      //   }
+      // } else {
+      //   url = window.location.href
+      // }
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
         url: url
       }).then(data => {
@@ -186,11 +187,11 @@ export default {
                 }
               });
             })
-　　　　   }, 500)
-        })
-        .catch(err => {
-          console.log(err);
-        });
+　　　　  }, 500)
+      })
+      .catch(err => {
+        console.log(err);
+      });
     }
   },
   created() {
@@ -203,14 +204,7 @@ export default {
       .catch(err => {
         console.log(err);
       });
-    // 获取邀请码
-    // this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
-    // .then(data => {
-    //   this.inviterCode = data.data.inviterCode
-    // })
-    // .catch(err => {
-    //   console.log(err);
-    // });
+    this.reload()
   }
 };
 </script>
