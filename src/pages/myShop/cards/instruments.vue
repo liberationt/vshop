@@ -110,7 +110,7 @@ export default {
       productCode:"",
       loading:false,
       finished:false,
-      agentStatus:"",
+      agentStatus:1,
       showPoster:false,
       showPosterList:{},
       logoUrl:""

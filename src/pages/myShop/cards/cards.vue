@@ -122,7 +122,7 @@ export default {
       showStatus: "",
       loading: false,
       finished: false,
-      agentStatus: "",
+      agentStatus: 1,
       showPoster: false,
       showPosterList: {},
       logoUrl: ""
