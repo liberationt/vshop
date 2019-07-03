@@ -152,11 +152,32 @@ export default {
       // this.showPoster = true
       this.operationType(1)
     },
+    // 分享授权
+    wxShare() {
+      let url
+      if( !utils.isAndroid1() ){
+        if(utils.getlocal('id') ==1) {
+          url = window.location.origin+'/mlogin'
+        } else {
+          url = window.location.origin+'/myshop'
+        }
+      } else {
+        url = window.location.href
+      }
+      this.request("wisdom.vshop.wechatOpen.getJsconf", {
+        url: url
+      }).then(data => {
+        utils.wxShare(data.data)
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    },
+    // 推荐用户
     recommenduser(){
+      this.wxShare()
+      alert("请点击右上角分享")
       this.request('wisdom.vshop.product.createProductPoster',{url: window.location.origin+'/productnamedetail',operationType:2,productCode:this.$route.query.code}).then(data=>{
-        let dataList = data.data
-        utils.wxShare(dataList.wechatJsConfRes)
-        console.log(dataList.wechatJsConfRes)
         wx.ready(function(){
             wx.updateAppMessageShareData({
               title: dataList.shareTitle, // 分享标题
