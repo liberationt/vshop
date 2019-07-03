@@ -1,7 +1,7 @@
 <template>
   <div :class="productList2.length<=4? 'height product_common': 'product_common'" > 
     <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
-      <div v-for="item in productList2" class="product_center" @click="goDetails(item.productCode,item.agentStatus)">
+      <div v-for="item in productList2" class="product_center" @click="makeMoney(item.agentStatus,item.productCode)">
         <van-row class="clearfix">
           <div>
             <div class="left">
@@ -17,7 +17,7 @@
               <span>{{item.rebate}}</span>
               <span>{{item.settle}}</span>
             </p>
-            <button class="buttonleft right" :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
+            <button class="buttonleft right" :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'">{{item.agentStatusName}}</button>
           </div>
         </van-row>  
        
