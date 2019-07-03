@@ -59,7 +59,7 @@
         </p>
       </div>
     </van-popup>
-    <footer v-if="showStatus == 1" class="footer_button" @click="moneyShow = true">
+    <footer v-if="showStatus == 1" class="footer_button" @click="moneyShow = true,agentStatus=1">
       <button>一键代理推广赚工资</button>
     </footer>
     <!-- 弹出层 -->
@@ -122,7 +122,7 @@ export default {
       showStatus: "",
       loading: false,
       finished: false,
-      agentStatus: "",
+      agentStatus: 1,
       showPoster: false,
       showPosterList: {},
       logoUrl: ""
