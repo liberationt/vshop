@@ -4,7 +4,7 @@
 				<van-nav-bar left-arrow fixed @click-left="onClickLeft" :title='tittle'
 				/>
 			</header>
-			<div class="stiflimg">
+			<div class="stiflimg" v-if='$route.query.productType!=3'>
 				<img :src=bannerUrl alt="">
 			</div>
 			<div class="applyinfor">
@@ -38,7 +38,7 @@
 				确认资料
 			</div>
 			<div class="recommender">
-				<span><img src="" alt=""></span>
+				<span><img src="./images/animos.png" alt=""></span>
 				<span>推荐人：{{managerPhone}}</span>
 			</div>
 			<div v-show="flags" class="citystyle">
@@ -157,11 +157,14 @@ export default {
 			let params={
 				inviterCode:this.$route.query.inviterCode,
 				productCode:this.$route.query.productCode,
-				userPhone:this.userPhone,
+				useparamsrPhone:this.userPhone,
 				verifyCode:this.verification,
 				userName :this.userName,
 				idCard:this.idCard,
 				adNameSecond:this.city
+			}
+			if(this.$route.query.productType){
+				params.productType = this.$route.query.productType
 			}
 			this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
 			.then(data=>{
@@ -179,7 +182,7 @@ export default {
 							message:'提交申请成功',
 							duration:800
 						})
-						this.$router.push('/relatedproducts?index='+2)
+						this.$router.push('/relatedproducts?index='+2+'&desabled='+'自营')
 					}else{
 						window.location.href = data.data.jumpUrl
 					}
@@ -323,7 +326,8 @@ export default {
 <style lang="less">
 	.stiflmain{
 		background: #f1f1fb;
-		height:100%;
+		// height:100%;
+		padding-bottom:25px;
 	}
 	.stiflimg{
 		height:157px;
@@ -353,7 +357,6 @@ export default {
 				height:48px;
 				font-size:14px;
 				color:#333333;
-				// background: #000;
 				line-height: 48px;
 				border-bottom:1px solid #E7E7E7;
 				span{
@@ -369,12 +372,15 @@ export default {
 					color:#999999
 				}
 			}
+			:last-of-type{
+				border:none;
+			}
 		}
 	}
 	.comform{
 		height:50px;
 		background: #4597FB;
-		margin:30px 15px 80px;
+		margin:30px 15px 60px;
 		border-radius: 25px;
 		text-align: center;
 		line-height: 50px;
@@ -384,7 +390,7 @@ export default {
 	.recommender{
 		margin:0 97px;
 		height:35px;
-		background: #E7F7FD;
+		// background: #E7F7FD;
 		border-radius:0px  18px   18px  0px;
 		line-height:35px;
 		color:#4597FB;
