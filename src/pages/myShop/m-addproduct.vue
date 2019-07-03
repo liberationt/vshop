@@ -127,7 +127,7 @@ export default {
         this.$toast('申请条件最多500个字')
         return false;
       }
-      if(number(this.shopValue.limitMax) < number(this.shopValue.limitMin)){
+      if(Number(this.shopValue.limitMax) < Number(this.shopValue.limitMin)){
         this.$toast('最小额度不能大于最大额度')
         return false;
       }
