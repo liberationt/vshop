@@ -186,11 +186,11 @@ export default {
                 }
               });
             })
-　　　　   }, 500)
-        })
-        .catch(err => {
-          console.log(err);
-        });
+　　　　  }, 500)
+      })
+      .catch(err => {
+        console.log(err);
+      });
     }
   },
   created() {
@@ -203,14 +203,6 @@ export default {
       .catch(err => {
         console.log(err);
       });
-    // 获取邀请码
-    // this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
-    // .then(data => {
-    //   this.inviterCode = data.data.inviterCode
-    // })
-    // .catch(err => {
-    //   console.log(err);
-    // });
   }
 };
 </script>
