@@ -31,6 +31,12 @@ export default new Router({
       tittle:'登陆页面',
       component: () => import( './pages/myShop/m-login.vue')
     },
+    {
+      path: '/mlogin',
+      name: 'mlogin',
+      tittle:'登陆页面',
+      component: () => import( './pages/myShop/m-login.vue')
+    },
     //shareShop 路由
     {
       path: '/shopHome',

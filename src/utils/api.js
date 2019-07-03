@@ -28,8 +28,7 @@ export function request(apiKey, data = {}, isShowError = true) {
         resolve && resolve(response)
       } else if (response.code == '300013' || response.code == '300011' || response.code == '300013') {
         console.log('response=====> ' + JSON.stringify(response))
-        Toast(response.code)
-        window.location.href = window.location.origin+'/#/'
+        window.location.href = window.location.origin+'/mlogin'
       }  else {
         handleError(apiKey, response, reject, isShowError)
       }
