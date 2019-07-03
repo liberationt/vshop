@@ -29,7 +29,7 @@ export function request(apiKey, data = {}, isShowError = true) {
       } else if (response.code == '404') {
         console.log('response=====> ' + JSON.stringify(response))
         window.location.href = window.location.origin+'/errors'
-      } else if (response.code == '300013' || response.code == '300011' || response.code == '300013') {
+      } else if (response.code == '300013' || response.code == '300011') {
         console.log('response=====> ' + JSON.stringify(response))
         window.location.href = window.location.origin+'/mlogin'
       }  else {
@@ -170,4 +170,5 @@ export default {
     Vue.prototype.request = request,
       Vue.prototype.upload = upload
   },
+  request
 }

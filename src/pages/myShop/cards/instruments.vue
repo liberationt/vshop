@@ -1,7 +1,7 @@
 <template>
-  <div :class="productList2.length<=4? 'height product_common': 'product_common'" > 
+  <div :class="productList2.length<3? 'height product_common': 'product_common'" > 
     <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
-      <div v-for="item in productList2" class="product_center" @click="goDetails(item.productCode,item.agentStatus)">
+      <div v-for="item in productList2" class="product_center" @click="makeMoney(item.agentStatus,item.productCode)">
         <van-row class="clearfix">
           <div>
             <div class="left">
@@ -17,7 +17,7 @@
               <span>{{item.rebate}}</span>
               <span>{{item.settle}}</span>
             </p>
-            <button class="buttonleft right" :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
+            <button class="buttonleft right" :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'">{{item.agentStatusName}}</button>
           </div>
         </van-row>  
        
@@ -132,9 +132,9 @@ export default {
       }
     },
     goDetails(code,num) {
-      
-      this.operationType(code)
-      // this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num+"&type="+1 });
+      this.request("wisdom.vshop.product.queryH5ProductMarketDetail",{productCode:code}).then(data=>{
+        this.operationType(code)
+      }).catch(err=>{console.log(err)})
     },
     operationType(code){
       this.request("wisdom.vshop.product.createProductPoster",{productCode:code,operationType:1,url:window.location.origin+'/stiflingborrow'}).then(data=>{
@@ -213,17 +213,11 @@ export default {
     rrrr () {
       html2canvas(this.$refs.imageWrapper,{
         backgroundColor: null,    // 解决生成的图片有白边
-        // useCORS:true,
-        // allowTaint:true,
-        // width:180,
-        // height:200
-        // WINDOWWIDTH: Window.innerWidth
         }).then((canvas) => {
-        // canvas.width=500
           let dataURL = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream"); // 获取生成的图片的url
           this.logoUrl = dataURL
           console.log(dataURL)
-       })
+        })
     }
   },
   created(){

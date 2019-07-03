@@ -1,7 +1,7 @@
 <template>
-  <div :class="productList1.length<=3? 'height productCard_common': 'productCard_common'"> 
+  <div :class="productList1.length<3? 'height productCard_common': 'productCard_common'"> 
     <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
-      <div class="productCard_center" v-for="item in productList1" @click="goDetails(item.productCode,item.agentStatus)">
+      <div class="productCard_center" v-for="item in productList1" @click="makeMoney(item.agentStatus,item.productCode)">
         <div>
           <van-row>
             <van-col>
@@ -28,7 +28,7 @@
               </p>
             </van-col>
             <van-col :class="item.agentStatus == 0 ?'buttonBlue right van-col_right':'buttonyellow right van-col_right'">
-              <span @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</span>
+              <span>{{item.agentStatusName}}</span>
             </van-col>  
           </van-row>
         </div>
@@ -100,9 +100,9 @@
   </div>
 </template>
 <script>
-import { qrcanvas } from 'qrcanvas';
-import html2canvas from 'html2canvas'
-import { Popup, RadioGroup,  Radio, Progress, Toast, List  } from "vant";
+import { qrcanvas } from "qrcanvas";
+import html2canvas from "html2canvas";
+import { Popup, RadioGroup, Radio, Progress, Toast, List } from "vant";
 export default {
   components: {
     [Popup.name]: Popup,
@@ -115,137 +115,170 @@ export default {
     return {
       moneyShow: false,
       radioName: "1",
-      productList1:[],
-      isLoading:false,
-      showStatus:"",
-      productCode:"",
-      showStatus:"",
-      loading:false,
-      finished:false,
-      agentStatus:"",
+      productList1: [],
+      isLoading: false,
+      showStatus: "",
+      productCode: "",
+      showStatus: "",
+      loading: false,
+      finished: false,
+      agentStatus: "",
       showPoster: false,
-      showPosterList:{},
+      showPosterList: {},
       logoUrl: ""
     };
   },
   methods: {
     // 马上赚钱
-    makeMoney(num,code) {
+    makeMoney(num, code) {
       // 0 我要代理 1 马上赚钱
-      console.log(num)
-      switch(num){
+      console.log(num);
+      switch (num) {
         case 1:
-          this.goDetails(code,num)
+          this.goDetails(code, num);
           break;
         case 0:
-          this.moneyShow = true
-          this.productCode = code
-          this.agentStatus = 0
+          this.moneyShow = true;
+          this.productCode = code;
+          this.agentStatus = 0;
           break;
       }
     },
     // 跳转到详情
-    goDetails(code,num) {
-      this.operationType(code)
+    goDetails(code, num) {
+      this.request("wisdom.vshop.product.queryH5ProductMarketDetail", {
+        productCode: code
+      })
+        .then(data => {
+          this.operationType(code);
+        })
+        .catch(err => {
+          console.log(err);
+        });
       // this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num+"&type="+1 });
     },
     // 确认代理
-    confirm(){
-      let agentStatusData = []
-      if(this.agentStatus == 0){
-        agentStatusData = [{productCode:this.productCode,productType:1}]
+    confirm() {
+      let agentStatusData = [];
+      if (this.agentStatus == 0) {
+        agentStatusData = [{ productCode: this.productCode, productType: 1 }];
       } else {
-        this.productList1.forEach(v=>{
-          if(v.agentStatus == 0 ){
-            agentStatusData.push({productCode:v.productCode,productType:1})
+        this.productList1.forEach(v => {
+          if (v.agentStatus == 0) {
+            agentStatusData.push({
+              productCode: v.productCode,
+              productType: 1
+            });
           }
-        })
+        });
       }
-      this.request('wisdom.vshop.product.batchAgentProducts',{queryH5UserProductDetailReqList:agentStatusData}).then(data=>{
-        Toast.success('代理成功');
-        this.moneyShow =  false
-        this.Initialization(1)
-      }).catch(err=>{console.log(err)})
-    },
-    productposter(){
-      // this.showPoster = true
-      this.operationType(1)
-    },
-    operationType(code){
-      this.request("wisdom.vshop.product.createProductPoster",{productCode:code,operationType:1,url:window.location.origin+'/stiflingborrow'}).then(data=>{
-        this.showPosterList = data.data
-        this.showPoster = true
-        setTimeout(() => {
-          this.rrrr()
-　　　　    }, 500)
-        this.qrcode(data.data.url)
-      }).catch(err=>{
-        this.showPoster = false
+      this.request("wisdom.vshop.product.batchAgentProducts", {
+        queryH5UserProductDetailReqList: agentStatusData
       })
+        .then(data => {
+          Toast.success("代理成功");
+          this.moneyShow = false;
+          this.Initialization(1);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    productposter() {
+      // this.showPoster = true
+      this.operationType(1);
+    },
+    operationType(code) {
+      this.request("wisdom.vshop.product.createProductPoster", {
+        productCode: code,
+        operationType: 1,
+        url: window.location.origin + "/stiflingborrow"
+      })
+        .then(data => {
+          this.showPosterList = data.data;
+          this.showPoster = true;
+          setTimeout(() => {
+            this.rrrr();
+          }, 500);
+          this.qrcode(data.data.url);
+        })
+        .catch(err => {
+          this.showPoster = false;
+        });
     },
     onRefresh() {
       setTimeout(() => {
         // this.$toast('刷新成功');
         this.Initialization(1);
-        Toast.success('刷新成功');
+        Toast.success("刷新成功");
         this.count++;
         this.isLoading = false;
       }, 500);
     },
-    onLoad(){
-       // 异步更新数据
+    onLoad() {
+      // 异步更新数据
       setTimeout(() => {
         for (let i = 0; i < this.total; i++) {
-          this.Initialization(2,i)
+          this.Initialization(2, i);
         }
         // 加载状态结束
         this.loading = false;
         // 数据全部加载完成
-        if (this.productList1.length <=10) {
+        if (this.productList1.length <= 10) {
           this.finished = true;
         }
       }, 500);
     },
-    Initialization(num,i){
-      this.request("wisdom.vshop.product.queryH5AgentProducts",{productType:num,pageNum:i,pageSize:10}).then(data=>{
-        if(num==1){
-          this.showStatus = data.data.showStatus
-          this.productList1 = data.data.dataList
-          this.total = data.total
-        }
-      }).catch(err=>{console.log(err)})
-    },
-    qrcode(url){
-       this.$nextTick(()=>{
-        var canvas = qrcanvas({
-          data:url,
-          size:100,
-          colorDark:'red'
-        })
-        var img = document.createElement( 'img' );
-        img.src = canvas.toDataURL( 'image/png', 1 );  //1表示质量(无损压缩)
-        document.getElementById("qrcode").innerHTML = '',
-        document.getElementById("qrcode").appendChild(img)
+    Initialization(num, i) {
+      this.request("wisdom.vshop.product.queryH5AgentProducts", {
+        productType: num,
+        pageNum: i,
+        pageSize: 10
       })
+        .then(data => {
+          if (num == 1) {
+            this.showStatus = data.data.showStatus;
+            this.productList1 = data.data.dataList;
+            this.total = data.total;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    rrrr () {
-      html2canvas(this.$refs.imageWrapper,{
-        backgroundColor: null,    // 解决生成的图片有白边
+    qrcode(url) {
+      this.$nextTick(() => {
+        var canvas = qrcanvas({
+          data: url,
+          size: 100,
+          colorDark: "red"
+        });
+        var img = document.createElement("img");
+        img.src = canvas.toDataURL("image/png", 1); //1表示质量(无损压缩)
+        (document.getElementById("qrcode").innerHTML = ""),
+          document.getElementById("qrcode").appendChild(img);
+      });
+    },
+    rrrr() {
+      html2canvas(this.$refs.imageWrapper, {
+        backgroundColor: null // 解决生成的图片有白边
         // useCORS:true,
         // allowTaint:true,
         // width:180,
         // height:200
         // WINDOWWIDTH: Window.innerWidth
-        }).then((canvas) => {
+      }).then(canvas => {
         // canvas.width=500
-          let dataURL = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream"); // 获取生成的图片的url
-          this.logoUrl = dataURL
-          console.log(dataURL)
-       })
+        let dataURL = canvas
+          .toDataURL("image/jpeg")
+          .replace("image/jpeg", "image/octet-stream"); // 获取生成的图片的url
+        this.logoUrl = dataURL;
+        console.log(dataURL);
+      });
     }
   },
-  mounted(){
-    this.Initialization(1)
+  mounted() {
+    this.Initialization(1);
   }
 };
 </script>
@@ -258,7 +291,7 @@ export default {
   }
   .popup_img_op {
     background-color: #fff;
-    img{
+    img {
       width: 289px;
       height: 233px;
     }
@@ -267,7 +300,7 @@ export default {
     background-color: #fff;
     text-align: center;
     padding-top: 15px;
-    font-size:12px;
+    font-size: 12px;
     color: #333333;
     #qrcode {
       margin-bottom: 10px;
@@ -282,13 +315,13 @@ export default {
       height: 48px;
     }
     .popuf_text {
-      font-size:15px;
+      font-size: 15px;
       color: #333;
       padding-left: 8px;
       line-height: 25px;
     }
     .popuf_logo {
-      img{
+      img {
         width: 38px;
         height: 38px;
         float: right;
@@ -296,7 +329,7 @@ export default {
       }
     }
   }
-  .popu_close{
+  .popu_close {
     text-align: center;
     margin-top: 34px;
     img {
@@ -305,33 +338,34 @@ export default {
     }
   }
   .product_label {
-      color: #fe951e;
-      font-size: 11px;
-      line-height: 18px;
-      margin-top: 6px;
-      span {
-        background-color: #fef1e3;
-        padding: 6px 8px;
-        border-radius: 2px;
-        margin-right: 5px;
-      }
+    color: #fe951e;
+    font-size: 11px;
+    line-height: 18px;
+    margin-top: 6px;
+    span {
+      background-color: #fef1e3;
+      padding: 6px 8px;
+      border-radius: 2px;
+      margin-right: 5px;
     }
-    .van-col_right{
-      height: 29px;
-      width: 70px;
-      border-radius: 15px;
-      height: 29px;
-      line-height: 29px;
-      font-size: 12px;
-      font-weight: bold;
-      text-align: center;
-      color: rgba(255, 255, 255, 1);
-    }
+  }
+  .van-col_right {
+    height: 29px;
+    width: 70px;
+    border-radius: 15px;
+    height: 29px;
+    line-height: 29px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    color: rgba(255, 255, 255, 1);
+  }
   .productCard_center {
-      background-color: #fff;
-      width: 345px;
-      border-radius: 5px;
-      padding: 22px 11px 22px 15px;
+    overflow: hidden;
+    background-color: #fff;
+    width: 345px;
+    border-radius: 5px;
+    padding: 22px 11px 22px 15px;
     .van-row {
       img {
         width: 110px;
@@ -366,7 +400,7 @@ export default {
         background-color: #f3b13e;
       }
     }
-    .productCard_footer{
+    .productCard_footer {
       margin-top: 5px;
     }
     margin-bottom: 10px;
