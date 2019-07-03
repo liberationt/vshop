@@ -182,7 +182,7 @@ export default {
 							message:'提交申请成功',
 							duration:800
 						})
-						this.$router.push('/relatedproducts?index='+2+'&desabled='+'自营')
+						this.$router.push('/relatedproducts?index='+2+'&disabled='+'自营')
 					}else{
 						window.location.href = data.data.jumpUrl
 					}
