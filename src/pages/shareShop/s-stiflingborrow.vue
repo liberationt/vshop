@@ -157,7 +157,7 @@ export default {
 			let params={
 				inviterCode:this.$route.query.inviterCode,
 				productCode:this.$route.query.productCode,
-				useparamsrPhone:this.userPhone,
+				userPhone:this.userPhone,
 				verifyCode:this.verification,
 				userName :this.userName,
 				idCard:this.idCard,
