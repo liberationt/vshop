@@ -19,8 +19,8 @@
 			</div>
 			<div>
 				<officialloans v-show="disabled=='贷款'"></officialloans>
-				<creditcard  v-show="disabled=='信用卡'"></creditcard>
-				<financingloan  v-show="disabled=='自营'"></financingloan>
+				<creditcard ref="getcred" v-show="disabled=='信用卡'"></creditcard>
+				<financingloan ref='getfin'  v-show="disabled=='自营'"></financingloan>
 			</div>
 		</div>
 		
@@ -93,7 +93,13 @@ export default {
 		},
 			// 下拉刷新
 		onRefresh(){
+			// var that = this
 			setTimeout(() => {
+				if(this.disabled=='信用卡'){
+					this.$refs.getcred.getdatas()
+				}else{
+					this.$refs.getfin.getdatas()
+				}
 				this.isLoading = false; //关闭下拉刷新效果
 			}, 500);
 		},
@@ -114,7 +120,7 @@ export default {
 				}
 				this.dayUMoney = data.data.dayUMoney
 				this.showUMoney = data.data.showUMoney
-				this.$emit('toparent',data.data.storeName,1)
+				this.$emit('toparent',data.data.storeName,1,data.data.storeCode)
 				if(this.$route.query.disbaled){
 					this.disabled=decodeURI(this.$route.query.disbaled)
 				}else{
@@ -124,6 +130,7 @@ export default {
 		}
 	},
 	created(){
+		window.scrollTo(0,0);
 		if(utils.getCookie('user')){
 			this.isshow = true
 		}else{

@@ -15,7 +15,7 @@
 			finished-text="没有更多了"
 			@load="onLoad"
 		>	
-			<div class="listdata" @click="toproductnamedetail" v-for="(item,i) in dataList" :key="i">
+			<div class="listdata" @click="toproductnamedetail(item.productCode)" v-for="(item,i) in dataList" :key="i">
 				<div class="listdatatop">
 					<div>
 						<div><img :src=item.productLogo alt=""></div>
@@ -34,7 +34,7 @@
 						<p>期限：<span>{{item.limit}}个月</span></p>
 						<p>最快当天到账</p>
 					</div>
-					<div class="apply" @click="apply(item.productCode)">立即申请</div>
+					<div class="apply">立即申请</div>
 				</div>
 			</div>
 		</van-list>
@@ -66,9 +66,9 @@ export default {
 		}
 	},
 	methods:{
-		apply(productCode){
+		toproductnamedetail(productCode){
 			let data = {
-					inviterCode:this.$route.query.inviterCode,
+					inviterCode:this.inviterCode,
 					productCode:productCode
 				}
 				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
@@ -79,7 +79,7 @@ export default {
 							this.$router.push('/productnamedetail?productCode='+productCode+'&'+'inviterCode='+this.inviterCode)
 						}
 						if(data.data.state==1){
-							this.$router.push('/undershelf?inviterCode='+this.$route.query.inviterCode)
+							this.$router.push('/undershelf?inviterCode='+this.inviterCode)
 						}
 					}
 				}).catch(err=>{
@@ -99,9 +99,6 @@ export default {
 						this.dataList = data.data.dataList
 					}
 			})
-		},
-		toproductnamedetail(){
-			this.$router.push('/productnamedetail')
 		},
 		// 下拉刷新
 		onRefresh(){
@@ -128,6 +125,7 @@ export default {
 				.then(data=>{ 
 					if(data.code=='success'){
 						let options = data.data.productDetailTypeBean
+						this.inviterCode = data.data.inviterCode
 						let options2=[]
 						for(var i=0;i<options.length;i++){
 							options2.push(
@@ -150,6 +148,7 @@ export default {
 		},
 	},
 	mounted(){
+		window.scrollTo(0,0);
 		statistics.page("loanlist", "shppagenum");
 	}
 }

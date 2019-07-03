@@ -107,6 +107,7 @@ export default {
 		}
 	},
 	mounted(){
+		window.scrollTo(0,0);
 		if(utils.getCookie('user')){
 			this.isshow = true
 		}else{

@@ -185,16 +185,14 @@ export default {
 							duration:800
 						})
 						this.$router.push('/relatedproducts?disbaled='+encodeURI('自营')+'&'+'index='+2)
+					}else if(data.data.state==1){
+						this.$router.push('/undershelf?inviterCode='+this.$route.query.inviterCode)
 					}else{
 						window.location.href = data.data.jumpUrl
 					}
 					
 				}else{
 					this.confims = true
-					Toast({
-						message:data.message,
-						duration:800
-					})
 				}
 			}).catch(err=>{
 				this.confims = true
@@ -297,18 +295,24 @@ export default {
 			this.request('wisdom.vshop.product.h5BeforeJumpDetail',data)
 			.then(data=>{
 				if(data.code=='success'){
-					this.userPhone=data.data.userPhone
-					this.userName = data.data.userName
-					this.idCard = data.data.idCard
-					this.managerPhone = data.data.managerPhone
-					this.bannerUrl = data.data.bannerUrl
-					this.tittle = data.data.productName
-					this.city = data.data.adNameSecond
+					if(data.data.state==0){
+						this.userPhone=data.data.userPhone
+						this.userName = data.data.userName
+						this.idCard = data.data.idCard
+						this.managerPhone = data.data.managerPhone
+						this.bannerUrl = data.data.bannerUrl
+						this.tittle = data.data.productName
+						this.city = data.data.adNameSecond
+					}else{
+						this.$router.push('/undershelf?inviterCode='+data.data.inviterCode)
+					}
+					
 				}
 			})
 		}
 	},
 	mounted(){
+		window.scrollTo(0,0);
 		if(utils.getCookie('user')){
 			this.isshow = false
 			this.disableds = true
