@@ -156,8 +156,9 @@ export default {
         })
     },
     wxShare(inviterCode) {
+      let id = this.$router.query.id
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
-        url: window.location.origin+'/myshop'
+        url: id == 1 ? window.location.origin+'/mlogin' : window.location.origin+'/myshop'
       }).then(data => {
           utils.wxShare(data.data)
           setTimeout(() => {
