@@ -211,7 +211,7 @@ export default {
        this.$nextTick(()=>{
         var canvas = qrcanvas({
           data:url,
-          size:65,
+          size:100,
           colorDark:'red'
         })
         var img = document.createElement( 'img' );
@@ -231,7 +231,7 @@ export default {
         // WINDOWWIDTH: Window.innerWidth
         }).then((canvas) => {
         // canvas.width=500
-          let dataURL = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"); // 获取生成的图片的url
+          let dataURL = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream"); // 获取生成的图片的url
           this.logoUrl = dataURL
           console.log(dataURL)
        })

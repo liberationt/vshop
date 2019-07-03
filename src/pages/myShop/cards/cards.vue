@@ -10,7 +10,7 @@
             <van-col>
               <p class="product_title">{{item.productName}}</p>
               <p class="product_people">申请人数: <span>{{item.applyNum}}</span></p>
-              <p class="product_people">批卡率: <span>{{item.batchRate}}</span>
+              <p class="product_people" >批卡率: <span>{{item.batchRate}}</span>
                 <van-progress
                   color="#F3B13E"
                   :percentage='item.batchRateIcon? item.batchRateIcon : 0'
@@ -64,29 +64,34 @@
     </footer>
     <!-- 弹出层 -->
     <van-popup v-model="showPoster" :close-on-click-overlay=false>
-      <div class="popup_img_op">
-        <img :src=showPosterList.bannerUrl alt="">
-      </div>
-      <div class="popup_center">
-        <div id="qrcode" ></div>
-        <!-- <img :src=showPosterList.productLogo alt=""> -->
-        <p>长按识别二维码马上申请</p>
-      </div>
-      <div class="popu_footer">
-        <van-row >
-          <van-col span="16">
-            <van-col class="popuf_img">
-              <img :src="showPosterList.personImg?showPosterList.personImg:'./imgs/topimg.png'" alt="">
+      <div v-if="logoUrl == ''" ref="imageWrapper">
+        <div class="popup_img_op">
+          <img :src="'data:image/png;base64,'+showPosterList.bannerUrl" alt="">
+        </div>
+        <div class="popup_center">
+          <div id="qrcode" ></div>
+          <!-- <img :src=showPosterList.productLogo alt=""> -->
+          <p>长按识别二维码马上申请</p>
+        </div>
+        <div class="popu_footer">
+          <van-row >
+            <van-col span="16">
+              <van-col class="popuf_img">
+                <img :src="showPosterList.personImg?showPosterList.personImg : require('../imgs/topimg.png')" alt="">
+              </van-col>
+              <van-col class="popuf_text">
+                <p>欢迎咨询</p>
+                <p>{{showPosterList.phone}}</p>
+              </van-col>
             </van-col>
-            <van-col class="popuf_text">
-              <p>欢迎咨询</p>
-              <p>{{showPosterList.phone}}</p>
+            <van-col class="popuf_logo clearfix" span="8">
+              <img src="../imgs/logo@2x.png" alt="">
             </van-col>
-          </van-col>
-          <van-col class="popuf_logo clearfix" span="8">
-            <img src="../imgs/logo@2x.png" alt="">
-          </van-col>
-        </van-row>
+          </van-row>
+        </div>
+      </div>
+      <div  v-if="logoUrl != ''" class="haibaoIMg">
+        <img :src=logoUrl alt="">
       </div>
       <div class="popu_close" @click="showPoster = false">
         <img src="../imgs/turn_off@2x.png" alt="">
@@ -96,6 +101,7 @@
 </template>
 <script>
 import { qrcanvas } from 'qrcanvas';
+import html2canvas from 'html2canvas'
 import { Popup, RadioGroup,  Radio, Progress, Toast, List  } from "vant";
 export default {
   components: {
@@ -119,6 +125,7 @@ export default {
       agentStatus:"",
       showPoster: false,
       showPosterList:{},
+      logoUrl: ""
     };
   },
   methods: {
@@ -165,9 +172,12 @@ export default {
       this.operationType(1)
     },
     operationType(code){
-      this.request("wisdom.vshop.product.createProductPoster",{productCode:code,operationType:1,url:window.location.href}).then(data=>{
+      this.request("wisdom.vshop.product.createProductPoster",{productCode:code,operationType:1,url:window.location.origin+'/stiflingborrow'}).then(data=>{
         this.showPosterList = data.data
         this.showPoster = true
+        setTimeout(() => {
+          this.rrrr()
+　　　　    }, 500)
         this.qrcode(data.data.url)
       }).catch(err=>{
         this.showPoster = false
@@ -209,7 +219,7 @@ export default {
        this.$nextTick(()=>{
         var canvas = qrcanvas({
           data:url,
-          size:65,
+          size:100,
           colorDark:'red'
         })
         var img = document.createElement( 'img' );
@@ -217,6 +227,21 @@ export default {
         document.getElementById("qrcode").innerHTML = '',
         document.getElementById("qrcode").appendChild(img)
       })
+    },
+    rrrr () {
+      html2canvas(this.$refs.imageWrapper,{
+        backgroundColor: null,    // 解决生成的图片有白边
+        // useCORS:true,
+        // allowTaint:true,
+        // width:180,
+        // height:200
+        // WINDOWWIDTH: Window.innerWidth
+        }).then((canvas) => {
+        // canvas.width=500
+          let dataURL = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream"); // 获取生成的图片的url
+          this.logoUrl = dataURL
+          console.log(dataURL)
+       })
     }
   },
   mounted(){
