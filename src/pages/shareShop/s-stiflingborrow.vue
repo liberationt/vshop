@@ -185,7 +185,8 @@ export default {
 							duration:800
 						})
 						this.$router.push('/relatedproducts?disbaled='+encodeURI('自营')+'&'+'index='+2)
-					}else if(data.data.state==1){
+					}
+					if(data.data.state==1){
 						this.$router.push('/undershelf?inviterCode='+this.$route.query.inviterCode)
 					}else{
 						window.location.href = data.data.jumpUrl
