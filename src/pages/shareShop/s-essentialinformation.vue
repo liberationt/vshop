@@ -32,7 +32,7 @@
 				<label for="">身份证:</label>
 					<input type="text" placeholder="请输入身份证号" v-model="idcard">
 				</p>
-			<p  @click="shows">
+			<p @click="shows">
 				<label for="">工作所在地:</label>
 				<input readonly="readonly"  placeholder="请选择城市" v-model="adNameSecond">
 			</p>
@@ -204,6 +204,7 @@ export default {
 
     },
     created(){
+		window.scrollTo(0,0);
 		this.getdatainfo()
 		statistics.page("essentialinformation", "getnumbers");
 
@@ -218,6 +219,7 @@ export default {
 			margin:10px 0 10px;
 			color:#33333333;
 			p{
+				color:#333333;
 				height:48px;
 				display: flex;
 				justify-content: space-between;

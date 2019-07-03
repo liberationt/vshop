@@ -83,13 +83,15 @@ export default {
 		 padding-left:15px;
 		 font-size:14px;
 		 color:#999999;
+		 margin-bottom:10px;
 		 .credlistbanner{
+			 background:red;
 			 width:100px;
 			 height:70px;
 			 margin-right: 10px;
 			 img{
-				 width:100%;
-				 height:100%;
+				 width:100px;
+				 height:70px;
 			 }
 		 }
 		 .credlistright{

@@ -34,7 +34,7 @@
 				</div>
 			</div>
 			<div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
-			<div class="comform" @click="confim()&&confims">
+			<div class="comform" @click="confims&&confim()">
 				确认资料
 			</div>
 			<div class="recommender">

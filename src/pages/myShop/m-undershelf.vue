@@ -65,7 +65,7 @@ export default {
 	},
 	methods:{
 		tohavemoney(){
-			this.$router.push('/havemoney')
+			this.$router.push('/havemoney?inviterCode='+this.inviterCode)
 		},
 		getdatalist(){
 			let data = {
@@ -131,6 +131,7 @@ export default {
 		}
 	},
 	mounted(){
+		window.scrollTo(0,0);
 		if(utils.getCookie('user')){
 			this.isshow = true
 		}else{
