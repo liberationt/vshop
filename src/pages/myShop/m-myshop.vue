@@ -156,9 +156,18 @@ export default {
         })
     },
     wxShare(inviterCode) {
-      let id = this.$route.query.id
+      let url
+      if( !utils.isAndroid1() ){
+        if(this.$route.query.id ==1) {
+          url = window.location.origin+'/mlogin'
+        } else {
+          url = window.location.origin+'/myshop'
+        }
+      } else {
+        url = window.location.href
+      }
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
-        url: id == 1 ? window.location.origin+'/mlogin' : window.location.origin+'/myshop'
+        url: url
       }).then(data => {
           utils.wxShare(data.data)
           setTimeout(() => {
@@ -193,6 +202,7 @@ export default {
       .catch(err => {
         console.log(err);
       });
+    // utils.
     // 获取邀请码
     this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
     .then(data => {
