@@ -155,6 +155,11 @@ export function ip(callback, error) {
     console.log('定位失败');
   }
 }
+
+// 判断安卓
+export function isAndroid1() {
+  return navigator.userAgent.indexOf("Android") > -1
+}
 export default {
   getCookie,
   setCookie,
@@ -165,5 +170,6 @@ export default {
   copyContent,
   sealControl,
   wxShare,
-  ip
+  ip,
+  isAndroid1
 }
