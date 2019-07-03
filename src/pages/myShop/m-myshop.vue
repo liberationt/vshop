@@ -203,7 +203,6 @@ export default {
       .catch(err => {
         console.log(err);
       });
-    // utils.
     // 获取邀请码
     // this.request("wisdom.vshop.vshopStoreManager.getShareRes", {})
     // .then(data => {
