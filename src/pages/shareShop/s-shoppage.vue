@@ -113,6 +113,7 @@ export default {
 					this.bannerimg = (data.data.backgroundImg.bannerUrl==""?this.bannerimg:data.data.backgroundImg.bannerUrl)
 					this.searchOptionBeanList = data.data.searchOptionBeanList
 					utils.setCookie('storeCode',data.data.storeCode)
+					utils.setCookie('inviterCode',data.data.inviterCode)
 					this.$emit('toparent',this.tittle,1)
 				}
 			}).catch(err=>{

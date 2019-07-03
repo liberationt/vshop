@@ -221,6 +221,7 @@ export default {
 				return false;
 			}
 			let data={
+				inviterCode:utils.getCookie('inviterCode'),
 				captchaCode:this.verification,
 				phone:this.phonenumber
 			}
