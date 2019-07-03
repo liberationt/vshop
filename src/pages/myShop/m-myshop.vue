@@ -157,7 +157,7 @@ export default {
     },
     wxShare(inviterCode) {
       let url
-      if( utils.isAndroid1() ){
+      if( !utils.isAndroid1() ){
         if(this.$route.query.id ==1) {
           url = window.location.origin+'/mlogin'
         } else {
