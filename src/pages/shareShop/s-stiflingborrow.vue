@@ -34,7 +34,7 @@
 				</div>
 			</div>
 			<div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
-			<div class="comform" @click="confim">
+			<div class="comform" @click="confim()&&confims">
 				确认资料
 			</div>
 			<div class="recommender">
@@ -65,6 +65,7 @@ export default {
 			content:'获取验证码',
 			managerPhone:'',
 			flag:true,
+			confims:true,
 			seal_control:false,
 			isshow:false,
 			disableds:false,
@@ -154,6 +155,7 @@ export default {
 				})
 				return false
 			}
+			this.confims = false
 			let params={
 				inviterCode:this.$route.query.inviterCode,
 				productCode:this.$route.query.productCode,
@@ -182,18 +184,20 @@ export default {
 							message:'提交申请成功',
 							duration:800
 						})
-						this.$router.push('/relatedproducts?index='+2+'&disabled='+'自营')
+						this.$router.push('/relatedproducts?disbaled='+encodeURI('自营')+'&'+'index='+2)
 					}else{
 						window.location.href = data.data.jumpUrl
 					}
 					
 				}else{
+					this.confims = true
 					Toast({
 						message:data.message,
 						duration:800
 					})
 				}
 			}).catch(err=>{
+				this.confims = true
 				console.log(err)
 			})
 		},
