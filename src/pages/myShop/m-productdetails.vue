@@ -163,8 +163,9 @@ export default {
           url = window.location.origin+'/myshop'
         }
       } else {
-        url = this.$router.path
+        url = window.location.origin+window.location.pathname
       }
+      console.log(window.location.origin+window.location.pathname)
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
         url: url
       }).then(data => {
