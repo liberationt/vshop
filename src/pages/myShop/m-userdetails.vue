@@ -26,7 +26,7 @@
               <span>贷款用途：<span class="message_color">{{userMessage.loanUse}}</span> </span>
             </p>
             <p class="message_center_two">
-              <span>贷款期限：<span class="message_color">{{userMessage.loanTimeLimit}}个月</span> </span>
+              <span>贷款期限：<span class="message_color">{{userMessage.loanTimeLimit}}</span> </span>
             </p>
           </li>
           <li class="message_footer clearfix">
@@ -38,7 +38,7 @@
     </div>
     <div class="muserdetails_bottom">
       <div class="muserdetails_bottom_one white">
-        <span v-for="item in userMessage.label">{{item}}</span>
+        <span v-for="item in userMessage.label">{{item.labelTitleName}}</span>
       </div>
       <div v-for="item in messgaeList" class="muserdetails_bottom_two white">
         <p class="muserdetails_one">
