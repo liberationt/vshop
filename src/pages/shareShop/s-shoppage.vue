@@ -114,7 +114,7 @@ export default {
 					this.searchOptionBeanList = data.data.searchOptionBeanList
 					utils.setCookie('storeCode',data.data.storeCode)
 					utils.setCookie('inviterCode',data.data.inviterCode)
-					this.$emit('toparent',this.tittle,1,data.data.storeCode,data.data.inviterCode)
+					this.$emit('toparent',this.tittle,1,data.data.inviterCode)
 				}
 			}).catch(err=>{
 				console.log(err)
