@@ -52,7 +52,7 @@
 				<li v-for="(item,index) in mycommission.productOrderList">
 					<div class='detailstop'>
 						<h4>{{item.userName}} &nbsp{{item.userPhone}}</h4>
-						<span>{{item.dataCreateTime}}</span>
+						<span>{{item.settleDate}}</span>
 					</div>
 					<div class="datailslist">
 						<div>

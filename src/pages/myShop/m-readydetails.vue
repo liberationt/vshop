@@ -11,7 +11,7 @@
 				<ul>
 					<li>
 						<label>流水号</label>
-						<span>{{readyList.orderNo}}</span>
+						<span>{{readyList.flowCode}}</span>
 					</li>
 					<li>
 						<label>类型</label>

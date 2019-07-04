@@ -12,7 +12,7 @@
 					<div>
 						<div v-for="item in cashdetailsList.dataList" class="details" @click="todetails(item.flowCode)">
 							<div>
-								<p>佣金结算{{item.bizDesc}}</p>
+								<p>{{item.bizDesc}}</p>
 								<p class="detailsmoney">余额：{{item.balanceAsFormat}}{{item.unit}}
 								</p>
 							</div>
