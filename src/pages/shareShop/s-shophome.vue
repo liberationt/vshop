@@ -50,10 +50,9 @@ export default {
 		},
 		methods:{
 			...mapMutations(["getactive"]),
-			getdata(msg,num,storeCode,inviterCode){
+			getdata(msg,num,inviterCode){
 				this.number = num
 				this.tittle = msg
-				this.storeCode= storeCode
 				this.inviterCode = inviterCode
 			},
 			toinvit(){
@@ -78,10 +77,7 @@ export default {
 					url = window.location.origin + "/shoppage?inviterCode="+inviterCode
 				} else {
 					url = window.location.href
-					
 				}
-				console.log(1111111111111111111111111111,url)
-				// window.location.origin + "/shoppage?storeCode="+this.storeCode
 				this.request("wisdom.vshop.wechatOpen.getJsconf", {url:url})
 				.then(data => {
 					utils.wxShare(data.data)

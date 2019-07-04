@@ -73,6 +73,7 @@ export default {
 						this.havemoneyImg = data.data.bannerResList[0].bannerUrl
 						this.realStatus = data.data.realStatus
 						this.showUMoney = data.data.showUMoney
+						this.$emit('toparent',data.data.storeName,1,data.data.inviterCode)
 					}
 				})
 			},
