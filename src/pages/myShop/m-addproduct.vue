@@ -115,12 +115,12 @@ export default {
     // 保存或编辑
     addProduct() {
       let apiKey, dataList;
-      if(!/^[\u4E00-\u9FA5]{2,20}$/.test(this.shopValue.productName)){
+      if(this.shopValue.productName.length > 21 || this.shopValue.productName.length < 2){
         this.$toast('产品名称范围2-20个字')
         return false;
       }
-      if(!/^(?:[1-4]\d{6}|[1-9]\d{0,5})$/.test(this.shopValue.limitMin) || !/^\d+$|^\d+[.]?\d+$/.test(this.shopValue.limitMax)){
-        this.$toast('最小额度或最大额度1-5000000')
+      if(Number(this.shopValue.limitMax) > 5000000 || Number(this.shopValue.limitMin) < 1){
+        this.$toast('最小最大值为1-5000000')
         return false;
       }
       if(this.shopValue.productDetail.length >500){
@@ -232,7 +232,6 @@ export default {
       let obj = this.shopValue;
       if (
         this.shopValue.productName == "" ||
-        this.productLogo == "" ||
         this.shopValue.productRate == "" ||
         this.shopValue.limitMin == "" ||
         this.shopValue.limitMax == "" ||
