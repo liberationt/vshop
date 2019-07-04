@@ -35,7 +35,7 @@
 						<p>
 							<label>验证码</label>
 							<input type="number" @input="inputC" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码" v-model="bankCardList.vCode">
-							<span v-show="show" @click="flag && getCode()">获取</span>
+							<span v-show="show" @click="getCode()">获取</span>
 				      <span v-show="!show" >{{count}} s后获取</span>	
 						</p>
 					</div>
@@ -103,6 +103,10 @@ export default {
     },
     // 获取验证码
     getCode(v) {
+      if(this.bankCardList.mobile == ""){
+        this.$toast('手机号不能为空')
+        return false;
+      }
       let params = v
         ? v
         : {
