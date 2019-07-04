@@ -62,8 +62,8 @@ export default {
 			dataList:[],
 			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
 			loading: false,//控制上拉加载的加载动画
-			pageNum:1,
-			pageSize:3,
+			pageNum:0,
+			pageSize:5,
 			inviterCode:'',
 		}
 	},
@@ -90,16 +90,16 @@ export default {
 		},
 		//下拉框
 		changelect(i){
-			this.finished = false
-			this.dataList=[]
+			this.finished = false;
+			this.dataList=[];
 			this.productDetailType = i
-			this.pageNum=1
-			let scrollconheight = document.documentElement.scrollHeight-document.documentElement.clientHeight -document.documentElement.scrollTop
-			console.log(scrollconheight,222)
+			this.pageNum=0
+			// let scrollconheight = document.documentElement.scrollHeight-document.documentElement.clientHeight -document.documentElement.scrollTop
+			// console.log(scrollconheight,222)
 			// if (scrollconheight>=300||scrollconheight==0) {
 			// 	this.onLoad()
 			// }
-			// this.onLoad()
+			this.onLoad()
 		},
 		// 下拉刷新
 		onRefresh(){
@@ -109,22 +109,28 @@ export default {
 		},
 		//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
 		onLoad() {
+			this.pageNum++;
 			console.log(this.pageNum,'num',document.documentElement.scrollHeight-document.documentElement.clientHeight -document.documentElement.scrollTop,3333333)
 			// setTimeout(() => {
-				let data = {
+				let datas = {
 					storeCode:utils.getCookie('storeCode'),
 					productDetailType:this.value1,
 					pageNum:this.pageNum,
 					pageSize:this.pageSize,
 					filter:true
-				}//没有请求多少条吗？
-				this.request('wisdom.vshop.vshopStore.queryStoreProductList',data)
+				}
+				console.log(datas,'2222222222')
+				this.request('wisdom.vshop.vshopStore.queryStoreProductList',datas)
 				.then(data=>{ 
 					console.log(data,'===')
 					if(data.code=='success'){
 						let options = data.data.productDetailTypeBean
 						this.inviterCode = data.data.inviterCode
 						let options2=[]
+						this.loading = false
+						if(data.data.dataList.length<this.pageSize){
+							this.finished = true
+						}
 						for(var i=0;i<options.length;i++){
 							options2.push(
 								{
@@ -135,14 +141,17 @@ export default {
 						}
 						this.option1= [{text:'全部',value:'-1'}]
 						this.option1 =this.option1.concat(options2) 
-						this.pageNum++
-						this.loading = false
-						this.dataList = this.dataList.concat(data.data.dataList)
+						// this.pageNum++
+						data.data.dataList.map((item)=>{
+							this.dataList.push(item)
+						})
+						// this.dataList = this.dataList.concat(data.data.dataList)
 						// console.log(this.dataList.length,111111111111,data.data.total)
 						// if(this.dataList.length==data.data.total){
 						// 	this.finished = true
 						// }
-						// if()
+						console.log(this.dataList.length,this.pageSize,'-----=====----')
+						
 					}
 				})
 			// }, 500);
@@ -154,8 +163,8 @@ export default {
 		}
 	},
 	mounted(){
-		window.scrollTo(0,0);
-		statistics.page("loanlist", "shppagenum");
+		// window.scrollTo(0,0);
+		// statistics.page("loanlist", "shppagenum");
 	}
 }
 </script>
