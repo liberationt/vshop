@@ -73,13 +73,13 @@ export default {
 				this.wxShare()
 			},
 			wxShare() {
-				// if( !utils.isAndroid1() ){
-				// 	url = window.location.origin+'/myshop'
-				// } else {
-				// 	url = window.location.href
-				// }
+				if( !utils.isAndroid1() ){
+					url = window.location.origin + "/shoppage?storeCode="+this.storeCode
+				} else {
+					url = window.location.href
+				}
 				// window.location.origin + "/shoppage?storeCode="+this.storeCode
-				this.request("wisdom.vshop.wechatOpen.getJsconf", {url:window.location.href})
+				this.request("wisdom.vshop.wechatOpen.getJsconf", {url:url})
 				.then(data => {
 					utils.wxShare(data.data)
 					wx.ready(function(){
