@@ -31,23 +31,23 @@
         </van-row>
       </router-link>
       <van-row class="center_navbar">
-        <van-col span="8">
-          <router-link to="/mshopregister">
+        <van-col span="8" @click.native="goto2">
+          <!-- <router-link to="/mshopregister"> -->
             <p class="navbar_text">{{userMessage.vshopRegister}}</p>
             <p>微店注册</p>
-          </router-link>
+          <!-- </router-link> -->
         </van-col>
-        <van-col span="8" class="navbar_center">
-          <router-link to="/mshopapply">
+        <van-col span="8" class="navbar_center" @click.native="goto1">
+          <!-- <router-link to="/mshopapply"> -->
             <p class="navbar_text">{{userMessage.vshopApply}}</p>
             <p>微店申请</p>
-          </router-link>
+          <!-- </router-link> -->
         </van-col>
-        <van-col span="8">
-          <router-link to="/mycommission">
+        <van-col span="8" @click.native="goto">
+          <!-- <router-link to=""> -->
             <p class="navbar_text">{{userMessage.commissionAmount}}</p>
             <p>我的佣金(元)</p>  
-          </router-link>
+          <!-- </router-link> -->
         </van-col>
       </van-row>
       <div class="navbar"></div>
@@ -110,6 +110,15 @@ export default {
     };
   },
   methods: {
+    goto2(){
+      this.$router.push({path:'/mshopregister'})
+    },
+    goto(){
+      this.$router.push({path:'/mycommission'})
+    },
+    goto1(){
+      this.$router.push({path:'/mshopapply'})
+    },
     //返回登录页
     onGologo() {
       this.$router.push({ path: "./" });

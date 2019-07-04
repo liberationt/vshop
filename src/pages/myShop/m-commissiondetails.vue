@@ -24,7 +24,7 @@
 								<li v-for="item in commissiondList">
 									<div class='detailstop'>
 										<h4>{{item.userName}}{{item.userPhone}}</h4>
-										<span>{{item.dataCreateTime}}</span>
+										<span>{{item.settleDate}}</span>
 									</div>
 									<div class="datailslist">
 										<div>

@@ -260,6 +260,14 @@ export default {
     },
     // 确认导出
     exportAll(){
+      let arr = []
+      this.customerList.forEach(v=>{
+        if (this.checkData.indexOf(v.userCode)>-1) {
+          arr.push(v.userPhone)
+        }
+      })
+      utils.copyContent(arr.join(','))
+      this.$toast('手机号已复制粘贴板中')
       // 复制粘贴
     },
     // 初始化数据
@@ -345,6 +353,7 @@ export default {
       this.labelTitleName2.push(Object.assign(code,{labelTitleName:name}))
     },
     singleElection(v,name){
+      
       this.labelOptionKey = v
       this.labelTitleName0 = Object.assign(v,{labelTitleName:name})
       this.labelObj.followTime = v.labelOptionKey
