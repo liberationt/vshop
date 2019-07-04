@@ -113,10 +113,11 @@ export default {
       this.wxShare()
       alert('点击右上角分享')
         this.request("wisdom.vshop.proprietaryProduct.shareProprietaryProductH5",{proprietaryProductCode: this.$route.query.code,url:window.location.origin+'/shoppage'}).then(data=>{
+          let dataList = data.data
           wx.ready(function(){
             wx.updateAppMessageShareData({
-              title: dataList.shareTitle, // 分享标题
-              desc: dataList.shareDescribe, // 分享描述
+              title: dataList.shareContent, // 分享标题
+              desc: dataList.title, // 分享描述
               link: dataList.url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
               imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/ZOfgNPVEofm6wGcqrYFDwxAhllW0k3wUom1HXIlmoeQYPf8YX0FkagGibAvcE9dlyLXIRlbicpjacA9wDDR6yU8g/132', // 分享图标
               success: function () {
