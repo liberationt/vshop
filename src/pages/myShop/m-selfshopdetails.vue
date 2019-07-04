@@ -85,21 +85,40 @@ export default {
     onGoback() {
       this.$router.push({ path: "./mselfsupport" });
     },
-    recommenduser() {
-      alert("推荐用户");
+    // 分享授权
+    wxShare() {
+      console.log(window.location)
+      let url
+      if( !utils.isAndroid1() ){
+        if(utils.getlocal('id') ==1) {
+          url = window.location.origin+'/mlogin'
+        } else {
+          url = window.location.origin+'/myshop'
+        }
+      } else {
+        url = window.location.href
+      }
+      console.log(window.location.origin+window.location.pathname)
+      this.request("wisdom.vshop.wechatOpen.getJsconf", {
+        url: url
+      }).then(data => {
+        utils.wxShare(data.data)
+      })
+      .catch(err => {
+        console.log(err);
+      });
     },
     iwantagent() {
       if(!this.inviterCode){ // 立即分享
+      this.wxShare()
       alert('点击右上角分享')
         this.request("wisdom.vshop.proprietaryProduct.shareProprietaryProductH5",{proprietaryProductCode: this.$route.query.code,url:window.location.origin+'/shoppage'}).then(data=>{
-          let dataList = data.data
-          utils.wxShare(dataList.wechatJsConfRes)
           wx.ready(function(){
             wx.updateAppMessageShareData({
               title: dataList.shareTitle, // 分享标题
               desc: dataList.shareDescribe, // 分享描述
               link: dataList.url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: dataList.bannerUrl, // 分享图标
+              imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/ZOfgNPVEofm6wGcqrYFDwxAhllW0k3wUom1HXIlmoeQYPf8YX0FkagGibAvcE9dlyLXIRlbicpjacA9wDDR6yU8g/132', // 分享图标
               success: function () {
                 // 用户点击了分享后执行的回调函数
                 alert('分享成功回调')

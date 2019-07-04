@@ -353,6 +353,7 @@ export default {
       this.labelTitleName2.push(Object.assign(code,{labelTitleName:name}))
     },
     singleElection(v,name){
+      
       this.labelOptionKey = v
       this.labelTitleName0 = Object.assign(v,{labelTitleName:name})
       this.labelObj.followTime = v.labelOptionKey
