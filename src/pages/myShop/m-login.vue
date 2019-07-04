@@ -73,7 +73,7 @@ export default {
     onLookImg() {
       if (this.look == 1) {
         this.look = 2;
-        this.typeText = "number";
+        this.typeText = "text";
       } else {
         this.look = 1;
         this.typeText = "password";
