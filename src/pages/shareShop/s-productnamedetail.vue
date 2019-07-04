@@ -66,7 +66,11 @@ export default {
 				this.$router.push('/tweetsdetails?exhibitionContentCode='+exhibitionContentCode)
 			},
 			onClickLeft(){
-				this.$router.go(-1)
+				if(this.$route.query.id){
+					this.$router.push('/shoppage?inviterCode='+this.$route.query.inviterCode)
+				}else{
+					this.$router.go(-1)
+				}
 			},
 			//立即申请
 			apply(){

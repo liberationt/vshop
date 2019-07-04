@@ -75,9 +75,12 @@ export default {
 		}
 	},
 	methods:{
-		//跳转城市
 		onClickLeft(){
-			this.$router.go(-1)
+			if(this.$route.query.id){
+				this.$router.push('/shoppage?inviterCode='+this.$route.query.inviterCode)
+			}else{
+				this.$router.go(-1)
+			}
 		},
 		tocity(){
 			this.flags = true

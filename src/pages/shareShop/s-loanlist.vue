@@ -5,10 +5,11 @@
 			<div class="invitnum">邀请码6S89WH</div>
 			<div class="dropdown">
 				<van-dropdown-menu>
-					<van-dropdown-item v-model="value1" @change="adds" :options="option1" />
+					<van-dropdown-item v-model="value1" @change="changelect" :options="option1" />
 				</van-dropdown-menu>
 			</div>
 		</div>
+	<div>
 		<van-list
 			v-model="loading"
 			:finished="finished"
@@ -38,6 +39,7 @@
 				</div>
 			</div>
 		</van-list>
+	</div>
   </div>
 	</van-pull-refresh>
 </template>
@@ -61,7 +63,7 @@ export default {
 			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
 			loading: false,//控制上拉加载的加载动画
 			pageNum:1,
-			pageSize:10,
+			pageSize:3,
 			inviterCode:'',
 		}
 	},
@@ -86,19 +88,18 @@ export default {
 					console.log(err)
 				})
 		},
-		adds(i){
-			let data = {
-				storeCode:utils.getCookie('storeCode'),
-				productDetailType:i,
-				filter:false
-			}
-			this.request('wisdom.vshop.vshopStore.queryStoreProductList',data)
-				.then(data=>{ 
-					if(data.code=='success'){
-						let options = data.data.productDetailTypeBean
-						this.dataList = data.data.dataList
-					}
-			})
+		//下拉框
+		changelect(i){
+			this.finished = false
+			this.dataList=[]
+			this.productDetailType = i
+			this.pageNum=1
+			let scrollconheight = document.documentElement.scrollHeight-document.documentElement.clientHeight -document.documentElement.scrollTop
+			console.log(scrollconheight,222)
+			// if (scrollconheight>=300||scrollconheight==0) {
+			// 	this.onLoad()
+			// }
+			// this.onLoad()
 		},
 		// 下拉刷新
 		onRefresh(){
@@ -108,21 +109,18 @@ export default {
 		},
 		//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
 		onLoad() {
-			// let that = this
-			
-			setTimeout(() => {
-				if(this.$route.query.productDetailType){
-					this.value1=this.$route.query.productDetailType
-				}
+			console.log(this.pageNum,'num',document.documentElement.scrollHeight-document.documentElement.clientHeight -document.documentElement.scrollTop,3333333)
+			// setTimeout(() => {
 				let data = {
-				storeCode:utils.getCookie('storeCode'),
-				productDetailType:this.value1,
-				pageNum:this.pageNum,
-				pageSize:this.pageSize,
-				filter:true
-			}
-			this.request('wisdom.vshop.vshopStore.queryStoreProductList',data)
+					storeCode:utils.getCookie('storeCode'),
+					productDetailType:this.value1,
+					pageNum:this.pageNum,
+					pageSize:this.pageSize,
+					filter:true
+				}//没有请求多少条吗？
+				this.request('wisdom.vshop.vshopStore.queryStoreProductList',data)
 				.then(data=>{ 
+					console.log(data,'===')
 					if(data.code=='success'){
 						let options = data.data.productDetailTypeBean
 						this.inviterCode = data.data.inviterCode
@@ -135,17 +133,25 @@ export default {
 								}
 							)
 						}
+						this.option1= [{text:'全部',value:'-1'}]
 						this.option1 =this.option1.concat(options2) 
 						this.pageNum++
 						this.loading = false
 						this.dataList = this.dataList.concat(data.data.dataList)
-						if(data.data.dataList.length<=5){
-							this.finished = true
-						}
+						// console.log(this.dataList.length,111111111111,data.data.total)
+						// if(this.dataList.length==data.data.total){
+						// 	this.finished = true
+						// }
+						// if()
 					}
 				})
-			}, 500);
+			// }, 500);
 		},
+	},
+	created(){
+		if(this.$route.query.productDetailType){
+			this.value1=this.$route.query.productDetailType
+		}
 	},
 	mounted(){
 		window.scrollTo(0,0);
