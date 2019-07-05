@@ -107,9 +107,6 @@ export default {
 		close(){
 			this.toasttittle = false
 		},
-		tocity(){
-			this.$router.push('/city?id='+2)
-		},
 		nextstep(){
 			let reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
 			if(!this.username){
@@ -187,7 +184,7 @@ export default {
 					let dataobject = data.data
 					this.username = dataobject.userName
 					this.idcard = dataobject.idCard
-					this.adNameSecond = utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):dataobject.adNameSecond
+					this.adNameSecond = dataobject.adNameSecond
 					for(var i=0;i<dataobject.pageData.length;i++){
 						if(dataobject.pageData[i].infoTitleKey=='educationBackground'){
 							this.educationList = dataobject.pageData[i].optionRes
@@ -206,6 +203,13 @@ export default {
     created(){
 		window.scrollTo(0,0);
 		this.getdatainfo()
+		utils.ip(e=>{
+			this.city = e
+		},data=>{
+			if(utils.getCookie('adNameSecond')){
+				this.city = utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):this.city 
+			}
+		})
 		statistics.page("essentialinformation", "getnumbers");
 
 	}
