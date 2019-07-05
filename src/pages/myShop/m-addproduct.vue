@@ -105,14 +105,21 @@ export default {
     },
     // 图片上传
     onReadTop(file) {
-      // utils.compress(file)
-      this.upload(file.file)
-        .then(data => {
-          this.topImgUrl = data.url;
-          this.productLogo = data.url;
-          this.ischeck()
+      let m = 4*1024*1024,
+      that = this
+      if(file.file.size > m){
+        this.$toast('图片不能大于4M')
+      } else {
+        utils.compress(file.file,function(zipFile){
+          that.upload(zipFile)
+            .then(data => {
+              that.topImgUrl = data.url;
+              that.productLogo = data.url;
+              that.ischeck()
+          })
+          .catch(err => {});
         })
-        .catch(err => {});
+      }
     },
     // 保存或编辑
     addProduct() {
