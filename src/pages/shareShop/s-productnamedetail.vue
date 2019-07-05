@@ -49,9 +49,9 @@
     </div>
 </template>
 <script>
+import { statistics } from "wisdom-h5";
 import utils from '../../utils/utils'
 export default {
-		inject:['reload'],
     data(){
 			return{
 				city:'',
@@ -82,12 +82,14 @@ export default {
 				this.request('wisdom.vshop.product.h5BeforeJumpDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
+						statistics.click("tap", "prodectnamedetail","getapplynumber");
 						this.$router.push('/stiflingborrow?inviterCode='+this.$route.query.inviterCode+'&'+'productCode='+this.productCode)
 					}
 				})
 			},
 			//猜你喜欢
 			todetails(productCode){
+				statistics.click("tap", "prodectnamedetail","getlovenumber");
 				this.productCode = productCode
 				this.getdatas()
 				// this.reload()
@@ -108,6 +110,7 @@ export default {
 			}
 		},
 		mounted(){
+			statistics.page("productnamedetail", "productgetnumber");
 			this.productCode=this.$route.query.productCode
 			this.getdatas()
 		}

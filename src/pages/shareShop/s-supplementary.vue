@@ -363,7 +363,7 @@ export default {
 				creditLimit:this.creditLimit,
 				guaranteeSlip :this.guaranteeSlip,
 				weilidaiStatus:this.weilidaiStatus,
-				weilidaiLimit :this.weilidaiLimit,
+				weilidaiLimit :this.weilidaiStatus=='have_used'?this.weilidaiLimit:'',
 				creditScore :this.creditScore,
 				ownHouseStatus:this.ownHouseStatus,
 				houseAdNameSecond:this.ownHouseStatus =='have_house'?this.houseAdNameSecond:'',
@@ -611,13 +611,14 @@ export default {
 				}
 			}
 		.dropdownstyle{
-			width:200px;
+			width:240px;
 		}
 		.dropdownstyles{
-			width:50px
+			width:240px;
+			background:red;
 		}
 		.dropdownstyless{
-			width:70px
+			width:240px
 		}
 		.citystyle{
 			position:absolute;

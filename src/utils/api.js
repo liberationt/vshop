@@ -71,7 +71,7 @@ export function upload(file = {}) {
   return new Promise((resolve, reject) => {
     return http.post('/upload', formData, config).then(response => {
       if (response.code == 'success') {
-        console.log('response=====> ' + JSON.stringify(response))
+        // console.log('response=====> ' + JSON.stringify(response))
         resolve && resolve(response.data)
       } else {
         Toast("图片过大，请处理一下");

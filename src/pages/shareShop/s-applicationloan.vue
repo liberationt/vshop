@@ -187,7 +187,7 @@ export default {
 			font-size:14px;
 			.dropdowns{
 				margin-right: 15px;
-				width:50px;
+				width:240px;
 				.van-dropdown-menu__title{
 					color:#4597FD !important;
 				}

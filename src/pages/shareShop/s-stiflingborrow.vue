@@ -47,6 +47,7 @@
     </div>
 </template>
 <script>
+import { statistics } from "wisdom-h5";
 import utils from '../../utils/utils'
 import { Toast,Area } from 'vant';
 import areaList from '../../static/area'
@@ -174,6 +175,7 @@ export default {
 			this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
 			.then(data=>{
 				if(data.code=='success'){
+					statistics.click("tap", "stiflingborrow","getconfignum");
 					utils.setCookie('adNameSecond',this.city)
 					if(!utils.getCookie('user')){
 						let str = {
@@ -228,6 +230,7 @@ export default {
 			this.request('wisdom.vshop.vshopLoanUser.sendCaptcha',data)
 			.then(data=>{
 				if(data.code=='success'){
+					statistics.click("tap", "stiflingborrow","getverifyCode");
 					Toast({
 						message:'短信发送成功',
 						duration:800
@@ -316,6 +319,7 @@ export default {
 		}
 	},
 	mounted(){
+		statistics.page("stiflingborrow", "stiflingborrowgetnum");
 		window.scrollTo(0,0);
 		if(utils.getCookie('user')){
 			this.isshow = false
