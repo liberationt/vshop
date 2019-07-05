@@ -72,6 +72,7 @@
 </template>
 <script>
 import { Uploader } from "vant";
+import utils from '../../utils/utils'
 export default {
   components: {
     [Uploader.name]: Uploader
@@ -89,8 +90,8 @@ export default {
       materialsList: [],
       materialsArr: [],
       processArr: [],
-      topImgUrl: require("./imgs/topimgf.png"),
-      productLogo: "",
+      topImgUrl: "https://wisdom-loan-user.oss-cn-shanghai.aliyuncs.com/officerexamine/%2079c7d61e-f9da-49cf-a5b5-2c4fe77bfc80.png",
+      productLogo: "https://wisdom-loan-user.oss-cn-shanghai.aliyuncs.com/officerexamine/%2079c7d61e-f9da-49cf-a5b5-2c4fe77bfc80.png",
       flag: false,
       isAdd: this.$route.query.isAdd
     };
@@ -104,6 +105,7 @@ export default {
     },
     // 图片上传
     onReadTop(file) {
+      // utils.compress(file)
       this.upload(file.file)
         .then(data => {
           this.topImgUrl = data.url;
@@ -125,6 +127,11 @@ export default {
       }
       if(this.shopValue.productDetail.length >500){
         this.$toast('申请条件最多500个字')
+        return false;
+      }
+      let reg =  /^[0-9]*$/
+      if(!reg.test(this.shopValue.limitMax) || !reg.test(this.shopValue.limitMin)){
+        this.$toast('最小额度或最大额度为数字')
         return false;
       }
       if(Number(this.shopValue.limitMax) < Number(this.shopValue.limitMin)){
