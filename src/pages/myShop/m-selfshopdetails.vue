@@ -76,6 +76,7 @@ export default {
   data() {
     return {
       inviterCode:this.$route.query.inviterCode,
+      id: this.$route.query.id,
       code:this.$route.query.code,
       shopdetailsData:{},
     };
@@ -83,7 +84,11 @@ export default {
   created() {},
   methods: {
     onGoback() {
-      this.$router.push({ path: "./mselfsupport" });
+      if(this.id == 1){
+        this.$router.push({ path: "/shoppage?inviterCode="+this.inviterCode });
+      } else {  
+        this.$router.push({ path: "./mselfsupport" });
+      }
     },
     // 分享授权
     wxShare() {
@@ -112,12 +117,12 @@ export default {
       if(!this.inviterCode){ // 立即分享
       this.wxShare()
       alert('点击右上角分享')
-        this.request("wisdom.vshop.proprietaryProduct.shareProprietaryProductH5",{proprietaryProductCode: this.$route.query.code,url:window.location.origin+'/shoppage'}).then(data=>{
+        this.request("wisdom.vshop.proprietaryProduct.shareProprietaryProductH5",{proprietaryProductCode: this.$route.query.code,url:window.location.origin+'/mselfshopdetails'}).then(data=>{
           let dataList = data.data
           wx.ready(function(){
             wx.updateAppMessageShareData({
-              title: dataList.shareContent, // 分享标题
-              desc: dataList.title, // 分享描述
+              title: dataList.title, // 分享标题
+              desc: dataList.shareContent, // 分享描述
               link: dataList.url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
               imgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/ZOfgNPVEofm6wGcqrYFDwxAhllW0k3wUom1HXIlmoeQYPf8YX0FkagGibAvcE9dlyLXIRlbicpjacA9wDDR6yU8g/132', // 分享图标
               success: function () {
