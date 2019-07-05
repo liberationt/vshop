@@ -142,11 +142,16 @@ export default {
     },
     // 确认提现
     withdrawal() {
+
       if(this.money < this.withdrawalList.singleMinAmount || this.money > this.withdrawalList.singleMaxAmount){
         this.$toast("提现金额范围为"+this.withdrawalList.singleMinAmount+"-"+this.withdrawalList.singleMaxAmount)
-      }if(this.money > this.withdrawalList.balanceAmountAsFormat){
+        return false
+      }
+      if(this.money > this.withdrawalList.balanceAmountAsFormat){
         this.$toast("提现金额不能大于可提现金额")
-      }else if (this.withdrawalList.havePayPassword == 0) {
+        return false
+      }
+      if (this.withdrawalList.havePayPassword == 0) {
         //havePayPassword 0未设置，1已设置
         this.psdshow = true;
         this.pwdNum = 0;
@@ -156,7 +161,9 @@ export default {
 				// } else {
 					this.psdshow = true;
 					this.stepNum = 2;
-					this.pwdNum = 2;
+          this.pwdNum = 2;
+          this.passwordo = ""
+          this.passwordT = ""
 				// }
       }
     },
@@ -240,20 +247,29 @@ export default {
     },
     nextStep1() {
       if (this.passwordo == "" || this.passwordo.length < 6) {
+        console.log(this.passwordo)
         Toast("交易密码有误！请重新输入");
       } else {
-        this.stepNum = 3;
+        if( this.withdrawalList.havePayPassword == 1 ){ // 设置交易密码，提现
+          this.nextStep2()
+        } else {
+          this.stepNum = 3;
+        }
+        
       }
     },
     nextStep2() {
-      if (this.passwordT == "" || this.passwordT.length < 6) {
+  
+      if (this.passwordT == "" && this.withdrawalList.havePayPassword != 1) {
+        Toast("交易密码不能为空");
+      } else if (this.passwordT.length < 6 && this.withdrawalList.havePayPassword != 1) {
         Toast("交易密码有误！请重新输入");
-      } else if (this.passwordT != this.passwordo) {
+      } else if (this.passwordT != this.passwordo && this.withdrawalList.havePayPassword != 1) {
         Toast("两次密码不一致！请重新输入");
       } else {
         if (this.pwdNum == 2) { // 设置过密码 提现
           this.flag = false;
-          this.request("wisdom.vshop.withdraw.apply", {amount : this.money , password :this.passwordT})
+          this.request("wisdom.vshop.withdraw.apply", {amount : this.money , password :this.passwordo})
             .then(data => {
 							console.log(data);
 							this.$router.push({path:'./successfulwithdrawals'})
@@ -435,7 +451,7 @@ export default {
     font-size: 17px;
     color: #999999;
     align-items: center;
-    border-bottom: 1px solid #f1f1fb;
+    border-bottom: 1px solid #f1f1fb; /*no*/
     input {
       font-size: 24px;
       color: #0c85fe;
