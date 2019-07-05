@@ -28,10 +28,10 @@
 				</p>
 				<div class="withdrawalmoney">
 					<span>￥</span>
-					<input type="text" placeholder="请输入提现金额" v-model="money">
+					<input type="text" @input="inputC" placeholder="请输入提现金额" v-model="money">
 					<span>元</span>
 				</div>
-				<div class="deduction">{{withdrawalList.promptExplain}}{{actualAmount}}元</div>
+				<div class="deduction">{{contentT}}元</div>
 			</div>
 			<div class="config" @click="flag && withdrawal()">确认提现</div>
 			<div class="txsm">
@@ -39,8 +39,8 @@
 				<p>1. 提现时会验证交易密码，<span class="setUp" @click="setUp">设置或修改交易密码</span></p>
 				<p>2. 单笔最小提现金额{{withdrawalList.singleMinAmountAsFormat}}元，单笔最大提现金额{{withdrawalList.singleMaxAmountAsFormat}}元</p>
 				<p>3. 每月提现上限{{withdrawalList.monthMaxAmountAsFormat}}元</p>
-				<p>4. 提现每笔手续费{{withdrawalList.feeAsFormat}}元，实际到账金额是提现金额减{{withdrawalList.feeAsFormat}}元</p>
-				<p>5. 提交提现申请后，通常1~3个工作日内到账</p>
+				<p v-if="withdrawalList.chargeType == 1">4. 提现每笔手续费{{withdrawalList.feeAsFormat}}元，实际到账金额是提现金额减{{withdrawalList.feeAsFormat}}元</p>
+				<p>{{withdrawalList.chargeType == 1 ? "5" : "4"}}. 提交提现申请后，通常1~3个工作日内到账</p>
 			</div>
 			<!-- 设置密码框 -->
 			<van-popup v-model="psdshow" :close-on-click-overlay=false class="password">
@@ -119,9 +119,21 @@ export default {
       count: 0,
       seal_control: false,
       pwdNum: 0,
+      contentT:""
     };
   },
   methods: {
+    // 提现金额监听
+    inputC(){
+      //chargeType 1 元 2百分比 calculateExpress 100.00
+      // fee 元
+      if(this.withdrawalList.chargeType ==1){
+        this.contentT = this.withdrawalList.promptExplain.replace("${amount}",this.money-this.withdrawalList.calculateExpress)
+      } else {
+        let number = this.money - Math.round(eval(this.withdrawalList.calculateExpress.replace("${x}",Number(this.money))) * 100) / 100
+        this.contentT = this.withdrawalList.promptExplain.replace("${amount}",number)
+      }
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -130,7 +142,9 @@ export default {
     },
     // 确认提现
     withdrawal() {
-      if (this.withdrawalList.havePayPassword == 0) {
+      if(this.money < this.withdrawalList.singleMinAmount || this.money > this.withdrawalList.singleMaxAmount){
+        this.$toast("提现金额为"+this.withdrawalList.singleMinAmount+"-"+this.withdrawalList.singleMaxAmount)
+      }else if (this.withdrawalList.havePayPassword == 0) {
         //havePayPassword 0未设置，1已设置
         this.psdshow = true;
         this.pwdNum = 0;
@@ -282,6 +296,7 @@ export default {
         .then(data => {
           console.log(data);
           this.withdrawalList = data.data;
+           this.contentT = this.withdrawalList.promptExplain.replace("${amount}",0)
         })
         .catch(err => {
           console.log(err);
