@@ -143,7 +143,7 @@ export default {
     // 确认提现
     withdrawal() {
       if(this.money < this.withdrawalList.singleMinAmount || this.money > this.withdrawalList.singleMaxAmount){
-        this.$toast("提现金额为"+this.withdrawalList.singleMinAmount+"-"+this.withdrawalList.singleMaxAmount)
+        this.$toast("提现金额范围为"+this.withdrawalList.singleMinAmount+"-"+this.withdrawalList.singleMaxAmount)
       }else if (this.withdrawalList.havePayPassword == 0) {
         //havePayPassword 0未设置，1已设置
         this.psdshow = true;
