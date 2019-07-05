@@ -45,19 +45,20 @@
         </p>
       </div>
     </van-popup>
-    <footer v-if="showStatus == 1" class="footer_button" @click="moneyShow = true,agentStatus=1">
+    <footer v-if="showStatus == 1" class="footer_button" @click="yidl">
       <button>一键代理推广赚工资</button>
     </footer>
   </div>
 </template>
 <script>
-import { Popup, RadioGroup, Radio, List, Toast } from "vant";
+import { Popup, RadioGroup, Radio, List, Toast, Dialog } from "vant";
 export default {
   components: {
     [Popup.name]: Popup,
     [RadioGroup.name]: RadioGroup,
     [Radio.name]: Radio,
-    [List.name]: List
+    [List.name]: List,
+    [Dialog.name]: Dialog
   },
   data() {
     return {
@@ -69,14 +70,24 @@ export default {
       isLoading: false,
       count: 0,
       showStatus:"",
-      showStatus:"",
       productCode:"",
       agentStatus:1,//我要代理
+      storeStatus:""
     };
   },
   methods: {
+    yidl(){
+      if(!this.tanchuang()){
+        return false
+      }
+      this.moneyShow = true
+      this.agentStatus=1
+    },
     // 马上赚钱
     makeMoney(num,code) {
+      if(!this.tanchuang()){
+        return false
+      }
       // 0 我要代理 1 马上赚钱
       switch (num) {
         case 1:
@@ -91,6 +102,9 @@ export default {
     },
     // 跳转到详情
     goDetails(code,num) {
+      if(!this.tanchuang()){
+        return false
+      }
       this.request("wisdom.vshop.product.queryH5ProductMarketDetail",{productCode:code}).then(data=>{
         this.$router.push({ path: "./mproductdetails?code="+code+"&num="+num+"&type="+0 });
       }).catch(err=>{console.log(err)})
@@ -106,6 +120,7 @@ export default {
           if(num==0){
             this.showStatus = data.data.showStatus
             this.productList0 = data.data.dataList;
+            this.storeStatus = data.data.storeStatus
             this.total = data.total
           }
         })
@@ -119,7 +134,7 @@ export default {
       if(this.agentStatus == 0){ // 我要代理
         agentStatusData = [{productCode:this.productCode,productType:0}]
       } else {
-        this.productList0.forEach(v=>{
+        this.productList0.forEach(v=>{ // 一键代理
           if(v.agentStatus == 0 ){
             agentStatusData.push({productCode:v.productCode,productType:0})
           }
@@ -154,7 +169,22 @@ export default {
           this.finished = true;
         }
       }, 2000);
-    }
+    },
+    tanchuang(){
+      if(this.storeStatus == 0){
+        Dialog.confirm({
+          title: '温馨提示',
+          message: '您还没有创建店铺，请先去编辑保存店铺信息',
+          confirmButtonText:"去编辑"
+        }).then(() => {
+          this.$router.push({path:'./meditshop'})
+        }).catch(() => {
+          // on cancel
+        });
+        return false
+      }
+      return true
+    },
   },
   mounted() {
     this.Initialization(0,1);

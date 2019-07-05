@@ -59,7 +59,7 @@
         </p>
       </div>
     </van-popup>
-    <footer v-if="showStatus == 1" class="footer_button" @click="moneyShow = true,agentStatus=1">
+    <footer v-if="showStatus == 1" class="footer_button" @click="yidl">
       <button>一键代理推广赚工资</button>
     </footer>
     <!-- 弹出层 -->
@@ -102,14 +102,15 @@
 <script>
 import { qrcanvas } from "qrcanvas";
 import html2canvas from "html2canvas";
-import { Popup, RadioGroup, Radio, Progress, Toast, List } from "vant";
+import { Popup, RadioGroup, Radio, Progress, Toast, List, Dialog } from "vant";
 export default {
   components: {
     [Popup.name]: Popup,
     [RadioGroup.name]: RadioGroup,
     [Radio.name]: Radio,
     [Progress.name]: Progress,
-    [List.name]: List
+    [List.name]: List,
+    [Dialog.name]: Dialog
   },
   data() {
     return {
@@ -119,18 +120,29 @@ export default {
       isLoading: false,
       showStatus: "",
       productCode: "",
-      showStatus: "",
       loading: false,
       finished: false,
       agentStatus: 1,
       showPoster: false,
       showPosterList: {},
-      logoUrl: ""
+      logoUrl: "",
+      storeStatus:""
     };
   },
   methods: {
+    // 一键代理
+    yidl(){
+      if(!this.tanchuang()){
+        return false
+      }
+      this.moneyShow = true
+      this.agentStatus=1
+    },
     // 马上赚钱
     makeMoney(num, code) {
+      if(!this.tanchuang()){
+        return false
+      }
       // 0 我要代理 1 马上赚钱
       console.log(num);
       switch (num) {
@@ -146,6 +158,9 @@ export default {
     },
     // 跳转到详情
     goDetails(code, num) {
+      if(!this.tanchuang()){
+        return false
+      }
       this.request("wisdom.vshop.product.queryH5ProductMarketDetail", {
         productCode: code
       })
@@ -239,6 +254,7 @@ export default {
           if (num == 1) {
             this.showStatus = data.data.showStatus;
             this.productList1 = data.data.dataList;
+            this.storeStatus = data.data.storeStatus;
             this.total = data.total;
           }
         })
@@ -275,7 +291,23 @@ export default {
         this.logoUrl = dataURL;
         console.log(dataURL);
       });
-    }
+    },
+    // 弹窗
+    tanchuang(){
+      if(this.storeStatus == 0){
+        Dialog.confirm({
+          title: '温馨提示',
+          message: '您还没有创建店铺，请先去编辑保存店铺信息',
+          confirmButtonText:"去编辑"
+        }).then(() => {
+          this.$router.push({path:'./meditshop'})
+        }).catch(() => {
+          // on cancel
+        });
+        return false
+      }
+      return true
+    },
   },
   mounted() {
     this.Initialization(1);

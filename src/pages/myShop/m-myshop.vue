@@ -51,7 +51,7 @@
         </van-col>
       </van-row>
       <div class="navbar"></div>
-      <van-row class="center_product" @click.native = "centerzidai('magentproduct')">
+      <van-row class="center_product" @click.native = "centerzidai('magentproduct',0)">
         <van-col>
           <img src="./imgs/dailichanpin.png" alt="">
         </van-col>
@@ -64,7 +64,7 @@
         </van-col>
       </van-row>
       <div class="navbar"></div>
-      <van-row class="center_product"  @click.native = "centerzidai('mselfsupport')">
+      <van-row class="center_product"  @click.native = "centerzidai('mselfsupport',1)">
         <!-- <router-link to="mselfsupport"> -->
           <van-col>
             <img src="./imgs/ziyingchanpin.png" alt="">
@@ -149,8 +149,8 @@ export default {
         this.wxShare(this.inviterCode);
       }
     },
-    centerzidai(name) {
-      if(this.userMessage.storeStatus == 0){
+    centerzidai(name,num) {
+      if(this.userMessage.storeStatus == 0 && num == 1){
         this.tanchuang()
       } else {
         this.$router.push({ path: "/"+name });
@@ -158,11 +158,14 @@ export default {
     },
     tanchuang(){
       Dialog.confirm({
-          title: '温馨提示',
-          message: '请先完善店铺信息'
+          ttitle: '温馨提示',
+          message: '您还没有创建店铺，请先去编辑保存店铺信息',
+          confirmButtonText:"去编辑"
         }).then(() => {
-          
-        })
+          this.$router.push({path:'./meditshop'})
+        }).catch(() => {
+          // on cancel
+        });
     },
     wxShare(inviterCode) {
       let url

@@ -48,7 +48,7 @@
         </p>
       </div>
     </van-popup>
-    <footer v-if="showStatus == 1" class="footer_button" @click="moneyShow = true,agentStatus=1">
+    <footer v-if="showStatus == 1" class="footer_button" @click="yidl">
       <button>一键代理推广赚工资</button>
     </footer>
     <!-- 弹出层 -->
@@ -91,13 +91,14 @@
 <script>
 import { qrcanvas } from 'qrcanvas';
 import html2canvas from 'html2canvas'
-import { Popup, RadioGroup, Radio, Toast, List  } from 'vant';
+import { Popup, RadioGroup, Radio, Toast, List, Dialog  } from 'vant';
 export default {
   components:{
     [Popup.name] : Popup,
     [RadioGroup.name] : RadioGroup,
     [Radio.name] : Radio,
-    [List.name]: List
+    [List.name]: List,
+    [Dialog.name]: Dialog
   },
   data(){
     return {
@@ -106,19 +107,30 @@ export default {
       productList2:[],
       showStatus:"",
       isLoading:false,
-      showStatus:"",
       productCode:"",
       loading:false,
       finished:false,
       agentStatus:1,
       showPoster:false,
       showPosterList:{},
-      logoUrl:""
+      logoUrl:"",
+      storeStatus:""
     }
   },
   methods:{
+    // 一键代理
+    yidl(){
+      if(!this.tanchuang()){
+        return false
+      }
+      this.moneyShow = true
+      this.agentStatus=1
+    },
     // 马上赚钱
     makeMoney(num,code){
+      if(!this.tanchuang()){
+        return false
+      }
       // 0 我要代理 1 马上赚钱
       switch (num) {
         case 1:
@@ -193,6 +205,7 @@ export default {
         if(num==2){
           this.showStatus = data.data.showStatus
           this.productList2 = data.data.dataList
+          this.storeStatus = data.data.storeStatus
           this.total = data.total
         }
       }).catch(err=>{console.log(err)})
@@ -218,7 +231,23 @@ export default {
           this.logoUrl = dataURL
           console.log(dataURL)
         })
-    }
+    },
+    // 弹窗
+    tanchuang(){
+      if(this.storeStatus == 0){
+        Dialog.confirm({
+          title: '温馨提示',
+          message: '您还没有创建店铺，请先去编辑保存店铺信息',
+          confirmButtonText:"去编辑"
+        }).then(() => {
+          this.$router.push({path:'./meditshop'})
+        }).catch(() => {
+          // on cancel
+        });
+        return false
+      }
+      return true
+    },
   },
   created(){
     this.Initialization(2)
