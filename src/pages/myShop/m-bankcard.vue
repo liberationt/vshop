@@ -95,7 +95,7 @@ export default {
     Initialization() {
       this.request("wisdom.vshop.bankcard.realInfo", {})
         .then(data => {
-          if(!data.data){
+          if(data.data.realName == null){
             this.falg1 = false
           } else {
             this.bankCardList.realName = data.data.realName
