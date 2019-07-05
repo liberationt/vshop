@@ -13,11 +13,11 @@
 					<div class="backcardname">
 						<p>
 							<label>姓名</label>
-							<input type="text" @input="inputC" v-model="bankCardList.realName" placeholder="请输入姓名">
+							<input type="text" :disabled = 'falg1' @input="inputC" v-model="bankCardList.realName" placeholder="请输入姓名">
 						</p>
 						<p>
 							<label>身份证</label>
-							<input type="text" @input="inputC" v-model="bankCardList.idCard" placeholder="请输入身份证">
+							<input type="text" :disabled = 'falg1' @input="inputC" v-model="bankCardList.idCard" placeholder="请输入身份证">
 						</p>
 					</div>
 				</div>
@@ -69,7 +69,8 @@ export default {
       seal_control: false,
       flag: false,
       show: true,
-      count: ""
+      count: "",
+      falg1:false
     };
   },
   methods: {
@@ -94,8 +95,13 @@ export default {
     Initialization() {
       this.request("wisdom.vshop.bankcard.realInfo", {})
         .then(data => {
-          console.log(data);
-          this.mycommission = data.data;
+          if(!data.data){
+            this.falg1 = false
+          } else {
+            this.bankCardList.realName = data.data.realName
+            this.bankCardList.idCard = data.data.idCard
+            this.falg1 = true
+          }
         })
         .catch(err => {
           console.log(err);
@@ -175,11 +181,13 @@ export default {
       for(var i in this.bankCardList){
         // console.log(i)    //输出属性
         // console.log(this.bankCardList[i])    //输出属性对应的值
-        if(this.bankCardList[i] == ''){
+        console.log(this.bankCardList[i],i)
+        if(this.bankCardList[i] == ""){
           this.flag = false
         } else {
           this.flag = true
         }
+        console.log(this.flag)
       }
     },
     //清除定时器
@@ -215,6 +223,7 @@ export default {
         }
         input {
           font-size: 16px;
+          background-color: #fff;
         }
         span {
           display: inline-block;
