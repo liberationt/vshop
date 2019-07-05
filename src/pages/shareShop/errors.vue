@@ -11,11 +11,15 @@
 	</div>
 </template>
 <script>
+import { statistics } from "wisdom-h5";
 export default {
 	data(){
 		return{
 
 		}
+	},
+	mounted(){
+		statistics.page("errors", "errorsgetnum");
 	}
 }
 </script>

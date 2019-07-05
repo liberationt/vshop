@@ -44,6 +44,7 @@
 	</div>
 </template>
 <script>
+import { statistics } from "wisdom-h5";
 import { Tab, Tabs ,Dialog} from 'vant'
 import utils from '../../utils/utils'
 export default {
@@ -106,6 +107,7 @@ export default {
 			})
 		},
 		viewall(){
+			statistics.click("tap", "undershelf","getviewall");
 			this.$router.push('/loanlist')
 		},
 		toproductnamedetail(productCode){
@@ -116,10 +118,9 @@ export default {
 				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
+						statistics.click("tap", "undershelf","getdetailsnumber");
 						if(data.data.state==0){
-							utils.setCookie('ProductCode',productCode)
-							utils.setCookie('InviterCode',this.inviterCode)
-							this.$router.push('/productnamedetail')
+							this.$router.push('/productnamedetail?productCode='+productCode+'&inviterCode='+this.inviterCode)
 						}
 						if(data.data.state==1){
 							this.reload()

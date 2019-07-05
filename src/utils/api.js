@@ -21,7 +21,7 @@ export function request(apiKey, data = {}, isShowError = true) {
   return new Promise((resolve, reject) => {
     return http.post("/api/proxy", baseParams).then((response = {}) => {
       if (response.code == 'success') {
-        console.log('response=====> ' + apiKey + "   " + JSON.stringify(response))
+        // console.log('response=====> ' + apiKey + "   " + JSON.stringify(response))
         resolve && resolve(response)
       } else if (response.code == '110019') {
         console.log('response=====> ' + JSON.stringify(response))
@@ -71,7 +71,7 @@ export function upload(file = {}) {
   return new Promise((resolve, reject) => {
     return http.post('/upload', formData, config).then(response => {
       if (response.code == 'success') {
-        console.log('response=====> ' + JSON.stringify(response))
+        // console.log('response=====> ' + JSON.stringify(response))
         resolve && resolve(response.data)
       } else {
         handleError('', response, reject, true)
@@ -116,7 +116,7 @@ let getRequestInfo = (apiKey = '', data = {}) => {
 
   baseParams.sign = MD5(baseParams.apiKey + token + baseParams.data + saltcomm)
 
-  console.log('request=====> ' + apiKey + "   " + JSON.stringify(baseParams))
+  // console.log('request=====> ' + apiKey + "   " + JSON.stringify(baseParams))
 
   return baseParams
 }

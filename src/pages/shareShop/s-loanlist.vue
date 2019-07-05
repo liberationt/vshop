@@ -62,7 +62,7 @@ export default {
 			dataList:[],
 			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
 			loading: false,//控制上拉加载的加载动画
-			pageNum:0,
+			pageNum:1,
 			pageSize:5,
 			inviterCode:'',
 		}
@@ -93,44 +93,27 @@ export default {
 			this.finished = false;
 			this.dataList=[];
 			this.productDetailType = i
-			this.pageNum=0
-			// let scrollconheight = document.documentElement.scrollHeight-document.documentElement.clientHeight -document.documentElement.scrollTop
-			// console.log(scrollconheight,222)
-			// if (scrollconheight>=300||scrollconheight==0) {
-			// 	this.onLoad()
-			// }
-			this.onLoad()
+			this.pageNum=1
+			this.initialization()
 		},
-		// 下拉刷新
-		onRefresh(){
-			setTimeout(() => {
-				this.isLoading = false; //关闭下拉刷新效果
-			}, 500);
-		},
-		//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
-		onLoad() {
-			this.pageNum++;
-			console.log(this.pageNum,'num',document.documentElement.scrollHeight-document.documentElement.clientHeight -document.documentElement.scrollTop,3333333)
-			// setTimeout(() => {
-				let datas = {
-					storeCode:utils.getCookie('storeCode'),
-					productDetailType:this.value1,
-					pageNum:this.pageNum,
-					pageSize:this.pageSize,
-					filter:true
-				}
-				console.log(datas,'2222222222')
-				this.request('wisdom.vshop.vshopStore.queryStoreProductList',datas)
+		init(){
+			this.finished = false;
+			if(this.loading){
+                return false;
+            }
+            let datas = {
+				storeCode:utils.getCookie('storeCode'),
+				productDetailType:this.value1,
+				pageNum:this.pageNum,
+				pageSize:this.pageSize,
+				filter:true
+			}
+			this.request('wisdom.vshop.vshopStore.queryStoreProductList',datas)
 				.then(data=>{ 
-					console.log(data,'===')
 					if(data.code=='success'){
 						let options = data.data.productDetailTypeBean
 						this.inviterCode = data.data.inviterCode
 						let options2=[]
-						this.loading = false
-						if(data.data.dataList.length<this.pageSize){
-							this.finished = true
-						}
 						for(var i=0;i<options.length;i++){
 							options2.push(
 								{
@@ -141,20 +124,80 @@ export default {
 						}
 						this.option1= [{text:'全部',value:'-1'}]
 						this.option1 =this.option1.concat(options2) 
-						// this.pageNum++
-						data.data.dataList.map((item)=>{
-							this.dataList.push(item)
-						})
-						// this.dataList = this.dataList.concat(data.data.dataList)
-						// console.log(this.dataList.length,111111111111,data.data.total)
-						// if(this.dataList.length==data.data.total){
-						// 	this.finished = true
-						// }
-						console.log(this.dataList.length,this.pageSize,'-----=====----')
-						
+						this.dataList= data.data.dataList
+						this.isLoading = false; //关闭下拉刷新效果
+                        this.finished = false;
+						this.pageNum++;
 					}
 				})
-			// }, 500);
+
+		},
+		initialization(){
+            this.loading = true;//下拉加载中
+			this.finished = false;//下拉结束
+            if(this.loading){
+                this.onLoad();
+            }
+		},
+		inits(){
+			this.isLoading = false;//下拉加载中
+			this.finished = false;
+			this.loading = false
+			this.dataList = []
+			this.pageNum=1
+			this.onLoad()
+		},
+		// 下拉刷新
+		onRefresh(){
+			let that = this
+			setTimeout(() => {
+				this.pageNum=1
+				that.init()
+			}, 500);
+		},
+		//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
+		onLoad() {
+			// console.log(this.pageNum)
+			setTimeout(() => {
+			if(this.isLoading){
+                return false;
+            }
+			let datas = {
+				storeCode:utils.getCookie('storeCode'),
+				productDetailType:this.value1,
+				pageNum:this.pageNum,
+				pageSize:this.pageSize,
+				filter:true
+			}
+			this.request('wisdom.vshop.vshopStore.queryStoreProductList',datas)
+			.then(data=>{ 
+				if(data.code=='success'){
+					let options = data.data.productDetailTypeBean
+					this.inviterCode = data.data.inviterCode
+					this.dataList = this.dataList.concat(data.data.dataList)
+					this.loading = false
+					console.log(data.data.dataList.length)
+					if(data.data.dataList<this.pageSize){
+						this.finished = true
+					}
+					this.pageNum++;
+					let options2=[]
+					for(var i=0;i<options.length;i++){
+						options2.push(
+							{
+								text:options[i].label,
+								value:options[i].code
+							}
+						)
+					}
+					this.option1= [{text:'全部',value:'-1'}]
+					this.option1 =this.option1.concat(options2) 
+					// data.data.dataList.map((item)=>{
+					// 	this.dataList.push(item)
+					// })
+				}
+			})
+			}, 500);
 		},
 	},
 	created(){
@@ -184,7 +227,7 @@ export default {
 			}
 		}
 		.dropdown{
-			width:50px;
+			width:100%;
 		}
 		.listdata{
 			margin:15px;
