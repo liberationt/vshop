@@ -144,6 +144,8 @@ export default {
     withdrawal() {
       if(this.money < this.withdrawalList.singleMinAmount || this.money > this.withdrawalList.singleMaxAmount){
         this.$toast("提现金额范围为"+this.withdrawalList.singleMinAmount+"-"+this.withdrawalList.singleMaxAmount)
+      }if(this.money > this.withdrawalList.balanceAmountAsFormat){
+        this.$toast("提现金额不能大于可提现金额")
       }else if (this.withdrawalList.havePayPassword == 0) {
         //havePayPassword 0未设置，1已设置
         this.psdshow = true;
@@ -224,7 +226,7 @@ export default {
       } else {
         this.request("wisdom.vshop.password.judgeSms", {
           verifyCode: this.codeNum,
-          phone: 13733190754,
+          phone: this.withdrawalList.phone,
           smsType: 1
         })
           .then(data => {
@@ -262,7 +264,7 @@ export default {
         } else { // 设置交易密码
           this.request("wisdom.vshop.password.save", {
             password: this.passwordT,
-            phone: 13733190754,
+            phone: this.withdrawalList.phone,
             verifyCode: this.codeNum
           })
             .then(data => {
