@@ -215,7 +215,7 @@ export default {
     },
     // operationType操作类型：1产品海报，2推荐用户
     operationType(num){
-      this.request("wisdom.vshop.product.createProductPoster",{productCode:this.$route.query.code,operationType:num,url: window.location.href}).then(data=>{
+      this.request("wisdom.vshop.product.createProductPoster",{productCode:this.$route.query.code,operationType:num,url: window.location.origin+'/productnamedetail'}).then(data=>{
         switch(num){
           case 1:
             this.showPosterList = data.data

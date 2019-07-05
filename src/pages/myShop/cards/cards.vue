@@ -77,7 +77,7 @@
           <van-row >
             <van-col span="16">
               <van-col class="popuf_img">
-                <img :src="showPosterList.personImg?showPosterList.personImg : require('../imgs/topimg.png')" alt="">
+                <img :src="showPosterList.personImg?'data:image/png;base64,'+showPosterList.personImg : require('../imgs/topimg.png')" alt="">
               </van-col>
               <van-col class="popuf_text">
                 <p>欢迎咨询</p>
