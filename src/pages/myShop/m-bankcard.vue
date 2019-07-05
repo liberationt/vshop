@@ -13,11 +13,11 @@
 					<div class="backcardname">
 						<p>
 							<label>姓名</label>
-							<input type="text" @input="inputC" v-model="bankCardList.realName" placeholder="请输入姓名">
+							<input type="text" :disabled = 'falg1' @input="inputC" v-model="bankCardList.realName" placeholder="请输入姓名">
 						</p>
 						<p>
 							<label>身份证</label>
-							<input type="text" @input="inputC" v-model="bankCardList.idCard" placeholder="请输入身份证">
+							<input type="text" :disabled = 'falg1' @input="inputC" v-model="bankCardList.idCard" placeholder="请输入身份证">
 						</p>
 					</div>
 				</div>
@@ -69,7 +69,8 @@ export default {
       seal_control: false,
       flag: false,
       show: true,
-      count: ""
+      count: "",
+      falg1:false
     };
   },
   methods: {
@@ -94,8 +95,13 @@ export default {
     Initialization() {
       this.request("wisdom.vshop.bankcard.realInfo", {})
         .then(data => {
-          this.bankCardList.realName = data.data.realName
-          this.bankCardList.idCard = data.data.idCard
+          if(!data.data){
+            this.falg1 = false
+          } else {
+            this.bankCardList.realName = data.data.realName
+            this.bankCardList.idCard = data.data.idCard
+            this.falg1 = true
+          }
         })
         .catch(err => {
           console.log(err);
@@ -217,6 +223,7 @@ export default {
         }
         input {
           font-size: 16px;
+          background-color: #fff;
         }
         span {
           display: inline-block;
