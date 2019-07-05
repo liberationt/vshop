@@ -94,7 +94,8 @@ export default {
     Initialization() {
       this.request("wisdom.vshop.bankcard.realInfo", {})
         .then(data => {
-          this.bankCardList = data.data;
+          this.bankCardList.realName = data.data.realName
+          this.bankCardList.idCard = data.data.idCard
         })
         .catch(err => {
           console.log(err);
@@ -174,11 +175,13 @@ export default {
       for(var i in this.bankCardList){
         // console.log(i)    //输出属性
         // console.log(this.bankCardList[i])    //输出属性对应的值
-        if(this.bankCardList[i] == ''){
+        console.log(this.bankCardList[i],i)
+        if(this.bankCardList[i] == ""){
           this.flag = false
         } else {
           this.flag = true
         }
+        console.log(this.flag)
       }
     },
     //清除定时器
