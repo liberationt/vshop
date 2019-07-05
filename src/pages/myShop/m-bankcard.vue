@@ -94,9 +94,7 @@ export default {
     Initialization() {
       this.request("wisdom.vshop.bankcard.realInfo", {})
         .then(data => {
-          console.log(data);
           this.bankCardList = data.data;
-          console.log(this.mycommission)
         })
         .catch(err => {
           console.log(err);
