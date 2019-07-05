@@ -28,7 +28,7 @@
 				</p>
 				<div class="withdrawalmoney">
 					<span>￥</span>
-					<input type="text" @input="inputC" placeholder="请输入提现金额" v-model="money">
+					<input type="number" @input="inputC" placeholder="请输入提现金额" v-model="money">
 					<span>元</span>
 				</div>
 				<div class="deduction">{{contentT}}元</div>

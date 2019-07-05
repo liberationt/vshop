@@ -51,31 +51,31 @@ const isAndroid = () => {
 
 // 拒绝input框弹出 顶起底部按钮 暂无用
 export function copyContent(content){
-  console.log(content)
-  const copyToClipboard = str => {
-    const el = document.createElement('textarea'); // Create a <textarea> element
-    el.value = str; // Set its value to the string that you want copied
-    el.setAttribute('readonly', ''); // Make it readonly to be tamper-proof
-    el.style.position = 'absolute'; 
-    el.style.left = '-9999px'; // Move outside the screen to make it invisible
-    document.body.appendChild(el); // Append the <textarea> element to the HTML document
-    const selected = 
-    document.getSelection().rangeCount > 0 // Check if there is any content selected previously
-    ? document.getSelection().getRangeAt(0) // Store selection if found
-    : false; // Mark as false to know no selection existed before
-    el.select(); // Select the <textarea> content
-//     document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
-    var a = document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
-    if (!a){
-        el.select();
-        el.setSelectionRange(0, el.value.length), document.execCommand('Copy');// 执行浏览器复制命令
-    }
-    document.body.removeChild(el); // Remove the <textarea> element
-    if (selected) { // If a selection existed before copying
-    document.getSelection().removeAllRanges(); // Unselect everything on the HTML document
-    document.getSelection().addRange(selected); // Restore the original selection
-    }
-   };
+    console.log(content)
+      const copyToClipboard = str => {
+      const el = document.createElement('textarea'); // Create a <textarea> element
+      el.value = str; // Set its value to the string that you want copied
+      el.setAttribute('readonly', ''); // Make it readonly to be tamper-proof
+      el.style.position = 'absolute'; 
+      el.style.left = '-9999px'; // Move outside the screen to make it invisible
+      document.body.appendChild(el); // Append the <textarea> element to the HTML document
+      const selected = 
+      document.getSelection().rangeCount > 0 // Check if there is any content selected previously
+      ? document.getSelection().getRangeAt(0) // Store selection if found
+      : false; // Mark as false to know no selection existed before
+      el.select(); // Select the <textarea> content
+  //     document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
+      var a = document.execCommand('copy'); // Copy - only works as a result of a user action (e.g. click events)
+      if (!a){
+          el.select();
+          el.setSelectionRange(0, el.value.length), document.execCommand('Copy');// 执行浏览器复制命令
+      }
+      document.body.removeChild(el); // Remove the <textarea> element
+      if (selected) { // If a selection existed before copying
+      document.getSelection().removeAllRanges(); // Unselect everything on the HTML document
+      document.getSelection().addRange(selected); // Restore the original selection
+      }
+     };
    copyToClipboard(content)
 }
 // 封控 方法
@@ -160,6 +160,51 @@ export function ip(callback, error) {
 export function isAndroid1() {
   return navigator.userAgent.indexOf("Android") > -1
 }
+
+//图片压缩
+export function compress(orgFile,callback){
+  console.log(orgFile,"===========f")
+  // orgFile = f.files[0]
+  console.log('orgFile',orgFile)
+  zipImgFile(orgFile,function(zipFile){
+    console.log('zipFile',zipFile)
+    callback(zipFile)  
+  })
+}
+// 对图片进行压缩
+const zipImgFile = (imgFile,callback) =>{
+  let reader = new FileReader()
+  console.log('render',imgFile)
+  reader.readAsDataURL(imgFile)
+  reader.onload = function(e) {
+      let image = new Image() //新建一个img标签（还没嵌入DOM节点)
+      image.src = e.target.result
+      image.onload = function() {
+          let canvas = document.createElement('canvas'),
+          context = canvas.getContext('2d'),
+          imageWidth = image.width / 2,    //压缩后图片的大小
+          imageHeight = image.height / 2
+          canvas.width = imageWidth
+          canvas.height = imageHeight
+          context.drawImage(image, 0, 0, imageWidth, imageHeight)
+          let dataurl = canvas.toDataURL(imgFile.type)
+          let zipFile = dataURLtoFile(dataurl,imgFile.name)
+          callback(zipFile)
+      }
+  }
+}
+const dataURLtoFile = (dataurl, filename) => {
+  var arr = dataurl.split(','), 
+  mime = arr[0].match(/:(.*?);/)[1],        
+  bstr = atob(arr[1]), 
+  n = bstr.length, 
+  u8arr = new Uint8Array(n);    
+  while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+  }    
+  return new File([u8arr], filename, {type:mime});
+}
+
 export default {
   getCookie,
   setCookie,
@@ -171,5 +216,6 @@ export default {
   sealControl,
   wxShare,
   ip,
-  isAndroid1
+  isAndroid1,
+  compress  
 }

@@ -21,7 +21,7 @@ export function request(apiKey, data = {}, isShowError = true) {
   return new Promise((resolve, reject) => {
     return http.post("/api/proxy", baseParams).then((response = {}) => {
       if (response.code == 'success') {
-        console.log('response=====> ' + apiKey + "   " + JSON.stringify(response))
+        // console.log('response=====> ' + apiKey + "   " + JSON.stringify(response))
         resolve && resolve(response)
       } else if (response.code == '110019') {
         console.log('response=====> ' + JSON.stringify(response))
@@ -74,10 +74,11 @@ export function upload(file = {}) {
         console.log('response=====> ' + JSON.stringify(response))
         resolve && resolve(response.data)
       } else {
-        handleError('', response, reject, true)
+        Toast("图片过大，请处理一下");
       }
     }).catch(err => {
-      handleError('', err, reject, true)
+      Toast("图片过大，请处理一下");
+      console.log(err)
     });
   })
 }
@@ -116,7 +117,7 @@ let getRequestInfo = (apiKey = '', data = {}) => {
 
   baseParams.sign = MD5(baseParams.apiKey + token + baseParams.data + saltcomm)
 
-  console.log('request=====> ' + apiKey + "   " + JSON.stringify(baseParams))
+  // console.log('request=====> ' + apiKey + "   " + JSON.stringify(baseParams))
 
   return baseParams
 }
