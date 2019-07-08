@@ -104,7 +104,6 @@ export default {
         pageSize: 10,
       })
         .then(data => {
-          console.log(data);
 					this.commissiondList = data.data.dataList
         })
         .catch(err => {

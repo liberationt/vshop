@@ -82,7 +82,7 @@
           <van-row >
             <van-col span="16">
               <van-col class="popuf_img">
-                <img :src="showPosterList.personImg?showPosterList.personImg:require('./imgs/topimg.png')" alt="">
+                <img :src="showPosterList.personImg?'data:image/png;base64,'+showPosterList.personImg:require('./imgs/topimg.png')" alt="">
               </van-col>
               <van-col class="popuf_text">
                 <p>欢迎咨询</p>
@@ -215,7 +215,7 @@ export default {
     },
     // operationType操作类型：1产品海报，2推荐用户
     operationType(num){
-      this.request("wisdom.vshop.product.createProductPoster",{productCode:this.$route.query.code,operationType:num,url: window.location.href}).then(data=>{
+      this.request("wisdom.vshop.product.createProductPoster",{productCode:this.$route.query.code,operationType:num,url: window.location.origin+'/productnamedetail'}).then(data=>{
         switch(num){
           case 1:
             this.showPosterList = data.data

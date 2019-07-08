@@ -100,7 +100,7 @@ export default {
     // 确认提交
     editSubmit(){
       // 提交成功后跳转到首页
-      if (!/^[\u4E00-\u9FA5]{2,20}$/.test(this.shopValue.storeName)) {
+      if (!/^[\u4E00-\u9FA5]{1,20}$/.test(this.shopValue.storeName)) {
         this.$toast('店铺名称输入有误，请重新输入')
         return false;
       }
