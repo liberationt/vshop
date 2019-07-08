@@ -18,7 +18,7 @@
 						<span>{{readyList.bizDesc}}</span>
 					</li>
 					<li>
-						<label>收入</label>
+						<label>{{readyList.type == 0 ? "收入" : "支出"}}</label>
 						<span :class="readyList.type == 0? 'jiedong' : 'success' ">{{readyList.amount}}{{readyList.unit}}</span>
 					</li>
 					<!-- <li>
