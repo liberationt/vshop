@@ -30,7 +30,7 @@
 					</ul>
 				</div>
 			</div>
-			<div class="applyloan">
+			<div class="applyloan" v-show="jobType=='employees'">
 				<h3><span></span>工资发放形式</h3>
 				<div class='optionstyle'>
 					<ul class="box">
@@ -56,7 +56,7 @@
 					</ul>
 				</div>
 			</div>
-			<div class="applyloan">
+			<div class="applyloan" v-show="socialSecurity!='social_no_social_security'">
 				<h3><span></span>公司代缴公积金</h3>
 				<div class='optionstyles'>
 					<ul class="box">
@@ -102,12 +102,14 @@ export default {
 					})
 					return false
 				}
-				if(!this.salaryType){
-					Toast({
-						message:'请选择工资发放形式',
-						duration:800
-					})
-					return false
+				if(this.jobType=='employees'){
+					if(!this.salaryType){
+						Toast({
+							message:'请选择工资发放形式',
+							duration:800
+						})
+						return false
+					}
 				}
 				if(!this.monthlyIncome){
 					Toast({
@@ -123,19 +125,22 @@ export default {
 					})
 					return false
 				}
-				if(!this.accumulationFund){
-					Toast({
-						message:'请选择公司代缴公积金',
-						duration:800
-					})
-					return false
+				if(this.socialSecurity!='social_no_social_security'){
+					if(!this.accumulationFund){
+						Toast({
+							message:'请选择公司代缴公积金',
+							duration:800
+						})
+						return false
+					}
 				}
 				let data={
 					jobType:this.jobType,
-					salaryType :this.salaryType,
+					salaryType :this.jobType=='employees'?this.salaryType:'',
 					monthlyIncome:this.monthlyIncome,
 					socialSecurity:this.socialSecurity,
-					accumulationFund:this.accumulationFund
+					accumulationFund:this.socialSecurity!='social_no_social_security'?this.accumulationFund:''
+					
 				}
 				this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
 				.then(data=>{
