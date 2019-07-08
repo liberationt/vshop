@@ -143,11 +143,11 @@ export default {
     // 确认提现
     withdrawal() {
 
-      if(this.money < this.withdrawalList.singleMinAmount || this.money > this.withdrawalList.singleMaxAmount){
+      if(Number(this.money) < this.withdrawalList.singleMinAmount || Number(this.money) > this.withdrawalList.singleMaxAmount){
         this.$toast("提现金额范围为"+this.withdrawalList.singleMinAmount+"-"+this.withdrawalList.singleMaxAmount)
         return false
       }
-      if(this.money > this.withdrawalList.balanceAmountAsFormat){
+      if(Number(this.money) > this.withdrawalList.balanceAmountAsFormat){
         this.$toast("提现金额不能大于可提现金额")
         return false
       }
