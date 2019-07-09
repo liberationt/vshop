@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mingxin_common">
       <header class="pddingTop navbarrighttext">
 				<van-nav-bar
 					title="现金明细"
@@ -8,9 +8,10 @@
 				/> 
 			</header> 
 			<div class="detailsmain">
-				<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功' class="xialashuaxin">
+				<van-list v-model="loading" finished-text="没有更多了" :finished="finished" @load="onLoad" class="xialashuaxin haha">
+					<!-- 加载的内容-->
 					<div>
-						<div v-for="item in cashdetailsList.dataList" class="details" @click="todetails(item.flowCode)">
+						<div v-for="item in cashdetailsList" class="details" @click="todetails(item.flowCode)">
 							<div>
 								<p>{{item.bizDesc}}</p>
 								<p class="detailsmoney">余额：{{item.balanceAsFormat}}{{item.unit}}
@@ -22,19 +23,20 @@
 							</div>
 						</div>
 					</div>
-  			</van-pull-refresh>
+				</van-list>
 			</div>
     </div>
 </template>
 <script>
-import { Toast } from 'vant';
+import { Toast,List } from 'vant';
 export default {
 	data(){
 		return{
-			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
-			isLoading: false,//控制下拉刷新的加载动画
+			finished: true,//控制在页面往下移动到底部时是否调用接口获取数据
 			loading: false,//控制上拉加载的加载动画
-			cashdetailsList:{},
+			cashdetailsList:[],
+			pageNumber:1,
+			totalPage:""
 		}
 	},
 	methods:{
@@ -44,39 +46,40 @@ export default {
 		todetails(code){
 			this.$router.push('/readydetails?code='+code)
 		},
-			// 获取数据
-		getdataList(){
-
-		},
-		//下拉刷新
-		onRefresh() {
-			setTimeout(() => {
-					this.Initialization(1)
-					this.$toast("刷新成功");
-				 this.isLoading = false; //关闭下拉刷新效果
-			}, 500);
-		},
 		//页面初始化之后会触发一次，在页面往下加载的过程中会多次调用【上拉加载】
     onLoad() {
 			setTimeout(() => {
-					this.loading = false
-					this.finished = true
+					this.Initialization(2)
 			}, 500);
 		},
 		// 数据初始化
-		Initialization(i){
-      this.request("wisdom.vshop.account.flowList",{pageNum :i,pageSize: 10}).then(data=>{
-				console.log(data)
-				this.cashdetailsList = data.data.flowList
+		Initialization(){
+			let that = this
+      this.request("wisdom.vshop.account.flowList",{pageNum :this.pageNumber,pageSize: 10}).then(data=>{
+				let flowList = data.data.flowList
+				if (Number(flowList.dataList.length) <= 0) {
+					this.finished = true
+					return false
+				}
+				if(Number(flowList.total) > 10){
+					this.finished = false
+					this.loading = false
+				}
+				this.cashdetailsList = this.cashdetailsList.concat(flowList.dataList)
+				this.pageNumber++
+				this.totalPage = flowList.total
       }).catch(err=>{console.log(err)})
     }
 	},
 	mounted(){
-		this.Initialization(1)
+		this.Initialization()
 	}
 }
 </script>
 <style lang="less" scoped>
+		.mingxin_common{
+			padding-bottom: 30px;
+		}
 		.success{
 			color: #FF514C;
 		}
