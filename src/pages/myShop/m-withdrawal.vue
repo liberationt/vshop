@@ -31,7 +31,7 @@
                 </van-row>  
                 <van-row class="van-row">
                   <van-col span="8">申请状态</van-col> 
-                  <van-col span="16" :class="active == 0 ?'He' : active == 1 ?'Lv' : 'wr'">{{item.withdrawStatus}}</van-col> 
+                  <van-col span="16" :class="active == 0 ?'He' : active == 1 ?'Lv' : 'wr'">{{item.withdrawDesc}}</van-col> 
                 </van-row>  
               </div>
             </div>

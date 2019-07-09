@@ -18,7 +18,7 @@
           shape="round"
           @click="inquery"
         >
-          <div slot="action" @click="rightShow = true,labelName = '确认'">
+          <div slot="action" @click="screen">
             <img src="./imgs/screening_icon@2x.png" alt="">
             筛选
           </div>
@@ -30,7 +30,7 @@
             <div class="shopregister_list">
               <ul>
                 <li v-for="item in customerList" @click="goregisterdetails(item.userCode)">
-                  <div v-if="item.label.length != 0" @click.stop="selectLabels(item.userCode)" class="pleace_label" >
+                  <div v-if="item.label.length != 0" @click.stop="selectLabels(item.userCode,item.label)" class="pleace_label" >
                     <span v-if="index<3" v-for="(item,index) in item.label">{{item.labelOptionName}}</span>
                     <span v-if="item.label.length == 3">...</span>
                   </div>
@@ -76,13 +76,13 @@
         </p>
         <p class="rightShow_two">
           <ul class="center_list_two">
-            <li v-if="item.labelIsRadio == 1 && item.labelTitleKey =='last_flow_time' " :class={checked:labelOptionKey.includes(item1)}  v-for="(item1,index) in item.optionResList" @click="singleElection(item1,item.labelTitleName)">
+            <li v-if="item.labelIsRadio == 1 && item.labelTitleKey =='last_flow_time' " :class={checked:labelOptionKey.includes(item1.labelOptionKey)}  v-for="(item1,index) in item.optionResList" @click="singleElection(item1,item.labelTitleName)">
               {{item1.labelOptionName}}
             </li>
-            <li v-if="item.labelIsRadio == 1 && item.labelTitleKey =='flow_state' " :class={checked:labelOptionKey1.includes(item1)}  v-for="(item1,index) in item.optionResList" @click="singleElection1(item1,item.labelTitleName)">
+            <li v-if="item.labelIsRadio == 1 && item.labelTitleKey =='flow_state' " :class={checked:labelOptionKey1.includes(item1.labelOptionKey)}  v-for="(item1,index) in item.optionResList" @click="singleElection1(item1,item.labelTitleName)">
               {{item1.labelOptionName}}
             </li>
-            <li v-if="item.labelIsRadio == 0" :class="{checked:materialsArr.includes(item1)}"  v-for="(item1,index) in item.optionResList" @click="materialsChange(item1,item.labelTitleName)">
+            <li v-if="item.labelIsRadio == 0" :class="{checked:huixianArr.includes(item1.labelOptionKey)}"  v-for="(item1,index) in item.optionResList" @click="materialsChange(item1,item.labelTitleName)">
               {{item1.labelOptionName}}
             </li>
           </ul>
@@ -136,7 +136,8 @@ export default {
       labelObj:{},
       labelArr:[],
       generalizeStore:{},
-      arr:[]
+      name:"",
+      huixianArr:[]
     };
   },
   computed: {
@@ -277,30 +278,73 @@ export default {
       }, 500);
     },
     // 选择标签
-    selectLabels(v){
+    selectLabels(v,label){
       this.rightShow = true
       this.userCode = v
       this.labelName = '更新标签'
+      if(label){ // 数据回显
+        this.materialsArr = []
+        this.huixianArr = [] // 初始化
+        label.forEach(v=>{
+          switch(v.labelTitleKey){
+            case 'last_flow_time': //最后跟进时间
+            this.labelOptionKey = [v.labelOptionKey]
+            this.labelTitleName0 = v
+            break
+            case 'flow_state'://"跟进状态"
+            this.labelOptionKey1 = [v.labelOptionKey];
+            this.labelTitleName1 = v
+            break
+            case 'high_quality_label'://"优质标签"
+            // 标签数据处理
+            this.labeData.forEach(i=>{
+              if(i.labelTitleKey == "high_quality_label"){
+                i.optionResList.forEach(e=>{
+                  if(e.labelOptionKey == v.labelOptionKey){
+                    this.materialsArr.push(e) // 更新标签
+                    this.huixianArr.push(e.labelOptionKey) //回显数据
+                  }
+                })
+              }
+            })
+            break
+          }
+        })
+      } else { // 数据
+        this.Restoration()
+        
+      }
+    },
+    // 筛选确认框
+    screen(){
+      this.rightShow = true
+      this.labelName = '确认'
+      // 确保是筛选
+      this.userCode = ""
+      // 数据初始化
+      this.Restoration()
     },
     // 更新标签
     updateTags(){
       let parmise 
       if(this.userCode){
+        console.log(this.materialsArr,"更新标签数据")
         if(this.labelTitleName0 == "" && this.labelTitleName1 == "" && this.materialsArr.length == 0){ // 必须选择一个标签
           this.$toast('请选择标签')
           return false
         }
         if(this.materialsArr.length > 0){
           this.materialsArr.forEach(v=>{ // 合并数据
-            this.labelTitleName2.push(Object.assign(v,{labelTitleName:name}))
+            this.labelTitleName2.push(Object.assign(v,{labelTitleName:this.name}))
           })
         } else {
-          this.labelTitleName2 = null
+          this.labelTitleName2 = []
         }
+        console.log(this.labelTitleName2)
         parmise = {
           followTime : this.labelTitleName0 == "" ? null : this.labelTitleName0,
           followState : this.labelTitleName1 == "" ? null : this.labelTitleName1,
-          optionUpdateReqList : this.labelTitleName2,
+          optionUpdateReqList : this.labelTitleName2.length > 0 ? this.labelTitleName2 : null,
           userCode : this.userCode
         }
         this.request('wisdom.vshop.userLabel.updateUserLabel',parmise).then(data=>{
@@ -308,44 +352,52 @@ export default {
           this.Initialization(1,'',{})
         }).catch(err=>{console.log(err)})
       } else {
+        console.log(this.labelArr)
         this.Initialization(1, this.searchValue,Object.assign(this.labelObj,{goodLabelList:this.labelArr}))
       }
     },
     // 选择标签事件
     materialsChange(code,name) {
-      // console.log(code)
-      if(this.materialsArr.includes(code)){
-        this.materialsArr=this.materialsArr.filter(function (ele){return ele != code;});
+      console.log(code)
+      if(this.huixianArr.includes(code.labelOptionKey)){
+        this.materialsArr= this.materialsArr.filter(function (ele){return ele != code;})//回显数据
+        this.huixianArr=this.huixianArr.filter(function (ele){return ele != code.labelOptionKey;}); // 更新标签
+        this.labelArr = this.labelArr.filter(function (ele){return ele != code.labelOptionKey;}) // 查询条件
 			} else {
-        this.materialsArr.push(code)
+        this.huixianArr.push(code.labelOptionKey) // 回显数据
+        this.materialsArr.push(code) // 更新标签
+        this.labelArr.push(code.labelOptionKey) // 查询条件
+        this.name = name
       }
-      console.log(this.labelTitleName2)
+      console.log(this.materialsArr)
       // this.changeList(code, this.materialsArr);
-      // this.labelArr.push(code.labelOptionKey)
       // this.labelTitleName2.push(Object.assign(code,{labelTitleName:name}))
     },
+    // 跟进时间
     singleElection(v,name){
-      if(this.labelOptionKey.includes(v)){
-				this.labelOptionKey=this.labelOptionKey.filter(function (ele){return ele != v;});
+      if(this.labelOptionKey.includes(v.labelOptionKey)){
+				this.labelOptionKey=this.labelOptionKey.filter(function (ele){return ele != v.labelOptionKey;});
         this.labelTitleName0 = null
+        this.labelObj.followTime = ""
 			} else {
-        this.labelOptionKey = [v];
-        this.labelTitleName0 = Object.assign(v,{labelTitleName:name})
-        
+        this.labelOptionKey = [v.labelOptionKey];
+        this.labelTitleName0 = Object.assign(v,{labelTitleName:name}) //更新参数
+        this.labelObj.followTime = v.labelOptionKey //查询条件
 			}
       // this.labelOptionKey = v
-      // this.labelObj.followTime = v.labelOptionKey
     },
+    // 跟进状态
     singleElection1(v,name){
-      if(this.labelOptionKey1.includes(v)){
-				this.labelOptionKey1=this.labelOptionKey1.filter(function (ele){return ele != v;});
+      if(this.labelOptionKey1.includes(v.labelOptionKey)){
+				this.labelOptionKey1=this.labelOptionKey1.filter(function (ele){return ele != v.labelOptionKey;});
         this.labelTitleName1 = null
+        this.labelObj.followState = ""
 			} else {
-        this.labelOptionKey1 = [v];
-        this.labelTitleName1 = Object.assign(v,{labelTitleName:name})
+        this.labelOptionKey1 = [v.labelOptionKey];
+        this.labelTitleName1 = Object.assign(v,{labelTitleName:name}) //更新参数
+        this.labelObj.followState = v.labelOptionKey // 查询条件
 			}
       // this.labelOptionKey1 = v
-      // this.labelObj.followState = v.labelOptionKey
     },
     // 选择标签列表
     labelist() {
@@ -356,6 +408,23 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    // 数据还原
+    Restoration(){
+      // 优质标签
+      this.materialsArr = []
+      this.labelArr = []
+      // 回显数据为空
+      this.huixianArr = []
+      //跟进时间
+      this.labelObj.followTime = ""
+      this.labelTitleName0 = ""
+      this.labelOptionKey = []
+      //跟进状态
+      this.labelOptionKey1 =[]
+      this.labelTitleName1 = ""
+      this.labelObj.followState = ""
+      this.labelTitleName2 = []
     },
     // 检测屏幕高度变化
     inputType() {
