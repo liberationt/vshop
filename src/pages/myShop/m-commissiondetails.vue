@@ -92,7 +92,7 @@ export default {
 		onRefresh() {
 			setTimeout(() => {
 					this.Initialization()
-					this.$toast('刷新成功')
+					Toast.success('刷新成功');
 				 this.isLoading = false; //关闭下拉刷新效果
 			}, 500);
 		},

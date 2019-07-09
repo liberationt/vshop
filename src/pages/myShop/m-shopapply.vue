@@ -31,25 +31,34 @@
           <van-tab title="实用工具"></van-tab>
           <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
             <div class="loanFacility_common"> 
-              <div class="loanFacility_center" @click="goDetails(item.userDetailStatus,item.userCode)" v-for="item in shopPapplyList">
-                <div>
-                  <van-row>
-                    <van-col>
-                      <img :src=item.productLogo alt="">
-                    </van-col>
-                    <van-col>
-                      <p class="product_one">{{item.productName}}</p>
-                      <p class="product_two"> <span>{{item.userName}}</span> &nbsp&nbsp&nbsp <span>{{item.userPhoneEncrypt}}</span></p>
-                      <p class="product_three" v-if="item.orderStatus == 2">结算金额：{{item.commission}}</p>
-                      <p class="product_three">申请时间：{{item.dataCreateTime}}</p>
-                      <p class="product_three" v-if="item.orderStatus == 2">结算时间：{{item.settleDate}}</p>
-                    </van-col>
-                    <van-col class="right  van-col_right" :class="item.orderStatus ==2 ?'buttonAsh' : item.orderStatus ==0 ? 'buttonBlue' : 'buttonYellow'" >
-                      {{item.orderStatusDesc}}
-                    </van-col>  
-                  </van-row>  
+              <!-- 下拉加载 -->
+              <van-list
+                class="xialashuaxin"
+                v-model="loading"
+                :finished="finished"
+                finished-text="没有更多了"
+                @load="onLoad"
+              >
+                <div class="loanFacility_center" @click="goDetails(item.userDetailStatus,item.userCode)" v-for="item in shopPapplyList">
+                  <div>
+                    <van-row>
+                      <van-col>
+                        <img :src=item.productLogo alt="">
+                      </van-col>
+                      <van-col>
+                        <p class="product_one">{{item.productName}}</p>
+                        <p class="product_two"> <span>{{item.userName}}</span> &nbsp&nbsp&nbsp <span>{{item.userPhoneEncrypt}}</span></p>
+                        <p class="product_three" v-if="item.orderStatus == 2">结算金额：{{item.commission}}</p>
+                        <p class="product_three">申请时间：{{item.dataCreateTime}}</p>
+                        <p class="product_three" v-if="item.orderStatus == 2">结算时间：{{item.settleDate}}</p>
+                      </van-col>
+                      <van-col class="right  van-col_right" :class="item.orderStatus ==2 ?'buttonAsh' : item.orderStatus ==0 ? 'buttonBlue' : 'buttonYellow'" >
+                        {{item.orderStatusDesc}}
+                      </van-col>  
+                    </van-row>  
+                  </div>
                 </div>
-              </div>
+              </van-list>
               <!-- 弹窗 -->
               <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
                 <div>
@@ -67,13 +76,26 @@
               </van-popup>
             </div>
           </van-pull-refresh>
+          
+          
         </div>
       </van-tabs>
     </div>
   </div>
 </template>
 <script>
-import { Tab, Tabs, Search, DropdownMenu, DropdownItem, Popup, RadioGroup, Radio, Progress  } from "vant";
+import {
+  Tab,
+  Tabs,
+  Search,
+  DropdownMenu,
+  DropdownItem,
+  Popup,
+  RadioGroup,
+  Radio,
+  Progress,
+  List
+} from "vant";
 import loanFacility from "./ordertools/loanFacility.vue";
 export default {
   components: {
@@ -87,6 +109,7 @@ export default {
     [RadioGroup.name]: RadioGroup,
     [Radio.name]: Radio,
     [Progress.name]: Progress,
+    [List.name]: List
   },
   data() {
     return {
@@ -103,16 +126,20 @@ export default {
       ],
       moneyShow: false,
       radioName: "",
-      shopPapplyList:{},
-      nameOphone:""
+      shopPapplyList: {},
+      nameOphone: "",
+      loading: false,
+      finished: false,
+      total:"",
+      pageNum:0
     };
   },
   mounted() {
-    this.Initialization(1)
+    // this.Initialization();
   },
   methods: {
-    changeMenu(){
-      this.Initialization(1)
+    changeMenu() {
+      this.Initialization();
     },
     parentMethod() {
       // this.$refs.loanFacility.makeMoney(); //过this.$refs.ref.method调用
@@ -121,28 +148,62 @@ export default {
       this.$router.push({ path: "./myshop" });
     },
     onvanTabs(v) {
-      this.Initialization(1)
+      this.Initialization(1);
     },
-    search() { this.Initialization(1) },
+    search() {
+      this.Initialization(1);
+    },
+    //下拉刷新
     onRefresh() {
       setTimeout(() => {
-        this.Initialization(1)
-        this.$toast("刷新成功");
+        this.Initialization(1);
+        Toast.success('刷新成功');
         this.isLoading = false;
         this.count++;
       }, 500);
     },
+    // 上拉加载
+    onLoad() {
+      this.pageNum+=1
+      this.Initialization()
+      setTimeout(() => {
+        // if(this.total < 10) {
+        //   this.loading = false;
+        //   console.log(3)
+        // } else {
+          // this.pageNum+=1
+          // this.Initialization()
+        // }
+        // this.loading = true
+        // 加载状态结束
+        // 数据全部加载完成
+        // if (this.list.length >= 40) {
+        //   this.finished = true;
+        // }
+      }, 500);
+    },
     // 跳转到详情
-    goDetails(code,userCode) {
-      if(code == 1){
-        this.$router.push({ path: "./muserdetails?code="+userCode });
+    goDetails(code, userCode) {
+      if (code == 1) {
+        this.$router.push({ path: "./muserdetails?code=" + userCode });
       }
     },
-    Initialization(i){
-      this.request("wisdom.vshop.productOrder.queryPageListByType",{queryStr :this.nameOphone,productType:this.active, pageNum:i,pageSize:10,orderStatus:this.orderStatus == "''"?"":this.orderStatus}).then(data=>{
-        console.log(data)
-        this.shopPapplyList = data.data.dataList
-      }).catch(err=>{console.log(err)})
+    Initialization(i) {
+      this.request("wisdom.vshop.productOrder.queryPageListByType", {
+        queryStr: this.nameOphone,
+        productType: this.active,
+        pageNum: this.pageNum,
+        pageSize: 10,
+        orderStatus: this.orderStatus == "''" ? "" : this.orderStatus
+      })
+        .then(data => {
+          console.log(data);
+          this.shopPapplyList = data.data.dataList;
+          this.total = data.total
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
@@ -215,38 +276,38 @@ export default {
   }
 }
 .loanFacility_common {
-    .van-col_right{
-      height: 22px;
-      width: 60px;
-      border-radius:3px;
-      line-height: 22px;
-      font-size: 12px;
-      font-weight: bold;
-      text-align: center;
-      position: absolute;
-      right: 15px;
-      // top: 15px;
-    }
+  .van-col_right {
+    height: 22px;
+    width: 60px;
+    border-radius: 3px;
+    line-height: 22px;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    position: absolute;
+    right: 15px;
+    // top: 15px;
+  }
   .buttonBlue {
-    border: 1px solid #4597FB;/*no*/
-    color: #4897FF;
-    background-color: #E3EFFE;
+    border: 1px solid #4597fb; /*no*/
+    color: #4897ff;
+    background-color: #e3effe;
   }
   .buttonAsh {
-    border: 1px solid #CFCFCF;/*no*/
+    border: 1px solid #cfcfcf; /*no*/
     color: #999999;
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
   }
   .buttonYellow {
-    border: 1px solid #FE951E;/*no*/
-    color: #FE951E;
-    background-color: #FEF1E3;
+    border: 1px solid #fe951e; /*no*/
+    color: #fe951e;
+    background-color: #fef1e3;
   }
   .loanFacility_center {
-      background-color: #fff;
-      width: 345px;
-      border-radius: 5px;
-      padding: 19px 15px;
+    background-color: #fff;
+    width: 345px;
+    border-radius: 5px;
+    padding: 19px 15px;
     .van-row {
       img {
         width: 70px;
@@ -255,23 +316,23 @@ export default {
       }
       line-height: 26px;
       .product_one {
-       font-size:17px;
-        font-family:PingFang-SC-Bold;
-        font-weight:bold;
-        color:rgba(51,51,51,1);
+        font-size: 17px;
+        font-family: PingFang-SC-Bold;
+        font-weight: bold;
+        color: rgba(51, 51, 51, 1);
         margin-top: -8px;
       }
       .product_two {
-        font-size:14px;
-        font-family:PingFang-SC-Medium;
-        font-weight:bold;
-        color:rgba(51,51,51,1);
+        font-size: 14px;
+        font-family: PingFang-SC-Medium;
+        font-weight: bold;
+        color: rgba(51, 51, 51, 1);
       }
-      .product_three{
-        font-size:12px;
-        font-family:PingFang-SC-Regular;
-        font-weight:bold;
-        color:rgba(153,153,153,1);
+      .product_three {
+        font-size: 12px;
+        font-family: PingFang-SC-Regular;
+        font-weight: bold;
+        color: rgba(153, 153, 153, 1);
         line-height: 18px;
       }
       .buttonyellow {

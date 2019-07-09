@@ -31,7 +31,11 @@
                 </van-row>  
                 <van-row class="van-row">
                   <van-col span="8">申请状态</van-col> 
-                  <van-col span="16" :class="active == 0 ?'He' : active == 1 ?'Lv' : 'wr'">{{item.withdrawDesc}}</van-col> 
+                  <van-col span="16" :class="active == 0 ?'He' : active == 1 ?'Lv' : 'Wr'">{{item.withdrawDesc}}</van-col> 
+                </van-row>  
+                <van-row class="van-row" v-if="active == 2">
+                  <van-col span="8">失败说明</van-col> 
+                  <van-col span="16" class="Wr paddingWr">{{item.description}}</van-col> 
                 </van-row>  
               </div>
             </div>
@@ -115,6 +119,9 @@ export default {
   }
   .Wr{
     color: #FF514C;
+  }
+  .paddingWr{
+    padding-right: 10px;
   }
   .He {
     color: #333333;

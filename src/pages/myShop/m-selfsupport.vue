@@ -44,7 +44,7 @@ export default {
     },
     onRefresh() {
       setTimeout(() => {
-        this.$toast("刷新成功");
+        Toast.success('刷新成功');
         this.isLoading = false;
         this.count++;
       }, 500);

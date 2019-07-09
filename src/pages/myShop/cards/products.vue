@@ -14,23 +14,12 @@
               <span>{{item.settle}}</span>
             </p>
           </van-col>
-          <van-col class="right">
+          <van-col>
             <button :class="item.agentStatus == 0 ?'buttonBlue':'buttonyellow'" @click.stop="makeMoney(item.agentStatus,item.productCode)">{{item.agentStatusName}}</button>
           </van-col>
         </van-row>  
       </div>
     </van-pull-refresh>
-    <!-- 下拉刷新 -->
-    <van-list
-      v-if="productList0.length>=5"
-      class="xialashuaxin"
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
-    </van-list>
-    <!-- 弹窗 -->
     <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
       <div>
         <p class="product_message">确认代理后您将获得该产品 专属推广链接，是否确认？</p>
@@ -51,13 +40,12 @@
   </div>
 </template>
 <script>
-import { Popup, RadioGroup, Radio, List, Toast, Dialog } from "vant";
+import { Popup, RadioGroup, Radio, Toast, Dialog } from "vant";
 export default {
   components: {
     [Popup.name]: Popup,
     [RadioGroup.name]: RadioGroup,
     [Radio.name]: Radio,
-    [List.name]: List,
     [Dialog.name]: Dialog
   },
   data() {
@@ -65,8 +53,6 @@ export default {
       moneyShow: false,
       radioName: "1",
       productList0: [],
-      loading:false,
-      finished:false,
       isLoading: false,
       count: 0,
       showStatus:"",
@@ -112,16 +98,16 @@ export default {
     Initialization(num,i) {
       this.request("wisdom.vshop.product.queryH5AgentProducts", {
         productType: num,
-        pageNum: i,
-        pageSize: 10
+        pageNum: 1,
+        pageSize: 50
       })
         .then(data => {
-          console.log(data);
-          if(num==0){
-            this.showStatus = data.data.showStatus
-            this.productList0 = data.data.dataList;
-            this.storeStatus = data.data.storeStatus
-            this.total = data.total
+          this.showStatus = data.data.showStatus
+          this.productList0 = data.data.dataList;
+          this.storeStatus = data.data.storeStatus
+          this.total = data.total
+          if(i==1){
+            Toast.success('刷新成功');
           }
         })
         .catch(err => {
@@ -149,26 +135,10 @@ export default {
     onRefresh() {
       setTimeout(() => {
         // this.$toast('刷新成功');
-        this.Initialization(0);
-        Toast.success('刷新成功');
-        this.count++;
+        this.Initialization(0,1);
         this.isLoading = false;
         
       }, 500);
-    },
-    onLoad(){
-       // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < this.total; i++) {
-          this.Initialization(0,i)
-        }
-        // 加载状态结束
-        this.loading = false;
-        // 数据全部加载完成
-        if (this.productList0.length <=10) {
-          this.finished = true;
-        }
-      }, 2000);
     },
     tanchuang(){
       if(this.storeStatus == 0){
@@ -187,7 +157,7 @@ export default {
     },
   },
   mounted() {
-    this.Initialization(0,1);
+    this.Initialization(0);
   }
 };
 </script>
@@ -234,6 +204,8 @@ export default {
       }
     }
     button {
+      position: absolute;
+      right: 10px;
       width: 70px;
       border-radius: 15px;
       height: 29px;

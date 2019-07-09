@@ -74,11 +74,12 @@
 	</div>
 </template>
 <script>
-import { Icon } from 'vant';
+import { Icon, Dialog } from 'vant';
 
 export default {
 	components:{
-		[Icon.name]:Icon
+		[Icon.name]:Icon,
+		[Dialog.name]:Dialog,
 	},
 	data(){
 		return{
@@ -91,7 +92,13 @@ export default {
 		},
 		frozenmoney(){
 			if(this.mycommission.bindBankcardStatus == 0 ){
-				this.$router.push({path:'./bankcard'}) // 绑卡
+				
+				Dialog.alert({
+					message: '提现请先去绑定银行卡',
+					confirmButtonText:'请去绑定'
+				}).then(() => {
+					this.$router.push({path:'./bankcard'}) // 绑卡
+				});
 			} else {
 				this.$router.push({path:'./commissionwithdrawal'})  //提现
 			}
