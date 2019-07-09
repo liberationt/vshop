@@ -3,13 +3,13 @@
 		<header>
 			<van-nav-bar title='抢单侠微店' fixed></van-nav-bar>
 		</header>
-		<div class="undershelf">
-			<div class="bannerlogo">
+		<div class="bannerlogo">
 				<div>
 					<img src="./imgs/xiajia.png" alt="">
 				</div>
 				<p>该产品已下架</p>
 			</div>
+		<div class="undershelf">
 			<div class="havemoneytop" v-show="showUMoney">
 				<div @click="tohavemoney" class="havamoneyImg"><img :src=havemoneyImg alt=""></div>
 				<div class="close" @click="closeTost" v-show="isshow"><img src="../shareShop/images/close.png" alt=""></div>
@@ -28,12 +28,12 @@
 				</div>
 			</div>
 			<div class="listdatabot">
-				<div>
-					<p style="font-size:16px;color:#FE951E">{{item.amount}}</p>
+				<div class="listrightleft">
+					<p style="font-size:14px;font-weight:bold;color:#FE951E">{{item.amount}}</p>
 					<p>可用额度 (元)</p>
 				</div>
 				<div>
-					<p>期限：<span>{{item.limit}}个月</span></p>
+					<p>期限：<span style="font-weight:bold">{{item.limit}}</span></p>
 					<p>最快当天到账</p>
 				</div>
 				<div class="apply" @click="toproductnamedetail(item.productCode)">立即申请</div>
@@ -143,32 +143,32 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-	.undershelf{
-		background: #f1f1fb;
-		min-height: 500px;
-		.bannerlogo{
-			text-align: center;
-			padding-top:15px;
-			height:138px;
-			background: #ffffff;
-			font-size:15px;
-			color:#333333;
-			img{
-				width:131px;
-				height:79px;
-			}
-			p{
-				margin-top: 15px;
-			}
+	.bannerlogo{
+		text-align: center;
+		padding-top:15px;
+		height:138px;
+		background: #ffffff;
+		font-size:15px;
+		color:#333333;
+		img{
+			width:131px;
+			height:79px;
+		}
+		p{
+			margin-top: 15px;
 		}
 	}
+	.undershelf{
+		background: #f1f1fb;
+		padding:2px 15px 30px;
+		
+	}
 	.havemoneytop{
-			height:95px;
-			margin-bottom: 15px;
-			background: red;
+			height:103px;
+			margin:12px 0;
 			position: relative;
 			.havamoneyImg{
-				height:95px;
+				height:103px;
 				img{
 					width:100%;
 					height:100%;
@@ -191,6 +191,7 @@ export default {
 			align-items: center;
 			padding:0 15px;
 			font-size:12px;
+			border-radius: 4px;
 			color:#4897FF;
 			margin-bottom: 5px;
 			img{
@@ -199,15 +200,23 @@ export default {
 				margin-right: 8px;
 			}
 		}
-			.listdata{
+		.listdata{
 		margin-bottom:10px;
 		background: #ffffff;
+		border-radius: 4px;
 		.listdatatop{
-			height:53px;
-			border-bottom:1px solid #E7E7E7 /*no*/;
-			padding:0 15px;
 			display: flex;
+			padding:0 15px;
+			position: relative;
 			align-items: center;
+			border-bottom: 1px dashed #efefef;
+			height:58px;
+			font-size:12px;
+			color:#333333;
+			.listrightleft{
+				width:100px;
+				margin-right: 20px;
+			}
 			img{
 				width:33px;
 				height:33px;
@@ -221,17 +230,21 @@ export default {
 			p{
 				font-size: 11px;
 				color:#999999;
-				margin-top: 3px;
 			}
 		}
 		.listdatabot{
 			display: flex;
 			padding:0 15px;
-			justify-content: space-between;
+			position: relative;
 			align-items: center;
 			height:58px;
 			font-size:12px;
 			color:#333333;
+			.listrightleft{
+				width:100px;
+				border-right:1px solid #efefef;
+				margin-right: 20px;
+			}
 			div{
 				line-height:20px;
 				span{
@@ -244,6 +257,7 @@ export default {
 				font-weight: bold;
 				border-radius: 15px;
 				padding:5px 10px;
+				position:absolute;right:10px;
 			}
 		}
 	}
@@ -252,9 +266,9 @@ export default {
 		background: #4597FB;
 		border-radius: 25px;
 		text-align: center;
-		line-height:50px;
+		line-height:54px;
 		font-size: 16px;
 		color:#ffffff;
-		margin-top: 20px;
+		margin:20px 15px 0;
 	}
 </style>

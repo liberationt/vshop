@@ -9,7 +9,7 @@
 			<router-view @toparent='getdata'></router-view>
 		</div>
 		<footer class="shophome">
-			<van-tabbar v-model="active" @change="onchange">
+			<van-tabbar v-model="active" active-color="#07c160" @change="onchange">
 				<van-tabbar-item name="1"><router-link to="/shoppage"><div class="footbar"><img :src='this.active==1?srcs1:nosrc1'><span>店铺首页</span></div></router-link></van-tabbar-item>
 				<van-tabbar-item name="2"><router-link to="/relatedproducts"><div class="footbar"><img :src='this.active==2?srcs2:nosrc2'><span>相关产品</span></div></router-link></van-tabbar-item>
 				<van-tabbar-item name="3"><router-link to="/utilities"><div class="footbar"><img :src='this.active==3?srcs3:nosrc3'><span>实用工具</span></div></router-link></van-tabbar-item>

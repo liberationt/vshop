@@ -201,10 +201,10 @@ export default {
 			}
 		}
 		.havemoney{
-			height:95px;
+			height:103px;
 			position: relative;
 			.havamoneyImg{
-				height:95px;
+				height:103px;
 				img{
 					width:100%;
 					height:100%;

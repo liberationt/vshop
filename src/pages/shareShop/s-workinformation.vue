@@ -5,20 +5,11 @@
 		</header>
 		<div class="applireminder" v-show="toasttittle">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
 		<div class="applistap">
+			<div class="applistapbanner"><img src="./images/gongzuoxinxi.png" alt=""></div>
 			<div class="applistaplist">
-				<div><img src='./images/loanapply.png' alt=""></div>
 				<p>申请借款</p>
-			</div>
-			<div class="applistaplist">
-				<div><img src='./images/basic2.png' alt=""></div>
 				<p>基本信息</p>
-			</div>
-			<div class="applistaplist">
-				<div><img src='./images/job2.png' alt=""></div>
-				<p>工作信息</p>
-			</div>
-			<div class="applistaplist">
-				<div><img src='./images/add.png' alt=""></div>
+				<p class="apply">工作信息</p>
 				<p>补充信息</p>
 			</div>
 		</div>

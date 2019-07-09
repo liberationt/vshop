@@ -11,24 +11,24 @@
 				<h4><span></span>申请人信息</h4>
 				<div>
 					<p>
-						<span>手机号</span>
+						<span>手机号:</span>
 						<input type="number" :disabled='disableds' v-model="userPhone" oninput='if(value.length>11)value=value.slice(0,11)'>
 					</p>
 					<p v-show="isshow">
-						<span>验证码</span>
+						<span>验证码:</span>
 						<input type="number" v-model="verification" style="width:140px;" oninput='if(value.length>6)value=value.slice(0,6)'>
-						<i style='color:#4697FB' @click="obtain()&&flag">{{content}}</i>
+						<i style='color:#4697FB;padding:2px 0 0 8px;border-left:1px solid #4597fb;' @click="obtain()&&flag">{{content}}</i>
 					</p>
 					<p>
-						<span>姓名</span>
+						<span>姓名:</span>
 						<input type="text" v-model="userName">
 					</p>
 					<p>
-						<span>身份证号</span>
+						<span>身份证号:</span>
 						<input type="text" v-model="idCard" oninput='if(value.length>18)value=value.slice(0,18)'>
 					</p>
 					<p class="productcity" @click="tocity">
-						<span>工作城市</span>
+						<span>工作城市:</span>
 						<input type="text" v-model="city" readonly="value">
 					</p>
 				</div>
@@ -38,8 +38,8 @@
 				确认资料
 			</div>
 			<div class="recommender">
-				<span><img src="./images/animos.png" alt=""></span>
-				<span>推荐人：{{managerPhone}}</span>
+				<div><img src="./images/animos.png" alt=""></div>
+				<div class="recommeperson">推荐人：{{managerPhone}}</div>
 			</div>
 			<div v-show="flags" class="citystyle">
 				<van-area :area-list="areaList" :columns-num="2" title="请选择城市" @confirm="onAddrConfirm" @cancel='displar'/>
@@ -346,6 +346,7 @@ export default {
 		padding-bottom:25px;
 	}
 	.stiflimg{
+		width:100%;
 		height:157px;
 		img{
 			width:100%;
@@ -353,12 +354,15 @@ export default {
 		}
 	}
 	.applyinfor{
-		padding:0 15px;
 		background: #ffffff;
 		h4{
-			line-height: 44px;
+			// line-height: 44px;
+			display: flex;
+			align-items: center;
 			font-size:14px;
 			color:#4597FB;
+			padding:10px 15px;
+			border-bottom: 1px solid #efefef;
 			span{
 				display: inline-block;
 				height:18px;
@@ -369,12 +373,13 @@ export default {
 			}
 		}
 		div{
+			padding:0 15px;
 			p{
 				height:48px;
 				font-size:14px;
 				color:#333333;
-				line-height: 48px;
-				border-bottom:1px solid #E7E7E7;
+				line-height: 50px;
+				border-bottom:1px solid #EfEfEf;
 				span{
 					display:inline-block;
 					width:118px;
@@ -399,20 +404,30 @@ export default {
 		margin:30px 15px 60px;
 		border-radius: 25px;
 		text-align: center;
-		line-height: 50px;
+		line-height: 54px;
 		font-size:16px;
 		color:#ffffff;
 	}
 	.recommender{
+		display: flex;
+		z-index: 10px;
 		margin:0 97px;
 		height:35px;
-		// background: #E7F7FD;
-		border-radius:0px  18px   18px  0px;
+		position: relative;
 		line-height:35px;
 		color:#4597FB;
 		font-size:12px;
+		.recommeperson{
+			background:url('./images/tuijianren.png');
+			background-size:100%;
+			padding-left:30px;
+			margin-left:-22px;
+			width:164px;
+			height:35px;
+		}
 		img{
-			width:35px;height:35px;border-radius: 50%;margin-right: 10px;
+			width:35px;height:36px;border-radius: 50%;
+			position: relative;top:-.5px;
 		}
 	}
 	.citystyle{

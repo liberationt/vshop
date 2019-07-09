@@ -1,6 +1,6 @@
 <template>
-    <div class="maincontent">
-			<header class="pddingTop">
+    <div class="maincontent pddingTop">
+			<header>
 				<van-nav-bar
 					:title='tittle'
 					left-arrow
@@ -8,7 +8,7 @@
 				/>
 			</header>
       		<div class="productbannerimg">
-				<img :src=dataobject.productLogo alt="">
+				<div><div><img :src=dataobject.productLogo alt=""></div></div>
 				<p>{{tittle}}</p>
 			</div>
 			<!-- 信息 -->
@@ -36,7 +36,7 @@
 				<h3><span></span>推荐阅读</h3>
 				<ul>
 					<li v-for="(item,i) in dataobject.exhibitionContentList" :key="i" @click='totweets(item.exhibitionContentCode)'>
-						<div>
+						<div class="borderradus">
 							<img :src=item.photoPath alt="">
 						</div>
 						<div class="recommendright">
@@ -118,22 +118,34 @@ export default {
 </script>
 <style lang="less">
 .maincontent{
-	background: #f1f1fb
+	background: #f1f1fb;
 }
     .productbannerimg{
-			padding-top:10px;
+			padding-top:6px;
 			height:126px;
 			background: #ffffff;
 			text-align: center;
-			img{
-				width:72px;
-				height:72px;
+			>div{
+				margin:0 auto;
+				text-align: center;
+				width:80px;
+				height:80px;
+				border-radius: 50%;
+				padding:3px 3px 0;
+				border:1px solid #efefef;
+				div{
+					width:72px;height:72px;border-radius: 50%;overflow: hidden;
+				}
+				img{
+					width:72px;
+					height:72px;
+				}
 			}
 			p{
-				font-size:10px;
-				color:#E7493B;
+				font-size:18px;
+				color:#4597fb;
 				font-weight: bold;
-				margin-top: 10px;
+				margin-top: 2px;
 			}
 		}
 		.productinfor{
@@ -141,15 +153,15 @@ export default {
 			div{
 				margin-bottom:8px;
 				background:#ffffff;
+				border-radius: 4px;
 				padding:0 19px 12px 15px;
 				h3{
 					color:#4597FB;
 					font-size:14px;
-					line-height: 30px;
 					height:44px;
 					align-items: center;
 					display: flex;
-					border-bottom:1px solid #E7E7E7 /*no*/;
+					border-bottom:1px solid #EfEfEf /*no*/;
 					span{
 						display: inline-block;
 						width:3px; height:18px;
@@ -190,7 +202,7 @@ export default {
 				background: #4597FB;
 				border-radius: 25px;
 				text-align: center;
-				line-height:50px;
+				line-height:54px;
 				font-size:16px;
 				color:#ffffff;
 				margin:20px 0;
@@ -206,7 +218,7 @@ export default {
 				align-items: center;
 				display: flex;
 				padding-left:15px;
-				border-bottom:1px solid #E7E7E7 /*no*/;
+				border-bottom:1px solid #EFEFEF /*no*/;
 				span{
 					display: inline-block;
 					width:3px; height:18px;
@@ -220,16 +232,20 @@ export default {
 				display: flex;
 				justify-content: space-around;
 				align-items: center;
-				div{
+				>div{
 					display: flex;
 					align-items: center;
+					width:50%;
+					padding:0 15px;
+					// justify-content: center;
 					.guessimgs{
+						background: red;
 						width:48px;
 						height:48px;
 						border-radius: 5px;
-						background: red;
 						overflow: hidden;
 						margin-right: 10px;
+						margin-left:23px;
 						img{
 							width:100%;
 							height:100%;
@@ -246,13 +262,19 @@ export default {
 			ul{
 				padding-left:15px;
 				li{
-					border-bottom:1px solid #E7E7E7 /*no*/;
+					border-bottom:1px solid #EfEfEf /*no*/;
 					display: flex;
 					padding:15px 0;
-					img{
-						width:106px;
-						height:65px;
+					
+					.borderradus{
+						width:106px;height:65px;
+						border-radius: 4px;
+						overflow: hidden;
 						margin-right: 8px;
+						img{
+							width:106px;
+							height:65px;
+						}
 					}
 					.recommendright{
 						display: flex;

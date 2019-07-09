@@ -6,20 +6,11 @@
 		</header>
 		<div class="applireminder" v-show="toasttittle">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
 		<div class="applistap">
+			<div class="applistapbanner"><img src="./images/youqianhua.png" alt=""></div>
 			<div class="applistaplist">
-				<div><img src='./images/loanapply.png' alt=""></div>
-				<p>申请借款</p>
-			</div>
-			<div class="applistaplist">
-				<div><img src='./images/basic1.png' alt=""></div>
+				<p class="apply">申请借款</p>
 				<p>基本信息</p>
-			</div>
-			<div class="applistaplist">
-				<div><img src='./images/job1.png' alt=""></div>
 				<p>工作信息</p>
-			</div>
-			<div class="applistaplist">
-				<div><img src='./images/add.png' alt=""></div>
 				<p>补充信息</p>
 			</div>
 		</div>
@@ -183,7 +174,9 @@ export default {
 			display: flex;
 			justify-content: space-between;
 			margin:10px 0;
+			// align-items: center;
 			padding:0 15px;
+			line-height:54px;
 			font-size:14px;
 			.dropdowns{
 				margin-right: 15px;
@@ -205,26 +198,5 @@ export default {
 			font-size:16px;
 			text-align: center;
 		}
-		.applyloan{
-			background: #ffffff;
-			margin-bottom:8px;
-			h3{
-				height:39px;
-				line-height:39px;
-				display: flex;
-				align-items: center;
-				font-size:14px; 
-				color:#333333;
-				padding:0 15px;
-				border-bottom:1px solid #E7E7E7 /*no*/;
-				span{
-					display: block;
-					width:3px;
-					height:18px;
-					background: #4597FB;
-					border-radius: 1px;
-					margin-right: 8px;
-				}
-			}
-		}
+
 </style>

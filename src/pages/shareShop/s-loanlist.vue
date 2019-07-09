@@ -2,11 +2,12 @@
 	<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功' class="xialashuaxin">
   <div class="loanlistmain">
 		<div class="loanlisttop">
-			<div class="invitnum">邀请码6S89WH</div>
-			<div class="dropdown">
+			<div class="invitnum"><img src="./images/xiantiaobanner.png"/>邀请码 &nbsp;6S89WH</div>
+			<div class="dropdown dropdowns droploanlist">
 				<van-dropdown-menu>
 					<van-dropdown-item v-model="value1" @change="changelect" :options="option1" />
 				</van-dropdown-menu>
+				<img src="./images/drowupdown.png" alt="">
 			</div>
 		</div>
 	<div>
@@ -27,12 +28,12 @@
 					</div>
 				</div>
 				<div class="listdatabot">
-					<div>
-						<p style="font-size:16px;color:#FE951E">{{item.amount}}</p>
+					<div class="listrightleft">
+						<p style="font-size:14px;font-weight:bold;color:#FE951E">{{item.amount}}</p>
 						<p>可用额度 (元)</p>
 					</div>
 					<div>
-						<p>期限：<span>{{item.limit}}个月</span></p>
+						<p>期限：<span style="font-weight:bold">{{item.limit}}</span></p>
 						<p>最快当天到账</p>
 					</div>
 					<div class="apply">立即申请</div>
@@ -57,13 +58,13 @@ export default {
 			isLoading:false,
 			value1:'-1',
 			option1: [
-				{text:'全部',value:'-1'}
+				{text:'所有类型',value:'-1'}
 			],
 			dataList:[],
 			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
 			loading: false,//控制上拉加载的加载动画
 			pageNum:1,
-			pageSize:5,
+			pageSize:10,
 			inviterCode:'',
 		}
 	},
@@ -122,7 +123,7 @@ export default {
 								}
 							)
 						}
-						this.option1= [{text:'全部',value:'-1'}]
+						this.option1= [{text:'所有类型',value:'-1'}]
 						this.option1 =this.option1.concat(options2) 
 						this.dataList= data.data.dataList
 						this.isLoading = false; //关闭下拉刷新效果
@@ -138,14 +139,6 @@ export default {
             if(this.loading){
                 this.onLoad();
             }
-		},
-		inits(){
-			this.isLoading = false;//下拉加载中
-			this.finished = false;
-			this.loading = false
-			this.dataList = []
-			this.pageNum=1
-			this.onLoad()
 		},
 		// 下拉刷新
 		onRefresh(){
@@ -176,7 +169,6 @@ export default {
 					this.inviterCode = data.data.inviterCode
 					this.dataList = this.dataList.concat(data.data.dataList)
 					this.loading = false
-					console.log(data.data.dataList.length)
 					if(data.data.dataList<this.pageSize){
 						this.finished = true
 					}
@@ -190,11 +182,9 @@ export default {
 							}
 						)
 					}
-					this.option1= [{text:'全部',value:'-1'}]
+					this.option1= [{text:'所有类型',value:'-1'}]
 					this.option1 =this.option1.concat(options2) 
-					// data.data.dataList.map((item)=>{
-					// 	this.dataList.push(item)
-					// })
+					this.$emit('toparent',data.data.storeName,1,data.data.inviterCode)
 				}
 			})
 			}, 500);
@@ -206,8 +196,8 @@ export default {
 		}
 	},
 	mounted(){
-		// window.scrollTo(0,0);
-		// statistics.page("loanlist", "shppagenum");
+		window.scrollTo(0,0);
+		statistics.page("loanlist", "shppagenum");
 	}
 }
 </script>
@@ -215,27 +205,44 @@ export default {
 	.loanlistmain{
 		background: #f1f1fb;
 		min-height: 500px;
+		padding-bottom:20px;
 		.loanlisttop{
 			background: #ffffff;
 			.invitnum{
+				position: relative;
 				height:40px;
 				font-size:11px;
-				line-height: 40px;
-				border-bottom:1px solid #E7E7E7 /*no*/;	
+				line-height: 38px;
+				border-bottom:1px solid #EfEfEf /*no*/;	
 				text-align: center;
 				color:#999999;
+				img{
+					position: absolute;
+					left:0;
+					top:50%;
+					margin-top:-5px;
+				}
 			}
 		}
 		.dropdown{
 			width:100%;
+			margin-bottom:15px;
+			position: relative;
+			img{
+				position: absolute;
+				top:22px;
+				width:11px;height:6px;
+				right:20px;
+			}
 		}
 		.listdata{
-			margin:15px;
+			margin:10px 15px;
 			margin-bottom:10px;
 			background: #ffffff;
+			border-radius: 4px;
 			.listdatatop{
 				height:53px;
-				border-bottom:1px solid #E7E7E7 /*no*/;
+				border-bottom:1px dashed #EfEfEf /*no*/;
 				padding:0 15px;
 				display: flex;
 				align-items: center;
@@ -252,17 +259,21 @@ export default {
 				p{
 					font-size: 11px;
 					color:#999999;
-					margin-top: 3px;
 				}
 			}
 			.listdatabot{
 				display: flex;
 				padding:0 15px;
-				justify-content: space-between;
+				position: relative;
 				align-items: center;
 				height:58px;
 				font-size:12px;
 				color:#333333;
+				.listrightleft{
+					width:100px;
+					border-right:1px solid #efefef;
+					margin-right: 20px;
+				}
 				div{
 					line-height:20px;
 					span{
@@ -275,6 +286,7 @@ export default {
 					font-weight: bold;
 					border-radius: 15px;
 					padding:5px 10px;
+					position:absolute;right:10px;
 				}
 			}
 		}

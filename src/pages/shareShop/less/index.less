@@ -63,6 +63,9 @@
         color:#4597FD !important;
     }
 }
+.droploanlist .van-dropdown-menu__title{
+    color:#333 !important;
+}
 //导航栏的footer banner
 .shophome [class*=van-hairline]::after {
     border:none !important;
@@ -81,36 +84,47 @@
 .applireminder{
     height:40px;
     background: #FEF1E3;
-    line-height:40px;
+    line-height:44px;
     font-size:13px;
     color:#FE951E;
     padding:0 15px;
     position: relative;
     margin-bottom:10px;
     img{
-        width:11px;height:11px;
+        width:16px;height:16px;
         position: absolute;
         right:30px;
-        top:15px;
+        top:12px;
     }
+}
+//下拉框右边箭头
+.van-dropdown-menu__title::after{
+    color:#4597FB
 }
 //进度条
 .applistap{
     background:#ffffff;
     height:96px;
-    padding:0 24px;
+    flex-direction: column;
+    padding:0 22px;
     font-size:13px;
     margin:10px 0;
     color: #BFBFBF;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    .applistapbanner{
+        padding:0 2px;
+    }
     .applistaplist{
+        margin-top: 6px;
         display: flex;
-        flex-direction: column;
-        img{
-            width:46px;height:46px;
-            margin-bottom: 6px;
+        width:100%;
+        justify-content: space-between;
+        .apply{
+            font-size:13px;
+            color:#4597FD;
+            font-weight: bold;
         }
     }
 }
@@ -131,13 +145,15 @@
     margin-bottom:8px;
     h3{
         height:39px;
-        line-height:39px;
         display: flex;
         align-items: center;
         font-size:14px; 
-        color:#333333;
+        color:#4597fb;
         padding:0 15px;
-        border-bottom:1px solid #E7E7E7 /*no*/;
+        border-bottom:1px solid #EfEfEf /*no*/;
+        label{
+            color:#4597fb;
+        }
         span{
             display: block;
             width:3px;
@@ -170,36 +186,34 @@
         margin-right: 22px;
         height: 40px;
         margin-bottom: 10px;
-        font-size:13px;
+        font-size:14px;
         line-height: 40px;
         border-radius: 2px;
         display: inline-block;
         color: #333333;
         text-align: center;
+        line-height:41px;
         background: #F4F4F4;
+        border-radius: 4px;
     }
     li.checked{
-        background-color:#0CF; color:#fff; 
-        border:1px #fff solid;
+        background-color:#4597FB; color:#fff; 
     }
-   
-    // .chooser-list{
-    //     margin-right: -22px;
-    // }
-
 }
+footer .van-tabbar-item--active span{
+    color:#4597FB !important;
+    font-weight:bold;
+}
+footer .van-tabbar-item span{
+    color:#999999;
+}
+// inactive-color
 .srelate_menu .van-tabs--card > .van-tabs__wrap .van-tabs__nav--card .van-tab:last-child{
     border-right:none;
 }
 .optionstyles{
     padding:15px;
     overflow: hidden;
-    // .chooser-list{
-    //     margin-right: -22px; 
-    //     li{
-    //         width:161px !important;
-    //     }
-    // }
     ul{
         margin-right:-23px;
     }
@@ -208,17 +222,17 @@
         margin-right: 22px;
         height: 40px;
         margin-bottom: 10px;
-        font-size:13px;
-        line-height: 40px;
+        font-size:14px;
+        line-height: 44px;
         border-radius: 2px;
         display: inline-block;
         color: #333333;
         text-align: center;
         background: #F4F4F4;
+        border-radius: 4px;
     }
     li.checked{
-        background-color:#0CF; color:#fff; 
-        border:1px #fff solid;
+        background-color:#4597FB; color:#fff; 
     }
 }
 .applyloanhouse{
@@ -228,7 +242,7 @@
         justify-content: space-between;
         align-items: center;
         height:50px;
-        border-bottom: 1px solid #E7E7E7 /*no*/;
+        border-bottom: 1px solid #EfEfEf /*no*/;
         font-size:14px;
         color:#333333;
         overflow: hidden;
@@ -244,6 +258,10 @@
         border:none;
     }
     
+}
+.applyhoselones{
+    margin-top:-12px;
+    // background: red;
 }
 .shophome{
     .van-hairline--top-bottom{
