@@ -122,7 +122,6 @@ export default {
 			padding:50px 0;
 		}
 		.shophome{
-			background:red !important;
 			.footbar{
 				display: flex;
 				align-items: center;

@@ -46,8 +46,6 @@ export default {
 		}
     },
     methods:{
-		todolist(){
-		},
 		//网贷
 		tonetloan(bannerCode){
 			this.$router.push('/loanlist?productDetailType='+bannerCode)
@@ -123,7 +121,7 @@ export default {
 	.tochiose{
 		display: flex;
 		justify-content: space-between;
-		margin-bottom: 14px;
+		margin: 14px 0 11px;
 		flex-wrap: wrap;
 		div{
 			width:166px;height:51px;
@@ -150,6 +148,7 @@ export default {
 		height:40px;
 		background: #ffffff;
 		display: flex;
+		border-radius: 4px;
 		justify-content: space-between;
 		align-items: center;
 		padding:0 15px;
@@ -165,9 +164,10 @@ export default {
 	.listdata{
 		margin-bottom:10px;
 		background: #ffffff;
+		border-radius: 5px;
 		.listdatatop{
 			height:53px;
-			border-bottom:1px solid #E7E7E7 /*no*/;
+			border-bottom:1px dashed #E7E7E7 /*no*/;
 			padding:0 15px;
 			display: flex;
 			align-items: center;
@@ -200,6 +200,9 @@ export default {
 				span{
 					color:#FE951E;
 				}
+			}
+			>div:nth-of-type(1){
+				border-right:2px solid #e7e7e7;
 			}
 			.apply{
 				background: #4597FB;

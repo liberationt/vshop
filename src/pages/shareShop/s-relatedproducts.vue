@@ -10,7 +10,7 @@
 					</van-tabs>
 				</div>
 			</div>
-			<div class="invitenum">邀请码{{inviterCode}}</div>
+			<div class="invitenum"><img src="./images/xiantiaobanner.png"/>邀请码 &nbsp;{{inviterCode}}</div>
 		</header>
 		<div class="havemoney" >
 			<div class="havemoneytop" v-show="showUMoney">
@@ -154,6 +154,11 @@ export default {
 		font-size: 11px;
 		color:#999999;
 		line-height:11px;
+		position: relative;
+		img{
+			position: absolute;
+			left:0;
+		}
 	}
 	.srelatop{
 		height:110px;
@@ -185,7 +190,6 @@ export default {
 		height:100%;
 		.havemoneytop{
 			height:95px;
-			margin-bottom: 15px;
 			position: relative;
 			.havamoneyImg{
 				height:95px;

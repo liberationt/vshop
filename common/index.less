@@ -18,6 +18,10 @@ body,html{
 }
 .pddingTop{
     padding-top: 45px;
+    border-bottom:1px solid #E7E7E7;
+    >header{
+        border-bottom:1px solid #E7E7E7;
+    }
 }
 button {
     outline:0;
@@ -38,12 +42,16 @@ button {
 .van-nav-bar__title{
     color: #333;
     font-size: 17px;
+    line-height:50px;
 }
 .van-nav-bar {
     position: fixed;
     top: 0px;
     width: 375px;
     z-index: 999 !important;
+}
+.van-nav-bar__right{
+    line-height: 40px;
 }
 [class*=van-hairline]::after {
     border: 1px solid #E7E7E7;/*no*/
