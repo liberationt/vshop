@@ -119,7 +119,8 @@ export default {
       count: 0,
       seal_control: false,
       pwdNum: 0,
-      contentT:""
+      contentT:"",
+      tixian:0
     };
   },
   methods: {
@@ -142,7 +143,7 @@ export default {
     },
     // 确认提现
     withdrawal() {
-
+       this.tixian = 0 // 提现
       if(Number(this.money) < this.withdrawalList.singleMinAmount || Number(this.money) > this.withdrawalList.singleMaxAmount){
         this.$toast("提现金额范围为"+this.withdrawalList.singleMinAmount+"-"+this.withdrawalList.singleMaxAmount)
         return false
@@ -155,25 +156,28 @@ export default {
         //havePayPassword 0未设置，1已设置
         this.psdshow = true;
         this.pwdNum = 0;
+        this.tixian = 0 // 提现
       } else {
-				// if(this.money <= this.withdrawalList.singleMaxAmount || this.money >= this.withdrawalList.singleMinAmount){
-				// 	Toast('请输入'+this.withdrawalList.singleMinAmountAsFormat+'到'+this.withdrawalList.singleMaxAmountAsFormat+'范围内提现金额')
-				// } else {
-					this.psdshow = true;
-					this.stepNum = 2;
-          this.pwdNum = 2;
-          this.passwordo = ""
-          this.passwordT = ""
-				// }
+        this.psdshow = true;
+        this.stepNum = 2;
+        this.pwdNum = 2;
+        this.passwordo = ""
+        this.passwordT = ""
       }
     },
     // 设置密码
     setUp() {
       this.psdshow = true
+      this.stepNum = 1 // 设置交易密码
+      this.tixian = 1 // 设置交易密码
+      this.pwdNum = 1 // 判断从哪进
     },
     // 取消
     getCancel() {
       this.psdshow = false;
+      this.passwordo = ""
+      this.passwordT = ""
+      this.flag = true
     },
     // 交易密码弹框
     transactionPwd(v) {
@@ -250,7 +254,7 @@ export default {
         console.log(this.passwordo)
         Toast("交易密码有误！请重新输入");
       } else {
-        if( this.withdrawalList.havePayPassword == 1 ){ // 设置交易密码，提现
+        if( this.withdrawalList.havePayPassword == 1 && this.tixian == 0){ // 设置交易密码，提现
           this.nextStep2()
         } else {
           this.stepNum = 3;
@@ -259,7 +263,6 @@ export default {
       }
     },
     nextStep2() {
-  
       if (this.passwordT == "" && this.withdrawalList.havePayPassword != 1) {
         Toast("交易密码不能为空");
       } else if (this.passwordT.length < 6 && this.withdrawalList.havePayPassword != 1) {
@@ -267,7 +270,7 @@ export default {
       } else if (this.passwordT != this.passwordo && this.withdrawalList.havePayPassword != 1) {
         Toast("两次密码不一致！请重新输入");
       } else {
-        if (this.pwdNum == 2) { // 设置过密码 提现
+        if (this.pwdNum == 2 || this.tixian == 0) { // 设置过密码 提现
           this.flag = false;
           this.request("wisdom.vshop.withdraw.apply", {amount : this.money , password :this.passwordo})
             .then(data => {
@@ -285,8 +288,9 @@ export default {
           })
             .then(data => {
               console.log(data);
-              this.stepNum = 1;
-              this.psdshow = false;
+              this.stepNum = 1
+              this.tixian == 0 // 设置交易密码
+              this.psdshow = false
             })
             .catch(err => {
               console.log(err);
