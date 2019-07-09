@@ -50,7 +50,7 @@
 		<div class="tweetsList">
 			<h4><span></span>推荐阅读</h4>
 			<div v-for="(item,i) in dataList.exhibitionContentList" :key="i" @click="todetails(item.exhibitionContentCode)">
-				<div><img :src=item.photoPath alt=""></div>
+				<div class="tweetslistbanner"><img :src=item.photoPath alt=""></div>
 				<div class="listright">
 					<p>{{item.contentTitle}}</p>
 					<span>{{item.dataCreateTime}}</span>
@@ -220,7 +220,7 @@ export default {
 		margin-top:-4px;
 		// padding-bottom:25px;
 		.personalinfor{
-			padding:15px;
+			padding:15px 15px 10px;
 			background-size:100% 100%;
 			header{
 				display: flex;
@@ -271,19 +271,20 @@ export default {
 						margin-right: 10px;
 					}
 					.identity{
+						margin-top:3px;
 						display: block;
 						background: #F3B13E;
 						font-size:10px;
 						color:#ffffff;
 						padding:0 8px;
 						height:17px;
-						line-height: 17px !important;
+						line-height: 21px !important;
 						border-radius: 3px;
 						img{
 							width:10px;
 							height:12px;
 							margin-right: 5px;
-							margin-top: -1px;
+							margin-top: -4px;
 						}
 					}
 				}
@@ -331,6 +332,7 @@ export default {
 					background: #ffffff;
 					margin-bottom:10px;
 					display: flex;
+					border-radius: 10px;
 					align-items: center;
 					padding-left:34px;
 					color:#333333;
@@ -356,22 +358,30 @@ export default {
 						margin-right: 19px;
 					}
 				}
+				>div:last-child{
+					margin-bottom:0;
+				}
 			}
 		}
 		.tweetsList{
-			background: #ffffff;
-			padding-left:15px;
-			padding-bottom:15px;
+			background: hsl(0, 0%, 100%);
+			padding-bottom:35px;
 			>div{
+				margin:0 15px;
 				height:95px;
 				display: flex;
 				align-items: center;
 				font-size:12px;
 				color:#666666;
-				img{
-					width:106px;
-					height:65px;
+				border-bottom:1px solid #E7E7E7;
+				.tweetslistbanner{
+					width:106px;height:65px;border-radius: 4px;
+					overflow: hidden;
 					margin-right: 8px;
+					img{
+						width:106px;
+						height:65px;
+					}
 				}
 				p{
 					margin-bottom:18px;
@@ -379,13 +389,18 @@ export default {
 					color:#333333;
 				}
 			}
+			>div:last-child{
+				border:none;
+			}
 			h4{
 				display: flex;
 				align-items: center;
 				height:44px;
 				line-height:44px;
+				padding-left:15px;
 				font-size:17px;
 				color:#4597FB;
+				border-bottom:1px solid #E7E7E7;
 				span{
 					display: inline-block;
 					height:18px;
