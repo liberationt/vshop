@@ -4,18 +4,13 @@
       <div class="productCard_center" v-for="item in productList1" @click="makeMoney(item.agentStatus,item.productCode)">
         <div>
           <van-row>
-            <van-col>
+            <van-col :span="10">
               <img :src=item.productLogo alt="">
             </van-col>
-            <van-col>
+            <van-col :span="14">
               <p class="product_title">{{item.productName}}</p>
               <p class="product_people">申请人数: <span>{{item.applyNum}}</span></p>
-              <p class="product_people" >批卡率: <span>{{item.batchRate}}</span>
-                <van-progress
-                  color="#F3B13E"
-                  :percentage='item.batchRateIcon? item.batchRateIcon : 0'
-                />
-              </p>
+              <p class="product_people" >批卡率: <span>{{item.batchRate}}</span></p>
             </van-col>
           </van-row>  
         </div>
@@ -34,16 +29,6 @@
         </div>
       </div>
     </van-pull-refresh>
-    <!-- 下拉刷新 -->
-    <van-list
-      v-if="productList1.length>=5"
-      class="xialashuaxin"
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
-    </van-list>
     <!-- 弹窗 -->
     <van-popup class="ziying van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
       <div>
@@ -64,7 +49,12 @@
     </footer>
     <!-- 弹出层 -->
     <van-popup v-model="showPoster" :close-on-click-overlay=false>
-      <div v-if="logoUrl == ''" ref="imageWrapper">
+
+
+
+
+
+      <div v-show="logoUrl == ''" ref="imageWrapper">
         <div class="popup_img_op">
           <img :src="'data:image/png;base64,'+showPosterList.bannerUrl" alt="">
         </div>
@@ -90,10 +80,21 @@
           </van-row>
         </div>
       </div>
-      <div  v-if="logoUrl != ''" class="haibaoIMg">
+
+
+
+      <div  v-show="logoUrl != ''" class="haibaoIMg">
         <img :src=logoUrl alt="">
       </div>
-      <div class="popu_close" @click="showPoster = false">
+
+
+
+
+
+
+
+
+      <div class="popu_close" @click="showPoster = false;logoUrl = ''">
         <img src="../imgs/turn_off@2x.png" alt="">
       </div>
     </van-popup>
@@ -102,14 +103,12 @@
 <script>
 import { qrcanvas } from "qrcanvas";
 import html2canvas from "html2canvas";
-import { Popup, RadioGroup, Radio, Progress, Toast, List, Dialog } from "vant";
+import { Popup, RadioGroup, Radio, Toast, Dialog } from "vant";
 export default {
   components: {
     [Popup.name]: Popup,
     [RadioGroup.name]: RadioGroup,
     [Radio.name]: Radio,
-    [Progress.name]: Progress,
-    [List.name]: List,
     [Dialog.name]: Dialog
   },
   data() {
@@ -224,31 +223,16 @@ export default {
     onRefresh() {
       setTimeout(() => {
         // this.$toast('刷新成功');
-        this.Initialization(1);
-        Toast.success("刷新成功");
+        this.Initialization(1,1);
         this.count++;
         this.isLoading = false;
-      }, 500);
-    },
-    onLoad() {
-      // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < this.total; i++) {
-          this.Initialization(2, i);
-        }
-        // 加载状态结束
-        this.loading = false;
-        // 数据全部加载完成
-        if (this.productList1.length <= 10) {
-          this.finished = true;
-        }
       }, 500);
     },
     Initialization(num, i) {
       this.request("wisdom.vshop.product.queryH5AgentProducts", {
         productType: num,
-        pageNum: i,
-        pageSize: 10
+        pageNum: 1,
+        pageSize: 50
       })
         .then(data => {
           if (num == 1) {
@@ -257,13 +241,18 @@ export default {
             this.storeStatus = data.data.storeStatus;
             this.total = data.total;
           }
+          if(i ==1){
+            Toast.success("刷新成功");
+          }
         })
         .catch(err => {
           console.log(err);
         });
     },
     qrcode(url) {
+      this.logoUrl = ''
       this.$nextTick(() => {
+        // document.getElementById("qrcode").innerHTML = "";
         var canvas = qrcanvas({
           data: url,
           size: 100,
@@ -271,18 +260,13 @@ export default {
         });
         var img = document.createElement("img");
         img.src = canvas.toDataURL("image/png", 1); //1表示质量(无损压缩)
-        (document.getElementById("qrcode").innerHTML = ""),
-          document.getElementById("qrcode").appendChild(img);
+        document.getElementById("qrcode").innerHTML = "";
+        document.getElementById("qrcode").appendChild(img);
       });
     },
     rrrr() {
       html2canvas(this.$refs.imageWrapper, {
         backgroundColor: null // 解决生成的图片有白边
-        // useCORS:true,
-        // allowTaint:true,
-        // width:180,
-        // height:200
-        // WINDOWWIDTH: Window.innerWidth
       }).then(canvas => {
         // canvas.width=500
         let dataURL = canvas
@@ -393,7 +377,6 @@ export default {
     color: rgba(255, 255, 255, 1);
   }
   .productCard_center {
-    overflow: hidden;
     background-color: #fff;
     width: 345px;
     border-radius: 5px;
@@ -403,13 +386,14 @@ export default {
         width: 110px;
         height: 70px;
         margin: 0px 15px 0px 5px;
+        border-radius: 5px;
       }
       .product_title {
         font-size: 17px;
         font-family: PingFang-SC-Bold;
         font-weight: bold;
         color: rgba(51, 51, 51, 1);
-        line-height: 18px;
+        line-height: 25px;
       }
       .product_people {
         font-size: 14px;
