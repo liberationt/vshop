@@ -1,23 +1,23 @@
 <template>
-    <div>
-			<div class="financtittle">申请多个产品，可大幅度提高贷款成功率</div>
-			<div>
-				<!-- <van-list
-					v-model="loading"
-					:finished="finished"
-					finished-text="没有更多了"
-					@load="onLoad"
-				>	 -->
-					<div class="financlist" v-for="(item,i) in financList" :key="i" @click="toproductnamedetail(item.proprietaryProductCode)">
-						<div class="financlistbanner"><img :src=item.productLogo alt=""></div>
-						<div class="financlistright">
-							<h4>{{item.productName}}</h4>
-							<p>综合月利率：<span>{{item.productRate}}</span></p>
-							<p>贷款额度：<span>{{item.limitMin}}-{{item.limitMax}}元</span></p>
-						</div>  
-					</div>
-				<!-- </van-list> -->
-			</div>
+    <div class="finacmain">
+		<div class="financtittle">申请多个产品，可大幅度提高贷款成功率</div>
+		<div>
+			<!-- <van-list
+				v-model="loading"
+				:finished="finished"
+				finished-text="没有更多了"
+				@load="onLoad"
+			>	 -->
+				<div class="financlist" v-for="(item,i) in financList" :key="i" @click="toproductnamedetail(item.proprietaryProductCode)">
+					<div class="financlistbanner"><img :src=item.productLogo alt=""></div>
+					<div class="financlistright">
+						<h4>{{item.productName}}</h4>
+						<p>综合月利率：<span>{{item.productRate}}</span></p>
+						<p>贷款额度：<span>{{item.limitMin}}-{{item.limitMax}}元</span></p>
+					</div>  
+				</div>
+			<!-- </van-list> -->
+		</div>
     </div>
 </template>
 <script>
@@ -84,6 +84,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.finacmain{
+	padding-bottom:20px;
+}
    .financtittle{
 		 height:40px;
 		 line-height: 40px;
@@ -92,6 +95,7 @@ export default {
 		 color:#4897FB;
 		 padding-left:15px;
 		 margin-bottom: 5px;
+		 border-radius: 4px;
 	 }
 	 .financlist{
 		 display: flex;
@@ -102,10 +106,13 @@ export default {
 		 padding-left:15px;
 		 font-size:14px;
 		 color:#999999;
+		 border-radius: 4px;
 		 .financlistbanner{
 			 width:60px;
 			 height:60px;
 			 margin-right: 15px;
+			 border-radius: 3px;
+			 overflow: hidden;
 			 img{
 				 width:100%;
 				 height:100%;
@@ -116,6 +123,10 @@ export default {
 				 font-size:17px;
 				 color:#333333;
 				 font-weight: bold;
+				 width:240px;
+				 overflow: hidden;
+				 text-overflow:ellipsis;
+				 white-space: nowrap;
 			 }
 			 span{
 				 color:#FE951E;
