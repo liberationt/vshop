@@ -116,7 +116,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .officamain{
-	padding-bottom:20px;
+	padding-bottom:40px;
 }
 	.tochiose{
 		display: flex;

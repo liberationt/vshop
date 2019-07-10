@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="credcart">
 		<div class="credtittle">各种热门信用卡，批卡率高，下卡快</div>
 		<div>
 			<div class="credlist" @click="tostiflingborrow(item.productCode)" v-for="(item,i) in cardList" :key="i">
@@ -66,6 +66,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.credcart{
+	padding-bottom:20px;
+}
    .credtittle{
 		 height:40px;
 		 line-height: 40px;
@@ -74,6 +77,7 @@ export default {
 		 color:#4897FB;
 		 padding-left:15px;
 		 margin-bottom: 5px;
+		 border-radius: 4px;
 	 }
 	 .credlist{
 		 display: flex;
@@ -84,22 +88,34 @@ export default {
 		 font-size:14px;
 		 color:#999999;
 		 margin-bottom:10px;
+		 border-radius: 4px;
 		 .credlistbanner{
-			 background:red;
 			 width:100px;
 			 height:70px;
 			 margin-right: 10px;
+			 border-radius: 5px;
+			 overflow: hidden;
 			 img{
 				 width:100px;
 				 height:70px;
 			 }
 		 }
 		 .credlistright{
-			 h4{
-				 font-size:17px;
-				 color:#333333;
-				 font-weight: bold;
-			 }
+			h4{
+				font-size:16px;
+				color:#333333;
+				font-weight: bold;
+				overflow: hidden;
+				text-overflow:ellipsis;
+				white-space: nowrap;
+				width:200px;
+			}
+			p{
+			overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
+			width:200px;
+			}
 		 }
 	 }
 </style>

@@ -170,7 +170,7 @@ export default {
 				background: #ffffff;
 				font-size:12px;
 				margin: 15px 0 5px;
-				padding-left:15px;
+				padding-left:15px;border-radius:4px;
 			}
 			.utilisdatalist{
 				height:100px;
@@ -179,10 +179,10 @@ export default {
 				align-items: center;
 				background: #ffffff;
 				margin-top: 10px;
+				border-radius: 4px;
 				.datalistbanner{
 					height:50px;
 					width:50px;
-					background: red;
 					margin-right: 10px;
 					img{
 						width:50px;
@@ -193,10 +193,18 @@ export default {
 					font-size:19px;
 					color:#333333;
 					font-weight: bold;
+					width:260px;
+					overflow: hidden;
+					text-overflow:ellipsis;
+					white-space: nowrap;
 				}
 				p{
 					font-size: 14px;
 					color:#999999;
+					width:260px;
+					overflow: hidden;
+					text-overflow:ellipsis;
+					white-space: nowrap;
 				}
 			}
 		}
