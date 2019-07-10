@@ -191,7 +191,7 @@ export default {
 		}
 
     },
-    created(){
+    mounted(){
 		window.scrollTo(0,0);
 		this.getdatainfo()
 		utils.ip(e=>{
@@ -202,7 +202,6 @@ export default {
 			}
 		})
 		statistics.page("essentialinformation", "getnumbers");
-
 	}
 }
 </script>
