@@ -220,6 +220,7 @@ export default {
           case 1:
             this.showPosterList = data.data
             this.showPoster = true
+            this.logoUrl = ""
             this.qrcode(data.data.url)
             setTimeout(() => {
               this.rrrr()
