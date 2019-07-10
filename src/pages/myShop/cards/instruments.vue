@@ -188,6 +188,7 @@ export default {
       }).catch(err=>{console.log(err)})
     },
     qrcode(url){
+      this.logoUrl = ""
        this.$nextTick(()=>{
         var canvas = qrcanvas({
           data:url,
