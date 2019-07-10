@@ -43,7 +43,7 @@
     </footer>
     <!-- 弹出层 -->
     <van-popup v-model="showPoster" :close-on-click-overlay=false>
-      <div v-if="logoUrl == ''" ref="imageWrapper">
+      <div v-if="logoUrl == ''" ref="imageWrapper" id="posterdom">
         <div class="popup_img_op">
           <img :src="'data:image/png;base64,'+showPosterList.bannerUrl" alt="">
         </div>
@@ -202,8 +202,18 @@ export default {
       })
     },
     rrrr () {
+      var scale = 2;//放大倍数
+      var canvas = document.createElement('canvas');
+      var content = canvas.getContext("2d");
+      content.scale(scale,scale);
+      var rect = document.getElementById('posterdom').getBoundingClientRect();//获取元素相对于视察的偏移量
+      content.translate(-rect.left,-rect.top);//设置context位置，值为相对于视窗的偏移量负值，让图片复位
       html2canvas(this.$refs.imageWrapper,{
-        backgroundColor: null,    // 解决生成的图片有白边
+        backgroundColor: null, // 解决生成的图片有白边
+        dpi: window.devicePixelRatio*2,
+        scale:scale,
+        y:1,
+        scrollY:-rect.top
         }).then((canvas) => {
           let dataURL = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream"); // 获取生成的图片的url
           this.logoUrl = dataURL

@@ -50,11 +50,7 @@
     <!-- 弹出层 -->
     <van-popup v-model="showPoster" :close-on-click-overlay=false>
 
-
-
-
-
-      <div v-show="logoUrl == ''" ref="imageWrapper">
+      <div v-show="logoUrl == ''" ref="imageWrapper" id="posterdom">
         <div class="popup_img_op">
           <img :src="'data:image/png;base64,'+showPosterList.bannerUrl" alt="">
         </div>
@@ -81,18 +77,9 @@
         </div>
       </div>
 
-
-
       <div  v-show="logoUrl != ''" class="haibaoIMg">
         <img :src=logoUrl alt="">
       </div>
-
-
-
-
-
-
-
 
       <div class="popu_close" @click="showPoster = false;logoUrl = ''">
         <img src="../imgs/turn_off@2x.png" alt="">
@@ -211,10 +198,11 @@ export default {
         .then(data => {
           this.showPosterList = data.data;
           this.showPoster = true;
+          this.qrcode(data.data.url);
           setTimeout(() => {
             this.rrrr();
           }, 500);
-          this.qrcode(data.data.url);
+          
         })
         .catch(err => {
           this.showPoster = false;
@@ -252,7 +240,7 @@ export default {
     qrcode(url) {
       this.logoUrl = ''
       this.$nextTick(() => {
-        // document.getElementById("qrcode").innerHTML = "";
+        //document.getElementById("qrcode").innerHTML = "";
         var canvas = qrcanvas({
           data: url,
           size: 100,
@@ -265,13 +253,20 @@ export default {
       });
     },
     rrrr() {
+      var scale = 2;//放大倍数
+      var canvas = document.createElement('canvas');
+      var content = canvas.getContext("2d");
+      content.scale(scale,scale);
+      var rect = document.getElementById('posterdom').getBoundingClientRect();//获取元素相对于视察的偏移量
+      content.translate(-rect.left,-rect.top);//设置context位置，值为相对于视窗的偏移量负值，让图片复位
       html2canvas(this.$refs.imageWrapper, {
-        backgroundColor: null // 解决生成的图片有白边
+        backgroundColor: null, // 解决生成的图片有白边
+        dpi: window.devicePixelRatio*2,
+        scale:scale,
+        y:1,
+        scrollY:-rect.top
       }).then(canvas => {
-        // canvas.width=500
-        let dataURL = canvas
-          .toDataURL("image/jpeg")
-          .replace("image/jpeg", "image/octet-stream"); // 获取生成的图片的url
+        let dataURL = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream") // 获取生成的图片的url
         this.logoUrl = dataURL;
         console.log(dataURL);
       });
@@ -304,6 +299,7 @@ export default {
     border-radius: 5px 5px 0px 0px;
     width: 289px;
     background-color: transparent;
+    overflow-y: hidden;
   }
   .popup_img_op {
     background-color: #fff;
