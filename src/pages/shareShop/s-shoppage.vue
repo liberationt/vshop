@@ -91,6 +91,7 @@ export default {
 			dataList:{},
 			tittle:'',
 			inviterCode:'',
+			storeCode:'',
 			personImg:require('./images/touxiangban.png'),
 			searchOptionBeanList:[],
 			bannerimg:require('./images/s-shoppageban.png')
@@ -112,6 +113,7 @@ export default {
 					this.personImg = (data.data.personImg==""?this.personImg:data.data.personImg)
 					this.bannerimg = (data.data.backgroundImg.bannerUrl==""?this.bannerimg:data.data.backgroundImg.bannerUrl)
 					this.searchOptionBeanList = data.data.searchOptionBeanList
+					this.storeCode = data.data.storeCode
 					utils.setCookie('storeCode',data.data.storeCode)
 					utils.setCookie('inviterCode',data.data.inviterCode)
 					this.$emit('toparent',this.tittle,1,data.data.inviterCode)
@@ -177,7 +179,7 @@ export default {
 		},
 		todetails(exhibitionContentCode){
 			statistics.click('tap','shappage','todetails')
-			this.$router.push('/tweetsdetails?exhibitionContentCode='+exhibitionContentCode)
+			this.$router.push('/tweetsdetails?exhibitionContentCode='+exhibitionContentCode+'&storeCode='+this.storeCode)
 		},
 		weixin(){
 			this.show=true

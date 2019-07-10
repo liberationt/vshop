@@ -17,7 +17,7 @@
 				<div class="utilistittle">申请多个产品，可大幅度提高贷款成功率</div>
 				<div class="utilisdatalist" @click="tostiflingborrow(item.productCode)" v-for="(item,i) in dataList" :key='i'>
 					<div class="datalistbanner"><img :src=item.productLogo alt=""></div>
-					<div>
+					<div class="detailstittle">
 						<h4>{{item.productName}}</h4>
 						<p>{{item.desc}}</p>
 					</div>
@@ -154,9 +154,9 @@ export default {
 					color:#ffffff;
 					font-size:10px;border-radius: 3px;
 					text-align: center;
-					line-height: 17px;
+					line-height: 20px;
 					img{
-						width:10px;height:12px;margin-right: 5px;margin-top: -1px;
+						width:10px;height:11px;margin-right: 5px;margin-top: -2px;
 					}
 				}
 			}
@@ -169,25 +169,31 @@ export default {
 				line-height:40px;
 				background: #ffffff;
 				font-size:12px;
-				margin: 15px 0 5px;
+				margin: 12px 0 5px;
 				padding-left:15px;border-radius:4px;
 			}
 			.utilisdatalist{
 				height:100px;
 				padding-left:15px;
 				display: flex;
-				align-items: center;
 				background: #ffffff;
-				margin-top: 10px;
+				padding-top:25px;
+				margin-bottom: 10px;
 				border-radius: 4px;
 				.datalistbanner{
 					height:50px;
 					width:50px;
+					background: pink;
 					margin-right: 10px;
+					border-radius: 5px;
+					overflow: hidden;
 					img{
 						width:50px;
 						height:50px;
 					}
+				}
+				.detailstittle{
+					margin-top: -4px;
 				}
 				h4{
 					font-size:19px;

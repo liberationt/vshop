@@ -78,11 +78,13 @@ export default {
 		 padding-left:15px;
 		 margin-bottom: 5px;
 		 border-radius: 4px;
+		 margin-top:12px;
 	 }
 	 .credlist{
 		 display: flex;
 		 height:100px;
-		 align-items: center;
+		//  align-items: center;
+		padding-top:15px;
 		 background: #ffffff;
 		 padding-left:15px;
 		 font-size:14px;
@@ -101,6 +103,7 @@ export default {
 			 }
 		 }
 		 .credlistright{
+			 margin-top:-4px;
 			h4{
 				font-size:16px;
 				color:#333333;
