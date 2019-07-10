@@ -96,6 +96,7 @@ export default {
 		 padding-left:15px;
 		 margin-bottom: 5px;
 		 border-radius: 4px;
+		 margin-top:12px;
 	 }
 	 .financlist{
 		 display: flex;
@@ -119,6 +120,7 @@ export default {
 			 }
 		 }
 		 .financlistright{
+				 margin-top: -4px;
 			 h4{
 				 font-size:17px;
 				 color:#333333;

@@ -61,7 +61,7 @@ export default {
 		getdata(){
 			let data = {
         exhibitionContentCode:this.$route.query.exhibitionContentCode,
-        storeCode:utils.getCookie('storeCode')
+        storeCode:this.$route.query.storeCode
 			}
 			this.request('wisdom.vshop.vshopStore.getExhibitionContent',data)
 			.then(data=>{

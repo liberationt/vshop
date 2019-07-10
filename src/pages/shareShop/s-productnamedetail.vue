@@ -58,12 +58,13 @@ export default {
 				dataobject:{},
 				inviterCode:'',
 				tittle:'',
-				productCode:''
+				productCode:'',
+				storeCode:''
 			}
 		},
 		methods:{
 			totweets(exhibitionContentCode){
-				this.$router.push('/tweetsdetails?exhibitionContentCode='+exhibitionContentCode)
+				this.$router.push('/tweetsdetails?exhibitionContentCode='+exhibitionContentCode+'&storeCode='+this.storeCode)
 			},
 			onClickLeft(){
 				if(this.$route.query.id){
@@ -105,6 +106,7 @@ export default {
 						this.dataobject = data.data
 						this.inviterCode = data.data.inviterCode
 						this.tittle = data.data.productName
+						this.storeCode = data.data.storeCode
 					}
 				})
 			}
