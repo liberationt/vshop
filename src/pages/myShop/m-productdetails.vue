@@ -259,14 +259,7 @@ export default {
         scale:scale,
         y:1,
         scrollY:-rect.top
-
-        // useCORS:true,
-        // allowTaint:true,
-        // width:180,
-        // height:200
-        // WINDOWWIDTH: Window.innerWidth
         }).then((canvas) => {
-        // canvas.width=500
           let dataURL = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream"); // 获取生成的图片的url
           this.logoUrl = dataURL
           console.log(dataURL)
