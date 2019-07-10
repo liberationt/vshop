@@ -189,10 +189,10 @@ export default {
 		padding:0 15px;
 		height:100%;
 		.havemoneytop{
-			height:95px;
+			height:103px;
 			position: relative;
 			.havamoneyImg{
-				height:95px;
+				height:103px;
 				img{
 					width:100%;
 					height:100%;

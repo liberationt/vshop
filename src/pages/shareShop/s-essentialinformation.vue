@@ -6,20 +6,11 @@
 		</header>
 		<div class="applireminder" v-show="toasttittle">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
 		<div class="applistap">
+			<div class="applistapbanner"><img src="./images/jibenxinxi.png" alt=""></div>
 			<div class="applistaplist">
-				<div><img src='./images/loanapply.png' alt=""></div>
 				<p>申请借款</p>
-			</div>
-			<div class="applistaplist">
-				<div><img src='./images/basic2.png' alt=""></div>
-				<p>基本信息</p>
-			</div>
-			<div class="applistaplist">
-				<div><img src='./images/job1.png' alt=""></div>
+				<p class="apply">基本信息</p>
 				<p>工作信息</p>
-			</div>
-			<div class="applistaplist">
-				<div><img src='./images/add.png' alt=""></div>
 				<p>补充信息</p>
 			</div>
 		</div>
@@ -220,7 +211,7 @@ export default {
 			background: #ffffff;
 			padding:0 15px;
 			font-size:14px;
-			margin:10px 0 10px;
+			margin:10px 0 7px;
 			color:#33333333;
 			p{
 				color:#333333;
@@ -228,9 +219,13 @@ export default {
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
+				border-bottom:1px solid #efefef;
 				input{
 					text-align: right;
 				}
+			}
+			p:last-child{
+				border:none;
 			}
 		}
 		.citystyle{

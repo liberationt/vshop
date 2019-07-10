@@ -5,21 +5,12 @@
 		</header>
 		<div class="applireminder" v-show="toasttittle">温馨提示：帮你贷仅支持线下签约贷款 <div @click="close"><img src="./images/close.png" alt=""></div></div>
 		<div class="applistap">
+			<div class="applistapbanner"><img src="./images/buchongxinxi.png" alt=""></div>
 			<div class="applistaplist">
-				<div><img src='./images/loanapply.png' alt=""></div>
 				<p>申请借款</p>
-			</div>
-			<div class="applistaplist">
-				<div><img src='./images/basic2.png' alt=""></div>
 				<p>基本信息</p>
-			</div>
-			<div class="applistaplist">
-				<div><img src='./images/job2.png' alt=""></div>
 				<p>工作信息</p>
-			</div>
-			<div class="applistaplist">
-				<div><img src='./images/add2.png' alt=""></div>
-				<p>补充信息</p>
+				<p class="apply">补充信息</p>
 			</div>
 		</div>	
 		<div class="applyloan">
@@ -93,13 +84,13 @@
 					<li v-for="(item,index) in ownHouseStatusList" :key="index" :class="{checked:item.infoOptionKey===ownHouseStatus}" @click="change5(item,index)">{{item.infoOptionName}}</li>
 				</ul>
 			</div>
-			<div class="applyloanhouse" v-if="ownHouseStatus=='have_house'">
+			<div class="applyloanhouse applyhoselones" v-if="ownHouseStatus=='have_house'">
 				<div @click="shows">
 					<label>所在地区:</label>
 					<input readonly="readonly" placeholder='请选择' v-model="houseAdNameSecond">
 				</div>
 				<div>
-					<label>产权人</label>
+					<label>产权人:</label>
 					<div class="dropdown dropdownstyles">
 						<van-dropdown-menu>
 							<van-dropdown-item v-model="ownerHouse" :options="ownerHouseList" />
@@ -107,7 +98,7 @@
 					</div>
 				</div>
 				<div>
-					<label>房产状态</label>
+					<label>房产状态:</label>
 					<div class="dropdown dropdownstyles">
 						<van-dropdown-menu>
 							<van-dropdown-item v-model="houseStatus" :options="houseStatusList" />
@@ -115,7 +106,7 @@
 					</div>
 				</div>
 				<div>
-					<label>是否抵押</label>
+					<label>是否抵押:</label>
 					<div class="dropdown dropdownstyles">
 						<van-dropdown-menu>
 							<van-dropdown-item v-model="houseIsPledge" :options="houseIsPledgeList" />
@@ -131,7 +122,7 @@
 					<li v-for="(item,index) in ownCarStatusList" :key="index" :class="{checked:item.infoOptionKey===ownCarStatus}" @click="change6(item,index)">{{item.infoOptionName}}</li>
 				</ul>
 			</div>
-			<div class="applyloanhouse" v-if="ownCarStatus=='have_car'">
+			<div class="applyloanhouse applyhoselones" v-if="ownCarStatus=='have_car'">
 				<div>
 					<label>车产状态:</label>
 					<div class="dropdown dropdownstyles">
@@ -163,7 +154,7 @@
 		</div>
 		<div class="agree">
 			<van-checkbox icon-size='15px' v-model="checked"></van-checkbox>
-			<p>已阅读并同意<span @click="serviceAgreement">《服务协议》</span>和<span @click="privacyAgreement">《隐私协议》</span></p>
+			<p>已阅读并同意<span @click="serviceAgreement">《服务协议》</span></p>
 		</div>
 		<div @click="nextstep" class="loneNext">发布申请</div>
 	</div>
@@ -398,10 +389,7 @@ export default {
 			this.toasttittle = false
 		},
 		serviceAgreement(){
-			
-		},
-		privacyAgreement(){
-
+			this.$router.push('/serviceagreement')
 		},
 		tocity(){
 			this.$router.push('city?id='+3)
@@ -601,10 +589,10 @@ export default {
 				display: flex;
 				padding:0 15px;
 				height:55px;
-				line-height: 55px;
+				line-height: 35px;
 				font-size:12px;
 				.van-checkbox{
-					height:55px;margin-right: 6px;
+					height:32px;margin-right: 6px;
 				}
 				span{
 					color:#4896FB;
@@ -621,7 +609,7 @@ export default {
 			width:240px
 		}
 		.citystyle{
-			position:absolute;
+			position:fixed;
 			bottom:0;
 			width:100%;
 			z-index: 20

@@ -36,7 +36,7 @@
 			<van-checkbox icon-size='15px' v-model="checked">已阅读并同意<span @click="serviceAgreement">《服务协议》</span></van-checkbox>
 		</div>
 		<div class="rightapply" @click='immediately'>立即申请贷款</div>
-		</div>
+	</div>
     </div>
 </template>
 <script>
@@ -61,25 +61,25 @@ export default {
 			seal_control:false,
 			isshow:false,
 			listData: [
-          {"user": "用户159****1713成功借款60000元"},
-          {"user": "用户182****6911成功借款45000元"},
-          {"user": "用户188****2752成功借款20000元"},
-          {"user": "用户133****9356成功借款10000元"},
-          {"user": "用户182****9553成功借款20000元"},
-          {"user": "用户131****3087成功借款80000元"},
-          {"user": "用户136****1457成功借款30000元"},
-          {"user": "用户159****2201成功借款110000元"},
-          {"user": "用户185****5284成功借款120000元"},
-          {"user": "用户138****3472成功借款180000元"},
-          {"user": "用户136****4273成功借款65000元"},
-          {"user": "用户156****1380成功借款22000元"},
-          {"user": "用户180****3110成功借款70000元"},
-          {"user": "用户132****2118成功借款5000元"},
-          {"user": "用户180****4627成功借款100000元"},
-          {"user": "用户185****5402成功借款75000元"},
-          {"user": "用户189****6317成功借款30000元"},
-          {"user": "用户139****4616成功借款45000元"},
-          {"user": "用户180****7865成功借款15000元"}
+          {"user": "用户 159****1713 成功借款 60000 元"},
+          {"user": "用户 182****6911 成功借款 45000 元"},
+          {"user": "用户 188****2752 成功借款 20000 元"},
+          {"user": "用户 133****9356 成功借款 10000 元"},
+          {"user": "用户 182****9553 成功借款 20000 元"},
+          {"user": "用户 131****3087 成功借款 80000 元"},
+          {"user": "用户 136****1457 成功借款 30000 元"},
+          {"user": "用户 159****2201 成功借款 110000 元"},
+          {"user": "用户 185****5284 成功借款 120000 元"},
+          {"user": "用户 138****3472 成功借款 180000 元"},
+          {"user": "用户 136****4273 成功借款 65000 元"},
+          {"user": "用户 156****1380 成功借款 22000 元"},
+          {"user": "用户 180****3110 成功借款 70000 元"},
+          {"user": "用户 132****2118 成功借款 5000 元"},
+          {"user": "用户 180****4627 成功借款 100000 元"},
+          {"user": "用户 185****5402 成功借款 75000 元"},
+          {"user": "用户 189****6317 成功借款 30000 元"},
+          {"user": "用户 139****4616 成功借款 45000 元"},
+          {"user": "用户 180****7865 成功借款 15000 元"}
         ],
 			}
 		},
@@ -262,27 +262,35 @@ export default {
 			background: #f1f1fb;
 		}
 		.havemoneymain{
-			padding:0 15px 23px;
 			.havemoneymaintop{
+				// padding:0 15px 23px;
 				line-height: 40px;
 				text-align: center;
 				font-size:14px;
+				border-bottom:1px solid #EfEfEf;
 				img{
-					width:10px;height:10px;margin:-2px 7px 0;
+					width:10px;height:9px;margin:-2px 7px 0;
 				}
 				span{
 					color:#4897FB;
 				}
 			}
 			.phoneinfor{
+				padding:0 15px;
 				font-size:14px;
 				color:#333333;
 				p{
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
+					border-bottom:1px solid #EfEfEf;
 					span{
+						padding-top:1px;
 						color:#4896FB;
+						padding-left:8px;
+						border-left:1px solid #4597FB;
+						height:14px;
+						line-height:16px;
 					}
 				}
 				input{
@@ -291,6 +299,7 @@ export default {
 				}
 			}
 			.agree{
+				padding:0 15px;
 				height:55px;
 				line-height: 55px;
 				font-size:12px;
@@ -302,11 +311,13 @@ export default {
 				}
 			}
 			.rightapply{
+				margin:0 15px;
 				height:50px;
-				font-size:14px;
+				font-size:16px;
+				font-weight:500;
 				color:#ffffff;
 				text-align:center;
-				line-height:50px;
+				line-height:52px;
 				background: #4597FB;
 				border-radius:25px;
 			}

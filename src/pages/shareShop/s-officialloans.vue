@@ -20,12 +20,12 @@
 				</div>
 			</div>
 			<div class="listdatabot">
-				<div>
-					<p style="font-size:16px;color:#FE951E">{{item.amount}}</p>
+				<div class="listrightleft">
+					<p style="font-size:14px;font-weight:bold;color:#FE951E">{{item.amount}}</p>
 					<p>可用额度 (元)</p>
 				</div>
 				<div>
-					<p>期限：<span>{{item.limit}}个月</span></p>
+					<p>期限：<span style="font-weight:bold">{{item.limit}}</span></p>
 					<p>最快当天到账</p>
 				</div>
 				<div class="apply">立即申请</div>
@@ -121,7 +121,7 @@ export default {
 	.tochiose{
 		display: flex;
 		justify-content: space-between;
-		margin: 14px 0 11px;
+		margin: 14px 0 7px;
 		flex-wrap: wrap;
 		div{
 			width:166px;height:51px;
@@ -157,8 +157,9 @@ export default {
 		margin-bottom: 5px;
 		img{
 			width:16px;
-			height:14px;
+			height:15px;
 			margin-right: 8px;
+			margin-top:-2px;
 		}
 	}
 	.listdata{
@@ -167,7 +168,7 @@ export default {
 		border-radius: 5px;
 		.listdatatop{
 			height:53px;
-			border-bottom:1px dashed #E7E7E7 /*no*/;
+			border-bottom:1px dashed #EFEFEF /*no*/;
 			padding:0 15px;
 			display: flex;
 			align-items: center;
@@ -184,25 +185,26 @@ export default {
 			p{
 				font-size: 11px;
 				color:#999999;
-				margin-top: 3px;
 			}
 		}
 		.listdatabot{
 			display: flex;
 			padding:0 15px;
-			justify-content: space-between;
+			position: relative;
 			align-items: center;
 			height:58px;
 			font-size:12px;
 			color:#333333;
+			.listrightleft{
+				width:100px;
+				border-right:1px solid #efefef;
+				margin-right: 20px;
+			}
 			div{
 				line-height:20px;
 				span{
 					color:#FE951E;
 				}
-			}
-			>div:nth-of-type(1){
-				border-right:2px solid #e7e7e7;
 			}
 			.apply{
 				background: #4597FB;
@@ -210,6 +212,7 @@ export default {
 				font-weight: bold;
 				border-radius: 15px;
 				padding:5px 10px;
+				position:absolute;right:10px;
 			}
 		}
 	}
@@ -218,7 +221,7 @@ export default {
 		background: #4597FB;
 		border-radius: 25px;
 		text-align: center;
-		line-height:50px;
+		line-height:52px;
 		font-size: 16px;
 		color:#ffffff;
 		margin-top: 20px;

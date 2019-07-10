@@ -260,7 +260,7 @@ export default {
 				justify-content: space-around;
 				color:#ffffff;
 				h4{
-					font-size:14px;
+					font-size:17px;
 					font-weight:bold;
 				}
 				div{
@@ -284,7 +284,7 @@ export default {
 							width:10px;
 							height:12px;
 							margin-right: 5px;
-							margin-top: -4px;
+							margin-top: -3px;
 						}
 					}
 				}
@@ -304,12 +304,13 @@ export default {
 					height:45px;
 					background: #4597FB;
 					text-align: center;
-					line-height: 45px;
+					line-height: 47px;
 					border-radius: 10px;
 					img{
 						width:25px;
 						height:25px;
 						margin-right: 10px;
+						margin-top:-1px;
 					}
 				}
 				.contactright{
@@ -317,12 +318,13 @@ export default {
 					height:45px;
 					background: #62D62D;
 					text-align: center;
-					line-height: 45px;
+					line-height: 47px;
 					border-radius: 10px;
 					img{
 						width:32px;
 						height:26px;
 						margin-right: 10px;
+						margin-top:-1px;
 					}
 				}
 			}
@@ -373,7 +375,7 @@ export default {
 				align-items: center;
 				font-size:12px;
 				color:#666666;
-				border-bottom:1px solid #E7E7E7;
+				border-bottom:1px solid #EfEfEf;
 				.tweetslistbanner{
 					width:106px;height:65px;border-radius: 4px;
 					overflow: hidden;
@@ -400,7 +402,7 @@ export default {
 				padding-left:15px;
 				font-size:17px;
 				color:#4597FB;
-				border-bottom:1px solid #E7E7E7;
+				border-bottom:1px solid #EFEFEF;
 				span{
 					display: inline-block;
 					height:18px;
