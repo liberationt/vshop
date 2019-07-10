@@ -23,16 +23,6 @@
        
       </div>
     </van-pull-refresh>
-    <!-- 下拉刷新 -->
-    <van-list
-      v-if="productList2.length>=5"
-      class="xialashuaxin"
-      v-model="loading"
-      :finished="finished"
-      finished-text="没有更多了"
-      @load="onLoad"
-    >
-    </van-list>
     <!-- 弹窗 -->
     <van-popup class="van_popup_text" v-model="moneyShow" :close-on-click-overlay=false>
       <div>
@@ -91,13 +81,12 @@
 <script>
 import { qrcanvas } from 'qrcanvas';
 import html2canvas from 'html2canvas'
-import { Popup, RadioGroup, Radio, Toast, List, Dialog  } from 'vant';
+import { Popup, RadioGroup, Radio, Toast, Dialog  } from 'vant';
 export default {
   components:{
     [Popup.name] : Popup,
     [RadioGroup.name] : RadioGroup,
     [Radio.name] : Radio,
-    [List.name]: List,
     [Dialog.name]: Dialog
   },
   data(){
@@ -179,34 +168,22 @@ export default {
     onRefresh() {
       setTimeout(() => {
         // this.$toast('刷新成功');
-        this.Initialization(2);
-        Toast.success('刷新成功');
+        this.Initialization(2,1);
         this.count++;
         this.isLoading = false;
       }, 500);
     },
-    onLoad(){
-       // 异步更新数据
-      setTimeout(() => {
-        for (let i = 0; i < this.total; i++) {
-          this.Initialization(2,i)
-        }
-        // 加载状态结束
-        this.loading = false;
-        // 数据全部加载完成
-        if (this.productList2.length <=10) {
-          this.finished = true;
-        }
-      }, 500);
-    },
     Initialization(num,i){
-      this.request("wisdom.vshop.product.queryH5AgentProducts",{productType:num,pageNum: i,
-        pageSize: 10}).then(data=>{
+      this.request("wisdom.vshop.product.queryH5AgentProducts",{productType:num,pageNum: 1,
+        pageSize: 50}).then(data=>{
         if(num==2){
           this.showStatus = data.data.showStatus
           this.productList2 = data.data.dataList
           this.storeStatus = data.data.storeStatus
           this.total = data.total
+        }
+        if(i == 1){
+          Toast.success('刷新成功');
         }
       }).catch(err=>{console.log(err)})
     },
