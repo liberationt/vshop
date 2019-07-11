@@ -34,6 +34,15 @@ router.beforeEach((to, from, next) => {
   // console.log('router===>',to.meta.content)
   /* 路由发生变化修改页面meta */
   // console.log(to)
+  if(to.path=='/shoppage'){
+    store.state.actives='1'
+  }
+  if(to.path=='/relatedproducts'||to.path=='/loanlist'){
+    store.state.actives='2'
+  }
+  if(to.path=='/utilities'){
+    store.state.actives='3'
+  }
   if(to.meta.content){
     let head = document.getElementsByTagName('head');
     let meta = document.createElement('meta');
