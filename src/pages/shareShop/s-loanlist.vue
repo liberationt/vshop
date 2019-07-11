@@ -30,7 +30,7 @@
 				<div class="listdatabot">
 					<div class="listrightleft">
 						<p style="font-size:14px;font-weight:bold;color:#FE951E">{{item.amount}}</p>
-						<p>可用额度 (元)</p>
+						<p>可借额度 (元)</p>
 					</div>
 					<div>
 						<p>期限：<span style="font-weight:bold">{{item.limit}}</span></p>

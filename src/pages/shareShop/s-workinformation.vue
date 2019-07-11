@@ -203,7 +203,7 @@ export default {
 </script>
 <style lang="less" scoped>
     .lonamoney{
-			height:50px;background:red;
+			height:50px;
 			line-height: 50px;
 			display: flex;
 			justify-content: space-between;

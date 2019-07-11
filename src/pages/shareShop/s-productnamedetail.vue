@@ -103,10 +103,14 @@ export default {
 				this.https('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
-						this.dataobject = data.data
-						this.inviterCode = data.data.inviterCode
-						this.tittle = data.data.productName
-						this.storeCode = data.data.storeCode
+						if(data.data.state==1){
+							this.$router.push('/undershelf?inviterCode='+this.$route.query.inviterCode)
+						}else{
+							this.dataobject = data.data
+							this.inviterCode = data.data.inviterCode
+							this.tittle = data.data.productName
+							this.storeCode = data.data.storeCode
+						}
 					}
 				})
 			}
