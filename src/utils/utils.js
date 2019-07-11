@@ -94,7 +94,7 @@ export function sealControl(captchaId,subCallback) {
 import wx from 'weixin-js-sdk'
 export function wxShare(data){
   wx.config({ //errMsg:config ok
-    debug:true,// 是否开启调试模式
+    debug:false,// 是否开启调试模式
     appId:data.appId,//appid
     timestamp:data.timestamp,// 时间戳
     nonceStr:data.nonceStr,// 随机字符串

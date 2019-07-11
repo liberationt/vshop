@@ -64,7 +64,10 @@
       </button>
     </footer>
     <!-- 确认删除框 -->
-
+    <!-- 分享提示框 -->
+    <van-popup class="yindaoshow" v-model="yindaoshow">
+      <img src="./imgs/yindao.png" alt="">
+    </van-popup>
   </div>
 </template>
 <script>
@@ -83,6 +86,7 @@ export default {
       id: this.$route.query.id,
       code:this.$route.query.code,
       shopdetailsData:{},
+      yindaoshow:false
     };
   },
   methods: {
@@ -119,7 +123,8 @@ export default {
     iwantagent() {
       if(!this.inviterCode){ // 立即分享
       this.wxShare()
-      alert('点击右上角分享')
+      // alert('点击右上角分享')
+      this.yindaoshow = true
       statistics.click("mselfshopdetails","wxShare")
         this.request("wisdom.vshop.proprietaryProduct.shareProprietaryProductH5",{proprietaryProductCode: this.$route.query.code,url:window.location.origin+'/mselfshopdetails'}).then(data=>{
           let dataList = data.data
@@ -131,10 +136,10 @@ export default {
               imgUrl: 'https://wisdom-loan.oss-cn-shanghai.aliyuncs.com/productParam/60938f68-1fa0-4620-a90a-7a4d7a7c7117.png', // 分享图标
               success: function () {
                 // 用户点击了分享后执行的回调函数
-                alert('分享成功回调')
+                // alert('分享成功回调')
               },
               cancel: function(err){
-                alert('分享取消回调')
+                // alert('分享取消回调')
               }
             });
           })

@@ -91,6 +91,10 @@
         <p>聚合的信贷产品超市</p>
       </div>
     </footer>
+    <!-- 风险弹窗 -->
+    <van-popup class="yindaoshow" v-model="yindaoshow">
+      <img src="./imgs/yindao.png" alt="">
+    </van-popup>
   </div>
 </template>
 <script>
@@ -101,13 +105,14 @@ import { statistics } from "wisdom-h5";
 export default {
   components: {
     [Popup.name]: Popup,
-    [Dialog.name]: Dialog
+    [Dialog.name]: Dialog,
   },
   data() {
     return {
       topImg: require("./imgs/topimg.png"),
       userMessage: [],
-      inviterCode:""
+      inviterCode:"",
+      yindaoshow:false
     };
   },
   methods: {
@@ -143,7 +148,7 @@ export default {
       if(this.userMessage.storeStatus == 0){
         this.tanchuang()
       } else {
-        alert('请点击右上角去分享')
+        this.yindaoshow = true
         this.wxShare(this.inviterCode);
       }
     },
@@ -189,10 +194,10 @@ export default {
                 imgUrl: 'https://wisdom-loan.oss-cn-shanghai.aliyuncs.com/productParam/60938f68-1fa0-4620-a90a-7a4d7a7c7117.png', // 分享图标
                 success: function () {
                   // 用户点击了分享后执行的回调函数
-                  alert('分享成功回调')
+                  // alert('分享成功回调')
                 },
                 cancel: function(err){
-                  alert('分享取消回调')
+                  // alert('分享取消回调')
                 }
               });
             })
