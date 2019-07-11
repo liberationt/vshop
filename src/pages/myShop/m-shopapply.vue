@@ -29,7 +29,6 @@
           <van-tab title="贷款申请"></van-tab>
           <van-tab title="信用卡申请"></van-tab>
           <van-tab title="实用工具"></van-tab>
-          <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
             <div class="loanFacility_common"> 
               <!-- 下拉加载 -->
               <van-list
@@ -39,24 +38,22 @@
                 finished-text="没有更多了"
                 @load="onLoad"
               >
-                <div class="loanFacility_center" @click="goDetails(item.userDetailStatus,item.userCode)" v-for="item in shopPapplyList">
-                  <div>
-                    <van-row>
-                      <van-col>
-                        <img :src=item.productLogo alt="">
-                      </van-col>
-                      <van-col>
-                        <p class="product_one">{{item.productName}}</p>
-                        <p class="product_two"> <span>{{item.userName}}</span> &nbsp&nbsp&nbsp <span>{{item.userPhoneEncrypt}}</span></p>
-                        <p class="product_three" v-if="item.orderStatus == 2">结算金额：{{item.commission}}</p>
-                        <p class="product_three">申请时间：{{item.dataCreateTime}}</p>
-                        <p class="product_three" v-if="item.orderStatus == 2">结算时间：{{item.settleDate}}</p>
-                      </van-col>
-                      <van-col class="right  van-col_right" :class="item.orderStatus ==2 ?'buttonAsh' : item.orderStatus ==0 ? 'buttonBlue' : 'buttonYellow'" >
-                        {{item.orderStatusDesc}}
-                      </van-col>  
-                    </van-row>  
-                  </div>
+                <div @click="goDetails(item.userDetailStatus,item.userCode)" v-for="item in shopPapplyList" class="loanFacility_center">
+                  <van-row>
+                    <van-col>
+                      <img :src=item.productLogo alt="">
+                    </van-col>
+                    <van-col>
+                      <p class="product_one">{{item.productName}}</p>
+                      <p class="product_two"> <span class="product_two_span">{{item.userName}}</span> &nbsp&nbsp&nbsp <span>{{item.userPhoneEncrypt}}</span></p>
+                      <p class="product_three" v-if="item.orderStatus == 2">结算金额：{{item.commission}}</p>
+                      <p class="product_three">申请时间：{{item.dataCreateTime}}</p>
+                      <p class="product_three" v-if="item.orderStatus == 2">结算时间：{{item.settleDate}}</p>
+                    </van-col>
+                    <van-col class="right  van-col_right" :class="item.orderStatus ==2 ?'buttonAsh' : item.orderStatus ==0 ? 'buttonBlue' : 'buttonYellow'" >
+                      {{item.orderStatusDesc}}
+                    </van-col>  
+                  </van-row>  
                 </div>
               </van-list>
               <!-- 弹窗 -->
@@ -75,9 +72,6 @@
                 </div>
               </van-popup>
             </div>
-          </van-pull-refresh>
-          
-          
         </div>
       </van-tabs>
     </div>
@@ -116,7 +110,6 @@ export default {
       active: 0,
       RecommendText: "请尽快协助客户完成整个申领流程",
       count: 0,
-      isLoading: false,
       orderStatus: "''",
       option1: [
         { text: "所有状态", value: "''" },
@@ -126,12 +119,12 @@ export default {
       ],
       moneyShow: false,
       radioName: "",
-      shopPapplyList: {},
+      shopPapplyList: [],
       nameOphone: "",
       loading: false,
       finished: false,
       total:"",
-      pageNum:0
+      pageNum:1
     };
   },
   mounted() {
@@ -139,6 +132,8 @@ export default {
   },
   methods: {
     changeMenu() {
+      this.pageNum = 1
+      this.shopPapplyList = [] // 数据初始化
       this.Initialization();
     },
     parentMethod() {
@@ -148,38 +143,19 @@ export default {
       this.$router.push({ path: "./myshop" });
     },
     onvanTabs(v) {
+      this.pageNum = 1
+      this.shopPapplyList = [] // 数据初始化
       this.Initialization(1);
     },
     search() {
-      this.Initialization(1);
-    },
-    //下拉刷新
-    onRefresh() {
-      setTimeout(() => {
-        this.Initialization(1);
-        Toast.success('刷新成功');
-        this.isLoading = false;
-        this.count++;
-      }, 500);
+      this.pageNum = 1
+      this.shopPapplyList = [] // 数据初始化
+      this.Initialization();
     },
     // 上拉加载
     onLoad() {
-      this.pageNum+=1
-      this.Initialization()
       setTimeout(() => {
-        // if(this.total < 10) {
-        //   this.loading = false;
-        //   console.log(3)
-        // } else {
-          // this.pageNum+=1
-          // this.Initialization()
-        // }
-        // this.loading = true
-        // 加载状态结束
-        // 数据全部加载完成
-        // if (this.list.length >= 40) {
-        //   this.finished = true;
-        // }
+        this.Initialization(1)
       }, 500);
     },
     // 跳转到详情
@@ -197,9 +173,23 @@ export default {
         orderStatus: this.orderStatus == "''" ? "" : this.orderStatus
       })
         .then(data => {
-          console.log(data);
-          this.shopPapplyList = data.data.dataList;
-          this.total = data.total
+          let dataList = data.data.dataList
+          this.loading = false
+          if (Number(dataList.length) <= 0) {
+            this.finished = true
+            this.loading = false
+            return false
+          }
+          // if(data.data.total > 10){
+          //   this.finished = false
+          //   this.loading = false
+          // }
+          this.shopPapplyList = this.shopPapplyList.concat(dataList)
+          this.pageNum++
+          this.total = data.data.total
+          this.finished = false
+          
+          console.log(this.shopPapplyList)
         })
         .catch(err => {
           console.log(err);
@@ -285,7 +275,7 @@ export default {
     font-weight: bold;
     text-align: center;
     position: absolute;
-    right: 15px;
+    right: 25px;
     // top: 15px;
   }
   .buttonBlue {
@@ -316,6 +306,10 @@ export default {
       }
       line-height: 26px;
       .product_one {
+        width: 160px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
         font-size: 17px;
         font-family: PingFang-SC-Bold;
         font-weight: bold;
@@ -327,6 +321,16 @@ export default {
         font-family: PingFang-SC-Medium;
         font-weight: bold;
         color: rgba(51, 51, 51, 1);
+        span{
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .product_two_span{
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
+          width: 60px;
+        }
       }
       .product_three {
         font-size: 12px;

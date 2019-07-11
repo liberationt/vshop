@@ -186,7 +186,7 @@ export default {
         message = this.generalizeStore.text+" "+this.generalizeStore.shortLink
         generalizeName = '去复制内容'
       } else {
-        message = "您还没有创建店铺，请先去编辑保存店铺信息"
+        message = "您还没有创建店铺，请先编辑保存店铺信息"
         generalizeName = '去编辑'
       }
       Dialog.confirm({

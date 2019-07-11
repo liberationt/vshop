@@ -225,7 +225,7 @@ export default {
       if(this.storeStatus == 0){
         Dialog.confirm({
           title: '温馨提示',
-          message: '您还没有创建店铺，请先去编辑保存店铺信息',
+          message: '您还没有创建店铺，请先编辑保存店铺信息',
           confirmButtonText:"去编辑"
         }).then(() => {
           this.$router.push({path:'./meditshop'})
