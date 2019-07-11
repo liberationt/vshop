@@ -107,6 +107,10 @@ export default {
 				this.active=Number(to.meta.tittle)
 				utils.putlocal('actives',to.meta.tittle)
 				this.getactive(to.meta.tittle)
+				if(to.path=='/shoppage'){
+					this.active ='1'
+					this.getactive('1')
+				}
 			}
 		},
 		computed:{
