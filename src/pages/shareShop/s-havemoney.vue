@@ -130,7 +130,7 @@ export default {
 				verifyCode: "",
 				phone: this.phonenumber
 			};
-			this.request('wisdom.vshop.vshopLoanUser.sendCaptcha',data)
+			this.https('wisdom.vshop.vshopLoanUser.sendCaptcha',data)
 			.then(data=>{
 				if(data.code=='success'){
 					statistics.click("tap", "havemoney","getobtainsnum");
@@ -191,7 +191,7 @@ export default {
 		},
 		//立即领取
 		immediately(){
-			if(utils.getCookie('user')){
+			if(utils.getCookie('users')){
 				statistics.click("tap", "havemoney","todetails");
 				this.$router.push('/applicationloan')
 			}else{
@@ -225,16 +225,16 @@ export default {
 				captchaCode:this.verification,
 				phone:this.phonenumber
 			}
-			this.request('wisdom.vshop.vshopLoanUser.captchaLogin',data)
+			this.https('wisdom.vshop.vshopLoanUser.captchaLogin',data)
 			.then(data=>{
 				if(data.code=='success'){
 					statistics.click("tap", "havemoney","todetails");
-					if(!utils.getCookie('user')){
+					if(!utils.getCookie('users')){
 							let str = {
 								token:data.data.token,
 								userId:data.data.userId
 							}
-							utils.setCookie('user',JSON.stringify(str))
+							utils.setCookie('users',JSON.stringify(str))
 						}
 					this.$router.push('/applicationloan')
 				}
@@ -244,7 +244,7 @@ export default {
 	},
 	mounted(){
 		window.scrollTo(0,0);
-		if(utils.getCookie('user')){
+		if(utils.getCookie('users')){
 			this.isshow = false
 		}else{
 			this.isshow=true

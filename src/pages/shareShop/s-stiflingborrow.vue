@@ -110,7 +110,7 @@ export default {
 				})
 				return false
 			}
-			if(!utils.getCookie('user')){
+			if(!utils.getCookie('users')){
 				if(!this.verification){
 					Toast({
 							message:'请获取验证码',
@@ -172,17 +172,17 @@ export default {
 			if(this.$route.query.productType){
 				params.productType = this.$route.query.productType
 			}
-			this.request('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
+			this.https('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
 			.then(data=>{
 				if(data.code=='success'){
 					statistics.click("tap", "stiflingborrow","getconfignum");
 					utils.setCookie('adNameSecond',this.city)
-					if(!utils.getCookie('user')){
+					if(!utils.getCookie('users')){
 						let str = {
 							token:data.data.token,
 							userId:data.data.userId
 						}
-						utils.setCookie('user',JSON.stringify(str))
+						utils.setCookie('users',JSON.stringify(str))
 					}
 					if(data.data.productType===3){
 						Toast({
@@ -227,7 +227,7 @@ export default {
 				verifyCode: "",
 				phone: this.userPhone
 			};
-			this.request('wisdom.vshop.vshopLoanUser.sendCaptcha',data)
+			this.https('wisdom.vshop.vshopLoanUser.sendCaptcha',data)
 			.then(data=>{
 				if(data.code=='success'){
 					statistics.click("tap", "stiflingborrow","getverifyCode");
@@ -299,7 +299,7 @@ export default {
 			if(this.$route.query.productType){
 				data.productType = this.$route.query.productType
 			}
-			this.request('wisdom.vshop.product.h5BeforeJumpDetail',data)
+			this.https('wisdom.vshop.product.h5BeforeJumpDetail',data)
 			.then(data=>{
 				if(data.code=='success'){
 					if(data.data.state==0){
@@ -309,7 +309,7 @@ export default {
 						this.managerPhone = data.data.managerPhone
 						this.bannerUrl = data.data.bannerUrl
 						this.tittle = data.data.productName
-						this.city = data.data.adNameSecond
+						this.city = data.data.adNameSecond==''?'上海': data.data.adNameSecond
 					}else{
 						this.$router.push('/undershelf?inviterCode='+data.data.inviterCode)
 					}
@@ -321,7 +321,7 @@ export default {
 	mounted(){
 		statistics.page("stiflingborrow", "stiflingborrowgetnum");
 		window.scrollTo(0,0);
-		if(utils.getCookie('user')){
+		if(utils.getCookie('users')){
 			this.isshow = false
 			this.disableds = true
 		}else{

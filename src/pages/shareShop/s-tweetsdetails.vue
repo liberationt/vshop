@@ -63,7 +63,7 @@ export default {
         exhibitionContentCode:this.$route.query.exhibitionContentCode,
         storeCode:this.$route.query.storeCode
 			}
-			this.request('wisdom.vshop.vshopStore.getExhibitionContent',data)
+			this.https('wisdom.vshop.vshopStore.getExhibitionContent',data)
 			.then(data=>{
 				if(data.code=='success'){
 					this.responseData = data.data

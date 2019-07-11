@@ -46,7 +46,7 @@ export default {
 					head : true , 
 					type:3
 				}
-				this.request('wisdom.vshop.vshopStore.queryStoreProduct',data)
+				this.https('wisdom.vshop.vshopStore.queryStoreProduct',data)
 				.then(data=>{ 
 					if(data.code=='success'){
 						this.financList = data.data.proprietaryProductResList
@@ -61,7 +61,7 @@ export default {
 					productCode:productCode,
 					productType:3
 				}
-				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
+				this.https('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
 						statistics.click("tap", "financingloan","getnumbers");

@@ -156,7 +156,7 @@ export default {
 				educationBackground:this.education,
 				marriageStatus:this.marriage
 			}
-			this.request('wisdom.vshop.vshopUserSelect.saveBaseInfo',data)
+			this.https('wisdom.vshop.vshopUserSelect.saveBaseInfo',data)
 			.then(data=>{
 				if(data.code=='success'){
 					utils.setCookie('adNameSecond',this.adNameSecond)
@@ -169,13 +169,13 @@ export default {
 			let data = {
 					pageName:'baseInfo'
 			}
-			this.request('wisdom.vshop.vshopUserSelect.initBaseInfoData',data)
+			this.https('wisdom.vshop.vshopUserSelect.initBaseInfoData',data)
 			.then(data=>{
 				if(data.code= 'success'){
 					let dataobject = data.data
 					this.username = dataobject.userName
 					this.idcard = dataobject.idCard
-					this.adNameSecond = dataobject.adNameSecond
+					this.adNameSecond = dataobject.adNameSecond==''?'上海':dataobject.adNameSecond
 					for(var i=0;i<dataobject.pageData.length;i++){
 						if(dataobject.pageData[i].infoTitleKey=='educationBackground'){
 							this.educationList = dataobject.pageData[i].optionRes

@@ -84,7 +84,7 @@ export default {
 			let data = {
 				data:v==0?false:true
 			}
-			this.request('wisdom.vshop.vshopStore.closeUMoneyTip',data)
+			this.https('wisdom.vshop.vshopStore.closeUMoneyTip',data)
 			.then(data=>{
 				if(data.code=='success'){
 					this.getdatas()
@@ -110,7 +110,7 @@ export default {
 				head : true , 
 				type:1
 			}
-			this.request('wisdom.vshop.vshopStore.queryStoreProduct',data)
+			this.https('wisdom.vshop.vshopStore.queryStoreProduct',data)
 			.then(data=>{ 
 				this.loanlist = data.data.searchOptionBeanList
 				this.inviterCode = data.data.inviterCode
@@ -131,7 +131,7 @@ export default {
 	},
 	created(){
 		window.scrollTo(0,0);
-		if(utils.getCookie('user')){
+		if(utils.getCookie('users')){
 			this.isshow = true
 		}else{
 			this.isshow = false

@@ -4,7 +4,7 @@
 			<header>
 				<div class="headerlift">
 					<div class="personal"><img :src=personImg alt=""></div>
-					<p>邀请码{{dataList.inviterCode}}</p>
+					<p>邀请码 &nbsp;{{dataList.inviterCode}}</p>
 				</div>
 				<div class="headerright">
 					<h4>{{dataList.storeName}}</h4>
@@ -106,7 +106,7 @@ export default {
 				inviterCode:this.$route.query.inviterCode?this.$route.query.inviterCode:utils.getCookie('inviterCode'),
 				storeCode:''
 			}
-			this.request('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
+			this.https('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
 				if(data.code=='success'){
 					this.dataList = data.data
 					this.tittle = data.data.storeName
@@ -249,7 +249,7 @@ export default {
 					border-radius:9px;
 					font-size:10px;
 					color:#F3B13E;
-					line-height: 19px;
+					line-height: 21px;
 					margin-top: -10px;
 					position: relative;
 					z-index: 10;
@@ -280,6 +280,7 @@ export default {
 						color:#ffffff;
 						padding:0 8px;
 						height:17px;
+						font-weight: bold;
 						line-height: 21px !important;
 						border-radius: 3px;
 						img{

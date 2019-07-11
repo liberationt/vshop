@@ -74,7 +74,7 @@ export default {
 					inviterCode:this.inviterCode,
 					productCode:productCode
 				}
-				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
+				this.https('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
 						statistics.click("tap", "loanlist","getnumber");
@@ -109,7 +109,7 @@ export default {
 				pageSize:this.pageSize,
 				filter:true
 			}
-			this.request('wisdom.vshop.vshopStore.queryStoreProductList',datas)
+			this.https('wisdom.vshop.vshopStore.queryStoreProductList',datas)
 				.then(data=>{ 
 					if(data.code=='success'){
 						let options = data.data.productDetailTypeBean
@@ -162,7 +162,7 @@ export default {
 				pageSize:this.pageSize,
 				filter:true
 			}
-			this.request('wisdom.vshop.vshopStore.queryStoreProductList',datas)
+			this.https('wisdom.vshop.vshopStore.queryStoreProductList',datas)
 			.then(data=>{ 
 				if(data.code=='success'){
 					let options = data.data.productDetailTypeBean

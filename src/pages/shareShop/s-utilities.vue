@@ -62,7 +62,7 @@ export default {
 				head : true , 
 				type:2
 			}
-			this.request('wisdom.vshop.vshopStore.queryStoreProduct',data)
+			this.https('wisdom.vshop.vshopStore.queryStoreProduct',data)
 				.then(data=>{ 
 					if(data.code=='success'){
 						this.dataList = data.data.productResList
@@ -100,7 +100,7 @@ export default {
 			let data = {
 				data:v==0?false:true
 			}
-			this.request('wisdom.vshop.vshopStore.closeUMoneyTip',data)
+			this.https('wisdom.vshop.vshopStore.closeUMoneyTip',data)
 			.then(data=>{
 				if(data.code=='success'){
 					this.getdatas()
@@ -110,7 +110,7 @@ export default {
 	},
 	mounted(){
 		window.scrollTo(0,0);
-		if(utils.getCookie('user')){
+		if(utils.getCookie('users')){
 			this.isshow = true
 		}else{
 			this.isshow = false

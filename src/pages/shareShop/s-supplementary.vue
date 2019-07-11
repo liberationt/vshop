@@ -366,7 +366,7 @@ export default {
 				carTime:this.ownCarStatus=='have_car'?this.carTime:'',
 				carIsPledge :this.ownCarStatus=='have_car'?this.carIsPledge:''
 			}
-			this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
+			this.https('wisdom.vshop.vshopUserSelect.saveInfo',data)
 			.then(data=>{
 				if(data.code=='success'){
 					statistics.click("tap", "supplementary","getnumbers");
@@ -398,7 +398,7 @@ export default {
 			let data = {
 				pageName :'moreInfo'
 			}
-			this.request('wisdom.vshop.vshopUserSelect.initTitleData',data)
+			this.https('wisdom.vshop.vshopUserSelect.initTitleData',data)
 			.then(data=>{
 				if(data.code=='success'){
 					let arr = data.data.pageData

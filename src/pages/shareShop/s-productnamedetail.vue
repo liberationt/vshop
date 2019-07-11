@@ -80,7 +80,7 @@ export default {
 					inviterCode:this.$route.query.inviterCode,
 					productCode:this.productCode
 				}	
-				this.request('wisdom.vshop.product.h5BeforeJumpDetail',data)
+				this.https('wisdom.vshop.product.h5BeforeJumpDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
 						statistics.click("tap", "prodectnamedetail","getapplynumber");
@@ -100,7 +100,7 @@ export default {
 					inviterCode:this.$route.query.inviterCode,
 					productCode:this.productCode
 				}
-				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
+				this.https('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
 						this.dataobject = data.data
