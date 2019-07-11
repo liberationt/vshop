@@ -98,6 +98,10 @@ export default {
       line-height:44px;
       text-align: left;
       padding-left: 15px;
+      width: 155px;
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
     }
   }
   .shopsignConfirm{

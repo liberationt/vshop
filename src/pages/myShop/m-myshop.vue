@@ -97,6 +97,7 @@
 import utils from "../../utils/utils";
 import { Popup, Dialog } from "vant";
 import wx from 'weixin-js-sdk'
+import { statistics } from "wisdom-h5";
 export default {
   components: {
     [Popup.name]: Popup,
@@ -199,6 +200,9 @@ export default {
         console.log(err);
       });
     }
+  },
+  mounted(){
+    statistics.psge("myshop")
   },
   created() {
     this.request("wisdom.vshop.vshopStoreManager.getVshopStoreDetail", {})
