@@ -68,7 +68,7 @@ export default {
     };
   },
   mounted(){
-    statistics.page("mshop")
+    statistics.page("mlogin")
   },
   methods: {
     onClick(v) {
@@ -105,7 +105,7 @@ export default {
         .then(data => {
           if (data.code == "success") {
             Toast("短信发送成功");
-            statistics.click("mshop","getcode")
+            statistics.click("mlogin","getcode")
           } else if (data.code == "110019") {
             this.deleteTime();
             this.seal_control = true;
@@ -168,7 +168,7 @@ export default {
             this.flag = true  
             this.$router.push({ path: "./myshop?id="+'1' });
             utils.putlocal('mlogoid','1' ) //判断从哪个页面进入
-            statistics.click("mshop","login")
+            statistics.click("mlogin","login")
             localStorage.removeItem("shopValue")
             localStorage.removeItem("weixinImg")
             localStorage.removeItem("bannerData")
