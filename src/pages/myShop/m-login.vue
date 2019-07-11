@@ -41,10 +41,10 @@
   </div>
 </template>
 <script>
-import { Tab, Tabs, Toast } from "vant";
-import utils from "../../utils/utils";
+import { Tab, Tabs, Toast } from "vant"
+import utils from "../../utils/utils"
 import MD5 from "js-md5";
-import { statistics } from "wisdom-h5";
+import { statistics } from "wisdom-h5"
 export default {
   components: {
     [Tabs.name]: Tabs,

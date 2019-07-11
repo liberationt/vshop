@@ -33,6 +33,7 @@ import { Tab, Tabs } from 'vant';
 import products from './cards/products.vue'
 import cards from './cards/cards.vue'
 import instruments from './cards/instruments.vue'
+import { statistics } from "wisdom-h5"
 export default {
   components:{
     products,
@@ -53,6 +54,7 @@ export default {
     },
     onvanTabs(v){
       this.switch(v)
+      statistics.page("magentproduct"+v)
     },
     switch (key) {
       switch(key){
@@ -70,6 +72,7 @@ export default {
     
   },
   mounted(){
+    
   }
 }
 </script>
@@ -81,13 +84,13 @@ export default {
       width:375px;
       height:40px;
       background:rgba(254,241,227,1);
-      line-height: 40px;
+      line-height: 46px;
       font-size:13px;
       color:rgba(254,149,30,1);
       margin-top: 5px;
       img {
         width: 15px;
-        height: 15px;
+        height: 16px;
         vertical-align: middle;
         margin: 0px 10px 2px 15px;
       }

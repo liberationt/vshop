@@ -91,6 +91,7 @@
 import { qrcanvas } from "qrcanvas";
 import html2canvas from "html2canvas";
 import { Popup, RadioGroup, Radio, Toast, Dialog } from "vant";
+import { statistics } from "wisdom-h5"
 export default {
   components: {
     [Popup.name]: Popup,
@@ -134,11 +135,13 @@ export default {
       switch (num) {
         case 1:
           this.goDetails(code, num);
+          statistics.click("magentproduct1",'mashangzq')
           break;
         case 0:
           this.moneyShow = true;
           this.productCode = code;
           this.agentStatus = 0;
+          statistics.click("magentproduct1",'woyaodl')
           break;
       }
     },
@@ -314,9 +317,6 @@ export default {
     padding-top: 15px;
     font-size: 12px;
     color: #333333;
-    #qrcode {
-      margin-bottom: 10px;
-    }
   }
   .popu_footer {
     background-color: #fff;
@@ -354,6 +354,7 @@ export default {
     font-size: 11px;
     line-height: 18px;
     margin-top: 6px;
+    margin-left: 4px;
     span {
       background-color: #fef1e3;
       padding: 6px 8px;
@@ -366,7 +367,7 @@ export default {
     width: 70px;
     border-radius: 15px;
     height: 29px;
-    line-height: 29px;
+    line-height: 31px;
     font-size: 12px;
     font-weight: bold;
     text-align: center;
@@ -390,6 +391,7 @@ export default {
         font-weight: bold;
         color: rgba(51, 51, 51, 1);
         line-height: 25px;
+        margin-top: -2px;
       }
       .product_people {
         font-size: 14px;
@@ -403,6 +405,7 @@ export default {
         span {
           color: #fe951e;
           font-weight: bold;
+          font-size: 15px;
         }
       }
       .buttonBlue {

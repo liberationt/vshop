@@ -13,7 +13,8 @@
     <div class="productdetails_center">
       <div class="productdetails_process">
         <div class="process">
-          <p>申请流程</p>
+          <span class="process1"></span>
+          <span class="process2">申请流程</span>
         </div>
         <ul class="process_img clearfix">
           <li class="left" v-for="(item,index) in productList.applicationProcedureList">
@@ -27,7 +28,8 @@
       </div>
       <div class="productdetails_process">
         <div class="process">
-          <p>申请资料</p>
+          <span class="process1"></span>
+          <span class="process2">申请资料</span>
         </div>
         <ul class="process_text">
           <li v-for="(item,index) in productList.applicationMaterialList">{{index+1+'、'+item.productParamName}}</li>
@@ -35,7 +37,8 @@
       </div>
       <div class="productdetails_process">
         <div class="process">
-          <p>申请条件</p>
+          <span class="process1"></span>
+          <span class="process2">申请条件</span>
         </div>
         <ul class="process_text">
           <li v-for="(item,index) in productList.applyCondition">{{index+1+'、'+item}}</li>
@@ -125,6 +128,7 @@ import { qrcanvas } from 'qrcanvas';
 import { Popup, RadioGroup, Radio,} from 'vant';
 import utils from "../../utils/utils";
 import wx from 'weixin-js-sdk'
+import { statistics } from "wisdom-h5"
 export default {
   components: {
     [Popup.name] : Popup,
@@ -151,6 +155,7 @@ export default {
     productposter(){
       // this.showPoster = true
       this.operationType(1)
+      statistics.click("mproductdetails","productposter")
     },
     // 分享授权
     wxShare() {
@@ -179,6 +184,7 @@ export default {
     recommenduser(){
       this.wxShare()
       alert("请点击右上角分享")
+      statistics.click("mproductdetails","recommenduser")
       this.request('wisdom.vshop.product.createProductPoster',{url: window.location.origin+'/productnamedetail',operationType:2,productCode:this.$route.query.code}).then(data=>{
         let dataList = data.data
         wx.ready(function(){
@@ -202,11 +208,12 @@ export default {
     confirm(){
       this.flag = false
       let agentStatusData = [{productCode:this.$route.query.code,productType:this.$route.query.type}]
+      statistics.click("mproductdetails","woyaodaili")
       this.request('wisdom.vshop.product.batchAgentProducts',{queryH5UserProductDetailReqList:agentStatusData}).then(data=>{
         this.moneyShow =  false
         this.flag = true
         this.$router.push({path:"./magentproduct"})
-      }).catch(err=>{console.log(err)})
+      }).catch(err=>{console.log(err);this.moneyShow =  false})
     },
     Initialization(){
       this.request("wisdom.vshop.product.queryH5ProductMarketDetail",{productCode:this.$route.query.code}).then(data=>{
@@ -267,6 +274,7 @@ export default {
     }
   },
   mounted(){
+    statistics.page("mproductdetails")
   },
   created(){
     this.Initialization()
@@ -295,10 +303,18 @@ export default {
       font-size: 14px;
       border-bottom: 1px solid rgba(231, 231, 231, 1); /*no*/
       padding-left: 15px;
-      p {
-        border-left: 5px solid #4597fb; /*no*/
-        padding-left: 8px;
+      position: relative;
+      .process1{
+        display: inline-block;
+        width: 3px;
+        height: 18px;
+        background-color: #4597fb;
         border-radius: 1px;
+      }
+      .process2{
+        padding-left: 8px;
+        position: absolute;
+        top: 10px;
       }
     }
     .process_img {
@@ -322,11 +338,11 @@ export default {
       }
     }
     .process_text {
-      padding: 10px 0px 7px 15px;
+      padding: 10px 7px 7px 15px;
       color: #333333;
       font-size: 13px;
-      li {
-        margin-bottom: 8px;
+      li{
+        margin-bottom: 5px;
       }
     }
   }
@@ -340,7 +356,7 @@ export default {
     padding-top: 13px;
     padding-right: 5px;
     .van_daili {
-      padding: 9px 17px 0px 18px;
+      padding: 4px 17px 0px 18px;
       text-align: center;
       font-size: 12px;
     }

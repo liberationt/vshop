@@ -53,7 +53,7 @@
           <p>长按识别二维码马上申请</p>
         </div>
         <div class="popu_footer">
-          <van-row >
+          <van-row class="van-row1">
             <van-col>
               <van-col class="popuf_img">
                 <img :src="showPosterList.personImg?'data:image/png;base64,'+showPosterList.personImg : require('../imgs/topimg.png')" alt="">
@@ -124,11 +124,13 @@ export default {
       switch (num) {
         case 1:
           this.goDetails(code,num)
+          statistics.click("magentproduct2",'mashangzq2')
           break;
         case 0:
           this.moneyShow = true;
           this.agentStatus = 6
           this.productCode = code
+          statistics.click("magentproduct1",'woyaodl2')
           break;
       }
     },
@@ -195,6 +197,7 @@ export default {
           size:100,
           colorDark:'red'
         })
+        console.log(url)
         var img = document.createElement( 'img' );
         img.src = canvas.toDataURL( 'image/png', 1 );  //1表示质量(无损压缩)
         document.getElementById("qrcode").innerHTML = '',
@@ -262,13 +265,13 @@ export default {
     padding-top: 15px;
     font-size:12px;
     color: #333333;
-    #qrcode {
-      margin-bottom: 10px;
+    p{
+      line-height: 40px;
     }
   }
   .popu_footer {
     background-color: #fff;
-    padding: 18px 15px 20px 16px;
+    padding: 0px 15px 0px 16px;
     border-radius: 0px 0px 5px 5px;
     .popuf_img {
       width: 48px;
@@ -344,6 +347,9 @@ export default {
       background-color: #F3B13E;
     }
   }
+  .van-row1{
+    padding-left:0px;
+  }
   .product_label_common{
     margin-top: 12px;
     width: 100%;
@@ -352,6 +358,7 @@ export default {
       color: #FE951E;
       font-size:11px;
       line-height:18px;
+      margin-left: 4px;
       span {
         background-color: #FEF1E3;
         padding: 6px 8px;
@@ -363,7 +370,7 @@ export default {
       width: 70px;
       border-radius:15px;
       height: 29px;
-      line-height: 29px;
+      line-height: 31px;
       font-size:12px;
       font-weight:bold;
       color:rgba(255,255,255,1);

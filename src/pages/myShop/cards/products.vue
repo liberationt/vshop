@@ -40,6 +40,7 @@
   </div>
 </template>
 <script>
+import { statistics } from "wisdom-h5"
 import { Popup, RadioGroup, Radio, Toast, Dialog } from "vant";
 export default {
   components: {
@@ -78,11 +79,13 @@ export default {
       switch (num) {
         case 1:
           this.goDetails(code,num)
+          statistics.click("magentproduct","makeMoney",{code:code})
           break;
         case 0:
           this.moneyShow = true;
           this.productCode = code
           this.agentStatus = 0
+          statistics.click("magentproduct","woyaodaili",{code:code})
           break;
       }
     },
@@ -127,6 +130,7 @@ export default {
           }
         })
       }
+      statistics.click("magentproduct","woyaodailiqueren")
       this.request('wisdom.vshop.product.batchAgentProducts',{queryH5UserProductDetailReqList:agentStatusData}).then(data=>{
         Toast.success('代理成功');
         this.moneyShow =  false
@@ -210,7 +214,7 @@ export default {
       width: 70px;
       border-radius: 15px;
       height: 29px;
-      line-height: 29px;
+      line-height: 31px;
       font-size: 12px;
       font-weight: bold;
       color: rgba(255, 255, 255, 1);
