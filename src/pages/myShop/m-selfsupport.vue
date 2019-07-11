@@ -24,7 +24,7 @@
             <van-col class="span_padding" :span="19">
               <p class="modal_text">{{item.productName}}</p>
               <p>综合月利率：<span class="modal_color">{{item.productRate}}</span></p>
-              <p>贷款额度：<span class="modal_color">{{item.limitMin+'元'+'-'+item.limitMax+'元'}}</span></p>
+              <p>贷款额度：<span class="modal_color">{{item.limitMin+'-'+item.limitMax}}</span></p>
             </van-col>
           </van-row>
         </div>
