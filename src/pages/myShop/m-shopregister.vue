@@ -579,7 +579,7 @@ export default {
         position: relative;
         .pleace_label {
           padding-bottom: 13px;
-          border-bottom: 1px solid #e7e7e7; /*no*/
+          border-bottom: 1px solid #efefef; /*no*/
           span {
             display: inline-block;
             padding: 0px 8px;

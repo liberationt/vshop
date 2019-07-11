@@ -94,7 +94,7 @@ export default {
 		color:#333333;
 		margin:0 17px;
 		height:62px;
-		border-bottom: 1px solid #E7E7E7 /*no*/;
+		border-bottom: 1px solid #efefef /*no*/;
 		div{
 			line-height:22px;
 		}

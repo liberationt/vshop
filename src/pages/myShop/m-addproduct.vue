@@ -291,7 +291,7 @@ export default {
     padding: 0px 15px;
     .center_list {
       padding: 15px 0px;
-      border-bottom: 1px solid #e7e7e7; /*no*/
+      border-bottom: 1px solid #efefef; /*no*/
       font-size: 14px;
       color: #000;
       .center_geren {

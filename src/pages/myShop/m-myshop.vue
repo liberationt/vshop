@@ -219,7 +219,7 @@ export default {
   .myshop_center {
     .center_top {
       padding: 15px;
-      border-bottom: 1px solid #e7e7e7; /*no*/
+      border-bottom: 1px solid #efefef; /*no*/
       .center_topimg {
         img {
           width: 60px;
@@ -235,17 +235,22 @@ export default {
         font-size: 16px;
         font-weight: bold;
         font-family: "PingFang-SC-Bold";
+        margin-top: 1px;
       }
       .center_identity {
         background-color: #f3b13e;
         color: #fff;
         font-size: 10px;
-        padding: 3px 8px;
+        padding: 2px 8px 1px 8px;
+        height: 17px;
         border-radius: 3px;
+        font-weight: bold;
+        margin-top: 4px;
         img {
           width: 10px;
           height: 12px;
-          margin-bottom: 2px;
+          margin-bottom: 3px;
+          vertical-align: middle;
         }
       }
       .center_phone {
@@ -256,6 +261,7 @@ export default {
           margin-right: 7px;
           vertical-align: sub;
           margin-bottom: 2px;
+          margin-left: 1px;
         }
         margin-top: 37px;
         font-size: 13px;
@@ -275,8 +281,8 @@ export default {
       font-size: 13px;
       font-weight: bold;
       .navbar_center {
-        border-left: 1px solid #e7e7e7; /*no*/
-        border-right: 1px solid #e7e7e7; /*no*/
+        border-left: 1px solid #efefef; /*no*/
+        border-right: 1px solid #efefef; /*no*/
       }
       .navbar_text {
         font-size: 20px;
@@ -323,6 +329,7 @@ export default {
       background-color: #4597fb;
       width: 155px;
       height: 45px;
+      line-height: 43px;
       border: 0px;
       border-radius: 23px;
       font-size: 16px;

@@ -167,8 +167,8 @@ export default {
       color: #333333;
       font-size:15px;
       padding: 15px 0px;
-      border-top: 1px dashed #E7E7E7;/*no*/
-      border-bottom: 1px dashed #E7E7E7;/*no*/
+      border-top: 1px dashed #efefef;/*no*/
+      border-bottom: 1px dashed #efefef;/*no*/
       .message_center_one{
         margin-right: 58px;
       }
@@ -227,7 +227,7 @@ export default {
         padding: 18px 0px;
       }
       .borderB{
-        border-bottom: 1px solid #E7E7E7;
+        border-bottom: 1px solid #efefef;
       }
     }
   }
