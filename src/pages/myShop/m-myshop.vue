@@ -130,6 +130,7 @@ export default {
         @ApiModelProperty("店铺是否有效 0无效 1有效")
         private Integer storeStatus;
       **/ 
+      statistics.click("myshop",'yulan')
       if(this.userMessage.storeStatus == 0){
         this.tanchuang()
       } else {
@@ -138,6 +139,7 @@ export default {
     },
     // 分享
     onShare() {
+      statistics.click("myshop",'share')
       if(this.userMessage.storeStatus == 0){
         this.tanchuang()
       } else {
@@ -202,7 +204,7 @@ export default {
     }
   },
   mounted(){
-    statistics.psge("myshop")
+    statistics.page("myshop")
   },
   created() {
     this.request("wisdom.vshop.vshopStoreManager.getVshopStoreDetail", {})
