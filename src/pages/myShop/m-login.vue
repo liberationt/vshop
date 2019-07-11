@@ -162,6 +162,9 @@ export default {
             this.flag = true  
             this.$router.push({ path: "./myshop?id="+'1' });
             utils.putlocal('mlogoid','1' ) //判断从哪个页面进入
+            localStorage.removeItem("shopValue")
+            localStorage.removeItem("weixinImg")
+            localStorage.removeItem("bannerData")
           })
           .catch(err => {
             this.flag = true
