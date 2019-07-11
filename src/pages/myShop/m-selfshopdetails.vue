@@ -12,7 +12,7 @@
             <img :src=shopdetailsData.productLogo alt="">
           </van-col>
           <van-col class="message_text">
-            <p>{{shopdetailsData.productName}}</p>
+            <p class="message_blod">{{shopdetailsData.productName}}</p>
             <p>综合月利率：<span class="modal_color">{{shopdetailsData.productRate}}</span></p>
             <p>贷款额度：<span class="modal_color">{{shopdetailsData.amount}}</span></p>
           </van-col>
@@ -26,7 +26,8 @@
     <div class="mselfshopdetails_center">
       <div class="mselfshopdetails_process">
         <div class="process">
-          <p>申请流程</p>
+          <span class="process_span"></span>
+          <span class="process_span2">申请流程</span>
         </div>
         <ul class="process_img clearfix">
           <li class="left" v-for="(item,index) in shopdetailsData.applicationProcedureList">
@@ -40,7 +41,8 @@
       </div>
       <div class="mselfshopdetails_process">
         <div class="process">
-          <p>申请资料</p>
+          <span class="process_span"></span>
+          <span class="process_span2">申请资料</span>
         </div>
         <ul class="process_text">
           <li v-for="(item,index) in shopdetailsData.applicationMaterialList">{{index+1+'、'+item.productParamName}}</li>
@@ -48,7 +50,8 @@
       </div>
       <div class="mselfshopdetails_process">
         <div class="process">
-          <p>申请条件</p>
+          <span class="process_span"></span>
+          <span class="process_span2">申请条件</span>
         </div>
         <ul class="process_text">
           <li>{{shopdetailsData.productDetail}}</li>
@@ -65,9 +68,10 @@
   </div>
 </template>
 <script>
-import { Popup, Dialog } from "vant";
+import { Popup, Dialog } from "vant"
 import utils from '../../utils/utils'
 import wx from 'weixin-js-sdk'
+import { statistics } from "wisdom-h5"
 export default {
   components: {
     [Popup.name]: Popup,
@@ -81,7 +85,6 @@ export default {
       shopdetailsData:{},
     };
   },
-  created() {},
   methods: {
     onGoback() {
       if(this.id == 1){
@@ -117,6 +120,7 @@ export default {
       if(!this.inviterCode){ // 立即分享
       this.wxShare()
       alert('点击右上角分享')
+      statistics.click("mselfshopdetails","wxShare")
         this.request("wisdom.vshop.proprietaryProduct.shareProprietaryProductH5",{proprietaryProductCode: this.$route.query.code,url:window.location.origin+'/mselfshopdetails'}).then(data=>{
           let dataList = data.data
           wx.ready(function(){
@@ -139,6 +143,7 @@ export default {
         this.$router.push({path:'./stiflingborrow?productType='+3+"&inviterCode="+ this.inviterCode +"&productCode="+this.code})
         utils.setCookie('InviterCode',this.InviterCode)
         utils.setCookie('ProductCode',this.code)
+        statistics.click("mselfshopdetails","lijishenqing")
       }
     },
     goEdit(){
@@ -149,7 +154,8 @@ export default {
     deleteProduct(){
       Dialog.confirm({
         title: '温馨提示',
-        message: '确认删除此产品吗？'
+        message: '确认删除此产品吗？',
+        className:"delect"
       }).then(() => {
         this.request("wisdom.vshop.proprietaryProduct.deleteByCode",{proprietaryProductCode: this.$route.query.code}).then(data=>{
           this.$router.push({ path: "./mselfsupport" });
@@ -161,12 +167,18 @@ export default {
     Initialization(){
       this.request("wisdom.vshop.proprietaryProduct.getH5ProprietaryProductByCode",{proprietaryProductCode: this.$route.query.code}).then(data=>{
         console.log(data)
+        if(data.data.state == 1){
+          this.$router.push({ path: "./undershelf?inviterCode="+this.inviterCode });
+        }
         this.shopdetailsData = data.data
       }).catch(err=>{console.log(err)})
     }
   },
   created(){
     this.Initialization()
+  },
+  mounted(){
+    statistics.page("mselfshopdetails")
   }
 };
 </script>
@@ -179,26 +191,34 @@ export default {
     .header_message {
       background-color: #fff;
       padding: 20px 0px 20px 15px;
+      margin-bottom: 10px;
       img {
         width: 70px;
         height: 70px;
         margin-right: 10px;
+        border-radius: 5px;
       }
       .message_text {
         font-size:14px;
         font-family:PingFang-SC-Regular;
-        font-weight:bold;
         color:rgba(153,153,153,1);
         line-height: 25px;
         color: #999999;
         .modal_color {
           color: #FE951E;
+          font-weight: bold;
         }
+      }
+      .message_blod{
+        font-weight: bold;
+        width: 200px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
       }
       :nth-child(1){
         font-size:17px;
         font-family:PingFang-SC-Bold;
-        font-weight:bold;
         color: #333;
       }
       .message_img{
@@ -220,10 +240,18 @@ export default {
       font-size: 14px;
       border-bottom: 1px solid rgba(231, 231, 231, 1); /*no*/
       padding-left: 15px;
-      p {
-        border-left: 5px solid #4597fb; /*no*/
-        padding-left: 8px;
+      position: relative;
+      .process_span{
+        display: inline-block;
+        height: 18px;
+        width: 3px;
+        background-color: #4597fb;
         border-radius: 1px;
+        margin-right: 8px;
+      }
+      .process_span2{
+        position: absolute;
+        top: 10px;
       }
     }
     .process_img {
@@ -231,7 +259,6 @@ export default {
       li {
         color: #333333;
         font-size: 13px;
-
         .img_top {
           width: 26px;
           height: 28px;
@@ -252,7 +279,7 @@ export default {
       color: #333333;
       font-size: 13px;
       li {
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
     }
   }
@@ -286,5 +313,6 @@ export default {
       height: 36px;
     }
   }
+  
 }
 </style>

@@ -42,7 +42,8 @@
       </van-row>
       <van-row class="center_list">
         <p class="center_list_one">
-          <span>申请流程</span>
+          <span class="center_list_one1"></span>
+          <span class="center_list_one2">申请流程</span>
         </p>
         <ul class="center_list_two">
           <li class="left" :class="{checked:processArr.includes(item.productParamCode)}" v-for="(item,index) in processList" @click="processChange(item.productParamCode)"> {{item.productParamName}}</li>
@@ -50,7 +51,8 @@
       </van-row>
       <van-row class="center_list">
         <p class="center_list_one">
-          <span>申请资料</span>
+          <span class="center_list_one1"></span>
+          <span class="center_list_one2">申请资料</span>
         </p>
         <ul class="center_list_two">
           <li class="left" :class="{checked:materialsArr.includes(item.productParamCode)}" v-for="(item,index) in materialsList" @click="materialsChange(item.productParamCode)"> {{item.productParamName}}</li>
@@ -58,7 +60,8 @@
       </van-row>
       <van-row class="center_list">
         <p class="center_list_one">
-          <span>申请条件</span>
+          <span class="center_list_one1"></span>
+          <span class="center_list_one2">申请条件</span>
         </p>
         <div class="left">
           <textarea class="shop_tarea" v-on:input="inputFunc" v-model="shopValue.productDetail" placeholder="请填写申请条件"></textarea>
@@ -73,6 +76,7 @@
 <script>
 import { Uploader } from "vant";
 import utils from '../../utils/utils'
+import { statistics } from "wisdom-h5"
 export default {
   components: {
     [Uploader.name]: Uploader
@@ -128,6 +132,10 @@ export default {
         this.$toast('产品名称范围2-20个字')
         return false;
       }
+      if(this.shopValue.productRate.length > 21){
+        this.$toast('月利率范围最多20个字')
+        return false;
+      }
       if(Number(this.shopValue.limitMax) > 5000000 || Number(this.shopValue.limitMin) < 1){
         this.$toast('最小最大值为1-5000000')
         return false;
@@ -145,6 +153,7 @@ export default {
         this.$toast('最小额度不能大于最大额度')
         return false;
       }
+      statistics.click("maddproduct","addProduct")
       if (this.isAdd == "is") {
         // 添加
         dataList = Object.assign(this.shopValue, {
@@ -278,6 +287,7 @@ export default {
       this.Initialization();
       this.flag = true
     }
+    statistics.page("maddproduct")
   }
 };
 </script>
@@ -291,7 +301,7 @@ export default {
     padding: 0px 15px;
     .center_list {
       padding: 15px 0px;
-      border-bottom: 1px solid #e7e7e7; /*no*/
+      border-bottom: 1px solid #efefef; /*no*/
       font-size: 14px;
       color: #000;
       .center_geren {
@@ -301,8 +311,17 @@ export default {
       .center_list_one {
         color: #4597fb;
         font-size: 14px;
-        span {
-          border-left: 5px solid #4597fb; /*no*/
+        position: relative;
+        .center_list_one1{
+          display: inline-block;
+          height: 18px;
+          width: 3px;
+          background-color: #4597fb;
+          border-radius: 1px;
+        }
+        .center_list_one2{
+          position: absolute;
+          top: -1px;
           padding-left: 8px;
         }
       }
@@ -315,7 +334,7 @@ export default {
         li {
           width: 80px;
           height: 35px;
-          line-height: 35px;
+          line-height: 38px;
           background-color: #f4f4f4;
           text-align: center;
           border-radius: 2px;
@@ -339,12 +358,13 @@ export default {
         color: #333;
         float: right;
         width: 92%;
+        margin-top: 4px;
       }
       .shop_tarea {
         border: none;
         margin-top: 10px;
         font-size: 14px;
-        color: #999;
+        color: #333;
         width: 340px;
         height: 78px;
       }

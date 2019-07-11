@@ -56,7 +56,7 @@ export default {
 		li{
 			padding:0 15px;
 			line-height: 40px; 
-			border-bottom:1px solid #E7E7E7 /*no*/;
+			border-bottom:1px solid #efefef /*no*/;
 			font-size:16px;
 			color:#333333;
 			position:relative;

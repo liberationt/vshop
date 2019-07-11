@@ -55,8 +55,9 @@
   </div>
 </template>
 <script>
-import {  Uploader  } from 'vant';
+import {  Uploader  } from 'vant'
 import utils from '../../utils/utils'
+import { statistics } from "wisdom-h5"
 export default {
   components:{
     [Uploader.name] : Uploader 
@@ -113,6 +114,7 @@ export default {
         return false;
       }
       this.flag = false
+      statistics.click("meditshop","addSubmit")
       let parameter =  Object.assign(
         this.shopValue,{
           storeLogo: this.imgData.bannerUrl,
@@ -165,6 +167,7 @@ export default {
     if(this.$route.query.id != 1){
       this.Initialization()
     }
+    statistics.page("meditshop")
     this.isCheck()
   }
 }
@@ -180,7 +183,7 @@ export default {
       padding: 0px 15px;
       .center_list {
         padding: 15px 0px;
-        border-bottom: 1px solid #E7E7E7;/*no*/
+        border-bottom: 1px solid #efefef;/*no*/
         font-size:14px;
         color: #000;
         .center_geren {
@@ -200,6 +203,7 @@ export default {
           height: 70px;
         }
         input {
+          margin-top: 4px;
           text-align: right;
           color: #333;
           float: right;

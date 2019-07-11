@@ -18,13 +18,13 @@
       >
         <div v-for="item in selfsupportList" class="mselfsupport_modal" @click="goShopdetails(item.proprietaryProductCode)">
           <van-row>
-            <van-col :span="6">
+            <van-col :span="5">
               <img :src=item.productLogo alt="">
             </van-col>
-            <van-col :span="18">
+            <van-col class="span_padding" :span="19">
               <p class="modal_text">{{item.productName}}</p>
               <p>综合月利率：<span class="modal_color">{{item.productRate}}</span></p>
-              <p>贷款额度：<span class="modal_color">{{item.limitMin+'元'+'-'+item.limitMax+'元'}}</span></p>
+              <p>贷款额度：<span class="modal_color">{{item.limitMin+'-'+item.limitMax}}</span></p>
             </van-col>
           </van-row>
         </div>
@@ -37,6 +37,7 @@
 </template>
 <script>
 import {List} from 'vant'
+import { statistics } from "wisdom-h5"
 export default {
   components:{
     [List.name]: List
@@ -55,6 +56,7 @@ export default {
       this.$router.push({ path: "./myshop" });
     },
     addproduct() {
+      statistics.click("mselfsupport","tianjiapproduct")
       this.$router.push({ path: "./maddproduct?isAdd="+'is' });
     },
     goShopdetails(code){
@@ -83,6 +85,9 @@ export default {
   },
   created(){
     this.Initialization(1)
+  },
+  mounted(){
+    statistics.page("mselfsupport")
   }
 };
 </script>
@@ -95,27 +100,32 @@ export default {
     /deep/ .mselfsupport_modal {
       font-size:14px;
       font-family:PingFang-SC-Regular;
-      font-weight:bold;
       color: #999999;
       width: 345px;
       margin: 0 auto;
       background-color: #fff;
-      padding: 13px 0px 15px 15px;
+      padding: 13px 15px 15px 15px;
       border-radius:5px;
       line-height: 23px;
       margin-bottom: 10px;
+      .span_padding {
+        padding-left: 12px;
+      }
       .modal_text{
         color: #333333;
         font-size:17px;
-        margin-top: -5px;
+        font-weight:bold;
+        
       }
       .modal_color {
         color: #FE951E;
+        font-weight:bold;
       }
       img{
         width: 60px;
         height: 60px;
         margin-right: 15px;
+        border-radius: 5px;
       }
     }
   }

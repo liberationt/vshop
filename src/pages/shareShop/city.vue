@@ -129,7 +129,7 @@ export default {
 			padding: 0 15px;
 			li{
 				line-height: 40px; 
-				border-bottom:1px solid #E7E7E7;
+				border-bottom:1px solid #efefef;
 				font-size:16px;
 				color:#333333;
 				position:relative;
