@@ -115,7 +115,7 @@ export default {
 				loanAmount:this.value1,
 				loanUse:this.loanpurpose
 			}
-			this.request('wisdom.vshop.vshopUserSelect.saveInfo',data)
+			this.https('wisdom.vshop.vshopUserSelect.saveInfo',data)
 			.then(data=>{
 				if(data.code=='success'){
 					statistics.click("tap", "applicationloan","getnumbers");
@@ -127,7 +127,7 @@ export default {
 			let data = {
 				pageName:'apply'
 			}
-			this.request('wisdom.vshop.vshopUserSelect.initTitleData',data)
+			this.https('wisdom.vshop.vshopUserSelect.initTitleData',data)
 			.then(data=>{
 				if(data.code=='success'){
 					let datalist = data.data.pageData

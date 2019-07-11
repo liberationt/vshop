@@ -133,7 +133,7 @@ export default {
 	},
 	mounted(){
 		window.scrollTo(0,0);
-		if(utils.getCookie('user')){
+		if(utils.getCookie('users')){
 			this.isshow = true
 		}else{
 			this.isshow = false

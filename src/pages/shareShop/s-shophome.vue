@@ -78,7 +78,7 @@ export default {
 				} else {
 					url = window.location.href
 				}
-				this.request("wisdom.vshop.wechatOpen.getJsconf", {url:url})
+				this.https("wisdom.vshop.wechatOpen.getJsconf", {url:url})
 				.then(data => {
 					utils.wxShare(data.data)
 					wx.ready(function(){

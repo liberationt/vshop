@@ -15,13 +15,35 @@ import MD5 from "js-md5";
 // 公共言
 let saltcomm = "*(&!*(Q#IUHAX89y19823h*&(YQ#($(*AGFsd"
 
+export function https(apiKey, data = {}, isShowError = true) {
+  let baseData = getRequestInfos(apiKey, data)
+  
+  return new Promise((resolve, reject) => {
+    return http.post("/api/proxy", baseData).then((response = {}) => {
+      if (response.code == 'success') {
+        resolve && resolve(response)
+      } else if (response.code == '110019') {
+        resolve && resolve(response)
+      } else if (response.code == '404') {
+        window.location.href = window.location.origin+'/errors'
+      } else if (response.code == '300013' || response.code == '300011') {
+        window.location.href = window.location.origin+'/mlogin'
+      }  else {
+        handleError(apiKey, response, reject, isShowError)
+      }
+    }).catch(err => {
+      handleError(apiKey, err, reject, isShowError)
+    });
+  })
+}
+
 export function request(apiKey, data = {}, isShowError = true) {
   let baseParams = getRequestInfo(apiKey, data)
   
   return new Promise((resolve, reject) => {
     return http.post("/api/proxy", baseParams).then((response = {}) => {
       if (response.code == 'success') {
-        // console.log('response=====> ' + apiKey + "   " + JSON.stringify(response))
+        console.log('response=====> ' + apiKey + "   " + JSON.stringify(response))
         resolve && resolve(response)
       } else if (response.code == '110019') {
         console.log('response=====> ' + JSON.stringify(response))
@@ -71,7 +93,7 @@ export function upload(file = {}) {
   return new Promise((resolve, reject) => {
     return http.post('/upload', formData, config).then(response => {
       if (response.code == 'success') {
-        // console.log('response=====> ' + JSON.stringify(response))
+        console.log('response=====> ' + JSON.stringify(response))
         resolve && resolve(response.data)
       } else {
         Toast("图片过大，请处理一下");
@@ -117,9 +139,44 @@ let getRequestInfo = (apiKey = '', data = {}) => {
 
   baseParams.sign = MD5(baseParams.apiKey + token + baseParams.data + saltcomm)
 
-  // console.log('request=====> ' + apiKey + "   " + JSON.stringify(baseParams))
+  console.log('request=====> ' + apiKey + "   " + JSON.stringify(baseParams))
 
   return baseParams
+}
+
+
+// 公共参数的封装
+let getRequestInfos = (apiKey = '', data = {}) => {
+  let baseData = {
+    apiKey: apiKey,
+    data: JSON.stringify(data),
+    session: null,
+    sign: "",
+    system: {
+      appType: "H5",
+      appVersion: "1.0.0",
+      channel: "",
+      identifier: "weidian",
+      hardware: isiOS ? "weidian-IOS" : "weidian-Android"
+    },
+  }
+  
+// 取用户信息
+if(utils.getCookie('users')){
+  let userInfo = JSON.parse(utils.getCookie('users')) // 获取本地内容
+  if (userInfo) { // 用户信息
+    baseData.session = {
+      userId: userInfo.userId,
+      token: userInfo.token
+    }
+  }
+}
+
+let token = (baseData.session && baseData.session.token) ? baseData.session.token : ''
+
+baseData.sign = MD5(baseData.apiKey + token + baseData.data + saltcomm)
+
+return baseData
 }
 
 
@@ -169,7 +226,9 @@ export default {
    */
   install(Vue) {
     Vue.prototype.request = request,
+    Vue.prototype.https = https,
       Vue.prototype.upload = upload
   },
-  request
+  request,
+  https
 }
