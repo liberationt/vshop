@@ -200,6 +200,7 @@ export default {
           height: 70px;
         }
         input {
+          margin-top: 4px;
           text-align: right;
           color: #333;
           float: right;
