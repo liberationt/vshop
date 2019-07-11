@@ -55,9 +55,9 @@
   </div>
 </template>
 <script>
-import {  Uploader  } from 'vant';
+import {  Uploader  } from 'vant'
 import utils from '../../utils/utils'
-import { statistics } from "wisdom-h5";
+import { statistics } from "wisdom-h5"
 export default {
   components:{
     [Uploader.name] : Uploader 
