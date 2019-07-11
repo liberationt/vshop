@@ -57,6 +57,7 @@
 <script>
 import {  Uploader  } from 'vant';
 import utils from '../../utils/utils'
+import { statistics } from "wisdom-h5";
 export default {
   components:{
     [Uploader.name] : Uploader 
@@ -113,6 +114,7 @@ export default {
         return false;
       }
       this.flag = false
+      statistics.click("meditshop","addSubmit")
       let parameter =  Object.assign(
         this.shopValue,{
           storeLogo: this.imgData.bannerUrl,
@@ -165,6 +167,7 @@ export default {
     if(this.$route.query.id != 1){
       this.Initialization()
     }
+    statistics.page("meditshop")
     this.isCheck()
   }
 }
