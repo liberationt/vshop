@@ -110,7 +110,7 @@ export default {
 			}
 		},
 		computed:{
-			 ...mapState(['actives'])
+			...mapState(['actives'])
 		},
 	mounted(){
 		this.active = this.actives?this.actives:'1'
