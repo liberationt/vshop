@@ -309,7 +309,7 @@ export default {
 						this.managerPhone = data.data.managerPhone
 						this.bannerUrl = data.data.bannerUrl
 						this.tittle = data.data.productName
-						this.city = data.data.adNameSecond==''?'上海': data.data.adNameSecond
+						this.city = data.data.adNameSecond
 					}else{
 						this.$router.push('/undershelf?inviterCode='+data.data.inviterCode)
 					}
