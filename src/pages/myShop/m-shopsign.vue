@@ -22,8 +22,9 @@
   </div>
 </template>
 <script>
-import { RadioGroup, Radio, } from 'vant';
+import { RadioGroup, Radio, } from 'vant'
 import utils from '../../utils/utils'
+import { statistics } from "wisdom-h5"
 export default {
   components:{
     [RadioGroup.name] : RadioGroup,
@@ -46,11 +47,13 @@ export default {
     shopsignConfirm(){
       //成功后跳转
       this.$router.push({path:'./meditshop?id='+1})
+      statistics.click("mshopsign","shopsignConfirm")
     },
     imgChange(i,data){
       this.radio = i
       this.bannerNmae = name
       utils.putlocal('bannerData',data)
+      statistics.click("mshopsign","bannerData",{bannerData:data})
     },
     //页面初始化参数
     Initialize(){
@@ -67,6 +70,9 @@ export default {
   },
   created(){
     this.Initialize()
+  },
+  mounted(){
+    statistics.page("mshopsign")
   }
 }
 </script>
