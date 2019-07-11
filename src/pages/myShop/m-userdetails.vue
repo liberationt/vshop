@@ -37,15 +37,18 @@
       </div>
     </div>
     <div class="muserdetails_bottom">
-      <div class="muserdetails_bottom_one white">
+      <div class="muserdetails_bottom_one white" v-if="userMessage.label">
         <span v-for="item in userMessage.label">{{item.labelTitleName}}</span>
       </div>
-      <div v-for="item in messgaeList" class="muserdetails_bottom_two white">
+      <div v-for="item in messgaeList" v-if=" Number(item.clhild.length) != 0 " class="muserdetails_bottom_two white">
         <p class="muserdetails_one">
           <span>{{item.title}}</span>
         </p>
-        <div  v-for="(v,index) in item.clhild">
-          <p  :class="index != item.clhild.length-1? 'borderB muserdetails_two' : 'muserdetails_two'">{{v}}</p>
+        <div v-for="(v,index) in item.clhild">
+          <p v-if="v.text != ''"  :class="index != item.clhild.length-1? 'borderB muserdetails_two' : 'muserdetails_two'">
+            <span>{{v.title}}</span>
+            <span class="right">{{v.text}}</span>
+          </p>
         </div>
       </div>
     </div>
@@ -59,45 +62,10 @@ export default {
   data(){
     return {
       userMessage:{},
-      personalInformation:[
-        '6-12个月内',
-        '后期可回访',
-        '社保满6个月',
-        '本地户口',
-        '有车',
-        '有房',
-        '有微粒贷',
-        '有借呗'
-      ],
       messgaeList:[
-        {title:'基本信息',clhild:[
-          '学历',
-          '婚姻状况'
-        ]},
-        {title:'工作信息',clhild:[
-          '职业类型',
-          '工资发放方式',
-          '月收入',
-          '公司代缴社保',
-          '公司代缴公积金'
-        ]},
-        {title:'补充信息',clhild:[
-          '个人信用情况',
-          '信用状况',
-          '信用卡额度',
-          '寿险缴纳情况',
-          '微粒贷额度',
-          '芝麻信用分',
-          '房产情况',
-          '所在地区',
-          '产权人',
-          '房产状态',
-          '是否抵押',
-          '车产情况',
-          '车产状态',
-          '购车时间',
-          '是否抵押'
-        ]},
+        {title:'基本信息',clhild:[]},
+        {title:'工作信息',clhild:[]},
+        {title:'补充信息',clhild:[]},
       ]
     }
   },
@@ -106,6 +74,35 @@ export default {
     Initialization(){
       this.request("wisdom.vshop.vshopLoanUser.queryVshopLoanUserInfo",{data:this.$route.query.code}).then(data=>{
         this.userMessage = data.data
+        let dataList = data.data
+        this.messgaeList[0].clhild = [
+          {title:'学历',text:dataList.baseInfoRes.educationBackground},
+          {title:'婚姻状况',text:dataList.baseInfoRes.marriageStatus}
+        ] 
+        this.messgaeList[1].clhild = [
+          {title:'职业类型',text:dataList.workInfoRes.jobType},
+          {title:'工资发放方式',text:dataList.workInfoRes.salaryType},
+          {title:'月收入',text:dataList.workInfoRes.monthlyIncome},
+          {title:'公司代缴社保',text:dataList.workInfoRes.socialSecurity},
+          {title:'公司代缴公积金',text:dataList.workInfoRes.accumulationFund},
+        ]//baseInfoRes
+        this.messgaeList[2].clhild = [
+          {title:'个人信用情况',text:dataList.additionalInfoRes.personalCredit},
+          {title:'信用状况',text:dataList.additionalInfoRes.creditStatus},
+          {title:'信用卡额度',text:dataList.additionalInfoRes.creditLimit},
+          {title:'寿险缴纳情况',text:dataList.additionalInfoRes.guaranteeSlip},
+          {title:'微粒贷额度',text:dataList.additionalInfoRes.weilidaiLimit},
+          {title:'芝麻信用分',text:dataList.additionalInfoRes.creditScore},
+          {title:'房产情况',text:dataList.additionalInfoRes.ownHouseStatus},
+          {title:'所在地区',text:dataList.additionalInfoRes.houseAdNameSecond},
+          {title:'产权人',text:dataList.additionalInfoRes.ownerHouse},
+          {title:'房产状态',text:dataList.additionalInfoRes.houseStatus},
+          {title:'是否抵押',text:dataList.additionalInfoRes.houseIsPledge},
+          {title:'车产情况',text:dataList.additionalInfoRes.ownCarStatus},
+          {title:'车产状态',text:dataList.additionalInfoRes.carStatus},
+          {title:'购车时间',text:dataList.additionalInfoRes.carTime},
+          {title:'是否抵押',text:dataList.additionalInfoRes.carIsPledge},
+        ]//baseInfoRes
       }).catch(err=>{console.log(err)})
     },
     goPhone(phone){

@@ -105,6 +105,7 @@ export default {
           this.showStatus = data.data.showStatus
           this.productList0 = data.data.dataList;
           this.storeStatus = data.data.storeStatus
+
           this.total = data.total
           if(i==1){
             Toast.success('刷新成功');
@@ -144,7 +145,7 @@ export default {
       if(this.storeStatus == 0){
         Dialog.confirm({
           title: '温馨提示',
-          message: '您还没有创建店铺，请先去编辑保存店铺信息',
+          message: '您还没有创建店铺，请先编辑保存店铺信息',
           confirmButtonText:"去编辑"
         }).then(() => {
           this.$router.push({path:'./meditshop'})
