@@ -44,6 +44,7 @@
 import { Tab, Tabs, Toast } from "vant";
 import utils from "../../utils/utils";
 import MD5 from "js-md5";
+import { statistics } from "wisdom-h5";
 export default {
   components: {
     [Tabs.name]: Tabs,
@@ -65,6 +66,9 @@ export default {
       flag: false,
       seal_control: false,
     };
+  },
+  mounted(){
+    statistics.page("mshop")
   },
   methods: {
     onClick(v) {
@@ -88,6 +92,7 @@ export default {
         Toast("手机号有误，请重新输入！");
         return false;
       }
+      
       this.setTimeout();
       let params = v
         ? v
@@ -100,6 +105,7 @@ export default {
         .then(data => {
           if (data.code == "success") {
             Toast("短信发送成功");
+            statistics.click("mshop","getcode")
           } else if (data.code == "110019") {
             this.deleteTime();
             this.seal_control = true;
@@ -162,6 +168,7 @@ export default {
             this.flag = true  
             this.$router.push({ path: "./myshop?id="+'1' });
             utils.putlocal('mlogoid','1' ) //判断从哪个页面进入
+            statistics.click("mshop","login")
             localStorage.removeItem("shopValue")
             localStorage.removeItem("weixinImg")
             localStorage.removeItem("bannerData")
@@ -253,7 +260,7 @@ export default {
   .login_top {
     height: 176px;
     background: url("./imgs/loginTop.png") no-repeat;
-    background-size: 100%;
+    background-size: 100% 100%;
     header {
       font-family: "PingFang-SC-Medium";
       padding-top: 17px;
@@ -303,7 +310,7 @@ export default {
     width: 295px;
     height: 50px;
     border-radius: 25px;
-    line-height: 50px;
+    line-height: 53px;
     margin: 30px auto 0px auto;
   }
   .login_b{
