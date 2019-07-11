@@ -293,7 +293,7 @@ export default {
     color: #fe951e;
     background-color: #fef1e3;
   }
-  .loanFacility_center {
+  /deep/ .loanFacility_center {
     background-color: #fff;
     width: 345px;
     border-radius: 5px;

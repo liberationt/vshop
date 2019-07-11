@@ -7,47 +7,52 @@
         @click-left="ongobanck"
       />
     </header>
-    <div class="mselfsupport_center">
-      <van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh">
-        <div class="mselfsupport_modal" v-for="item in selfsupportList" @click="goShopdetails(item.proprietaryProductCode)">
+    <!-- <div class="mselfsupport_center"> -->
+      <!-- 下拉加载 -->
+      <van-list
+        class="xialashuaxin mselfsupport_center"
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <div v-for="item in selfsupportList" class="mselfsupport_modal" @click="goShopdetails(item.proprietaryProductCode)">
           <van-row>
-            <van-col>
+            <van-col :span="6">
               <img :src=item.productLogo alt="">
             </van-col>
-            <van-col>
+            <van-col :span="18">
               <p class="modal_text">{{item.productName}}</p>
               <p>综合月利率：<span class="modal_color">{{item.productRate}}</span></p>
               <p>贷款额度：<span class="modal_color">{{item.limitMin+'元'+'-'+item.limitMax+'元'}}</span></p>
             </van-col>
           </van-row>
         </div>
-      </van-pull-refresh>
-      
-    </div>
+      </van-list>
+    <!-- </div> -->
     <footer class="mselfsupport_footer" @click="addproduct">
       添加自营产品
     </footer>
   </div>
 </template>
 <script>
+import {List} from 'vant'
 export default {
+  components:{
+    [List.name]: List
+  },
   data() {
     return {
       count: 0,
-      isLoading: false,
-      selfsupportList:[]
+      selfsupportList:[],
+      loading: false,
+      finished: false,
+      pageNum:1
     };
   },
   methods: {
     ongobanck() {
       this.$router.push({ path: "./myshop" });
-    },
-    onRefresh() {
-      setTimeout(() => {
-        Toast.success('刷新成功');
-        this.isLoading = false;
-        this.count++;
-      }, 500);
     },
     addproduct() {
       this.$router.push({ path: "./maddproduct?isAdd="+'is' });
@@ -55,10 +60,24 @@ export default {
     goShopdetails(code){
       this.$router.push({ path: "./mselfshopdetails?code="+code });
     },
+    // 上拉加载
+    onLoad(){
+      setTimeout(() => {
+        this.Initialization()
+      }, 500);
+    },
     Initialization(i){
-      this.request("wisdom.vshop.proprietaryProduct.queryH5Page",{pageSize:10,pageNum:i}).then(data=>{
-        console.log(data)
-        this.selfsupportList = data.data.dataList
+      this.request("wisdom.vshop.proprietaryProduct.queryH5Page",{pageSize:10,pageNum:this.pageNum}).then(data=>{
+        let dataList = data.data.dataList
+        this.loading = false
+        if (Number(dataList.length) <= 0) {
+          this.finished = true
+          this.loading = false
+          return false
+        }
+        this.selfsupportList = this.selfsupportList.concat(dataList)
+        this.pageNum++
+        this.total = data.data.total
       }).catch(err=>{console.log(err)})
     },
   },
@@ -73,7 +92,7 @@ export default {
   padding-bottom: 60px;
   padding-top: 60px;
   .mselfsupport_center{
-    .mselfsupport_modal {
+    /deep/ .mselfsupport_modal {
       font-size:14px;
       font-family:PingFang-SC-Regular;
       font-weight:bold;
