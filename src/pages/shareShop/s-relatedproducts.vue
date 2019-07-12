@@ -60,6 +60,13 @@ export default {
 	},
 	methods:{
 		onClick(i,v){
+			if(v=='贷款'){
+				statistics.page("officialloans");
+			}else if(v=='信用卡'){
+				statistics.page("creditcard");
+			}else{
+				statistics.page("financingloan");
+			}
 			this.disabled = v
 		},
 		tohavemoney(){
