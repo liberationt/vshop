@@ -101,7 +101,7 @@
 import utils from "../../utils/utils";
 import { Popup, Dialog } from "vant";
 import wx from 'weixin-js-sdk'
-import { statistics } from "wisdom-h5";
+import { statistics } from "wisdom-h5"
 export default {
   components: {
     [Popup.name]: Popup,

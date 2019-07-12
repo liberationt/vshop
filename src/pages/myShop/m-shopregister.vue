@@ -74,26 +74,30 @@
     </div>
     <!-- 右侧弹出框 -->
     <van-popup v-model="rightShow" position="right" class="rightShow" :overlay="true">
-      <div class="rightShow_common" v-for="(item,i) in labeData">
-        <p class="rightShow_one">
-          <span>{{item.labelTitleName}}</span>
-        </p>
-        <p class="rightShow_two">
-          <ul class="center_list_two">
-            <li v-if="item.labelIsRadio == 1 && item.labelTitleKey =='last_flow_time' " :class={checked:labelOptionKey.includes(item1.labelOptionKey)}  v-for="(item1,index) in item.optionResList" @click="singleElection(item1,item.labelTitleName)">
-              {{item1.labelOptionName}}
-            </li>
-            <li v-if="item.labelIsRadio == 1 && item.labelTitleKey =='flow_state' " :class={checked:labelOptionKey1.includes(item1.labelOptionKey)}  v-for="(item1,index) in item.optionResList" @click="singleElection1(item1,item.labelTitleName)">
-              {{item1.labelOptionName}}
-            </li>
-            <li v-if="item.labelIsRadio == 0" :class="{checked:huixianArr.includes(item1.labelOptionKey)}"  v-for="(item1,index) in item.optionResList" @click="materialsChange(item1,item.labelTitleName)">
-              {{item1.labelOptionName}}
-            </li>
-          </ul>
-        </p>
+      <div v-for="(item,i) in labeData">
+        <div class="rightShow_common">
+          <p class="rightShow_one">
+            <span class="rightShow_one1"></span>
+            <span class="rightShow_one2">{{item.labelTitleName}}</span>
+          </p>
+          <p class="rightShow_two">
+            <ul class="center_list_two">
+              <li v-if="item.labelIsRadio == 1 && item.labelTitleKey =='last_flow_time' " :class={checked:labelOptionKey.includes(item1.labelOptionKey)}  v-for="(item1,index) in item.optionResList" @click="singleElection(item1,item.labelTitleName)">
+                {{item1.labelOptionName}}
+              </li>
+              <li v-if="item.labelIsRadio == 1 && item.labelTitleKey =='flow_state' " :class={checked:labelOptionKey1.includes(item1.labelOptionKey)}  v-for="(item1,index) in item.optionResList" @click="singleElection1(item1,item.labelTitleName)">
+                {{item1.labelOptionName}}
+              </li>
+              <li v-if="item.labelIsRadio == 0" :class="{checked:huixianArr.includes(item1.labelOptionKey)}"  v-for="(item1,index) in item.optionResList" @click="materialsChange(item1,item.labelTitleName)">
+                {{item1.labelOptionName}}
+              </li>
+            </ul>
+          </p>
+        </div>
+        <p v-if="i<2" class="pppp"></p>
       </div>
       <van-row class="rightShow_footer">
-        <van-col @click.native="rightShow = false" span="12" class="rightShow_footer_one">取消</van-col>
+        <van-col @click.native="quxiao" span="12" class="rightShow_footer_one">取消</van-col>
         <van-col span="12" @click.native="updateTags" class="rightShow_footer_two">{{labelName}}</van-col>
       </van-row>
     </van-popup>
@@ -165,6 +169,11 @@ export default {
     statistics.page("mshopregister")
   },
   methods: {
+    quxiao(){
+      this.rightShow = false
+      // 数据初始化
+      this.Restoration()
+    },
     inquery() {
       this.Initialization(1, this.searchValue,{});
     },
@@ -187,6 +196,7 @@ export default {
     },
     // 一键推广
     extension() {
+      statistics.click("mshopregister","yjtg")
       let message,generalizeName
       if(this.generalizeStore.hasStore){
         message = this.generalizeStore.text+" "+this.generalizeStore.shortLink
@@ -206,8 +216,10 @@ export default {
           if(this.generalizeStore.hasStore){
             utils.copyContent(this.generalizeStore.text + this.generalizeStore.shortLink)
             Toast('复制成功')
+             statistics.click("mshopregister","copy1")
           } else {
             this.$router.push({path:'./meditshop'})
+            statistics.click("mshopregister","bianji1")
           }
           
         })
@@ -339,7 +351,7 @@ export default {
       // 确保是筛选
       this.userCode = ""
       // 数据初始化
-      this.Restoration()
+      // this.Restoration()
     },
     // 更新标签
     updateTags(){
@@ -498,7 +510,6 @@ export default {
   .rightShow {
     width: 314px;
     height: 100%;
-    background-color: #f1f1fb;
     padding-bottom: 45px;
     .rightShow_common {
       background-color: #fff;
@@ -507,7 +518,12 @@ export default {
       font-size: 14px;
       font-family: PingFang-SC-Bold;
       font-weight: bold;
-      margin-bottom: 8px;
+      // margin-bottom: 8px;
+    }
+    .pppp{
+      display: block;
+      height: 8px;
+      background-color: #f1f1fb;
     }
     .rightShow_footer {
       line-height: 45px;
@@ -518,6 +534,7 @@ export default {
       position: fixed;
       bottom: 0px;
       width: 314px;
+      border-top: 1px solid #efefef;/*no*/
       .rightShow_footer_one {
         height: 45px;
         background-color: #fff;
@@ -530,9 +547,18 @@ export default {
       }
     }
     .rightShow_one {
-      padding: 27px 0px 12px 0px;
-      span {
-        border-left: 3px solid #4597fb; /*none*/
+      padding: 20px 0px 12px 0px;
+      span{
+        display: inline-block;
+        vertical-align: middle
+      }
+      .rightShow_one1{
+        width: 3px;
+        height: 18px;
+        background-color: #4597fb;
+        border-radius: 1px;
+      }
+      .rightShow_one2 {
         padding-left: 8px;
       }
     }
@@ -542,13 +568,15 @@ export default {
         color: #fff;
       }
       li {
+        font-family:PingFang-SC-Medium;
         width: 88px;
         height: 32px;
-        line-height: 32px;
+        line-height: 34px;
         background-color: #f4f4f4;
         text-align: center;
         border-radius: 2px;
         margin-right: 8px;
+        font-weight: 500;
       }
       :last-child {
         margin-right: 0px;
