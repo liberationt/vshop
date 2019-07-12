@@ -311,7 +311,7 @@ export default {
 						this.tittle = data.data.productName
 						this.city = data.data.adNameSecond
 					}else{
-						this.$router.push('/undershelf?inviterCode='+data.data.inviterCode)
+						this.$router.push('/undershelf?inviterCode='+this.$route.query.inviterCode)
 					}
 					
 				}
