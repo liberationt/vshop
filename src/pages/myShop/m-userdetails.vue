@@ -1,6 +1,6 @@
 <template>
   <div class="muserdetails_common">
-    <header class="muserdetails_header">
+    <header class="muserdetails_header" :class="userMessage.loanAmount ? 'muserdetails_header1' : 'muserdetails_header2'">
       <van-nav-bar
         title="客户详情"
       />
@@ -20,7 +20,7 @@
             </p>
             <p>申请记录：<span class="message_color">{{userMessage.applyOrderCount}}笔</span> &nbsp  返佣成功：<span class="message_color">{{userMessage.settleCount}}笔</span></p>
           </li>
-          <li class="message_center">
+          <li class="message_center" v-if="userMessage.loanAmount">
             <p>
               <span class="message_center_one">贷款金额：<span class="message_color">{{userMessage.loanAmount}}</span> </span>
               <span>贷款用途：<span class="message_color">{{userMessage.loanUse}}</span> </span>
@@ -131,7 +131,12 @@ export default {
   .muserdetails_header {
     background:url('./imgs/usertop.png') no-repeat;
     background-size: 100%;
+  }
+  .muserdetails_header1{
     height: 289px;
+  }
+  .muserdetails_header2{
+    height: 209px;
   }
   .muserdetails_center{
     .muserdetails_message {
