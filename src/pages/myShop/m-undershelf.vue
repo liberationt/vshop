@@ -132,6 +132,7 @@ export default {
 		}
 	},
 	mounted(){
+		statistics.page("undershelf", "undershelfnum");
 		window.scrollTo(0,0);
 		if(utils.getCookie('users')){
 			this.isshow = true
