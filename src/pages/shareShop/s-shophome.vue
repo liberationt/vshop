@@ -63,6 +63,7 @@ export default {
 				this.inviterCode = inviterCode
 			},
 			toinvit(){
+				statistics.click("shophome","setshop");
 				window.location.href='http://qdx.zanfin.com/main/#/register'
 			},
 			onClickLeft(){
@@ -79,8 +80,6 @@ export default {
 					statistics.click("shophome","relate");
 				}else if(i==3){
 					statistics.click("shophome","utils");
-				}else{
-					statistics.click("shophome","setshop");
 				}
 
 			},
