@@ -124,7 +124,7 @@ export default {
 .mycommissmain{
 	background: #f1f1fb;
 	// height:100%;
-	padding-bottom: 10px;
+	padding-bottom: 2px;
 }
 .cashdetailArrow {
 	font-size: 18px;
