@@ -113,6 +113,10 @@ export default {
         this.$toast('手机号不能为空')
         return false;
       }
+      if(!/(1([3-9])[0-9]{9})/.test(this.bankCardList.mobile)){
+        this.$toast('手机号输入有误，请重新输入')
+        return false;
+      }
       let params = v
         ? v
         : {
