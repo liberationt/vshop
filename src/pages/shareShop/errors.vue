@@ -19,7 +19,7 @@ export default {
 		}
 	},
 	mounted(){
-		statistics.page("errors", "errorsgetnum");
+		statistics.page("errors");
 	}
 }
 </script>

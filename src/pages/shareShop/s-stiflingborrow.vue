@@ -175,7 +175,7 @@ export default {
 			this.https('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
 			.then(data=>{
 				if(data.code=='success'){
-					statistics.click("tap", "stiflingborrow","getconfignum");
+					statistics.click("stiflingborrow","getconfignum");
 					utils.setCookie('adNameSecond',this.city)
 					if(!utils.getCookie('users')){
 						let str = {
@@ -230,7 +230,7 @@ export default {
 			this.https('wisdom.vshop.vshopLoanUser.sendCaptcha',data)
 			.then(data=>{
 				if(data.code=='success'){
-					statistics.click("tap", "stiflingborrow","getverifyCode");
+					statistics.click("stiflingborrow","getverifyCode");
 					Toast({
 						message:'短信发送成功',
 						duration:800
@@ -319,7 +319,7 @@ export default {
 		}
 	},
 	mounted(){
-		statistics.page("stiflingborrow", "stiflingborrowgetnum");
+		statistics.page("stiflingborrow");
 		window.scrollTo(0,0);
 		if(utils.getCookie('users')){
 			this.isshow = false

@@ -66,16 +66,16 @@ export default {
 			this.$router.push('/havemoney?inviterCode='+this.inviterCode)
 		},
 		closeTost(){
-			statistics.click("tap", "relatedproducts","getnumber");
+			statistics.click("relatedproducts","getnumber");
 			Dialog.confirm({
 				confirmButtonText:this.dayUMoney+"天内不再提示",
 				cancelButtonText:'永不提示',
 				message: '确认关闭此提示框吗？'
 			}).then(() => {
-				statistics.click("tap", "relatedproducts","closeone");
+				statistics.click("relatedproducts","closeone");
 				this.closehaveMoney(0)
 			}).catch(() => {
-				statistics.click("tap", "relatedproducts","closetwo");
+				statistics.click("relatedproducts","closetwo");
 				this.closehaveMoney(1)
 			});
 		},

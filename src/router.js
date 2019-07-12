@@ -18,6 +18,12 @@ export default new Router({
       },
     },
     {
+      path: '/microshop',
+      name: 'microshop',
+      tittle:'登陆页面',
+      component: () => import( './pages/shareShop/s-microshop.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       meta: {

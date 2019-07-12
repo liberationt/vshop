@@ -107,7 +107,7 @@ export default {
 			})
 		},
 		viewall(){
-			statistics.click("tap", "undershelf","getviewall");
+			statistics.click("undershelf","getviewall");
 			this.$router.push('/loanlist')
 		},
 		toproductnamedetail(productCode){
@@ -118,7 +118,7 @@ export default {
 				this.request('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
-						statistics.click("tap", "undershelf","getdetailsnumber");
+						statistics.click("undershelf","getdetailsnumber");
 						if(data.data.state==0){
 							this.$router.push('/productnamedetail?productCode='+productCode+'&inviterCode='+this.inviterCode)
 						}
@@ -132,7 +132,7 @@ export default {
 		}
 	},
 	mounted(){
-		statistics.page("undershelf", "undershelfnum");
+		statistics.page("undershelf");
 		window.scrollTo(0,0);
 		if(utils.getCookie('users')){
 			this.isshow = true

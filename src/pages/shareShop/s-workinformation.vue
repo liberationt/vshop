@@ -136,7 +136,7 @@ export default {
 				this.https('wisdom.vshop.vshopUserSelect.saveInfo',data)
 				.then(data=>{
 					if(data.code=='success'){
-						statistics.click("tap", "workinformation","getnumbers");
+						statistics.click("workinformation","getnumbers");
 						this.$router.push('/supplementary')
 					}
 				})
@@ -197,7 +197,7 @@ export default {
     mounted(){
 		window.scrollTo(0,0);
 		this.getdatainfor()
-		statistics.page("workinformation", "getnumbers");
+		statistics.page("workinformation");
     }
 }
 </script>

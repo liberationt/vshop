@@ -160,7 +160,7 @@ export default {
 			.then(data=>{
 				if(data.code=='success'){
 					utils.setCookie('adNameSecond',this.adNameSecond)
-					statistics.click("tap", "essentialinformation","getnumbers");
+					statistics.click("essentialinformation","getnumbers");
 					this.$router.push('/workinformation')
 				}
 			})
@@ -201,7 +201,7 @@ export default {
 				this.city = utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):this.city 
 			}
 		})
-		statistics.page("essentialinformation", "getnumbers");
+		statistics.page("essentialinformation");
 	}
 }
 </script>

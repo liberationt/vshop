@@ -74,13 +74,13 @@ export default {
 				utils.putlocal('actives',i)
 				this.getactive(i)
 				if(i==1){
-					statistics.click("tap", "shophome","sethome");
+					statistics.click("shophome","sethome");
 				}else if(i==2){
-					statistics.click("tap", "shophome","relate");
+					statistics.click("shophome","relate");
 				}else if(i==3){
-					statistics.click("tap", "shophome","utils");
+					statistics.click("shophome","utils");
 				}else{
-					statistics.click("tap", "shophome","setshop");
+					statistics.click("shophome","setshop");
 				}
 
 			},

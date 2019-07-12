@@ -59,7 +59,7 @@ export default {
 			this.https('wisdom.vshop.product.queryH5UserProductDetail',data)
 			.then(data=>{
 				if(data.code=='success'){
-					statistics.click("tap", "officialloans","todetailsnum");
+					statistics.click("officialloans","todetailsnum");
 					if(data.data.state==0){
 						this.$router.push('/productnamedetail?inviterCode='+this.inviterCode+'&'+'productCode='+productCode)
 					}
@@ -110,7 +110,7 @@ export default {
     },
     mounted(){
 		this.getdatas()
-		statistics.page("officialloans", "getnumber");
+		statistics.page("officialloans");
     }
 }
 </script>

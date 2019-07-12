@@ -83,14 +83,14 @@ export default {
 				this.https('wisdom.vshop.product.h5BeforeJumpDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
-						statistics.click("tap", "prodectnamedetail","getapplynumber");
+						statistics.click("prodectnamedetail","getapplynumber");
 						this.$router.push('/stiflingborrow?inviterCode='+this.$route.query.inviterCode+'&'+'productCode='+this.productCode)
 					}
 				})
 			},
 			//猜你喜欢
 			todetails(productCode){
-				statistics.click("tap", "prodectnamedetail","getlovenumber");
+				statistics.click("prodectnamedetail","getlovenumber");
 				this.productCode = productCode
 				this.getdatas()
 				// this.reload()
@@ -116,7 +116,7 @@ export default {
 			}
 		},
 		mounted(){
-			statistics.page("productnamedetail", "productgetnumber");
+			statistics.page("productnamedetail");
 			this.productCode=this.$route.query.productCode
 			this.getdatas()
 		}

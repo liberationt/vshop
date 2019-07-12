@@ -133,7 +133,7 @@ export default {
 			this.https('wisdom.vshop.vshopLoanUser.sendCaptcha',data)
 			.then(data=>{
 				if(data.code=='success'){
-					statistics.click("tap", "havemoney","getobtainsnum");
+					statistics.click("havemoney","getobtainsnum");
 					Toast({
 						message:'短信发送成功',
 						duration:800
@@ -192,7 +192,7 @@ export default {
 		//立即领取
 		immediately(){
 			if(utils.getCookie('users')){
-				statistics.click("tap", "havemoney","todetails");
+				statistics.click("havemoney","todetails");
 				this.$router.push('/applicationloan')
 			}else{
 			if(!this.phonenumber){
@@ -228,7 +228,7 @@ export default {
 			this.https('wisdom.vshop.vshopLoanUser.captchaLogin',data)
 			.then(data=>{
 				if(data.code=='success'){
-					statistics.click("tap", "havemoney","todetails");
+					statistics.click("havemoney","todetails");
 					if(!utils.getCookie('users')){
 							let str = {
 								token:data.data.token,
@@ -249,7 +249,7 @@ export default {
 		}else{
 			this.isshow=true
 		}
-		statistics.page("havemoney", "getnumber");
+		statistics.page("havemoney");
 	}
 }
 </script>
