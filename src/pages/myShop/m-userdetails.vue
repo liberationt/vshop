@@ -38,7 +38,7 @@
     </div>
     <div class="muserdetails_bottom">
       <div class="muserdetails_bottom_one white" v-if="userMessage.label">
-        <span v-for="item in userMessage.label">{{item.labelTitleName}}</span>
+        <span v-for="item in userMessage.label">{{item.labelOptionName}}</span>
       </div>
       <div v-for="item in messgaeList" v-if=" Number(item.clhild.length) != 0 " class="muserdetails_bottom_two white">
         <p class="muserdetails_one">
