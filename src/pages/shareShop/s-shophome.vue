@@ -8,6 +8,10 @@
 		<div>
 			<router-view @toparent='getdata'></router-view>
 		</div>
+		 <!-- 风险弹窗 -->
+		<van-popup class="yindaoshow" v-model="yindaoshow">
+		<img src="./images/yingdao.png" alt="">
+		</van-popup>
 		<footer class="shophome">
 			<van-tabbar v-model="active" active-color="#07c160" @change="onchange">
 				<van-tabbar-item name="1"><router-link to="/shoppage"><div class="footbar"><img :src='this.active==1?srcs1:nosrc1'><span>店铺首页</span></div></router-link></van-tabbar-item>
@@ -20,18 +24,21 @@
 </template>
 <script>
 import utils from '../../utils/utils'
+import { statistics } from "wisdom-h5";
 import { mapState, mapMutations } from "vuex";
-import { NavBar,Icon,Tabbar, TabbarItem } from 'vant';
+import { NavBar,Popup,Icon,Tabbar, TabbarItem } from 'vant';
 import wx from 'weixin-js-sdk'
 export default {
     components:{
-        [NavBar.name] : NavBar,
+        	[NavBar.name] : NavBar,
 			[Icon.name] : Icon,
+			[Popup.name] : Popup,
 			[Tabbar.name] : Tabbar,
 			[TabbarItem.name] : TabbarItem,
 		},
 		data(){
 			return{
+				yindaoshow:false,
 				active:'1',
 				tittle:'',
 				number:'',
@@ -66,12 +73,23 @@ export default {
 				this.active = i
 				utils.putlocal('actives',i)
 				this.getactive(i)
+				if(i==1){
+					statistics.click("tap", "shophome","sethome");
+				}else if(i==2){
+					statistics.click("tap", "shophome","relate");
+				}else if(i==3){
+					statistics.click("tap", "shophome","utils");
+				}else{
+					statistics.click("tap", "shophome","setshop");
+				}
+
 			},
 			toshare(){
-				alert('请点击右上角去分享')
+				this.yindaoshow = true
 				this.wxShare(this.inviterCode)
 			},
 			wxShare(inviterCode) {
+				let that = this
 				let url
 				if( !utils.isAndroid1() ){
 					url = window.location.origin + "/shoppage?inviterCode="+inviterCode
@@ -88,11 +106,10 @@ export default {
 						link: window.location.origin + "/shoppage?inviterCode="+inviterCode, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 						imgUrl: 'https://wisdom-loan.oss-cn-shanghai.aliyuncs.com/productParam/60938f68-1fa0-4620-a90a-7a4d7a7c7117.png', // 分享图标
 						success: function () {
-							// 用户点击了分享后执行的回调函数
-							alert('分享成功回调')
+							that.yindaoshow = false
 						},
 						cancel: function(err){
-							alert('分享取消回调')
+
 						}
 						});
 					})
