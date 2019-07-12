@@ -45,10 +45,10 @@
                     </van-col>
                     <van-col>
                       <p class="product_one">{{item.productName}}</p>
-                      <p class="product_two"> <span class="product_two_span">{{item.userName}}</span> &nbsp&nbsp&nbsp <span>{{item.userPhoneEncrypt}}</span></p>
-                      <p class="product_three" v-if="item.orderStatus == 2">结算金额：{{item.commission}}</p>
-                      <p class="product_three">申请时间：{{item.dataCreateTime}}</p>
-                      <p class="product_three" v-if="item.orderStatus == 2">结算时间：{{item.settleDate}}</p>
+                      <p class="product_two"> <span class="product_two_span">{{item.userName}}</span>  <span>{{item.userPhoneEncrypt}}</span> <span @click="gopone(item.userPhone)"><img src="./imgs/phone _icon2@2x.png" alt=""></span></p>
+                      <p class="product_three" v-if="item.orderStatus == 2">结算金额：<span class="product_three1">{{item.commission}}</span></p>
+                      <p class="product_three">申请时间：<span class="product_three1">{{item.dataCreateTime}}</span></p>
+                      <p class="product_three" v-if="item.orderStatus == 2">结算时间：<span class="product_three1">{{item.settleDate}}</span></p>
                     </van-col>
                     <van-col class="right  van-col_right" :class="item.orderStatus ==2 ?'buttonAsh' : item.orderStatus ==0 ? 'buttonBlue' : 'buttonYellow'" >
                       {{item.orderStatusDesc}}
@@ -91,6 +91,7 @@ import {
   List
 } from "vant";
 import loanFacility from "./ordertools/loanFacility.vue";
+import { statistics } from "wisdom-h5"
 export default {
   components: {
     loanFacility,
@@ -129,8 +130,12 @@ export default {
   },
   mounted() {
     // this.Initialization();
+    statistics.page("mshopapply")
   },
   methods: {
+    gopone(phone){
+      window.location.href = "tel://" + phone;
+    },
     changeMenu() {
       this.pageNum = 1
       this.shopPapplyList = [] // 数据初始化
@@ -146,6 +151,7 @@ export default {
       this.pageNum = 1
       this.shopPapplyList = [] // 数据初始化
       this.Initialization(1);
+      statistics.page("mshopapply"+v)
     },
     search() {
       this.pageNum = 1
@@ -209,7 +215,7 @@ export default {
       background: #eeeeee;
       height: 34px;
       font-size: 12px;
-      color: #aaaaaa;
+      // color: #aaaaaa;
       line-height: 34px;
       border-radius: 17px;
       position: relative;
@@ -218,12 +224,13 @@ export default {
         border-radius: 17px;
         text-indent: 20px;
         width: 90%;
+        padding-left: 10px;
       }
       img {
         width: 16px;
         height: 16px;
         position: absolute;
-        right: 15px;
+        left: 10px;
         bottom: 9px;
       }
     }
@@ -245,13 +252,13 @@ export default {
       width: 375px;
       height: 40px;
       background: rgba(254, 241, 227, 1);
-      line-height: 40px;
+      line-height: 44px;
       font-size: 13px;
       color: rgba(254, 149, 30, 1);
       margin-top: 5px;
       img {
         width: 15px;
-        height: 15px;
+        height: 16px;
         vertical-align: middle;
         margin: 0px 10px 2px 15px;
       }
@@ -303,6 +310,7 @@ export default {
         width: 70px;
         height: 70px;
         margin-right: 15px;
+        border-radius: 4px;
       }
       line-height: 26px;
       .product_one {
@@ -314,7 +322,7 @@ export default {
         font-family: PingFang-SC-Bold;
         font-weight: bold;
         color: rgba(51, 51, 51, 1);
-        margin-top: -8px;
+        margin-top: -2px;
       }
       .product_two {
         font-size: 14px;
@@ -324,6 +332,12 @@ export default {
         span{
           display: inline-block;
           vertical-align: middle;
+        }
+        img{
+          width: 15px;
+          height: 15px;
+          margin-bottom: 4px;
+          margin-left: 5px;
         }
         .product_two_span{
           overflow: hidden;
@@ -335,7 +349,7 @@ export default {
       .product_three {
         font-size: 12px;
         font-family: PingFang-SC-Regular;
-        font-weight: bold;
+        font-weight: 500;
         color: rgba(153, 153, 153, 1);
         line-height: 18px;
       }
