@@ -81,7 +81,7 @@ export default {
 			this.$router.push('/havemoney?inviterCode='+this.inviterCode)
 		},
 		tostiflingborrow(productCode){
-				statistics.click("tap", "utilities","getnumber");
+				statistics.click("utilities","getnumber");
 				this.$router.push('/stiflingborrow?inviterCode='+this.inviterCode+'&'+'productCode='+productCode)
 		},
 		closeTost(){
@@ -116,7 +116,7 @@ export default {
 			this.isshow = false
 		}
 		this.getdatas()
-		statistics.page("utilities", "gatnum");
+		statistics.page("utilities");
 	}
 }
 </script>

@@ -369,12 +369,12 @@ export default {
 			this.https('wisdom.vshop.vshopUserSelect.saveInfo',data)
 			.then(data=>{
 				if(data.code=='success'){
-					statistics.click("tap", "supplementary","getnumbers");
+					statistics.click("supplementary","getnumbers");
 					Dialog.alert({
 						title: '温馨提示',
 						message: 'XXX平台不收取任何费用，信贷经理联系您要求放款前收取费用（例：手续费、保证金、会员费等），切勿盲信！谨防诈骗！'
 					}).then(() => {
-						statistics.click("tap", "supplementary","closegetnumber");
+						statistics.click("supplementary","closegetnumber");
 						this.$router.push('/loanlist')
 					});
 				}
@@ -573,7 +573,7 @@ export default {
     mounted(){
 		window.scrollTo(0,0);
 		this.getdatainfor()
-		statistics.page("supplementary", "getnumbers");
+		statistics.page("supplementary");
 
     }
 }

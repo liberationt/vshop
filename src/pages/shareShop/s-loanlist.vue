@@ -77,7 +77,7 @@ export default {
 				this.https('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
-						statistics.click("tap", "loanlist","getnumber");
+						statistics.click("loanlist","getnumber");
 						if(data.data.state==0){
 							this.$router.push('/productnamedetail?productCode='+productCode+'&'+'inviterCode='+this.inviterCode)
 						}
@@ -197,7 +197,7 @@ export default {
 	},
 	mounted(){
 		window.scrollTo(0,0);
-		statistics.page("loanlist", "shppagenum");
+		statistics.page("loanlist");
 	}
 }
 </script>

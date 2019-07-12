@@ -32,7 +32,7 @@ export default {
 				this.https('wisdom.vshop.product.queryH5UserProductDetail',data)
 				.then(data=>{
 					if(data.code=='success'){
-						statistics.click("tap", "creditcard","getnumbers");
+						statistics.click("creditcard","getnumbers");
 						if(data.data.state==0){
 							this.$router.push('/stiflingborrow?inviterCode='+this.inviterCode+'&'+'productCode='+productCode)
 						}
@@ -61,7 +61,7 @@ export default {
 		},
 		mounted(){
 			this.getdatas()
-			statistics.page("creditcard", "getnumber");
+			statistics.page("creditcard");
 		}
 }
 </script>

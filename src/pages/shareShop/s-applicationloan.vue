@@ -118,7 +118,7 @@ export default {
 			this.https('wisdom.vshop.vshopUserSelect.saveInfo',data)
 			.then(data=>{
 				if(data.code=='success'){
-					statistics.click("tap", "applicationloan","getnumbers");
+					statistics.click("applicationloan","getnumbers");
 					this.$router.push('/essentialinformation')
 				}
 			})
@@ -163,7 +163,7 @@ export default {
 	mounted(){
 		window.scrollTo(0,0);
 		this.getdatalist()
-		statistics.page("applicationlian", "getnumbers");
+		statistics.page("applicationlian");
 	}
 }
 </script>

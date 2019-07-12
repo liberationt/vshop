@@ -123,7 +123,7 @@ export default {
 			})
 		},
 		gophone(item){
-			statistics.click("tap", "shappage","phonenum");
+			statistics.click("shappage","phonenum");
 			window.location.href = "tel://" + item;
 		},
 		copywx(content){
@@ -154,7 +154,7 @@ export default {
 			copyToClipboard(content)
 		},
 		loan(){
-			statistics.click('tap','shappage','loan')
+			statistics.click('shappage','loan')
 			let index 
 			for(var i=0;i<this.searchOptionBeanList.length;i++){
 				if(this.searchOptionBeanList[i].value=='loan'){
@@ -164,7 +164,7 @@ export default {
 			this.$router.push('/relatedproducts?disbaled='+encodeURI('贷款')+'&'+'index='+index)
 		},
 		card(){
-			statistics.click('tap','shappage','card')
+			statistics.click('shappage','card')
 			let index 
 			for(var i=0;i<this.searchOptionBeanList.length;i++){
 				if(this.searchOptionBeanList[i].value=='card'){
@@ -174,16 +174,16 @@ export default {
 			this.$router.push('/relatedproducts?disbaled='+encodeURI('信用卡')+'&index='+index)
 		},
 		tool(){
-			statistics.click('tap','shappage','tool')
+			statistics.click('shappage','tool')
 			this.$router.push('/utilities')
 		},
 		todetails(exhibitionContentCode){
-			statistics.click('tap','shappage','todetails')
+			statistics.click('shappage','todetails')
 			this.$router.push('/tweetsdetails?exhibitionContentCode='+exhibitionContentCode+'&storeCode='+this.storeCode)
 		},
 		weixin(){
 			this.show=true
-			statistics.click("tap","shappage","weixinnum")
+			statistics.click("shappage","weixinnum")
 		},
 		beforeClose(action,down){
 			if(action==='confirm'){
@@ -195,7 +195,7 @@ export default {
 		},
 		confirm(content){
 			this.copywx(content)
-			statistics.click('tap','shappage','copywx')
+			statistics.click('shappage','copywx')
 			Toast({
 				message:'微信ID已复制',
 				duration:800
@@ -211,7 +211,7 @@ export default {
 		this.getDatas()
 	},
 	mounted(){
-		statistics.page("shoppage", "shppagenum");
+		statistics.page("shoppage");
 	}
 }
 </script>
