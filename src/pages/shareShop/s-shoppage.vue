@@ -123,7 +123,7 @@ export default {
 			})
 		},
 		gophone(item){
-			statistics.click("tap", "shappage","phonenum");
+			statistics.click("shappage","phonenum");
 			window.location.href = "tel://" + item;
 		},
 		copywx(content){
