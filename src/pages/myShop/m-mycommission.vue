@@ -75,7 +75,7 @@
 </template>
 <script>
 import { Icon, Dialog } from 'vant';
-
+import { statistics } from "wisdom-h5"
 export default {
 	components:{
 		[Icon.name]:Icon,
