@@ -6,10 +6,13 @@
         right-text="导出客户"
         left-arrow
         @click-left="goBack"
-        @click-right="isHide = true"
+        @click-right="ishide"
       />
     </header>
     <div class="shopregister_center">
+      <div class="searchImg">
+        <img src="./imgs/sousuo.png" alt="">
+      </div>
       <div class="center_search_center">
         <van-search
           v-model="searchValue"
@@ -24,6 +27,7 @@
           </div>
         </van-search>
       </div>
+      
       <van-pull-refresh v-model="isLoading" class="xialashuaxin" @refresh="onRefresh">
         <div class="shopregister_message">
           <div class="shopregister_tips" @click="extension">一键推广店铺链接</div>
@@ -32,7 +36,7 @@
                 <li v-for="item in customerList" @click="goregisterdetails(item.userCode)">
                   <div v-if="item.label.length != 0" @click.stop="selectLabels(item.userCode,item.label)" class="pleace_label" >
                     <span v-if="index<3" v-for="(item,index) in item.label">{{item.labelOptionName}}</span>
-                    <span v-if="item.label.length == 3">...</span>
+                    <span v-if="item.label.length >= 3">...</span>
                   </div>
                   <div @click.stop="selectLabels(item.userCode)" class="pleace_label" v-else>
                     <span >请选择标签</span>
@@ -40,7 +44,7 @@
                   <div class="shopregister_operation">
                     <p class="one">{{item.dataCreateTime}}</p>
                     <p class="two">
-                      <span>{{item.userName}}</span>
+                      <span class="two1">{{item.userName}}</span>
                       <span>{{item.textPhone}}</span>
                       <span class="message_icon" @click.stop="goMessage(item.userPhone)"><img src="./imgs/message_icon@2x.png" alt=""></span>
                       <span class="phone_icon" @click.stop="goPhone(item.userPhone)"><img src="./imgs/phone_icon@2x.png" alt=""></span>
@@ -100,6 +104,7 @@ import utils from "../../utils/utils";
 import options from "../../views/options";
 import { Search, Tab, Tabs, Popup, Dialog, Toast } from "vant";
 import { mapState } from "vuex";
+import { statistics } from "wisdom-h5"
 export default {
   components: {
     [Search.name]: Search,
@@ -157,6 +162,7 @@ export default {
         this.showHeight = window.screenHeight;
       })();
     };
+    statistics.page("mshopregister")
   },
   methods: {
     inquery() {
@@ -185,9 +191,11 @@ export default {
       if(this.generalizeStore.hasStore){
         message = this.generalizeStore.text+" "+this.generalizeStore.shortLink
         generalizeName = '去复制内容'
+        statistics.click("mshopregister","copy")
       } else {
         message = "您还没有创建店铺，请先编辑保存店铺信息"
         generalizeName = '去编辑'
+        statistics.click("mshopregister","bianji")
       }
       Dialog.confirm({
         title: "",
@@ -223,7 +231,16 @@ export default {
       })
       utils.copyContent(arr.join(','))
       this.$toast('手机号已复制粘贴板中')
+      statistics.click("mshopregister","qrexport")
       // 复制粘贴
+    },
+    ishide(){
+      this.isHide = true
+      this.customerList.forEach(v=>{
+        this.checkData.push(v.userCode)
+      })
+      this.checkboxImg = require("./imgs/quanxuan@2x.png");
+      statistics.click("mshopregister","export")
     },
     // 初始化数据
     Initialization(i, user, data1) {
@@ -454,6 +471,16 @@ export default {
   padding-bottom: 50px;
   padding-top: 100px;
   background-color: #f1f1fb;
+  .searchImg{
+    z-index: 9999;
+    position: fixed;
+    left: 25px;
+    top: 66px;
+    img {
+      width: 16px;
+      height: 15px;
+    }
+  }
   input[type="checkbox"] {
     -webkit-appearance: none;
     outline: none;
@@ -461,7 +488,7 @@ export default {
     position: absolute;
     top: 0px;
     right: 0px;
-    height: 125px;
+    height: 114px;
     width: 50px;
   }
   .checkItem[type="checkbox"]:checked {
@@ -544,6 +571,15 @@ export default {
     width: 100%;
     width: 375px;
     font-size: 14px;
+    border-top: 1px solid #efefef;/*no*/
+    
+    .van-cell{
+      height: 34px;
+      padding-top: 6px;
+    }
+    .van-search__content{
+      background-color: #eee;
+    }
     img {
       width: 16px;
       height: 13px;
@@ -553,13 +589,15 @@ export default {
   .shopregister_tips {
     text-align: center;
     background-color: #f3b13e;
-    margin-top: 10px;
-    margin-bottom: 15px;
     height: 44px;
-    line-height: 44px;
+    line-height: 46px;
     border-radius: 22px;
     font-size: 16px;
     color: #fff;
+    width: 345px;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   .shopregister_message {
     .vantab_center {
@@ -569,16 +607,16 @@ export default {
   }
   .shopregister_list {
     ul {
-      padding-bottom: 15px;
+      padding: 0px 15px 15px 15px;
       li {
         background-color: #fff;
-        padding: 15px;
+        padding: 15px 15px 10px 15px;
         margin-top: 7px;
         border-radius: 5px;
-        height: 125px;
+        height: 114px;
         position: relative;
         .pleace_label {
-          padding-bottom: 13px;
+          padding-bottom: 8px;
           border-bottom: 1px solid #efefef; /*no*/
           span {
             display: inline-block;
@@ -603,18 +641,24 @@ export default {
             span {
               font-size: 17px;
               color: #333;
+              vertical-align: middle
             }
             :nth-child(1) {
+              display: inline-block;
               font-weight: bold;
               margin-right: 15px;
+              width: 76px;
+              overflow: hidden;
+              text-overflow:ellipsis;
+              white-space: nowrap;
             }
             .message_icon,
             .phone_icon,
             .biajidianpu {
-              margin-left: 10px;
+              margin-left: 6px;
             }
             .message_icon {
-              margin-left: 22px;
+              margin-left: 15px;
               img {
                 width: 23px;
                 height: 17px;
@@ -654,7 +698,7 @@ export default {
     .footer_center,
     .footer_bottom {
       height: 44px;
-      line-height: 44px;
+      line-height: 46px;
       border-radius: 3px;
       font-size: 15px;
     }
@@ -675,6 +719,7 @@ export default {
         height: 20px;
         margin-left: 10px;
         margin-right: 5px;
+        margin-bottom: 2px;
       }
     }
   }
