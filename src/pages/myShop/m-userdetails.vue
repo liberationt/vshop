@@ -56,9 +56,6 @@
 </template>
 <script>
 export default {
-  //workInfoRes (VshopUserSelectWorkInfoRes, optional): 工作信息
-  //baseInfoRes (VshopUserSelectBaseInfoRes, optional): 基本信息 ,
-  //additionalInfoRes (VshopUserSelectAdditionalInfoRes, optional): 补充信息 ,
   data(){
     return {
       userMessage:{},
