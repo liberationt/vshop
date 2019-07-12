@@ -358,6 +358,7 @@ export default {
   height: 120px;
   margin: 10px 15px;
   padding: 35px 0px 0px 21px;
+  border-radius: 10px;
   .p_top {
     font-weight: bold;
     font-size: 17px;
