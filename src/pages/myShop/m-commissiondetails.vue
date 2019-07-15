@@ -1,5 +1,5 @@
 <template>
-    <div class="commissdetailmain">
+    <div :class="commissiondList.length <=4 ? 'height1 commissdetailmain' : 'commissdetailmain'">
       <header class="pddingTop navbarrighttext">
 				<van-nav-bar
 					title="佣金明细"
@@ -18,50 +18,46 @@
 					</van-dropdown-menu>
 				</div>
 				<div>
-					<van-pull-refresh class="xialashuaxin" v-model="isLoading" @refresh="onRefresh" success-text='刷新成功'>
+					<van-list v-model="loading" finished-text="没有更多了" :finished="finished" @load="onLoad" class="xialashuaxin haha">
 						<div class="details">
 							<ul>
 								<li v-for="item in commissiondList">
 									<div class='detailstop'>
-										<h4>{{item.userName}}{{item.userPhone}}</h4>
-										<span>{{item.settleDate}}</span>
+										<h4><span class='username'>{{item.userName}}</span>{{item.userPhone}}</h4>
+										<span class="userTime">{{item.settleDate}}</span>
 									</div>
 									<div class="datailslist">
-										<div>
+										<div class="div1">
 											<h5>贷款产品</h5>
 											<p class="datailslistD">{{item.productName}}</p>
 										</div>
 										<div>
-											<h5>贷款金额（元）</h5>
+											<h5>贷款金额(元)</h5>
 											<p>{{item.loanRealityAmount}}</p>
 										</div>
-										<div>
-											<h5>返佣金额（元）</h5>
+										<div class="div2">
+											<h5>返佣金额(元)</h5>
 											<p>{{item.commission}}</p>
 										</div>
 									</div>
 								</li>
 							</ul>
 						 </div>
-						</van-pull-refresh>
+						</van-list>
 				</div>
 			</div>
     </div>
 </template>
 <script>
-import { PullRefresh,DropdownMenu,DropdownItem } from 'vant';
+import { DropdownMenu,DropdownItem,List } from 'vant';
 export default {
 	components:{
-		[PullRefresh.name]:PullRefresh,
 		[DropdownMenu.name]:DropdownMenu,
 		[DropdownItem.name]:DropdownItem,
 
 	},
 	data(){
 		return{
-			loading: false,//控制上拉加载的加载动画
-			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
-			isLoading: false,//控制下拉刷新的加载动画
 			loading: false,//控制上拉加载的加载动画
 			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
 			option1: [
@@ -72,7 +68,8 @@ export default {
 			],
 			value1:"",
 			phoneOname:"",
-			commissiondList:{}
+			commissiondList:{},
+			pageNumber:1
 		}
 	},
 	methods:{
@@ -89,23 +86,34 @@ export default {
 		onenquiries(){
 			this.Initialization(1)
 		},
-		//下拉刷新
-		onRefresh() {
-			setTimeout(() => {
-					this.Initialization()
-					Toast.success('刷新成功');
-				 this.isLoading = false; //关闭下拉刷新效果
-			}, 500);
+		// 上拉加载
+		onLoad(){
+			// setTimeout(() => {
+			// 	this.Initialization()
+			// }, 500);
 		},
 		Initialization(i) {
       this.request("wisdom.vshop.productOrder.queryCommissonOrderForH5", {
         queryStr : this.phoneOname,
 				productType: this.value1,
-        pageNum: i,
-        pageSize: 10,
+        pageNum: this.pageNumber,
+        pageSize: 4,
       })
         .then(data => {
-					this.commissiondList = data.data.dataList
+					let commissiondList = data.data.dataList
+					if (Number(commissiondList.length) <= 0) {
+						this.finished = true
+						return false
+					}
+					if(Number(data.data.total) > 10){
+						this.finished = false
+						this.loading = false
+					}
+					console.log(commissiondList,1111)
+					this.commissiondList = commissiondList
+					// this.commissiondList = this.commissiondList.concat(commissiondList)
+					this.pageNumber++
+					console.log(this.pageNumber)
         })
         .catch(err => {
           console.log(err);
@@ -121,26 +129,27 @@ export default {
 .commissdetailmain{
 	background: #f1f1fb;
 	// height:100%;
+	padding-bottom: 10px;
 	.search{
 		background: #ffffff;
-		
 		padding-top: 8px;
-		border-top: 1px solid #F1F1FB;/*no*/
-		margin-top: 1px;
+		border-top: 1px solid #F1F1F1;/*no*/
+	}
+	.van-dropdown-menu{
+		border-top: 1px solid #f2f2f2;/*no*/
 	}
 }
 	.inputserch{
 		background: #EEEEEE;
 		width: 345px;
 		margin: 0 auto;
-		height:34px;
+		height:36px;
 		font-size:12px;
-		color:#aaaaaa;
-		line-height: 34px;
+		color:#333;
+		line-height: 36px;
 		border-radius: 17px;
 		position: relative;
 		margin-bottom: 8px;
-		
 		input{
 			background:#eeeeee;
 			border-radius: 17px;
@@ -163,12 +172,22 @@ export default {
 			border-radius: 5px;
 			padding: 0px 15px;
 			.detailstop{
-				height:40px;
+				// height:40px;
+				padding: 18px 0px 6px;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
 				// padding:0 15px;
-				border-bottom:1px solid #D6D6D6;
+				border-bottom:1px solid #f2f2f2;
+				.username{
+						font-weight: bold;
+						color:#333;
+						font-size: 14px;
+						margin-right: 5px;
+					}
+				.userTime{
+					margin-top: 7px;
+				}
 				h4{
 					font-size:14px;
 					color:#333333;
@@ -184,11 +203,18 @@ export default {
 			justify-content: space-between;
 			padding:10px 0px 10px;
 			text-align: center;
+			.div1{
+				text-align: left;
+			}
+			.div2{
+				text-align: right;
+			}
 			.datailslistD{
-				width: 80px;
+				width: 65px;
 				overflow: hidden;
 				text-overflow:ellipsis;
 				white-space: nowrap;
+				padding-top: 2px;
 			}
 			h5{
 				font-size:11px;
@@ -202,4 +228,5 @@ export default {
 			}
 		}
 	}
+	
 </style>

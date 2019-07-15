@@ -535,7 +535,7 @@ export default {
       position: fixed;
       bottom: 0px;
       width: 314px;
-      border-top: 1px solid #efefef;/*no*/
+      border-top: 1px solid #f2f2f2;/*no*/
       .rightShow_footer_one {
         height: 45px;
         background-color: #fff;
@@ -577,7 +577,7 @@ export default {
         text-align: center;
         border-radius: 2px;
         margin-right: 8px;
-        font-weight: 500;
+        font-weight: 400;
       }
       :last-child {
         margin-right: 0px;
@@ -600,7 +600,7 @@ export default {
     width: 100%;
     width: 375px;
     font-size: 14px;
-    border-top: 1px solid #efefef;/*no*/
+    border-top: 1px solid #f2f2f2;/*no*/
     
     .van-cell{
       height: 34px;
@@ -646,7 +646,7 @@ export default {
         position: relative;
         .pleace_label {
           padding-bottom: 8px;
-          border-bottom: 1px solid #efefef; /*no*/
+          border-bottom: 1px solid #f2f2f2; /*no*/
           span {
             display: inline-block;
             padding: 0px 8px;
@@ -660,13 +660,13 @@ export default {
           }
         }
         .shopregister_operation {
-          padding-top: 10px;
+          padding-top: 8px;
           .one {
             color: #aaaaaa;
             font-size: 12px;
           }
           .two {
-            margin-top: 10px;
+            margin-top: 8px;
             span {
               font-size: 17px;
               color: #333;

@@ -119,7 +119,7 @@ export default {
 				text-align: center;
 				font-size:14px;
 				color:#333333;
-				border:1px solid #EFEFEF /*no*/;
+				border:1px solid #f2f2f2 /*no*/;
 				margin-bottom: 10px;
 			}
 		}
@@ -129,7 +129,7 @@ export default {
 			padding: 0 15px;
 			li{
 				line-height: 40px; 
-				border-bottom:1px solid #efefef;
+				border-bottom:1px solid #f2f2f2;
 				font-size:16px;
 				color:#333333;
 				position:relative;

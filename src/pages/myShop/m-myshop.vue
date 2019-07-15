@@ -230,7 +230,7 @@ export default {
   .myshop_center {
     .center_top {
       padding: 15px;
-      border-bottom: 1px solid #efefef; /*no*/
+      border-bottom: 1px solid #f2f2f2; /*no*/
       .center_topimg {
         img {
           width: 60px;
@@ -256,12 +256,13 @@ export default {
         height: 17px;
         border-radius: 3px;
         font-weight: bold;
-        margin-top: 4px;
+        margin-top: 6px;
         img {
           width: 10px;
           height: 12px;
           margin-bottom: 3px;
           vertical-align: middle;
+          margin-right: 5px;
         }
       }
       .center_phone {
@@ -292,8 +293,8 @@ export default {
       font-size: 13px;
       font-weight: bold;
       .navbar_center {
-        border-left: 1px solid #efefef; /*no*/
-        border-right: 1px solid #efefef; /*no*/
+        border-left: 1px solid #f2f2f2; /*no*/
+        border-right: 1px solid #f2f2f2; /*no*/
       }
       .navbar_text {
         font-size: 20px;

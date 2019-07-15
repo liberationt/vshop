@@ -8,7 +8,7 @@
           </van-col>
           <van-col>
             <p class="product_title">{{item.productName}}</p>
-            <p class="product_money">贷款额度:  <span>{{item.amount}}</span></p>
+            <p class="product_money">贷款额度：  <span>{{item.amount}}</span></p>
             <p class="product_label">
               <span>{{item.rebate}}</span>
               <span>{{item.settle}}</span>
@@ -191,7 +191,7 @@ export default {
       font-family: "PingFang-SC-Regular";
       color: #333333;
       line-height: 18px;
-      margin: 6px 17px 7px 0px;
+      margin: 9px 17px 8px 0px;
       span {
         color: #fe951e;
         font-weight: bold;
@@ -203,7 +203,7 @@ export default {
       line-height: 18px;
       span {
         background-color: #fef1e3;
-        padding: 6px 8px;
+        padding: 5px 8px 4px;
         border-radius: 2px;
         margin-right: 5px;
       }
