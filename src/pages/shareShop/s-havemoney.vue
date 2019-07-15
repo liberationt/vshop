@@ -214,10 +214,14 @@ export default {
 						message:'请获取验证码',
 						duration:800
 				})
-				return false
+				return falsechecked
 			}
 			if (!/^[0-9]*$/.test(this.verification) || this.verification.length < 6) {
 				Toast("验证码有误，请重新输入！");
+				return false;
+			}
+			if(!this.checked){
+				Toast("请勾选服务协议");
 				return false;
 			}
 			let data={

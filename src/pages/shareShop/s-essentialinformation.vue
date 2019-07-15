@@ -110,7 +110,7 @@ export default {
 				})
 				return false
 			}
-			if (!/^[\u4E00-\u9FA5]{2,20}$/.test(this.username)) {
+			if (!/^[\u4E00-\u9FA5]{2,10}$/.test(this.username)) {
 				Toast({
 					message:'姓名有误，请重新输入',
 					duration:800

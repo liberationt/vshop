@@ -89,7 +89,7 @@ export default {
 }
    .financtittle{
 		 height:40px;
-		 line-height: 40px;
+		 line-height: 42px;
 		 background: #ffffff;
 		 font-size:12px;
 		 color:#4897FB;
@@ -132,6 +132,7 @@ export default {
 			 }
 			 span{
 				 color:#FE951E;
+				 font-weight: bold;
 			 }
 		 }
 	 }

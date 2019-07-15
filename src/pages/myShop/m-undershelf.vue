@@ -29,11 +29,11 @@
 			</div>
 			<div class="listdatabot">
 				<div class="listrightleft">
-					<p style="font-size:14px;font-weight:bold;color:#FE951E">{{item.amount}}</p>
+					<p style="font-size:16px;font-weight:bold;color:#FE951E">{{item.amount}}</p>
 					<p>可借额度 (元)</p>
 				</div>
 				<div>
-					<p>期限：<span style="font-weight:bold">{{item.limit}}</span></p>
+					<p>期限：<span style="font-weight:bold;font-size:12px;">{{item.limit}}</span></p>
 					<p>最快当天到账</p>
 				</div>
 				<div class="apply" @click="toproductnamedetail(item.productCode)">立即申请</div>
@@ -187,19 +187,12 @@ export default {
 		.tittle{
 			height:40px;
 			background: #ffffff;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
 			padding:0 15px;
 			font-size:12px;
 			border-radius: 4px;
 			color:#4897FF;
 			margin-bottom: 5px;
-			img{
-				width:16px;
-				height:14px;
-				margin-right: 8px;
-			}
+			line-height: 42px;
 		}
 		.listdata{
 		margin-bottom:10px;
@@ -257,7 +250,7 @@ export default {
 				color:#ffffff;
 				font-weight: bold;
 				border-radius: 15px;
-				padding:5px 10px;
+				padding:6px 10px 5px;
 				position:absolute;right:10px;
 			}
 		}
