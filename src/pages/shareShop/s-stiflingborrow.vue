@@ -365,7 +365,7 @@ export default {
 			font-size:14px;
 			color:#4597FB;
 			padding:10px 15px;
-			border-bottom: 1px solid #efefef;
+			border-bottom: 1px solid #f2f2f2;
 			span{
 				display: inline-block;
 				height:18px;
@@ -382,7 +382,7 @@ export default {
 				font-size:14px;
 				color:#333333;
 				line-height: 50px;
-				border-bottom:1px solid #EfEfEf;
+				border-bottom:1px solid #f2f2f2;
 				span{
 					display:inline-block;
 					width:118px;
