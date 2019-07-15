@@ -17,11 +17,11 @@
 		<div class="forminfor">
 			<p>
 				<label for="">姓名:</label>
-				<input type="text" placeholder="请输入姓名" v-model="username">
+				<input type="text" placeholder="请输入姓名" @focus="getFocus" v-model="username">
 			</p>
 			<p>
 				<label for="">身份证:</label>
-					<input type="text" placeholder="请输入身份证号" v-model="idcard">
+					<input type="text" placeholder="请输入身份证号" @focus="getFocus" v-model="idcard">
 				</p>
 			<p @click="shows">
 				<label for="">工作所在地:</label>
@@ -76,6 +76,9 @@ export default {
 		}
     },
     methods:{
+		getFocus() {
+				window.scroll(0, 0);
+		},
 		onAddrConfirm(item){
 			this.adNameSecond = item[1].name
 			this.flag = false

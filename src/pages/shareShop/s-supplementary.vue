@@ -21,7 +21,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="applyloan">
+		<div class="applyloan" v-show="this.personalCredit!='no_card_and_loan'">
 			<div class="applyloanhouse">
 				<div>
 					<label>信用状况:</label>
@@ -230,19 +230,21 @@ export default {
 				})
 				return false
 			}
-			if(!this.creditStatus){
-				Toast({
-					message:'请选择信用状况',
-					duration:800
-				})
-				return false
-			}
-			if(!this.creditLimit){
-				Toast({
-					message:'请选择信用卡额度',
-					duration:800
-				})
-				return false
+			if(this.personalCredit!='no_card_and_loan'){
+				if(!this.creditStatus){
+					Toast({
+						message:'请选择信用状况',
+						duration:800
+					})
+					return false
+				}
+				if(!this.creditLimit){
+					Toast({
+						message:'请选择信用卡额度',
+						duration:800
+					})
+					return false
+				}
 			}
 			if(!this.guaranteeSlip){
 				Toast({
@@ -350,8 +352,8 @@ export default {
 				}
 			let data = {
 				personalCredit:this.personalCredit,
-				creditStatus:this.creditStatus,
-				creditLimit:this.creditLimit,
+				creditStatus:this.personalCredit!="no_card_and_loan"?this.creditStatus:"",
+				creditLimit:this.personalCredit!="no_card_and_loan"?this.creditLimit:"",
 				guaranteeSlip :this.guaranteeSlip,
 				weilidaiStatus:this.weilidaiStatus,
 				weilidaiLimit :this.weilidaiStatus=='have_used'?this.weilidaiLimit:'',
@@ -553,6 +555,7 @@ export default {
 		},
 		change1(item){
 			this.personalCredit = item.infoOptionKey
+			console.log(item)
 		},
 		change2(item){
 			this.guaranteeSlip = item.infoOptionKey

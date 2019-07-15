@@ -12,20 +12,20 @@
 				<div>
 					<p>
 						<span>手机号:</span>
-						<input type="number" :disabled='disableds' v-model="userPhone" oninput='if(value.length>11)value=value.slice(0,11)'>
+						<input type="number" :disabled='disableds' @focus="getFocus" v-model="userPhone" oninput='if(value.length>11)value=value.slice(0,11)'>
 					</p>
 					<p v-show="isshow">
 						<span>验证码:</span>
-						<input type="number" v-model="verification" style="width:140px;" oninput='if(value.length>6)value=value.slice(0,6)'>
+						<input type="number" @focus="getFocus" v-model="verification" style="width:140px;" oninput='if(value.length>6)value=value.slice(0,6)'>
 						<i style='color:#4697FB;padding:2px 0 0 8px;border-left:1px solid #4597fb;' @click="obtain()&&flag">{{content}}</i>
 					</p>
 					<p>
 						<span>姓名:</span>
-						<input type="text" v-model="userName">
+						<input type="text" @focus="getFocus" v-model="userName">
 					</p>
 					<p>
 						<span>身份证号:</span>
-						<input type="text" v-model="idCard" oninput='if(value.length>18)value=value.slice(0,18)'>
+						<input type="text" v-model="idCard" @focus="getFocus" oninput='if(value.length>18)value=value.slice(0,18)'>
 					</p>
 					<p class="productcity" @click="tocity">
 						<span>工作城市:</span>
@@ -76,6 +76,9 @@ export default {
 		}
 	},
 	methods:{
+		getFocus() {
+				window.scroll(0, 0);
+		},
 		onClickLeft(){
 			if(this.$route.query.id){
 				this.$router.push('/shoppage?inviterCode='+this.$route.query.inviterCode)
