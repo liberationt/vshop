@@ -256,6 +256,7 @@ export default {
         height: 18px;
         background: #4597fb;
         margin-right: 8px;
+        border-radius: 1px;
       }
     }
     .backcardtot {
@@ -269,7 +270,7 @@ export default {
       border-radius: 23px;
       margin: 0 15px;
       text-align: center;
-      line-height: 45px;
+      line-height: 47px;
       color: #ffffff;
     }
     .Wr{

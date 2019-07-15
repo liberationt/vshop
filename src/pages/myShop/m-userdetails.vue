@@ -18,7 +18,7 @@
               <span>注册时间：</span>
               <span>{{userMessage.dataCreateTime}}</span>
             </p>
-            <p>申请记录：<span class="message_color">{{userMessage.applyOrderCount}}笔</span> &nbsp  返佣成功：<span class="message_color">{{userMessage.settleCount}}笔</span></p>
+            <p>申请记录：<span class="message_color1">{{userMessage.applyOrderCount}}笔</span> &nbsp  返佣成功：<span class="message_color1">{{userMessage.settleCount}}笔</span></p>
           </li>
           <li class="message_center" v-if="userMessage.loanAmount">
             <p>
@@ -40,14 +40,39 @@
       <div class="muserdetails_bottom_one white" v-if="userMessage.label">
         <span v-for="item in userMessage.label">{{item.labelOptionName}}</span>
       </div>
-      <div v-for="item in messgaeList" v-if=" Number(item.clhild.length) != 0 " class="muserdetails_bottom_two white">
-        <p class="muserdetails_one">
-          <span>{{item.title}}</span>
+      <div v-if="messgaeList00 == 0" class="muserdetails_bottom_two white">
+        <p  class="muserdetails_one">
+          <span class="muserdetails_one1"></span>
+          <span class="muserdetails_one2">基本信息</span>
         </p>
-        <div v-for="(v,index) in item.clhild">
-          <p v-if="v.text != ''"  :class="index != item.clhild.length-1? 'borderB muserdetails_two' : 'muserdetails_two'">
+        <div v-for="(v,index) in messgaeList[0].clhild">
+          <p v-if="v.text != ''"  :class="index != messgaeList[0].clhild.length-1? 'borderB muserdetails_two' : 'muserdetails_two'">
             <span>{{v.title}}</span>
-            <span class="right">{{v.text}}</span>
+            <span class="right fontc">{{v.text}}</span>
+          </p>
+        </div>
+      </div>
+      <div v-if="messgaeList11 == 0" class="muserdetails_bottom_two white">
+        <p  class="muserdetails_one">
+          <span class="muserdetails_one1"></span>
+          <span class="muserdetails_one2">工作信息</span>
+        </p>
+        <div v-for="(v,index) in messgaeList[1].clhild">
+          <p v-if="v.text != ''"  :class="index != messgaeList[1].clhild.length-1? 'borderB muserdetails_two' : 'muserdetails_two'">
+            <span>{{v.title}}</span>
+            <span class="right fontc">{{v.text}}</span>
+          </p>
+        </div>
+      </div>
+      <div v-if="messgaeList22 == 0" class="muserdetails_bottom_two white">
+        <p  class="muserdetails_one">
+          <span class="muserdetails_one1"></span>
+          <span class="muserdetails_one2">补充信息</span>
+        </p>
+        <div v-for="(v,index) in messgaeList[2].clhild">
+          <p v-if="v.text != ''"  :class="index != messgaeList[2].clhild.length-1? 'borderB muserdetails_two' : 'muserdetails_two'">
+            <span>{{v.title}}</span>
+            <span class="right fontc">{{v.text}}</span>
           </p>
         </div>
       </div>
@@ -63,7 +88,10 @@ export default {
         {title:'基本信息',clhild:[]},
         {title:'工作信息',clhild:[]},
         {title:'补充信息',clhild:[]},
-      ]
+      ],
+      messgaeList11:1,
+      messgaeList22:1,
+      messgaeList00:1,
     }
   },
   methods:{
@@ -100,6 +128,21 @@ export default {
           {title:'购车时间',text:dataList.additionalInfoRes.carTime},
           {title:'是否抵押',text:dataList.additionalInfoRes.carIsPledge},
         ]//baseInfoRes
+        this.messgaeList[2].clhild.forEach(v=>{
+          if(v.text != ""){
+            this.messgaeList22 = 0
+          }
+        })
+        this.messgaeList[0].clhild.forEach(v=>{
+          if(v.text != ""){
+            this.messgaeList00 = 0
+          }
+        })
+        this.messgaeList[1].clhild.forEach(v=>{
+          if(v.text != ""){
+            this.messgaeList11 = 0
+          }
+        })
       }).catch(err=>{console.log(err)})
     },
     goPhone(phone){
@@ -115,6 +158,9 @@ export default {
 <style lang="less" scoped>
 .muserdetails_common {
   background-color: #f1f1fb;
+  .fontc{
+    color: #333;
+  }
   .van-nav-bar{
     background-color: #4597fb;
   }
@@ -130,10 +176,10 @@ export default {
     background-size: 100%;
   }
   .muserdetails_header1{
-    height: 289px;
+    height: 309px;
   }
   .muserdetails_header2{
-    height: 209px;
+    height: 230px;
   }
   .muserdetails_center{
     .muserdetails_message {
@@ -143,7 +189,7 @@ export default {
       top: 46px;
       left: 15px;
       width: 345px;
-      box-shadow:0px 3px 5px 0px rgba(70, 251, 151, 0.35);
+      box-shadow:0px 3px 5px 0px rgba(70, 151, 251, 0.35);
       border-radius: 6px;
     }
     .message_top{
@@ -162,8 +208,12 @@ export default {
         margin-right: 25px
       }
     }
+    .message_color1{
+      color: #4697FB;
+    }
     .message_color{
       color: #4697FB;
+      font-weight: bold;
     }
     .message_center{
       color: #333333;
@@ -212,17 +262,25 @@ export default {
       }
     }
     .muserdetails_bottom_two{
-      margin-top: 15px;
+      margin-top: 8px;
       padding: 18px 15px 0px 15px;
       color: #999999;
       font-size:14px;
       .muserdetails_one {
         font-size:14px;
-        color: #4597FB;
-        span {
-          display: inline-block;
-          border-left: 5px solid #4597FB;/*no*/
+        .muserdetails_one1{
+          width: 3px;
+          height: 18px;
+          border-radius: 1px;
+          background-color: #4597FB;
+        }
+        .muserdetails_one2{
           padding-left: 8px;
+        }
+        span {
+          color: #4597FB;
+          display: inline-block;
+          vertical-align: middle;
         }
       }
       .muserdetails_two{

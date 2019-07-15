@@ -362,6 +362,7 @@ export default {
           this.$toast('请选择标签')
           return false
         }
+        this.labelTitleName2 = []
         if(this.materialsArr.length > 0){
           this.materialsArr.forEach(v=>{ // 合并数据
             this.labelTitleName2.push(Object.assign(v,{labelTitleName:this.name}))

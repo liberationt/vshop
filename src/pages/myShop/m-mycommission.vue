@@ -75,7 +75,7 @@
 </template>
 <script>
 import { Icon, Dialog } from 'vant';
-
+import { statistics } from "wisdom-h5"
 export default {
 	components:{
 		[Icon.name]:Icon,
@@ -124,7 +124,7 @@ export default {
 .mycommissmain{
 	background: #f1f1fb;
 	// height:100%;
-	padding-bottom: 10px;
+	padding-bottom: 2px;
 }
 .cashdetailArrow {
 	font-size: 18px;
@@ -150,7 +150,7 @@ export default {
 		}
 		.cashmoney{
 			height:32px;
-			line-height: 32px;
+			line-height: 34px;
 			width:98px;
 			background: #F8A547;
 			font-size:18px;
@@ -178,7 +178,7 @@ export default {
 		img{
 			width:16px;
 			height:16px;
-			margin-right: 21px;
+			margin-right: 8px;
 			margin-bottom: 2px;
 		}
 	}
@@ -224,7 +224,7 @@ export default {
 				justify-content: space-between;
 				align-items: center;
 				padding:0 15px;
-				border-bottom:1px solid #D6D6D6;
+				border-bottom:1px solid #efefef;
 				h4{
 					font-size:14px;
 					color:#333333;
@@ -249,6 +249,10 @@ export default {
 				color:#4597FB;
 				line-height:26px;
 				font-weight:bold;
+				width: 80px;
+				overflow: hidden;
+				text-overflow:ellipsis;
+				white-space: nowrap;
 			}
 		}
 	}

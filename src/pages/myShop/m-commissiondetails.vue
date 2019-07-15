@@ -29,7 +29,7 @@
 									<div class="datailslist">
 										<div>
 											<h5>贷款产品</h5>
-											<p>{{item.productName}}</p>
+											<p class="datailslistD">{{item.productName}}</p>
 										</div>
 										<div>
 											<h5>贷款金额（元）</h5>
@@ -65,11 +65,12 @@ export default {
 			loading: false,//控制上拉加载的加载动画
 			finished: false,//控制在页面往下移动到底部时是否调用接口获取数据
 			option1: [
+				{ text: '全部类型', value: "" },
         { text: '贷款', value: 0 },
         { text: '信用卡', value: 1 },
         { text: '信贷工具', value: 2 }
 			],
-			value1:0,
+			value1:"",
 			phoneOname:"",
 			commissiondList:{}
 		}
@@ -119,7 +120,7 @@ export default {
 <style lang="less" scoped>
 .commissdetailmain{
 	background: #f1f1fb;
-	height:100%;
+	// height:100%;
 	.search{
 		background: #ffffff;
 		
@@ -145,11 +146,12 @@ export default {
 			border-radius: 17px;
 			text-indent: 20px;
 			width:90%;
+			padding-left: 15px;
 		}
 		img{
 			width:16px;height:16px;
 			position: absolute;
-			right:15px;
+			left:12px;
 			bottom:9px;
 		}
 	}
@@ -159,12 +161,13 @@ export default {
 			background: #ffffff;
 			margin-top: 10px;
 			border-radius: 5px;
+			padding: 0px 15px;
 			.detailstop{
 				height:40px;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				padding:0 15px;
+				// padding:0 15px;
 				border-bottom:1px solid #D6D6D6;
 				h4{
 					font-size:14px;
@@ -179,8 +182,14 @@ export default {
 		.datailslist{
 			display: flex;
 			justify-content: space-between;
-			padding:10px 15px 10px;
+			padding:10px 0px 10px;
 			text-align: center;
+			.datailslistD{
+				width: 80px;
+				overflow: hidden;
+				text-overflow:ellipsis;
+				white-space: nowrap;
+			}
 			h5{
 				font-size:11px;
 				color:#999999;
@@ -189,6 +198,7 @@ export default {
 				font-size:14px;
 				color:#4597FB;
 				line-height:26px;
+				font-weight: bold;
 			}
 		}
 	}
