@@ -378,7 +378,7 @@ export default {
 				align-items: center;
 				font-size:12px;
 				color:#666666;
-				border-bottom:1px solid #EfEfEf;
+				border-bottom:1px solid #f2f2f2;
 				.tweetslistbanner{
 					width:106px;height:65px;border-radius: 4px;
 					overflow: hidden;
@@ -405,7 +405,7 @@ export default {
 				padding-left:15px;
 				font-size:17px;
 				color:#4597FB;
-				border-bottom:1px solid #EFEFEF;
+				border-bottom:1px solid #f2f2f2;
 				span{
 					display: inline-block;
 					height:18px;

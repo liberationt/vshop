@@ -267,7 +267,7 @@ export default {
 				line-height: 40px;
 				text-align: center;
 				font-size:14px;
-				border-bottom:1px solid #EfEfEf;
+				border-bottom:1px solid #f2f2f2;
 				img{
 					width:10px;height:9px;margin:-2px 7px 0;
 				}
@@ -283,7 +283,7 @@ export default {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
-					border-bottom:1px solid #EfEfEf;
+					border-bottom:1px solid #f2f2f2;
 					span{
 						padding-top:1px;
 						color:#4896FB;

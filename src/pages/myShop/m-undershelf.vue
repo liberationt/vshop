@@ -210,7 +210,7 @@ export default {
 			padding:0 15px;
 			position: relative;
 			align-items: center;
-			border-bottom: 1px dashed #efefef;
+			border-bottom: 1px dashed #f2f2f2;
 			height:58px;
 			font-size:12px;
 			color:#333333;
@@ -243,7 +243,7 @@ export default {
 			color:#333333;
 			.listrightleft{
 				width:100px;
-				border-right:1px solid #efefef;
+				border-right:1px solid #f2f2f2;
 				margin-right: 20px;
 			}
 			div{

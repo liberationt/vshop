@@ -357,7 +357,7 @@ export default {
     margin-left: 4px;
     span {
       background-color: #fef1e3;
-      padding: 6px 8px;
+      padding: 5px 8px 4px;
       border-radius: 2px;
       margin-right: 5px;
     }

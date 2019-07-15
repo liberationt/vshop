@@ -8,7 +8,7 @@
 			/> 
 		</header>
 		<div class="mycommis">
-			<div>
+			<div class="mycommis1">
 				<span>可提现金额</span>
 				<p class="amont">{{mycommission.cashAmountAsFormat}}<span>元</span></p>
 			</div>
@@ -51,20 +51,20 @@
 			<ul>
 				<li v-for="(item,index) in mycommission.productOrderList">
 					<div class='detailstop'>
-						<h4>{{item.userName}} &nbsp{{item.userPhone}}</h4>
-						<span>{{item.settleDate}}</span>
+						<h4><span class="detailstop1">{{item.userName}}</span> &nbsp{{item.userPhone}}</h4>
+						<span class="detailstop2">{{item.settleDate}}</span>
 					</div>
 					<div class="datailslist">
-						<div>
+						<div class="div1">
 							<h5>贷款产品</h5>
 							<p>{{item.productName}}</p>
 						</div>
 						<div>
-							<h5>贷款金额(元）</h5>
+							<h5> 贷款金额(元)</h5>
 							<p>{{item.loanRealityAmount}}</p>
 						</div>
-						<div>
-							<h5>返佣金额(元）</h5>
+						<div class="div2">
+							<h5> 返佣金额(元)</h5>
 							<p>{{item.commission}}</p>
 						</div>
 					</div>
@@ -165,6 +165,9 @@ export default {
 			}
 		}
 	}
+	.mycommis1{
+		margin-top: 6px;
+	}
 	.cashdetail{
 		display: flex;
 		justify-content: space-between;
@@ -176,10 +179,10 @@ export default {
 		color:#333333;
 		margin-bottom: 1px;
 		img{
-			width:16px;
-			height:16px;
+			width:20px;
+			height:20px;
 			margin-right: 8px;
-			margin-bottom: 2px;
+			margin-bottom: 4px;
 		}
 	}
 	.cumulative{
@@ -190,10 +193,10 @@ export default {
 		div{
 			width:50%;
 			text-align: center;
-			font-size:15px;
+			font-size:17px;
 			color:#999999;
 			p{
-				font-size:18px;
+				font-size:20px;
 				color:#4597FB;
 				font-weight: bold;
 				margin-top: 7px;
@@ -201,7 +204,6 @@ export default {
 		}
 		.cimulativebor{
 			border-right:1px solid #f1f1fb /*no*/;
-
 		}
 	}
 	.lookall{
@@ -218,13 +220,22 @@ export default {
 			background: #ffffff;
 			margin-bottom: 8px;
 			border-radius: 5px;
+			padding: 0px 15px;
 			.detailstop{
-				height:40px;
+				// height:40px;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				padding:0 15px;
-				border-bottom:1px solid #efefef;
+				padding: 15px 0px 6px;
+				border-bottom:1px solid #f2f2f2;
+				.detailstop1{
+					color: #333;
+					font-weight: bold;
+					font-size: 14px;
+				}
+				.detailstop2{
+					margin-top: 6px;
+				}
 				h4{
 					font-size:14px;
 					color:#333333;
@@ -238,8 +249,14 @@ export default {
 		.datailslist{
 			display: flex;
 			justify-content: space-between;
-			padding:10px 15px 10px;
+			padding:10px 0px 10px;
 			text-align: center;
+			.div1{
+				text-align: left;
+			}
+			.div2{
+				text-align: right;
+			}
 			h5{
 				font-size:11px;
 				color:#999999;

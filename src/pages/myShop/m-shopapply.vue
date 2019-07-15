@@ -255,7 +255,7 @@ export default {
       line-height: 44px;
       font-size: 13px;
       color: rgba(254, 149, 30, 1);
-      margin-top: 5px;
+      // margin-top: 5px;
       img {
         width: 15px;
         height: 16px;
@@ -279,7 +279,7 @@ export default {
     border-radius: 3px;
     line-height: 22px;
     font-size: 12px;
-    font-weight: bold;
+    // font-weight: bold;
     text-align: center;
     position: absolute;
     right: 25px;
@@ -349,7 +349,6 @@ export default {
       .product_three {
         font-size: 12px;
         font-family: PingFang-SC-Regular;
-        font-weight: 500;
         color: rgba(153, 153, 153, 1);
         line-height: 18px;
       }

@@ -138,7 +138,7 @@ export default {
 				height:80px;
 				border-radius: 50%;
 				padding:3px 3px 0;
-				border:1px solid #efefef;
+				border:1px solid #f2f2f2;
 				div{
 					width:72px;height:72px;border-radius: 50%;overflow: hidden;
 				}
@@ -167,7 +167,7 @@ export default {
 					height:44px;
 					align-items: center;
 					display: flex;
-					border-bottom:1px solid #EfEfEf /*no*/;
+					border-bottom:1px solid #f2f2f2 /*no*/;
 					span{
 						display: inline-block;
 						width:3px; height:18px;
@@ -224,7 +224,7 @@ export default {
 				align-items: center;
 				display: flex;
 				padding-left:15px;
-				border-bottom:1px solid #EFEFEF /*no*/;
+				border-bottom:1px solid #f2f2f2 /*no*/;
 				span{
 					display: inline-block;
 					width:3px; height:18px;
@@ -268,7 +268,7 @@ export default {
 			ul{
 				padding-left:15px;
 				li{
-					border-bottom:1px solid #EfEfEf /*no*/;
+					border-bottom:1px solid #f2f2f2 /*no*/;
 					display: flex;
 					padding:15px 0;
 					

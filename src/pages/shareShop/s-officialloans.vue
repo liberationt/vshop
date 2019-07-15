@@ -168,7 +168,7 @@ export default {
 		border-radius: 5px;
 		.listdatatop{
 			height:53px;
-			border-bottom:1px dashed #EFEFEF /*no*/;
+			border-bottom:1px dashed #f2f2f2 /*no*/;
 			padding:0 15px;
 			display: flex;
 			align-items: center;
@@ -197,7 +197,7 @@ export default {
 			color:#333333;
 			.listrightleft{
 				width:100px;
-				border-right:1px solid #efefef;
+				border-right:1px solid #f2f2f2;
 				margin-right: 20px;
 			}
 			div{
