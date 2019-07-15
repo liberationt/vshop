@@ -154,7 +154,7 @@ export default {
         return false;
       }
       statistics.click("maddproduct","addProduct")
-      this.shopValue.productName.replace(/ /g,'')
+      this.shopValue.productName = this.shopValue.productName.replace(/ /g,'')
       if (this.isAdd == "is") {
         // 添加
         dataList = Object.assign(this.shopValue, {
