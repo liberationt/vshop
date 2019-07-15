@@ -230,19 +230,21 @@ export default {
 				})
 				return false
 			}
-			if(!this.creditStatus){
-				Toast({
-					message:'请选择信用状况',
-					duration:800
-				})
-				return false
-			}
-			if(!this.creditLimit){
-				Toast({
-					message:'请选择信用卡额度',
-					duration:800
-				})
-				return false
+			if(this.personalCredit!='no_card_and_loan'){
+				if(!this.creditStatus){
+					Toast({
+						message:'请选择信用状况',
+						duration:800
+					})
+					return false
+				}
+				if(!this.creditLimit){
+					Toast({
+						message:'请选择信用卡额度',
+						duration:800
+					})
+					return false
+				}
 			}
 			if(!this.guaranteeSlip){
 				Toast({
