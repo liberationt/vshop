@@ -50,6 +50,7 @@
 </template>
 <script>
 import { DropdownMenu,DropdownItem,List } from 'vant';
+import { statistics } from "wisdom-h5"
 export default {
 	components:{
 		[DropdownMenu.name]:DropdownMenu,
@@ -120,6 +121,7 @@ export default {
 	},
 	mounted(){
 		this.Initialization(1)
+		statistics.page("commissiondetails")
 	}
 }
 </script>

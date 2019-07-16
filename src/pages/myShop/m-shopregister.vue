@@ -28,7 +28,7 @@
         </van-search>
       </div>
       
-      <van-pull-refresh v-model="isLoading" class="xialashuaxin" @refresh="onRefresh">
+      <van-list v-model="loading" finished-text="没有更多了" :finished="finished" @load="onLoad" class="xialashuaxin haha">
         <div class="shopregister_message">
           <div class="shopregister_tips" @click="extension">一键推广店铺链接</div>
             <div class="shopregister_list">
@@ -59,7 +59,7 @@
               </ul>
             </div>
         </div>
-      </van-pull-refresh>
+      </van-list>
      <footer v-if="isHide" class="shopregister_footer" :class="{  'nav-hide': hideClass }">
         <van-row>
           <van-col class="footer_top" @click.native="exportAll">确认导出（已选{{checkData.length}}）</van-col>
@@ -73,7 +73,7 @@
      </footer>
     </div>
     <!-- 右侧弹出框 -->
-    <van-popup v-model="rightShow" position="right" class="rightShow" :overlay="true">
+    <van-popup v-model="rightShow" position="right" :close-on-click-overlay = false class="rightShow" :overlay="true">
       <div v-for="(item,i) in labeData">
         <div class="rightShow_common">
           <p class="rightShow_one">
@@ -106,7 +106,7 @@
 <script>
 import utils from "../../utils/utils";
 import options from "../../views/options";
-import { Search, Tab, Tabs, Popup, Dialog, Toast } from "vant";
+import { Search, Tab, Tabs, Popup, Dialog, Toast, List } from "vant";
 import { mapState } from "vuex";
 import { statistics } from "wisdom-h5"
 export default {
@@ -116,6 +116,7 @@ export default {
     [Tabs.name]: Tabs,
     [Popup.name]: Popup,
     [Dialog.name]: Dialog,
+    [List.name]: List,
     options
   },
   data() {
@@ -146,7 +147,10 @@ export default {
       labelArr:[],
       generalizeStore:{},
       name:"",
-      huixianArr:[]
+      huixianArr:[],
+      pageNumber:1,
+      finished: true,//控制在页面往下移动到底部时是否调用接口获取数据
+			loading: false,//控制上拉加载的加载动画
     };
   },
   computed: {
@@ -241,6 +245,10 @@ export default {
           arr.push(v.userPhone)
         }
       })
+      if(arr.length <= 0){
+        this.$toast('请选择用户')
+        return false
+      }
       utils.copyContent(arr.join(','))
       this.$toast('手机号已复制粘贴板中')
       statistics.click("mshopregister","qrexport")
@@ -254,17 +262,35 @@ export default {
       this.checkboxImg = require("./imgs/quanxuan@2x.png");
       statistics.click("mshopregister","export")
     },
+    onLoad() {
+			setTimeout(() => {
+					this.Initialization(2)
+			}, 500);
+		},
     // 初始化数据
     Initialization(i, user, data1) {
       // console.log('莉莉',)
       this.request("wisdom.vshop.vshopLoanUser.queryVshopLoanUserList", Object.assign({
         searchStr: user,
         type: 0,
-        pageNum: i,
+        pageNum: this.pageNumber,
         pageSize: 10
       },data1))
         .then(data => {
-          this.customerList = data.data.dataList;
+          let flowList = data.data
+          if (Number(flowList.dataList.length) <= 0) {
+            this.finished = true
+            return false
+          }
+          if(Number(flowList.total) > 10){
+            this.finished = false
+            this.loading = false
+          }
+          this.customerList = this.customerList.concat(flowList.dataList)
+          this.pageNumber++
+          this.totalPage = flowList.total
+          // this.customerList = data.data.dataList;
+
           if(JSON.stringify(data1) != "{}"){this.rightShow = false}
         })
         .catch(err => {
