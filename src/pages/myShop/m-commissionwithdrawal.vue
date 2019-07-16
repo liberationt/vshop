@@ -408,7 +408,7 @@ export default {
     color: #333;
     input[disabled]{
       background-color: #fff;
-      color: #333333;
+      color: #333333 !important;
     }
   }
   
