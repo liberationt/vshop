@@ -182,6 +182,7 @@ export default {
       } else {
         url = window.location.href
       }
+      let that = this
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
         url: url
       }).then(data => {
@@ -190,7 +191,7 @@ export default {
             wx.ready(function(){
               wx.updateAppMessageShareData({
                 title: '急用钱？请找我，专业贷款！', // 分享标题
-                desc: this.name + '向您推荐了自己的微店，提供工资贷、社保贷、消费贷、公积金贷、车贷房贷……规渠正规安全，服务专业周到，快来看看吧！', // 分享描述
+                desc: that.name + '向您推荐了自己的微店，提供工资贷、社保贷、消费贷、公积金贷、车贷房贷……规渠正规安全，服务专业周到，快来看看吧！', // 分享描述
                 link: window.location.origin + "/shoppage?inviterCode="+inviterCode, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: 'https://wisdom-loan.oss-cn-shanghai.aliyuncs.com/productParam/60938f68-1fa0-4620-a90a-7a4d7a7c7117.png', // 分享图标
                 success: function () {
