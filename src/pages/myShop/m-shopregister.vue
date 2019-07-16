@@ -405,6 +405,9 @@ export default {
         }
         this.request('wisdom.vshop.userLabel.updateUserLabel',parmise).then(data=>{
           this.rightShow = false
+          // 数据初始化
+          this.pageNumber = 1
+          this.Restoration()
           this.Initialization(1,'',{})
         }).catch(err=>{console.log(err)})
       } else {
