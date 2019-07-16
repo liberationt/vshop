@@ -278,7 +278,9 @@ export default {
       },data1))
         .then(data => {
           let flowList = data.data
+          if(JSON.stringify(data1) != "{}"){this.rightShow = false}
           if (Number(flowList.dataList.length) <= 0) {
+            this.customerList = []
             this.finished = true
             return false
           }
@@ -290,8 +292,6 @@ export default {
           this.pageNumber++
           this.totalPage = flowList.total
           // this.customerList = data.data.dataList;
-
-          if(JSON.stringify(data1) != "{}"){this.rightShow = false}
         })
         .catch(err => {
           console.log(err);
@@ -410,7 +410,6 @@ export default {
       } else {
         console.log(this.labelArr)
         this.pageNumber = 1
-        alert(3)
         this.Initialization(1, this.searchValue,Object.assign(this.labelObj,{goodLabelList:this.labelArr}))
       }
     },
