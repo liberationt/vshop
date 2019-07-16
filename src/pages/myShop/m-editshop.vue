@@ -101,8 +101,12 @@ export default {
     // 确认提交
     editSubmit(){
       // 提交成功后跳转到首页
-      if (!/^[\u4E00-\u9FA5]{1,20}$/.test(this.shopValue.storeName)) {
-        this.$toast('店铺名称输入有误，请重新输入')
+      // if (!/^[\u4E00-\u9FA5]{1,20}$/.test(this.shopValue.storeName)) {
+      //   this.$toast('店铺名称输入有误，请重新输入')
+      //   return false;
+      // }
+      if (this.shopValue.storeName.length > 20 || this.shopValue.storeName.length <=1) {
+        this.$toast('请输入1-20个字的店铺名称')
         return false;
       }
       if (!/^[a-zA-Z0-9_]+$/.test(this.shopValue.weixinNumber)) {
