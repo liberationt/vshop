@@ -179,7 +179,7 @@ export default {
 					let dataobject = data.data
 					this.username = dataobject.userName
 					this.idcard = dataobject.idCard
-					this.adNameSecond = dataobject.adNameSecond?dataobject.adNameSecond:dataobject.officerAdNameFirst
+					this.adNameSecond = dataobject.adNameSecond?dataobject.adNameSecond:dataobject.officerAdNameSecond
 					for(var i=0;i<dataobject.pageData.length;i++){
 						if(dataobject.pageData[i].infoTitleKey=='educationBackground'){
 							this.educationList = dataobject.pageData[i].optionRes
