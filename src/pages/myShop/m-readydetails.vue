@@ -42,6 +42,7 @@
     </div>
 </template>
 <script>
+import { statistics } from "wisdom-h5"
 export default {
 	data(){
 		return{
@@ -62,6 +63,7 @@ export default {
 	},
 	mounted(){
 		this.Initialization()
+		statistics.page("readydetails")
 	}
 }
 </script>

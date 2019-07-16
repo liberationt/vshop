@@ -29,6 +29,7 @@
 </template>
 <script>
 import { Toast,List } from 'vant';
+import { statistics } from "wisdom-h5"
 export default {
 	data(){
 		return{
@@ -73,6 +74,7 @@ export default {
 	},
 	mounted(){
 		this.Initialization()
+		statistics.page("cashdetails")
 	}
 }
 </script>

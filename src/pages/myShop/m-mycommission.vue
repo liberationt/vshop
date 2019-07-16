@@ -43,7 +43,7 @@
 					<span>佣金明细</span>
 				</div>
 				<div>
-					<span><router-link to='./commissiondetails'>查看全部数据</router-link></span><van-icon class="cashdetailArrow" name="arrow" color='#4597FB' />
+					<span @click="lookMingxi">查看全部数据</span><van-icon class="cashdetailArrow" name="arrow" color='#4597FB' />
 				</div>
 			</div>
 		</div>
@@ -91,8 +91,7 @@ export default {
 			this.$router.go(-1)
 		},
 		frozenmoney(){
-			if(this.mycommission.bindBankcardStatus == 0 ){
-				
+			if(this.mycommission.bindBankcardStatus == 0 ){	
 				Dialog.alert({
 					message: '提现请先去绑定银行卡',
 					confirmButtonText:'请去绑定'
@@ -100,12 +99,18 @@ export default {
 					this.$router.push({path:'./bankcard'}) // 绑卡
 				});
 			} else {
+				statistics.click('mycommission','withdrawal')
 				this.$router.push({path:'./commissionwithdrawal'})  //提现
 			}
 			
 		},
 		goMingxi(){
+			statistics.click('mycommission','goMingxi')
 			this.$router.push({path:'./cashdetails'})
+		},
+		lookMingxi(){
+			statistics.click('mycommission','lookMingxi')
+			this.$router.push({path:'./commissiondetails'})
 		},
 		// 数据初始化
 		Initialization(){
@@ -117,6 +122,7 @@ export default {
 	},
 	mounted(){
 		this.Initialization()
+		statistics.page('mycommission')
 	}
 }
 </script>
