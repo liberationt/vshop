@@ -411,6 +411,7 @@ export default {
     input[disabled]{
       background-color: #fff;
       color: black !important;
+      -webkit-text-fill-color: #333;
     }
   }
   
