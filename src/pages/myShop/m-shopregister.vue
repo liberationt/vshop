@@ -73,7 +73,7 @@
      </footer>
     </div>
     <!-- 右侧弹出框 -->
-    <van-popup v-model="rightShow" position="right" :close-on-click-overlay = false class="rightShow" :overlay="true">
+    <van-popup v-model="rightShow" position="right" :close-on-click-overlay=false class="rightShow" :overlay="true">
       <div v-for="(item,i) in labeData">
         <div class="rightShow_common">
           <p class="rightShow_one">
@@ -409,6 +409,8 @@ export default {
         }).catch(err=>{console.log(err)})
       } else {
         console.log(this.labelArr)
+        this.pageNumber = 1
+        alert(3)
         this.Initialization(1, this.searchValue,Object.assign(this.labelObj,{goodLabelList:this.labelArr}))
       }
     },
