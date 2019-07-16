@@ -21,7 +21,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="applyloan" v-show="this.personalCredit!='no_card_and_loan'">
+		<div class="applyloan" v-show="this.personalCredit&&this.personalCredit!='no_card_and_loan'">
 			<div class="applyloanhouse">
 				<div>
 					<label>信用状况:</label>
