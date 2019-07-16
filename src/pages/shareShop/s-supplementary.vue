@@ -344,11 +344,12 @@ export default {
 				}
 				
 			}
-			if(this.checked===false){
+			if(!this.checked){
 					Toast({
-						message:'请同意用户协议',
+						message:'请同意服务协议',
 						duration:800
 					})
+					return false
 				}
 			let data = {
 				personalCredit:this.personalCredit,

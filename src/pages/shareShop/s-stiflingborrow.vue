@@ -187,19 +187,20 @@ export default {
 						}
 						utils.setCookie('users',JSON.stringify(str))
 					}
-					if(data.data.productType===3){
-						Toast({
-							message:'提交申请成功',
-							duration:800
-						})
-						this.$router.push('/relatedproducts?disbaled='+encodeURI('自营')+'&'+'index='+2)
-					}
+					
 					if(data.data.state==1){
 						this.$router.push('/undershelf?inviterCode='+this.$route.query.inviterCode)
 					}else{
-						window.location.href = data.data.jumpUrl
+						if(data.data.productType===3){
+							Toast({
+								message:'提交申请成功',
+								duration:800
+							})
+							this.$router.push('/relatedproducts?disbaled='+encodeURI('自营')+'&'+'index='+2)
+						}else{
+							window.location.href = data.data.jumpUrl
+						}
 					}
-					
 				}else{
 					this.confims = true
 				}
