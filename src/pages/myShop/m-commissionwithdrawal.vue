@@ -40,7 +40,7 @@
 				<p>2. 单笔最小提现金额{{withdrawalList.singleMinAmountAsFormat}}元，单笔最大提现金额{{withdrawalList.singleMaxAmountAsFormat}}元</p>
 				<p>3. 每月提现上限{{withdrawalList.monthMaxAmountAsFormat}}元</p>
 				<p v-if="withdrawalList.chargeType == 1">4. 提现每笔手续费{{withdrawalList.feeAsFormat}}元，实际到账金额是提现金额减{{withdrawalList.feeAsFormat}}元</p>
-				<p v-if="withdrawalList.chargeType != 1">4. 提现每笔手续费为提现金额的{{withdrawalList.feeRate}}%，实际到账金额是提现金额减去提现手续费提现每笔手续费</p>
+				<p v-if="withdrawalList.chargeType != 1">4. 提现每笔手续费为提现金额的{{withdrawalList.feeRate}}%，实际到账金额是提现金额减去提现手续费</p>
 				<p>5. 提交提现申请后，通常1~3个工作日内到账</p>
 			</div>
 			<!-- 设置密码框 -->
