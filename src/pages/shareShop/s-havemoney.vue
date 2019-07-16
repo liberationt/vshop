@@ -287,6 +287,7 @@ export default {
 				padding:0 15px;
 				font-size:14px;
 				color:#333333;
+				background:#ffffff;
 				p{
 					display: flex;
 					justify-content: space-between;
@@ -304,6 +305,7 @@ export default {
 				input{
 					line-height: 46px;
 					height:48px;
+					text-indent: 10px;
 				}
 			}
 			.agree{
