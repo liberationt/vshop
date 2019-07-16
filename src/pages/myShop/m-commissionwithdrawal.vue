@@ -471,6 +471,7 @@ export default {
       font-size: 24px;
       color: #0c85fe;
       width: 85%;
+      color: #333;
     }
   }
   .deduction {
