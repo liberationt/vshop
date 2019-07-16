@@ -50,7 +50,7 @@
 					<p class="pwdText">发送至{{withdrawalList.phone}}</p>
 					<div class="getCode">
 						<p class="pwdInput">
-							<span> <input type="number" v-model="codeNum" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码"> </span>
+							<span> <input type="number" v-model="codeNum" oninput='if(value.length>6)value=value.slice(0,6)' @focus="getFocus" placeholder="请输入验证码"> </span>
 							<span class="ongetCode" v-show="getCodeshow" @click="flag && getCode()">获取验证码</span>
 				      <span class="ongetCode" v-show="!getCodeshow" >{{count}} s后获取</span>	
 						</p>
@@ -312,6 +312,9 @@ export default {
       } else {
         this.passwordT = this.passwordT.slice(0, this.passwordT.length - 1);
       }
+    },
+    getFocus(){
+      window.scroll(0, 0);
     },
     // 数据初始化
     Initialization() {
