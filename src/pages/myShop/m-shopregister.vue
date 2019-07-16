@@ -413,6 +413,7 @@ export default {
       } else {
         console.log(this.labelArr)
         this.pageNumber = 1
+        this.customerList = []
         this.Initialization(1, this.searchValue,Object.assign(this.labelObj,{goodLabelList:this.labelArr}))
       }
     },
