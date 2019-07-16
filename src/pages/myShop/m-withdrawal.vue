@@ -85,7 +85,8 @@ export default {
       this.$router.push({ path: "./myshop" });
     },
     onvanTabs(v) {
-      this.Initialization(1);
+      this.pageNumber = 1
+      this.Initialization();
     },
     onLoad(){
       setTimeout(() => {
@@ -113,7 +114,7 @@ export default {
         pageSize: 10,
       })
         .then(data => {
-          let shopPapplyList = data.data
+          let shopPapplyList = data.data.dataList
 					if (Number(shopPapplyList.length) <= 0) {
 						this.finished = true
 						return false
@@ -124,7 +125,7 @@ export default {
 					}
 					this.shopPapplyList = this.shopPapplyList.concat(shopPapplyList)
 					this.pageNumber++
-					// console.log(this.commissiondList,1111)
+					console.log(shopPapplyList,1111)
           // this.shopPapplyList = data.data
           // console.log(data);
         })
