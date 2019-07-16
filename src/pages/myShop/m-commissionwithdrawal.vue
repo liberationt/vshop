@@ -178,6 +178,7 @@ export default {
       this.psdshow = false;
       this.passwordo = ""
       this.passwordT = ""
+      this.codeNum = ""
       this.flag = true
     },
     // 交易密码弹框
@@ -404,6 +405,7 @@ export default {
     border: 1px solid #e5e5e5; /*no*/
     padding: 5px 0px 5px 10px;
     text-align: left;
+    color: #333;
     input[disabled]{
       background-color: #fff;
     }
