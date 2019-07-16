@@ -8,6 +8,9 @@
 				/> 
 			</header>
 			<div class="successmain">
+				<div class="banner_img">
+					<img :src=bannerUrl alt="">
+				</div>
 				<div>
 					<img src="./imgs/success.png" alt="">
 				</div>
@@ -25,7 +28,7 @@
 export default {
 	data(){
 		return{
-
+			bannerUrl:""
 		}
 	},
 	methods:{
@@ -35,23 +38,42 @@ export default {
 		returngo(){
 			this.$router.push({path:'./mycommission'})
 		},
+
 	},
 	mounted(){
-
+		 this.request(
+      "wisdom.vshop.withdrawSuccess.getBanner",
+      {}
+    ).then(data => {
+        this.bannerUrl = data.data.banner.bannerUrl
+      })
+      .catch(err => {
+        console.log(err);
+      });
 	}
 }
 </script>
 <style lang="less" scoped>
 	.successmain{
 		text-align: center;
-		padding:70px 15px 0;;
+		padding:0px 15px 0;
 		font-size: 15px;
 		color:#333333;
+		.banner_img{
+			width: 345px;
+			margin: 0 auto;
+			>img{
+				width: 345px;
+				height: 175px;
+				border-radius: 10px;
+				margin-top: 10px;
+				margin-bottom: 33px;
+			}
+		}
 		img{
 			width:45px;
 			height:45px;
 			margin-bottom: 20px;
-			
 		}
 		.returngo{
 			height:45px;

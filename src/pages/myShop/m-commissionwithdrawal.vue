@@ -178,6 +178,7 @@ export default {
       this.psdshow = false;
       this.passwordo = ""
       this.passwordT = ""
+      this.codeNum = ""
       this.flag = true
     },
     // 交易密码弹框
@@ -309,7 +310,9 @@ export default {
       }
     },
     onDelete() {
-      if (this.transactionNum == 1) {
+      if(this.transactionNum == 0){
+        this.codeNum = this.codeNum.slice(0, this.codeNum.length - 1);
+      } else if (this.transactionNum == 1) {
         this.passwordo = this.passwordo.slice(0, this.passwordo.length - 1);
       } else {
         this.passwordT = this.passwordT.slice(0, this.passwordT.length - 1);
@@ -404,8 +407,11 @@ export default {
     border: 1px solid #e5e5e5; /*no*/
     padding: 5px 0px 5px 10px;
     text-align: left;
+    color: #333;
     input[disabled]{
       background-color: #fff;
+      color: black !important;
+      -webkit-text-fill-color: #333;
     }
   }
   
@@ -468,6 +474,7 @@ export default {
       font-size: 24px;
       color: #0c85fe;
       width: 85%;
+      color: #333;
     }
   }
   .deduction {

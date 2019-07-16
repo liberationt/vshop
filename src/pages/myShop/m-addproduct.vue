@@ -68,7 +68,7 @@
         </div>
       </van-row>
     </div>
-    <footer>
+    <footer v-if="zindex == 2">
       <button :class="flag ? '' :'color'" @click="flag && addProduct()">保存</button>
     </footer>
   </div>
@@ -94,13 +94,16 @@ export default {
       materialsList: [],
       materialsArr: [],
       processArr: [],
-      topImgUrl: "https://wisdom-loan-user.oss-cn-shanghai.aliyuncs.com/officerexamine/%2079c7d61e-f9da-49cf-a5b5-2c4fe77bfc80.png",
-      productLogo: "https://wisdom-loan-user.oss-cn-shanghai.aliyuncs.com/officerexamine/%2079c7d61e-f9da-49cf-a5b5-2c4fe77bfc80.png",
+      topImgUrl: "https://wisdom-loan.oss-cn-shanghai.aliyuncs.com/file/image/75671563247292882.png",
+      productLogo: "https://wisdom-loan.oss-cn-shanghai.aliyuncs.com/file/image/75671563247292882.png",
       flag: false,
-      isAdd: this.$route.query.isAdd
+      isAdd: this.$route.query.isAdd,
+      zindex:2,
+      documentHeight: document.documentElement.clientHeight
     };
   },
   methods: {
+
     inputFunc() {
       this.ischeck();
     },
@@ -164,6 +167,8 @@ export default {
         apiKey = "wisdom.vshop.proprietaryProduct.h5Save";
       } else {
         // 编辑
+        this.shopValue.applicationMaterialList = []
+        this.shopValue.applicationProcedureList = []
         dataList = Object.assign(this.shopValue, {
           proprietaryProductSelectReqList: this.arrList(),
           productLogo: this.productLogo,
@@ -267,15 +272,14 @@ export default {
       } else {
         this.flag = true;
       }
-    }
+    },
   },
   mounted() {
     // 基础参数
     this.request(
       "wisdom.vshop.proprietaryProductParam.getProprietaryProductParamBaseData",
       {}
-    )
-      .then(data => {
+    ).then(data => {
         const { applicationMaterialList, applicationProcedureList } = data.data;
         this.processList = applicationProcedureList;
         this.materialsList = applicationMaterialList;
@@ -289,12 +293,22 @@ export default {
       this.flag = true
     }
     statistics.page("maddproduct")
+     window.onresize = () => {
+      return (() => {
+        if(this.documentHeight>document.documentElement.clientHeight){
+          this.zindex =1
+        }else{
+          this.zindex =2
+        }
+      })()
+    }
   }
 };
 </script>
 <style lang="less" scoped>
 .maddproduct_common {
   padding-bottom: 10px;
+  background-color: #fff;
   .color {
     background-color: #928f8f;
   }
