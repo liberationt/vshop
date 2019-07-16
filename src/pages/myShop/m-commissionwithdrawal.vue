@@ -410,7 +410,7 @@ export default {
     color: #333;
     input[disabled]{
       background-color: #fff;
-      color: red !important;
+      color: black !important;
     }
   }
   
