@@ -49,7 +49,7 @@
         </van-row>
       </div>
     </div>
-    <footer>
+    <footer v-if="zindex == 2">
       <button class="editSubmit" :class="flag? 'editSubmitB' : 'editSubmitW'" @click=" flag && editSubmit()">确认提交</button>
     </footer>
   </div>
@@ -75,6 +75,8 @@ export default {
       imgData:{},
       weixinImg:'',
       flag:true,
+      zindex:2,
+      documentHeight: document.documentElement.clientHeight
     }
   },
   methods:{
@@ -173,6 +175,15 @@ export default {
     }
     statistics.page("meditshop")
     this.isCheck()
+     window.onresize = () => {
+      return (() => {
+        if(this.documentHeight>document.documentElement.clientHeight){
+          this.zindex =1
+        }else{
+          this.zindex =2
+        }
+      })()
+    }
   }
 }
 </script>
