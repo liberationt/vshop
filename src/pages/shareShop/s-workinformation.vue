@@ -47,7 +47,7 @@
 					</ul>
 				</div>
 			</div>
-			<div class="applyloan" v-show="socialSecurity!='social_no_social_security'">
+			<div class="applyloan" v-show="socialSecurity&&socialSecurity!='social_no_social_security'">
 				<h3><span></span>公司代缴公积金</h3>
 				<div class='optionstyles'>
 					<ul class="box">
