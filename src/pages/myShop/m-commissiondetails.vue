@@ -68,7 +68,7 @@ export default {
 			],
 			value1:"",
 			phoneOname:"",
-			commissiondList:{},
+			commissiondList:[],
 			pageNumber:1
 		}
 	},
@@ -88,20 +88,20 @@ export default {
 		},
 		// 上拉加载
 		onLoad(){
-			// setTimeout(() => {
-			// 	this.Initialization()
-			// }, 500);
+			setTimeout(() => {
+				this.Initialization()
+			}, 500);
 		},
 		Initialization(i) {
       this.request("wisdom.vshop.productOrder.queryCommissonOrderForH5", {
         queryStr : this.phoneOname,
 				productType: this.value1,
         pageNum: this.pageNumber,
-        pageSize: 4,
+        pageSize: 10,
       })
         .then(data => {
-					let commissiondList = data.data.dataList
-					if (Number(commissiondList.length) <= 0) {
+					let commissiondList1 = data.data.dataList
+					if (Number(commissiondList1.length) <= 0) {
 						this.finished = true
 						return false
 					}
@@ -109,11 +109,9 @@ export default {
 						this.finished = false
 						this.loading = false
 					}
-					console.log(commissiondList,1111)
-					this.commissiondList = commissiondList
-					// this.commissiondList = this.commissiondList.concat(commissiondList)
+					this.commissiondList = this.commissiondList.concat(commissiondList1)
 					this.pageNumber++
-					console.log(this.pageNumber)
+					console.log(this.commissiondList,1111)
         })
         .catch(err => {
           console.log(err);

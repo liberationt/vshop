@@ -26,7 +26,7 @@
 					<div class="backcardname">
 						<p>
 							<label>银行卡号</label>
-							<input type="number" @input="inputC" oninput='if(value.length>19)value=value.slice(0,19)' v-model="bankCardList.bankCardNo" placeholder="请输入银行卡号">
+							<input type="number" class="bankCard" @input="inputC" oninput='if(value.length>19)value=value.slice(0,19)' v-model="bankCardList.bankCardNo" placeholder="请输入银行卡号">
 						</p>
 						<p>
 							<label>预留手机</label>
@@ -211,6 +211,9 @@ export default {
   background: #f1f1fb;
   height: 100%;
   .backcardinfor {
+    .bankCard{
+      width: 75%;
+    }
     font-size: 14px;
     .backcardname {
       background: #ffffff;
