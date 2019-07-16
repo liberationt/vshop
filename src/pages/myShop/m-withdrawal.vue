@@ -86,6 +86,7 @@ export default {
     },
     onvanTabs(v) {
       this.pageNumber = 1
+      this.shopPapplyList  = []
       this.Initialization();
     },
     onLoad(){
