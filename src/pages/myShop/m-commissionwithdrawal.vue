@@ -40,7 +40,7 @@
 				<p>2. 单笔最小提现金额{{withdrawalList.singleMinAmountAsFormat}}元，单笔最大提现金额{{withdrawalList.singleMaxAmountAsFormat}}元</p>
 				<p>3. 每月提现上限{{withdrawalList.monthMaxAmountAsFormat}}元</p>
 				<p v-if="withdrawalList.chargeType == 1">4. 提现每笔手续费{{withdrawalList.feeAsFormat}}元，实际到账金额是提现金额减{{withdrawalList.feeAsFormat}}元</p>
-				<p v-if="withdrawalList.chargeType != 1">4. 提现每笔手续费为提现金额的{{withdrawalList.feeRate}}%，实际到账金额是提现金额减去提现手续费提现每笔手续费</p>
+				<p v-if="withdrawalList.chargeType != 1">4. 提现每笔手续费为提现金额的{{withdrawalList.feeRate}}%，实际到账金额是提现金额减去提现手续费</p>
 				<p>5. 提交提现申请后，通常1~3个工作日内到账</p>
 			</div>
 			<!-- 设置密码框 -->
@@ -50,7 +50,7 @@
 					<p class="pwdText">发送至{{withdrawalList.phone}}</p>
 					<div class="getCode">
 						<p class="pwdInput">
-							<span> <input type="number" v-model="codeNum" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码"> </span>
+							<span @click="transactionPwd(0)"> <input type="number" disabled v-model="codeNum" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码"> </span>
 							<span class="ongetCode" v-show="getCodeshow" @click="flag && getCode()">获取验证码</span>
 				      <span class="ongetCode" v-show="!getCodeshow" >{{count}} s后获取</span>	
 						</p>
@@ -300,7 +300,9 @@ export default {
       }
     },
     onInput(key) {
-      if (this.transactionNum == 1) {
+      if(this.transactionNum == 0){
+        this.codeNum = (this.codeNum + key).slice(0, 6);
+      } else if (this.transactionNum == 1) {
         this.passwordo = (this.passwordo + key).slice(0, 6);
       } else {
         this.passwordT = (this.passwordT + key).slice(0, 6);
@@ -386,7 +388,7 @@ export default {
   text-align: center;
   padding: 25px 17px;
   font-size: 14px;
-  z-index: 1001 !important;
+  z-index: 1000 !important;
   .pwdTitle {
     margin-bottom: 6px;
     font-size: 17px;
@@ -402,7 +404,11 @@ export default {
     border: 1px solid #e5e5e5; /*no*/
     padding: 5px 0px 5px 10px;
     text-align: left;
+    input[disabled]{
+      background-color: #fff;
+    }
   }
+  
   .ongetCode {
     color: #4597fb;
     border-left: 1px solid #c0c0c0; /*no*/
