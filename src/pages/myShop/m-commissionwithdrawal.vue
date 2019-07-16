@@ -50,7 +50,7 @@
 					<p class="pwdText">发送至{{withdrawalList.phone}}</p>
 					<div class="getCode">
 						<p class="pwdInput">
-							<span> <input type="number" v-model="codeNum" oninput='if(value.length>6)value=value.slice(0,6)' @focus="getFocus" placeholder="请输入验证码"> </span>
+							<span @click="transactionPwd(0)"> <input type="number" disabled v-model="codeNum" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码"> </span>
 							<span class="ongetCode" v-show="getCodeshow" @click="flag && getCode()">获取验证码</span>
 				      <span class="ongetCode" v-show="!getCodeshow" >{{count}} s后获取</span>	
 						</p>
@@ -300,7 +300,9 @@ export default {
       }
     },
     onInput(key) {
-      if (this.transactionNum == 1) {
+      if(this.transactionNum == 0){
+        this.codeNum = (this.codeNum + key).slice(0, 6);
+      } else if (this.transactionNum == 1) {
         this.passwordo = (this.passwordo + key).slice(0, 6);
       } else {
         this.passwordT = (this.passwordT + key).slice(0, 6);
@@ -312,9 +314,6 @@ export default {
       } else {
         this.passwordT = this.passwordT.slice(0, this.passwordT.length - 1);
       }
-    },
-    getFocus(){
-      window.scroll(0, 0);
     },
     // 数据初始化
     Initialization() {
@@ -389,7 +388,7 @@ export default {
   text-align: center;
   padding: 25px 17px;
   font-size: 14px;
-  z-index: 1001 !important;
+  z-index: 1000 !important;
   .pwdTitle {
     margin-bottom: 6px;
     font-size: 17px;
@@ -405,7 +404,11 @@ export default {
     border: 1px solid #e5e5e5; /*no*/
     padding: 5px 0px 5px 10px;
     text-align: left;
+    input[disabled]{
+      background-color: #fff;
+    }
   }
+  
   .ongetCode {
     color: #4597fb;
     border-left: 1px solid #c0c0c0; /*no*/
