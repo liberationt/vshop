@@ -119,7 +119,7 @@ export default {
 			.then(data=>{
 				if(data.code=='success'){
 					statistics.click("applicationloan","getnumbers");
-					this.$router.push('/essentialinformation')
+					this.$router.push('/essentialinformation?inviterCode='+this.$route.query.inviterCode)
 				}
 			})
 		},

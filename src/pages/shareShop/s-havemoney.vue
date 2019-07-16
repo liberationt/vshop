@@ -244,7 +244,7 @@ export default {
 								}
 								utils.setCookie('users',JSON.stringify(str))
 							}
-						this.$router.push('/applicationloan')
+						this.$router.push('/applicationloan?inviterCode='+this.$route.query.inviterCode)
 					}
 				})
 			}
