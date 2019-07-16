@@ -170,7 +170,8 @@ export default {
 		},
 		getdatainfo(){
 			let data = {
-					pageName:'baseInfo'
+				pageName:'baseInfo',
+				inviterCode:this.$route.query.inviterCode,
 			}
 			this.https('wisdom.vshop.vshopUserSelect.initBaseInfoData',data)
 			.then(data=>{
@@ -178,7 +179,7 @@ export default {
 					let dataobject = data.data
 					this.username = dataobject.userName
 					this.idcard = dataobject.idCard
-					this.adNameSecond = dataobject.adNameSecond
+					this.adNameSecond = dataobject.adNameSecond?dataobject.adNameSecond:dataobject.officerAdNameFirst
 					for(var i=0;i<dataobject.pageData.length;i++){
 						if(dataobject.pageData[i].infoTitleKey=='educationBackground'){
 							this.educationList = dataobject.pageData[i].optionRes
@@ -201,7 +202,7 @@ export default {
 			this.city = e
 		},data=>{
 			if(utils.getCookie('adNameSecond')){
-				this.city = utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):this.city 
+				this.city = utils.getCookie('adNameSecond')?utils.getCookie('adNameSecond'):this.adNameSecond 
 			}
 		})
 		statistics.page("essentialinformation");
