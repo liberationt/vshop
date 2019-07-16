@@ -193,57 +193,61 @@ export default {
 		immediately(){
 			if(utils.getCookie('users')){
 				statistics.click("havemoney","todetails");
+				if(!this.checked){
+					Toast("请勾选服务协议");
+					return false;
+				}
 				this.$router.push('/applicationloan')
 			}else{
-			if(!this.phonenumber){
-				Toast({
-						message:'请输入手机号',
+				if(!this.phonenumber){
+					Toast({
+							message:'请输入手机号',
+							duration:800
+						})
+					return false
+				}
+				if(!/^1[345678]\d{9}$/.test(this.phonenumber)){
+					Toast({
+						message:'请输入正确格式手机号',
 						duration:800
 					})
-				return false
-			}
-			if(!/^1[345678]\d{9}$/.test(this.phonenumber)){
-				Toast({
-					message:'请输入正确格式手机号',
-					duration:800
-				})
-				return false
-			}
-			if(!this.verification){
-				Toast({
-						message:'请获取验证码',
-						duration:800
-				})
-				return falsechecked
-			}
-			if (!/^[0-9]*$/.test(this.verification) || this.verification.length < 6) {
-				Toast("验证码有误，请重新输入！");
-				return false;
-			}
-			if(!this.checked){
-				Toast("请勾选服务协议");
-				return false;
-			}
-			let data={
-				inviterCode:this.$route.query.inviterCode,
-				captchaCode:this.verification,
-				phone:this.phonenumber
-			}
-			this.https('wisdom.vshop.vshopLoanUser.captchaLogin',data)
-			.then(data=>{
-				if(data.code=='success'){
-					statistics.click("havemoney","todetails");
-					if(!utils.getCookie('users')){
-							let str = {
-								token:data.data.token,
-								userId:data.data.userId
-							}
-							utils.setCookie('users',JSON.stringify(str))
-						}
-					this.$router.push('/applicationloan')
+					return false
 				}
-			})
-		}
+				if(!this.verification){
+					Toast({
+							message:'请获取验证码',
+							duration:800
+					})
+					return falsechecked
+				}
+				if (!/^[0-9]*$/.test(this.verification) || this.verification.length < 6) {
+					Toast("验证码有误，请重新输入！");
+					return false;
+				}
+				if(this.checked==false){
+					Toast("请勾选服务协议");
+					return false;
+				}
+				let data={
+					inviterCode:this.$route.query.inviterCode,
+					captchaCode:this.verification,
+					phone:this.phonenumber
+				}
+			this.https('wisdom.vshop.vshopLoanUser.captchaLogin',data)
+				.then(data=>{
+					if(data.code=='success'){
+						statistics.click("havemoney","todetails");
+						if(!utils.getCookie('users')){
+								let str = {
+									token:data.data.token,
+									userId:data.data.userId
+								}
+								utils.setCookie('users',JSON.stringify(str))
+							}
+						this.$router.push('/applicationloan')
+					}
+				})
+			}
 		}
 	},
 	mounted(){
