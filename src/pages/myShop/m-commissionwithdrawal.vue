@@ -310,7 +310,9 @@ export default {
       }
     },
     onDelete() {
-      if (this.transactionNum == 1) {
+      if(this.transactionNum == 0){
+        this.codeNum = this.codeNum.slice(0, this.codeNum.length - 1);
+      } else if (this.transactionNum == 1) {
         this.passwordo = this.passwordo.slice(0, this.passwordo.length - 1);
       } else {
         this.passwordT = this.passwordT.slice(0, this.passwordT.length - 1);
