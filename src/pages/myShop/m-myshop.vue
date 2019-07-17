@@ -150,7 +150,7 @@ export default {
         this.tanchuang()
       } else {
         this.yindaoshow = true
-        this.wxShare(this.inviterCode);
+        // this.wxShare(this.inviterCode); 分享授权
       }
     },
     centerzidai(name,num) {
@@ -212,6 +212,7 @@ export default {
   },
   mounted(){
     statistics.page("myshop")
+    this.wxShare(this.inviterCode);
   },
   created() {
     this.request("wisdom.vshop.vshopStoreManager.getVshopStoreDetail", {})
