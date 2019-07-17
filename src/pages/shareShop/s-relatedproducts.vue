@@ -55,7 +55,8 @@ export default {
 			havemoneyImg:'',
 			showUMoney:false,
 			dayUMoney:'',
-			isshow:false
+			isshow:false,
+			jumpUrl:''
 		}
 	},
 	methods:{
@@ -70,7 +71,10 @@ export default {
 			this.disabled = v
 		},
 		tohavemoney(){
-			this.$router.push('/havemoney?inviterCode='+this.inviterCode)
+			
+			if(this.jumpUrl){
+				window.location.href = this.jumpUrl+'?inviterCode='+this.inviterCode
+			}
 		},
 		closeTost(){
 			statistics.click("relatedproducts","getnumber");
@@ -124,6 +128,7 @@ export default {
 				this.personImg = (data.data.personImg==""?this.personImg:data.data.personImg)
 				if(data.data.bannerResList.length){
 					this.havemoneyImg=data.data.bannerResList[0].bannerUrl
+					this.jumpUrl = data.data.bannerResList[0].jumpUrl
 				}
 				this.dayUMoney = data.data.dayUMoney
 				this.showUMoney = data.data.showUMoney
