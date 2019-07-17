@@ -162,6 +162,7 @@ export default {
 				})
 				return false
 			}
+			statistics.click("stiflingborrow","getconfignum");
 			this.confims = false
 			let params={
 				inviterCode:this.$route.query.inviterCode,
@@ -178,7 +179,6 @@ export default {
 			this.https('wisdom.vshop.product.h5BeforeJumpconfirmData',params)
 			.then(data=>{
 				if(data.code=='success'){
-					statistics.click("stiflingborrow","getconfignum");
 					utils.setCookie('adNameSecond',this.city)
 					if(!utils.getCookie('users')){
 						let str = {
