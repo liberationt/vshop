@@ -1,7 +1,7 @@
 <template>
 	<div class="shopmain pddingTop">
 		<header>
-			<van-nav-bar title='抢单侠微店' fixed></van-nav-bar>
+			<van-nav-bar left-arrow title='抢单侠微店' @click-left="onClickLeft" fixed></van-nav-bar>
 		</header>
 		<div class="bannerlogo">
 				<div>
@@ -67,6 +67,9 @@ export default {
 	methods:{
 		tohavemoney(){
 			this.$router.push('/havemoney?inviterCode='+this.inviterCode)
+		},
+		onClickLeft(){
+			this.$router.push('/shoppage?inviterCode='+this.inviterCode)
 		},
 		getdatalist(){
 			let data = {
