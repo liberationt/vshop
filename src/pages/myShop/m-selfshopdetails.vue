@@ -179,8 +179,7 @@ export default {
   },
   mounted(){
     statistics.page("mselfshopdetails")
-    if(!this.inviterCode){ // 立即分享
-    } else {
+    if(this.id != 1){ // 立即分享
       this.iwantagentwx()
     }
     
