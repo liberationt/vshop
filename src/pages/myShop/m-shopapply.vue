@@ -130,7 +130,7 @@ export default {
   },
   mounted() {
     // this.Initialization();
-    statistics.page("mshopapply")
+    statistics.page("mshopapply0")
   },
   methods: {
     gopone(phone){

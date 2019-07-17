@@ -110,6 +110,7 @@
 </template>
 <script>
 import { Popup, Toast } from "vant";
+import { statistics } from "wisdom-h5"
 export default {
   components: {
     [Popup.name]: Popup,
@@ -317,6 +318,9 @@ export default {
     window.scrollTo(0,0);
     this.Initialization()
     this.labelist()
+  },
+  mounted(){
+    statistics.page('dateils')
   }
 }
 </script>

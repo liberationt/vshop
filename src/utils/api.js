@@ -28,7 +28,6 @@ export function https(apiKey, data = {}, isShowError = true) {
         window.location.href = window.location.origin+'/errors'
       } else if (response.code == '300013' || response.code == '300011') {
         // window.location.href = window.location.origin+'/mlogin'
-        alert("login0")
         this.$router.push({ path: '/mlogin'})
       }  else {
         handleError(apiKey, response, reject, isShowError)
@@ -55,7 +54,6 @@ export function request(apiKey, data = {}, isShowError = true) {
         window.location.href = window.location.origin+'/errors'
       } else if (response.code == '300013' || response.code == '300011') {
         console.log('response=====> ' + JSON.stringify(response))
-        alert("login")
         this.$router.push({ path: '/mlogin'})
         //window.location.href = window.location.origin+'/mlogin'
       }  else {
