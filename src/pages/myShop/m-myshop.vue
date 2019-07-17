@@ -174,12 +174,12 @@ export default {
     wxShare(inviterCode) {
       let url
       console.log(window.location)
-      if( !utils.isAndroid1() ){
-        if(this.$route.query.id ==1) {
-          url = window.location.origin+'/mlogin'+window.location.search
-        } else {
+      if( !utils.isAndroid1() ){//ios
+        // if(this.$route.query.id ==1) {
+        //   url = window.location.origin+'/mlogin'+window.location.search
+        // } else {
           url = window.location.origin+'/myshop'+window.location.search
-        }
+        // }
       } else {
         url = window.location.href
       }
