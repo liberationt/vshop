@@ -129,6 +129,7 @@ export default {
 			...mapState(['actives'])
 		},
 	mounted(){
+		this.wxShare(this.inviterCode)
 		this.active = this.actives?this.actives:'1'
 	}
 }

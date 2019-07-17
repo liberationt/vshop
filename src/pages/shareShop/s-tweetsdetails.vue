@@ -18,7 +18,7 @@
           <div v-for="(item,i) in responseData.contentLabel" :key="i"><span>{{item}}</span></div>
         </div>
       </div>
-			 <div class="qrcodeimg">
+			 <div class="qrcodeimg" v-show="exhibitionUserRes.userName"> 
         <div id="qrcode"></div>
         <p><img class="qxdlogo" src="./images/qdxlogin.png" alt=""></p>
       </div>
