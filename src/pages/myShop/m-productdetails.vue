@@ -174,7 +174,7 @@ export default {
         // }
         url = decodeURIComponent(this.$store.state.iosUrl) || decodeURIComponent(window.location.href)
       } else {
-        url = window.location.href
+        url = decodeURIComponent(window.location.href)
       }
       console.log(window.location.origin+window.location.pathname)
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
