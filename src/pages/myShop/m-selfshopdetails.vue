@@ -179,7 +179,10 @@ export default {
   },
   mounted(){
     statistics.page("mselfshopdetails")
-    this.iwantagentwx()
+    if(this.inviterCode){ // 立即分享
+      this.iwantagentwx()
+    }
+    
   }
 };
 </script>
