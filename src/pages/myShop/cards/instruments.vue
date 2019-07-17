@@ -82,6 +82,7 @@
 import { qrcanvas } from 'qrcanvas';
 import html2canvas from 'html2canvas'
 import { Popup, RadioGroup, Radio, Toast, Dialog  } from 'vant';
+import { statistics } from "wisdom-h5"
 export default {
   components:{
     [Popup.name] : Popup,
