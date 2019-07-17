@@ -178,7 +178,7 @@ export default {
         // if(this.$route.query.id ==1) {
         //   url = window.location.origin+'/mlogin'+window.location.search
         // } else {
-        url = this.$store.state.iosUrl || window.location.href
+        url = decodeURIComponent(this.$store.state.iosUrl) || decodeURIComponent(window.location.href)
         // }
       } else {
         url = window.location.href
