@@ -71,7 +71,6 @@ export default {
 			this.disabled = v
 		},
 		tohavemoney(){
-			
 			if(this.jumpUrl){
 				window.location.href = this.jumpUrl+'?inviterCode='+this.inviterCode
 			}
@@ -79,6 +78,7 @@ export default {
 		closeTost(){
 			statistics.click("relatedproducts","getnumber");
 			Dialog.confirm({
+				className:'dialogstyle',
 				confirmButtonText:this.dayUMoney+"天内不再提示",
 				cancelButtonText:'永不提示',
 				message: '确认关闭此提示框吗？'

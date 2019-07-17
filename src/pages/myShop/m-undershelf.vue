@@ -61,12 +61,16 @@ export default {
 			isshow:false,
 			havemoneyImg:'',
 			inviterCode:'',
-			productResList:[]
+			productResList:[],
+			jumpUrl:''
 		}
 	},
 	methods:{
 		tohavemoney(){
-			this.$router.push('/havemoney?inviterCode='+this.inviterCode)
+			if(this.jumpUrl){
+				window.location.href = this.jumpUrl+'?inviterCode='+this.inviterCode
+			}
+			// this.$router.push('/havemoney?inviterCode='+this.inviterCode)
 		},
 		onClickLeft(){
 			this.$router.push('/shoppage?inviterCode='+this.inviterCode)
@@ -80,6 +84,7 @@ export default {
 				if(data.code=='success'){
 					this.productResList = data.data.productStoreListResList
 					this.havemoneyImg = data.data.bannerResList[0].bannerUrl
+					this.jumpUrl = data.data.bannerResList[0].jumpUrl
 					this.dayUMoney = data.data.dayUMoney
 					this.showUMoney = data.data.showUMoney
 					this.inviterCode = data.data.inviterCode
