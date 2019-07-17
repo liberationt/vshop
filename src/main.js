@@ -65,13 +65,15 @@ router.beforeEach((to, from, next) => {
       // 未登录,跳转到登陆页面。
       Toast('请去登录')
       next({ path: '/mlogin'})
+      store.commit('setUrl', window.location.origin+'/mlogin')
+      console.log(store.state.iosUrl,2222)
     }
   } else {
     next()
   }
-
   // 微信分享 链接存储
   if (!store.state.iosUrl) {
+    console.log(document.URL,111)
     store.commit('setUrl', document.URL)
   }
   next()
