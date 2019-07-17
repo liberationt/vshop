@@ -408,6 +408,7 @@ export default {
           // 数据初始化
           this.pageNumber = 1
           this.Restoration()
+          this.customerList = []
           this.Initialization(1,'',{})
         }).catch(err=>{console.log(err)})
       } else {
