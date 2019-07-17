@@ -173,12 +173,12 @@ export default {
     },
     wxShare(inviterCode) {
       let url
-      console.log(window.location)
+      console.log(this.$store.state.iosUrl,111)
       if( !utils.isAndroid1() ){//ios
         // if(this.$route.query.id ==1) {
         //   url = window.location.origin+'/mlogin'+window.location.search
         // } else {
-          url = window.location.origin+'/myshop'
+        url = this.$store.state.iosUrl || window.location.href
         // }
       } else {
         url = window.location.href

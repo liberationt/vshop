@@ -70,7 +70,11 @@ router.beforeEach((to, from, next) => {
     next()
   }
 
-  
+  // 微信分享 链接存储
+  if (!store.state.iosUrl) {
+    store.commit('setUrl', document.URL)
+  }
+  next()
 });
 
 

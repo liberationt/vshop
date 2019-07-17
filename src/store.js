@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: { //存值
     actives:'',
-    title:''
+    title:'',
+    iosUrl: null,
   },
   mutations: { //修改
     getactive(state,actives){
@@ -14,7 +15,8 @@ export default new Vuex.Store({
     },
     titlechange(state,title){
       state.title = title
-    }
+    },
+    setUrl: (state, newVal) => { state.iosUrl = newVal }
   },
   actions: { // 异步
 
