@@ -213,7 +213,6 @@ export default {
   },
   mounted(){
     statistics.page("myshop")
-    this.wxShare(this.inviterCode);
   },
   created() {
     this.request("wisdom.vshop.vshopStoreManager.getVshopStoreDetail", {})
@@ -221,6 +220,7 @@ export default {
         this.userMessage = data.data;
         this.inviterCode = data.data.inviterCode
         this.name =  data.data.name
+        this.wxShare(data.data.inviterCode)
         utils.setCookie("userMessage", JSON.stringify(data.data));
       })
       .catch(err => {
