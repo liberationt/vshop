@@ -2,7 +2,7 @@
 	<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功' class="xialashuaxin">
   <div class="loanlistmain">
 		<div class="loanlisttop">
-			<div class="invitnum"><img src="./images/xiantiaobanner.png"/>邀请码 &nbsp;6S89WH</div>
+			<div class="invitnum"><img src="./images/xiantiaobanner.png"/>邀请码 &nbsp;{{inviterCode}}</div>
 			<div class="dropdown dropdowns droploanlist">
 				<van-dropdown-menu>
 					<van-dropdown-item v-model="value1" @change="changelect" :options="option1" />
