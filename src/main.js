@@ -64,8 +64,7 @@ router.beforeEach((to, from, next) => {
     } else {
       // 未登录,跳转到登陆页面。
       Toast('请去登录')
-      // next({ path: '/mlogin'})
-      this.$router.push({ path: '/mlogin'})
+      next({ path: '/mlogin'})
     }
   } else {
     next()
