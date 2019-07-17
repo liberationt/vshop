@@ -131,7 +131,7 @@ export default {
           this.moneyShow = true;
           this.agentStatus = 6
           this.productCode = code
-          statistics.click("magentproduct1",'woyaodl2')
+          statistics.click("magentproduct2",'woyaodl2')
           break;
       }
     },
