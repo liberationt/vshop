@@ -105,7 +105,6 @@ export default {
       } else {
         url = window.location.href
       }
-      console.log(window.location.origin+window.location.pathname)
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
         url: url
       }).then(data => {
@@ -117,7 +116,6 @@ export default {
     },
     iwantagentwx(){
       this.wxShare()
-      statistics.click("mselfshopdetails","wxShare")
         this.request("wisdom.vshop.proprietaryProduct.shareProprietaryProductH5",{proprietaryProductCode: this.$route.query.code,url:window.location.origin+'/mselfshopdetails'}).then(data=>{
           let dataList = data.data
           wx.ready(function(){
@@ -140,6 +138,7 @@ export default {
     iwantagent() {
       if(!this.inviterCode){ // 立即分享
         this.yindaoshow = true
+        statistics.click("mselfshopdetails","wxShare")
       } else { // 立即申请
         this.$router.push({path:'./stiflingborrow?productType='+3+"&inviterCode="+ this.inviterCode +"&productCode="+this.code})
         utils.setCookie('InviterCode',this.InviterCode)
