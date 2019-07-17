@@ -184,7 +184,7 @@ export default {
 					}
 					this.option1= [{text:'所有类型',value:'-1'}]
 					this.option1 =this.option1.concat(options2) 
-					this.$emit('toparent',data.data.storeName,1,data.data.inviterCode)
+					this.$emit('toparent',data.data.storeName,2,data.data.inviterCode)
 				}
 			})
 			}, 500);

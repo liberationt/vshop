@@ -75,7 +75,7 @@ export default {
 						this.jumpUrl = data.data.bannerResList[0].jumpUrl
 						this.realStatus = data.data.realStatus
 						this.showUMoney = data.data.showUMoney
-						this.$emit('toparent',data.data.storeName,1,data.data.inviterCode)
+						this.$emit('toparent',data.data.storeName,2,data.data.inviterCode,data.data.name)
 					}
 				})
 			},

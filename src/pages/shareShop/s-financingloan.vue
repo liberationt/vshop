@@ -66,7 +66,7 @@ export default {
 					if(data.code=='success'){
 						statistics.click("financingloan","getnumbers");
 						if(data.data.state==0){
-						this.$router.push('/mselfshopdetails?inviterCode='+this.inviterCode+'&'+'code='+productCode)
+						this.$router.push('/mselfshopdetails?inviterCode='+this.inviterCode+'&'+'code='+productCode+'&id='+1)
 						}
 						if(data.data.state==1){
 							this.$router.push('/undershelf?inviterCode='+this.inviterCode)
