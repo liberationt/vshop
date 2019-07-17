@@ -34,7 +34,7 @@
 					</div>
 					<div>
 						<p>期限：<span style="font-weight:bold;font-size:12px;">{{item.limit}}</span></p>
-						<p>最快当天到账</p>
+						<p>{{item.desc}}</p>
 					</div>
 					<div class="apply">立即申请</div>
 				</div>

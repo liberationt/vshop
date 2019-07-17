@@ -16,7 +16,7 @@
 				</div>
 				<div>
 					<h4>{{item.productName}}</h4>
-					<p>{{item.desc}}</p>
+					<p>{{item.subTitle}}</p>
 				</div>
 			</div>
 			<div class="listdatabot">
@@ -26,7 +26,7 @@
 				</div>
 				<div>
 					<p>期限：<span style="font-weight:bold;">{{item.limit}}</span></p>
-					<p>最快当天到账</p>
+					<p>{{item.desc}}</p>
 				</div>
 				<div class="apply">立即申请</div>
 			</div>

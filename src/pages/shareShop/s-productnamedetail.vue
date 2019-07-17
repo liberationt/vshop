@@ -245,7 +245,6 @@ export default {
 					padding:0 15px;
 					// justify-content: center;
 					.guessimgs{
-						background: red;
 						width:48px;
 						height:48px;
 						border-radius: 5px;
