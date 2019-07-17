@@ -155,7 +155,7 @@ export default {
         return false
       }
       statistics.click("commissionwithdrawal","tixian")
-      window.screenTop(0,0)
+      window.scrollTo(0,0)
       if (this.withdrawalList.havePayPassword == 0) {
         //havePayPassword 0未设置，1已设置
         this.psdshow = true;
