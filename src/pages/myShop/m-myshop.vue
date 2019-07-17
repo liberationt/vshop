@@ -220,7 +220,9 @@ export default {
         this.userMessage = data.data;
         this.inviterCode = data.data.inviterCode
         this.name =  data.data.name
-        this.wxShare(data.data.inviterCode)
+        if(data.data.storeStatus != 0){
+          this.wxShare(data.data.inviterCode)
+        }
         utils.setCookie("userMessage", JSON.stringify(data.data));
       })
       .catch(err => {

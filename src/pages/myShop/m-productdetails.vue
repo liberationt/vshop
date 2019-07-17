@@ -63,7 +63,7 @@
         </div>
         <div v-else>
           <van-col span="16">
-            <button @click="moneyShow = true" class="button_user button_userc">
+            <button @click="wydaili" class="button_user button_userc">
               我要代理
             </button>
           </van-col> 
@@ -154,6 +154,10 @@ export default {
   created(){
   },
   methods:{
+    wydaili(){
+      this.moneyShow = true
+      statistics.click("mproductdetails","wydaili")
+    },
     onGoback(){
       this.$router.push({path:'/magentproduct'})
     },
@@ -164,14 +168,8 @@ export default {
     },
     // 分享授权
     wxShare() {
-      console.log(window.location)
       let url
       if( !utils.isAndroid1() ){
-        // if(utils.getlocal('id') ==1) {
-        //   url = window.location.origin+'/mlogin'
-        // } else {
-        //   url = window.location.origin+'/myshop'
-        // }
         url = decodeURIComponent(this.$store.state.iosUrl) || decodeURIComponent(window.location.href)
       } else {
         url = window.location.href
@@ -190,6 +188,9 @@ export default {
     recommenduser(){
       this.yindaoshow= true
       statistics.click("mproductdetails","recommenduser")
+    },
+    recommenduserwx(){
+      this.wxShare()
       this.request('wisdom.vshop.product.createProductPoster',{url: window.location.origin+'/productnamedetail',operationType:2,productCode:this.$route.query.code}).then(data=>{
         let dataList = data.data
         wx.ready(function(){
@@ -213,7 +214,7 @@ export default {
     confirm(){
       this.flag = false
       let agentStatusData = [{productCode:this.$route.query.code,productType:this.$route.query.type}]
-      statistics.click("mproductdetails","woyaodaili")
+      statistics.click("mproductdetails","woyaodailiQR")
       this.request('wisdom.vshop.product.batchAgentProducts',{queryH5UserProductDetailReqList:agentStatusData}).then(data=>{
         this.moneyShow =  false
         this.flag = true
@@ -281,7 +282,7 @@ export default {
   mounted(){
     statistics.page("mproductdetails")
     // 微信授权
-    this.wxShare()
+    this.recommenduserwx()
   },
   created(){
     this.Initialization()

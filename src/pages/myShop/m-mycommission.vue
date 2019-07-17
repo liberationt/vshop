@@ -94,7 +94,7 @@ export default {
 			if(this.mycommission.bindBankcardStatus == 0 ){	
 				Dialog.alert({
 					message: '提现请先去绑定银行卡',
-					confirmButtonText:'请去绑定'
+					confirmButtonText:'请去绑定',
 				}).then(() => {
 					this.$router.push({path:'./bankcard'}) // 绑卡
 				});

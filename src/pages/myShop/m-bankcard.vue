@@ -9,7 +9,7 @@
 			</header>
 			<div class='backcardinfor'>
 				<div>
-					<h4><span></span>持卡人姓名</h4>
+					<h4><span></span>持卡人身份信息</h4>
 					<div class="backcardname">
 						<p>
 							<label>姓名</label>

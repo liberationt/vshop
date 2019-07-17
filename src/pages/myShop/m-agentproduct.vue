@@ -72,7 +72,7 @@ export default {
     
   },
   mounted(){
-    
+    statistics.page("magentproduct0")
   }
 }
 </script>
