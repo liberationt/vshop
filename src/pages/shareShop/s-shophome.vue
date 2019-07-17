@@ -90,7 +90,7 @@ export default {
 			wxShare(inviterCode) {
 				let url
 				if( !utils.isAndroid1() ){
-					url = window.location.origin + "/shoppage?inviterCode="+inviterCode
+					url =  decodeURIComponent(window.location.href)
 				} else {
 					url = window.location.href
 				}
