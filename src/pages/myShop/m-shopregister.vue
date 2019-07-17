@@ -10,7 +10,7 @@
       />
     </header>
     <div class="shopregister_center">
-      <div class="searchImg">
+      <div @click="inquery" class="searchImg">
         <img src="./imgs/sousuo.png" alt="">
       </div>
       <div class="center_search_center">
@@ -19,7 +19,6 @@
           placeholder="请输入姓名或手机号"
           show-action
           shape="round"
-          @click="inquery"
         >
           <div slot="action" @click="screen">
             <img src="./imgs/screening_icon@2x.png" alt="">
