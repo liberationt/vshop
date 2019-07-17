@@ -101,11 +101,6 @@ export default {
     wxShare() {
       let url
       if( !utils.isAndroid1() ){
-        // if(utils.getlocal('id') ==1) {
-        //   url = window.location.origin+'/mlogin'
-        // } else {
-        //   url = window.location.origin+'/myshop'
-        // }
         url = decodeURIComponent(this.$store.state.iosUrl) || decodeURIComponent(window.location.href)
       } else {
         url = window.location.href
@@ -120,11 +115,8 @@ export default {
         console.log(err);
       });
     },
-    iwantagent() {
-      if(!this.inviterCode){ // 立即分享
-      // this.wxShare()
-      // alert('点击右上角分享')
-      this.yindaoshow = true
+    iwantagentwx(){
+      this.wxShare()
       statistics.click("mselfshopdetails","wxShare")
         this.request("wisdom.vshop.proprietaryProduct.shareProprietaryProductH5",{proprietaryProductCode: this.$route.query.code,url:window.location.origin+'/mselfshopdetails'}).then(data=>{
           let dataList = data.data
@@ -144,6 +136,10 @@ export default {
             });
           })
         }).catch(err=>{console.log(err)})
+    },
+    iwantagent() {
+      if(!this.inviterCode){ // 立即分享
+        this.yindaoshow = true
       } else { // 立即申请
         this.$router.push({path:'./stiflingborrow?productType='+3+"&inviterCode="+ this.inviterCode +"&productCode="+this.code})
         utils.setCookie('InviterCode',this.InviterCode)
@@ -184,7 +180,7 @@ export default {
   },
   mounted(){
     statistics.page("mselfshopdetails")
-    this.wxShare()
+    this.iwantagentwx()
   }
 };
 </script>
