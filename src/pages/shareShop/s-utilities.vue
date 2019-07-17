@@ -45,7 +45,8 @@ export default {
 			adNameSecond:'',
 			havemoneyImg:'',
 			realStatus:0,
-			isshow:false
+			isshow:false,
+			jumpUrl:'',
 		}
 	},
 	methods:{
@@ -71,6 +72,7 @@ export default {
 						this.name = data.data.name
 						this.adNameSecond = data.data.adNameSecond
 						this.havemoneyImg = data.data.bannerResList[0].bannerUrl
+						this.jumpUrl = data.data.bannerResList[0].jumpUrl
 						this.realStatus = data.data.realStatus
 						this.showUMoney = data.data.showUMoney
 						this.$emit('toparent',data.data.storeName,1,data.data.inviterCode)
@@ -78,7 +80,9 @@ export default {
 				})
 			},
 		tohavemoney(){
-			this.$router.push('/havemoney?inviterCode='+this.inviterCode)
+			if(this.jumpUrl){
+				window.location.href = this.jumpUrl+'?inviterCode='+this.inviterCode
+			}
 		},
 		tostiflingborrow(productCode){
 				statistics.click("utilities","getnumber");
