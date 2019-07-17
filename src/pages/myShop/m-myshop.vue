@@ -178,7 +178,7 @@ export default {
         // if(this.$route.query.id ==1) {
         //   url = window.location.origin+'/mlogin'+window.location.search
         // } else {
-          url = window.location.origin+'/myshop'+window.location.search
+          url = window.location.origin+'/myshop'
         // }
       } else {
         url = window.location.href
