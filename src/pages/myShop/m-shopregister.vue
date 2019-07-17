@@ -178,6 +178,7 @@ export default {
       this.Restoration()
     },
     inquery() {
+      this.pageNumber = 1
       this.Initialization(1, this.searchValue,{});
     },
     // 发信息
