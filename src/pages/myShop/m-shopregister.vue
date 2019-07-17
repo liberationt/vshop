@@ -179,6 +179,7 @@ export default {
     },
     inquery() {
       this.pageNumber = 1
+      this.customerList = []
       this.Initialization(1, this.searchValue,{});
     },
     // 发信息
