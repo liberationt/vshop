@@ -132,7 +132,7 @@ export default {
 				}
 				this.dayUMoney = data.data.dayUMoney
 				this.showUMoney = data.data.showUMoney
-				this.$emit('toparent',data.data.storeName,1,data.data.inviterCode)
+				this.$emit('toparent',data.data.storeName,2,data.data.inviterCode,data.data.name)
 				if(this.$route.query.disbaled){
 					this.disabled=decodeURI(this.$route.query.disbaled)
 				}else{

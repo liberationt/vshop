@@ -116,7 +116,7 @@ export default {
 					this.storeCode = data.data.storeCode
 					utils.setCookie('storeCode',data.data.storeCode)
 					utils.setCookie('inviterCode',data.data.inviterCode)
-					this.$emit('toparent',this.tittle,1,data.data.inviterCode)
+					this.$emit('toparent',this.tittle,1,data.data.inviterCode,data.data.name)
 				}
 			}).catch(err=>{
 				console.log(err)
