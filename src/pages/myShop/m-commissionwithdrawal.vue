@@ -44,43 +44,44 @@
 				<p>5. 提交提现申请后，通常1~3个工作日内到账</p>
 			</div>
 			<!-- 设置密码框 -->
-			<van-popup v-model="psdshow" :close-on-click-overlay=false class="password">
-				<div v-if="stepNum ==1">
-					<p class="pwdTitle">设置交易密码</p>
-					<p class="pwdText">发送至{{withdrawalList.phone}}</p>
-					<div class="getCode">
-						<p class="pwdInput">
-							<span @click="transactionPwd(0)"> <input type="number" disabled v-model="codeNum" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码"> </span>
-							<span class="ongetCode" v-show="getCodeshow" @click="flag && getCode()">获取验证码</span>
-				      <span class="ongetCode" v-show="!getCodeshow" >{{count}} s后获取</span>	
-						</p>
-						<div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
-					</div>
-					<p class="getCoodeCaozuo"><span @click="getCancel">取消</span> <span @click="nextStep">下一步</span></p>
-				</div>
-				<div v-if="stepNum ==2">
-					<p class="pwdTitle">请输入交易密码</p>
-					<p>
-						<van-password-input
-							:value="passwordo"
-							info=""
-							@focus="transactionPwd(1)"
-						/>
-					</p>
-					<p class="getCoodeCaozuo"><span @click="getCancel">取消</span> <span @click="nextStep1">确认</span></p>
-				</div>
-				<div v-if="stepNum ==3">
-					<p class="pwdTitle">请再次输入交易密码</p>
-					<p>
-						<van-password-input
-							:value="passwordT"
-							info=""
-							@focus="transactionPwd(2)"
-						/>
-					</p>
-					<p class="getCoodeCaozuo"><span @click="getCancel">取消</span> <span @click="nextStep2">完成</span></p>
-				</div>
-				
+			<van-popup v-model="psdshow" :close-on-click-overlay=false class="password1111">
+        <div class="password">
+          <div v-if="stepNum ==1">
+            <p class="pwdTitle">设置交易密码</p>
+            <p class="pwdText">发送至{{withdrawalList.phone}}</p>
+            <div class="getCode">
+              <p class="pwdInput">
+                <span @click="transactionPwd(0)"> <input type="number" disabled v-model="codeNum" oninput='if(value.length>6)value=value.slice(0,6)' placeholder="请输入验证码"> </span>
+                <span class="ongetCode" v-show="getCodeshow" @click="flag && getCode()">获取验证码</span>
+                <span class="ongetCode" v-show="!getCodeshow" >{{count}} s后获取</span>	
+              </p>
+              <div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
+            </div>
+            <p class="getCoodeCaozuo"><span @click="getCancel">取消</span> <span @click="nextStep">下一步</span></p>
+          </div>
+          <div v-if="stepNum ==2">
+            <p class="pwdTitle">请输入交易密码</p>
+            <p>
+              <van-password-input
+                :value="passwordo"
+                info=""
+                @focus="transactionPwd(1)"
+              />
+            </p>
+            <p class="getCoodeCaozuo"><span @click="getCancel">取消</span> <span @click="nextStep1">确认</span></p>
+          </div>
+          <div v-if="stepNum ==3">
+            <p class="pwdTitle">请再次输入交易密码</p>
+            <p>
+              <van-password-input
+                :value="passwordT"
+                info=""
+                @focus="transactionPwd(2)"
+              />
+            </p>
+            <p class="getCoodeCaozuo"><span @click="getCancel">取消</span> <span @click="nextStep2">完成</span></p>
+          </div>
+        </div>
 			</van-popup>
 			<!-- 自定义键盘 -->
 			<van-number-keyboard
@@ -399,6 +400,8 @@ export default {
   padding: 25px 17px;
   font-size: 14px;
   z-index: 1000 !important;
+  background-color: #fff;
+  margin-top: 80px;
   .pwdTitle {
     margin-bottom: 6px;
     font-size: 17px;
