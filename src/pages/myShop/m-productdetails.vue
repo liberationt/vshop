@@ -164,7 +164,6 @@ export default {
     },
     // 分享授权
     wxShare() {
-      console.log(window.location)
       let url
       if( !utils.isAndroid1() ){
         // if(utils.getlocal('id') ==1) {
@@ -174,7 +173,7 @@ export default {
         // }
         url = decodeURIComponent(this.$store.state.iosUrl) || decodeURIComponent(window.location.href)
       } else {
-        url = decodeURIComponent(window.location.href)
+        url = window.location.href
       }
       console.log(window.location.origin+window.location.pathname)
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
@@ -197,7 +196,7 @@ export default {
               title: dataList.shareTitle, // 分享标题
               desc: dataList.shareDescribe, // 分享描述
               link: dataList.url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: dataList.productLogo, // 分享图标
+              imgUrl: 'https://wisdom-loan.oss-cn-shanghai.aliyuncs.com/productParam/60938f68-1fa0-4620-a90a-7a4d7a7c7117.png',//dataList.productLogo, // 分享图标
               success: function () {
                 // 用户点击了分享后执行的回调函数
                 // alert('分享成功回调')
