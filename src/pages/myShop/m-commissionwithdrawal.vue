@@ -94,8 +94,9 @@
     </div>
 </template>
 <script>
-import utils from "../../utils/utils";
-import { PasswordInput, NumberKeyboard, Popup, Toast } from "vant";
+import utils from "../../utils/utils"
+import { PasswordInput, NumberKeyboard, Popup, Toast } from "vant"
+import { statistics } from "wisdom-h5"
 export default {
   components: {
     [PasswordInput.name]: PasswordInput,
@@ -153,6 +154,7 @@ export default {
         this.$toast("提现金额不能大于可提现金额")
         return false
       }
+      statistics.click("commissionwithdrawal","tixian")
       if (this.withdrawalList.havePayPassword == 0) {
         //havePayPassword 0未设置，1已设置
         this.psdshow = true;
@@ -164,6 +166,7 @@ export default {
         this.pwdNum = 2;
         this.passwordo = ""
         this.passwordT = ""
+        statistics.click("commissionwithdrawal","password")
       }
     },
     // 设置密码
@@ -197,6 +200,7 @@ export default {
             type: 1
           };
       this.setTimeout();
+      statistics.click("commissionwithdrawal","huoCode")
       this.request("wisdom.vshop.sms.sendSmsForRisk", params)
         .then(data => {
           if (data.code == "success") {
@@ -276,7 +280,8 @@ export default {
           this.flag = false;
           this.request("wisdom.vshop.withdraw.apply", {amount : this.money , password :this.passwordo})
             .then(data => {
-							console.log(data);
+              console.log(data);
+              statistics.click("commissionwithdrawal","txqueren")
 							this.$router.push({path:'./successfulwithdrawals'})
             })
             .catch(err => {
@@ -356,6 +361,7 @@ export default {
   },
   mounted() {
     this.Initialization();
+    statistics.page("commissionwithdrawal")
   }
 };
 </script>
