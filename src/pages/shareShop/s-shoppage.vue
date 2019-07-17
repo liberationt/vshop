@@ -419,10 +419,10 @@ export default {
 		}
 		.dialog{
 			.dialogbanner{
-				height:166px;
+				height:304px;
 				img{
 					width:100%;
-					height:166px;
+					height:304px;
 				}
 			}
 			p{
