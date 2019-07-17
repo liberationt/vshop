@@ -150,7 +150,7 @@ export default {
         this.tanchuang()
       } else {
         this.yindaoshow = true
-        this.wxShare(this.inviterCode);
+        // this.wxShare(this.inviterCode); 分享授权
       }
     },
     centerzidai(name,num) {
@@ -173,12 +173,13 @@ export default {
     },
     wxShare(inviterCode) {
       let url
-      if( !utils.isAndroid1() ){
-        if(this.$route.query.id ==1) {
-          url = window.location.origin+'/mlogin'
-        } else {
-          url = window.location.origin+'/myshop'
-        }
+      console.log(this.$store.state.iosUrl,111)
+      if( !utils.isAndroid1() ){//ios
+        // if(this.$route.query.id ==1) {
+        //   url = window.location.origin+'/mlogin'+window.location.search
+        // } else {
+        url = this.$store.state.iosUrl || window.location.href
+        // }
       } else {
         url = window.location.href
       }
@@ -219,6 +220,7 @@ export default {
         this.userMessage = data.data;
         this.inviterCode = data.data.inviterCode
         this.name =  data.data.name
+        this.wxShare(data.data.inviterCode)
         utils.setCookie("userMessage", JSON.stringify(data.data));
       })
       .catch(err => {

@@ -56,6 +56,7 @@ import {
   List
 } from "vant";
 import loanFacility from "./ordertools/loanFacility.vue";
+import { statistics } from "wisdom-h5"
 export default {
   components: {
     loanFacility,
@@ -88,6 +89,7 @@ export default {
       this.pageNumber = 1
       this.shopPapplyList  = []
       this.Initialization();
+      statistics.page("mwithdrawal"+v)
     },
     onLoad(){
       setTimeout(() => {

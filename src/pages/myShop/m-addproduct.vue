@@ -64,7 +64,7 @@
           <span class="center_list_one2">申请条件</span>
         </p>
         <div class="left">
-          <textarea class="shop_tarea" v-on:input="inputFunc" v-model="shopValue.productDetail" placeholder="请填写申请条件"></textarea>
+          <textarea class="shop_tarea" v-on:input="inputFunc" @focus="getFocus" v-model="shopValue.productDetail" placeholder="请填写申请条件"></textarea>
         </div>
       </van-row>
     </div>
@@ -103,7 +103,9 @@ export default {
     };
   },
   methods: {
-
+    getFocus() {
+      window.scroll(0, 0);
+    },
     inputFunc() {
       this.ischeck();
     },

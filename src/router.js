@@ -418,6 +418,7 @@ const router = new Router({
 // 微店打点
 router.beforeEach((to, from, next) => {
   statistics.beforeEach('weidian', to, from, next)
+  window.scrollTo(0,0)
   next()
 })
 

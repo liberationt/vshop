@@ -53,6 +53,7 @@
 <script>
 import utils from "../../utils/utils";
 import { Toast } from "vant";
+import { statistics } from "wisdom-h5"
 export default {
   components: {
     [Toast.name]: Toast
@@ -94,6 +95,7 @@ export default {
         this.$toast('手机号输入有误，请重新输入')
         return false;
       }
+      statistics.click("bankcard","addbankCard")
 			this.request('wisdom.vshop.bankcard.bind',this.bankCardList).then(data=>{
 				this.$router.push({path:'./commissionwithdrawal'})
 			}).catch(err=>{console.log(err)})
@@ -134,6 +136,7 @@ export default {
             type: 3
           };
       this.setTimeout();
+      statistics.click("bankcard","getCode")
       this.request("wisdom.vshop.sms.sendSmsForRisk", params)
         .then(data => {
           if (data.code == "success") {
@@ -211,6 +214,7 @@ export default {
   },
   mounted() {
     this.Initialization();
+    statistics.page("bankcard")
   }
 };
 </script>

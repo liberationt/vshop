@@ -73,7 +73,7 @@
      </footer>
     </div>
     <!-- 右侧弹出框 -->
-    <van-popup v-model="rightShow" position="right" :close-on-click-overlay = false class="rightShow" :overlay="true">
+    <van-popup v-model="rightShow" position="right" :close-on-click-overlay=false class="rightShow" :overlay="true">
       <div v-for="(item,i) in labeData">
         <div class="rightShow_common">
           <p class="rightShow_one">
@@ -278,7 +278,9 @@ export default {
       },data1))
         .then(data => {
           let flowList = data.data
+          if(JSON.stringify(data1) != "{}"){this.rightShow = false}
           if (Number(flowList.dataList.length) <= 0) {
+            this.customerList = []
             this.finished = true
             return false
           }
@@ -290,8 +292,6 @@ export default {
           this.pageNumber++
           this.totalPage = flowList.total
           // this.customerList = data.data.dataList;
-
-          if(JSON.stringify(data1) != "{}"){this.rightShow = false}
         })
         .catch(err => {
           console.log(err);
@@ -405,10 +405,15 @@ export default {
         }
         this.request('wisdom.vshop.userLabel.updateUserLabel',parmise).then(data=>{
           this.rightShow = false
+          // 数据初始化
+          this.pageNumber = 1
+          this.Restoration()
           this.Initialization(1,'',{})
         }).catch(err=>{console.log(err)})
       } else {
         console.log(this.labelArr)
+        this.pageNumber = 1
+        this.customerList = []
         this.Initialization(1, this.searchValue,Object.assign(this.labelObj,{goodLabelList:this.labelArr}))
       }
     },

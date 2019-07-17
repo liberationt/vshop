@@ -25,6 +25,7 @@
     </div>
 </template>
 <script>
+import { statistics } from "wisdom-h5"
 export default {
 	data(){
 		return{
@@ -49,7 +50,8 @@ export default {
       })
       .catch(err => {
         console.log(err);
-      });
+			});
+		statistics.page("successfulwithdrawals")
 	}
 }
 </script>

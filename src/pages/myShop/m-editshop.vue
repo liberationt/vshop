@@ -96,6 +96,7 @@ export default {
           this.weixinImg = data.url
           utils.putlocal('weixinImg',data.url)
           utils.putlocal('shopValue',this.shopValue)
+          this.zindex = 2
           this.isCheck()// 校验
         }).catch(err=>{})
       }
