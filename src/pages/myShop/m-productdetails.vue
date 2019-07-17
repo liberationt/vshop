@@ -167,11 +167,12 @@ export default {
       console.log(window.location)
       let url
       if( !utils.isAndroid1() ){
-        if(utils.getlocal('id') ==1) {
-          url = window.location.origin+'/mlogin'
-        } else {
-          url = window.location.origin+'/myshop'
-        }
+        // if(utils.getlocal('id') ==1) {
+        //   url = window.location.origin+'/mlogin'
+        // } else {
+        //   url = window.location.origin+'/myshop'
+        // }
+        url = decodeURIComponent(this.$store.state.iosUrl) || decodeURIComponent(window.location.href)
       } else {
         url = window.location.href
       }
@@ -187,7 +188,6 @@ export default {
     },
     // 推荐用户
     recommenduser(){
-      this.wxShare()
       this.yindaoshow= true
       statistics.click("mproductdetails","recommenduser")
       this.request('wisdom.vshop.product.createProductPoster',{url: window.location.origin+'/productnamedetail',operationType:2,productCode:this.$route.query.code}).then(data=>{
@@ -280,6 +280,8 @@ export default {
   },
   mounted(){
     statistics.page("mproductdetails")
+    // 微信授权
+    this.wxShare()
   },
   created(){
     this.Initialization()

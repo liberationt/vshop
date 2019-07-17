@@ -52,7 +52,6 @@ export default {
   methods: {
     // 马上赚钱
     makeMoney() {
-      alert(3)
       this.moneyShow = true;
     },
     // 跳转到详情

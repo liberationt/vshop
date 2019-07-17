@@ -99,14 +99,14 @@ export default {
     },
     // 分享授权
     wxShare() {
-      console.log(window.location)
       let url
       if( !utils.isAndroid1() ){
-        if(utils.getlocal('id') ==1) {
-          url = window.location.origin+'/mlogin'
-        } else {
-          url = window.location.origin+'/myshop'
-        }
+        // if(utils.getlocal('id') ==1) {
+        //   url = window.location.origin+'/mlogin'
+        // } else {
+        //   url = window.location.origin+'/myshop'
+        // }
+        url = decodeURIComponent(this.$store.state.iosUrl) || decodeURIComponent(window.location.href)
       } else {
         url = window.location.href
       }
@@ -122,7 +122,7 @@ export default {
     },
     iwantagent() {
       if(!this.inviterCode){ // 立即分享
-      this.wxShare()
+      // this.wxShare()
       // alert('点击右上角分享')
       this.yindaoshow = true
       statistics.click("mselfshopdetails","wxShare")
@@ -184,6 +184,7 @@ export default {
   },
   mounted(){
     statistics.page("mselfshopdetails")
+    this.wxShare()
   }
 };
 </script>
