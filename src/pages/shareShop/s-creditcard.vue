@@ -112,6 +112,7 @@ export default {
 				text-overflow:ellipsis;
 				white-space: nowrap;
 				width:200px;
+				margin-bottom: 4px;
 			}
 			p{
 			overflow: hidden;
