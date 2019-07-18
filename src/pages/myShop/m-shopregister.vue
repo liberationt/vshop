@@ -195,7 +195,7 @@ export default {
     },
     //一键推广店铺链接
     generalizeStoreLink(){
-      this.request('wisdom.vshop.vshopStore.generalizeStoreLink',{data:window.location.origin +"shoppage?inviterCode="+this.$route.query.inviterCode }).then(data=>{
+      this.request('wisdom.vshop.vshopStore.generalizeStoreLink',{data:window.location.origin +"/shoppage?inviterCode="+this.$route.query.inviterCode }).then(data=>{
         this.generalizeStore = data.data
       }).catch(err=>{console.log(err)})
     },
