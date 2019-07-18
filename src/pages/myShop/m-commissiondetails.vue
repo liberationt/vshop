@@ -31,7 +31,7 @@
 											<h5>贷款产品</h5>
 											<p class="datailslistD">{{item.productName}}</p>
 										</div>
-										<div>
+										<div v-show="daikuan == 0 || item.productType == 0">
 											<h5>贷款金额(元)</h5>
 											<p>{{item.loanRealityAmount}}</p>
 										</div>
@@ -70,7 +70,8 @@ export default {
 			value1:"",
 			phoneOname:"",
 			commissiondList:[],
-			pageNumber:1
+			pageNumber:1,
+			daikuan:""
 		}
 	},
 	methods:{
@@ -86,9 +87,10 @@ export default {
 		getdataList(){
 
 		},
-		onenquiries(){
+		onenquiries(v){
 			this.pageNumber = 1
 			this.commissiondList =[]
+			this.daikuan = v
 			this.Initialization(1)
 		},
 		// 上拉加载
