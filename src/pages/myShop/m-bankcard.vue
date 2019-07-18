@@ -233,7 +233,7 @@ export default {
       color: #333333;
       p {
         height: 40px;
-        border-bottom: 1px solid #f1f1fb /*no*/;
+        border-bottom: 1px solid #f2f2f2 /*no*/;
         display: flex;
         align-items: center;
         position: relative;
@@ -241,7 +241,7 @@ export default {
           width: 77px;
         }
         input {
-          font-size: 16px;
+          font-size: 14px;
           background-color: #fff;
         }
         span {
@@ -249,7 +249,7 @@ export default {
           background: #0c85fe;
           padding: 5px 12px;
           border-radius: 2px;
-          font-size: 12px;
+          font-size: 16px;
           color: #ffffff;
           position: absolute;
           right: 0;

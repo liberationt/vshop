@@ -278,6 +278,7 @@ export default {
     tanchuang(){
       if(this.storeStatus == 0){
         Dialog.confirm({
+          className: 'hahahtext',
           title: '温馨提示',
           message: '您还没有创建店铺，请先编辑保存店铺信息',
           confirmButtonText:"去编辑"

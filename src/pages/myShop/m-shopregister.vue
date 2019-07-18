@@ -205,7 +205,7 @@ export default {
       let message,generalizeName
       if(this.generalizeStore.hasStore){
         message = this.generalizeStore.text+" "+this.generalizeStore.shortLink
-        generalizeName = '去复制内容'
+        generalizeName = '复制内容'
         statistics.click("mshopregister","copy")
       } else {
         message = "您还没有创建店铺，请先编辑保存店铺信息"
@@ -602,7 +602,7 @@ export default {
         color: #fff;
       }
       li {
-        font-family:PingFang-SC-Medium;
+        font-family:"PingFang-SC-Regular";
         width: 88px;
         height: 32px;
         line-height: 34px;
@@ -610,7 +610,7 @@ export default {
         text-align: center;
         border-radius: 2px;
         margin-right: 8px;
-        font-weight: 400;
+        font-weight: normal;
       }
       :last-child {
         margin-right: 0px;

@@ -1,5 +1,5 @@
 <template>
-	<div class="mycommissmain">
+	<div :class="mycommissionlist.length >2 ? 'mycommissmain' : 'mycommissmain height1'">
 		<header class="pddingTop navbarrighttext">
 			<van-nav-bar
 				title="我的佣金"
@@ -24,7 +24,7 @@
 					<span>现金明细</span>
 				</div>
 				<div>
-					<van-icon name="arrow" class="cashdetailArrow" color='#4597FB' />
+					<van-icon name="arrow" class="cashdetailArrow1" color='#4597FB' />
 				</div>
 			</div>
 			<div class='cumulative'>
@@ -83,7 +83,8 @@ export default {
 	},
 	data(){
 		return{
-			mycommission:{},
+			mycommission:[],
+			mycommissionlist:[]
 		}
 	},
 	methods:{
@@ -117,6 +118,7 @@ export default {
       this.request("wisdom.vshop.account.detail",{}).then(data=>{
 				console.log(data)
 				this.mycommission = data.data
+				this.mycommissionlist = data.data.productOrderList
       }).catch(err=>{console.log(err)})
     }
 	},
@@ -135,6 +137,10 @@ export default {
 .cashdetailArrow {
 	font-size: 18px;
 	margin-bottom: 2px;
+}
+.cashdetailArrow1 {
+	font-size: 18px;
+	margin-top: 24px;
 }
 	.mycommis{
 		height:113px;
@@ -172,7 +178,7 @@ export default {
 		}
 	}
 	.mycommis1{
-		margin-top: 6px;
+		margin-top: 16px;
 	}
 	.cashdetail{
 		display: flex;
@@ -184,6 +190,7 @@ export default {
 		font-size:14px;
 		color:#333333;
 		margin-bottom: 1px;
+		line-height: 62px;
 		img{
 			width:20px;
 			height:20px;
