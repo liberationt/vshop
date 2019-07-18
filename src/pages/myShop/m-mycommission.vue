@@ -56,10 +56,10 @@
 					</div>
 					<div class="datailslist">
 						<div class="div1">
-							<h5>贷款产品</h5>
+							<h5>{{item.productType == 0 ?"贷款产品" : item.productType == 1 ?"返佣信用卡" : "返佣工具"}}</h5>
 							<p>{{item.productName}}</p>
 						</div>
-						<div>
+						<div v-show="item.productType == 0">
 							<h5> 贷款金额(元)</h5>
 							<p>{{item.loanRealityAmount}}</p>
 						</div>
