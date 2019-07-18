@@ -31,7 +31,7 @@
 											<h5>贷款产品</h5>
 											<p class="datailslistD">{{item.productName}}</p>
 										</div>
-										<div v-show="daikuan == 0 || item.productType == 0">
+										<div v-show="daikuan == 0 && item.productType == 0">
 											<h5>贷款金额(元)</h5>
 											<p>{{item.loanRealityAmount}}</p>
 										</div>
