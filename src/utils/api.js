@@ -44,16 +44,16 @@ export function request(apiKey, data = {}, isShowError = true) {
   return new Promise((resolve, reject) => {
     return http.post("/api/proxy", baseParams).then((response = {}) => {
       if (response.code == 'success') {
-        console.log('response=====> ' + apiKey + "   " + JSON.stringify(response))
+        //console.log('response=====> ' + apiKey + "   " + JSON.stringify(response))
         resolve && resolve(response)
       } else if (response.code == '110019') {
-        console.log('response=====> ' + JSON.stringify(response))
+        //console.log('response=====> ' + JSON.stringify(response))
         resolve && resolve(response)
       } else if (response.code == '404') {
-        console.log('response=====> ' + JSON.stringify(response))
+        //console.log('response=====> ' + JSON.stringify(response))
         window.location.href = window.location.origin+'/errors'
       } else if (response.code == '300013' || response.code == '300011') {
-        console.log('response=====> ' + JSON.stringify(response))
+        //console.log('response=====> ' + JSON.stringify(response))
         this.$router.push({ path: '/mlogin'})
         //window.location.href = window.location.origin+'/mlogin'
       }  else {
@@ -95,14 +95,14 @@ export function upload(file = {}) {
   return new Promise((resolve, reject) => {
     return http.post('/upload', formData, config).then(response => {
       if (response.code == 'success') {
-        console.log('response=====> ' + JSON.stringify(response))
+        //console.log('response=====> ' + JSON.stringify(response))
         resolve && resolve(response.data)
       } else {
         Toast("图片过大，请处理一下");
       }
     }).catch(err => {
       Toast("图片过大，请处理一下");
-      console.log(err)
+      //console.log(err)
     });
   })
 }
@@ -141,7 +141,7 @@ let getRequestInfo = (apiKey = '', data = {}) => {
 
   baseParams.sign = MD5(baseParams.apiKey + token + baseParams.data + saltcomm)
 
-  console.log('request=====> ' + apiKey + "   " + JSON.stringify(baseParams))
+  //console.log('request=====> ' + apiKey + "   " + JSON.stringify(baseParams))
 
   return baseParams
 }
@@ -217,7 +217,7 @@ let handleError = (apiKey, e = {}, reject, isShowError = true) => {
       }
       break
   }
-  console.log('response  fail=====> ' + apiKey + "   " + JSON.stringify(response));
+  //console.log('response  fail=====> ' + apiKey + "   " + JSON.stringify(response));
   reject && reject(e)
 }
 
