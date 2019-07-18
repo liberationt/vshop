@@ -309,7 +309,7 @@ export default {
       padding: 11px;
       color: #4597fb;
       font-size: 14px;
-      border-bottom: 1px solid rgba(231, 231, 231, 1); /*no*/
+      border-bottom: 1px solid #f2f2f2; /*no*/
       padding-left: 15px;
       position: relative;
       .process1{

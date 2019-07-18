@@ -242,6 +242,7 @@ export default {
         img {
           width: 60px;
           height: 60px;
+          border-radius: 30px;
         }
       }
       .center_text {
@@ -263,7 +264,7 @@ export default {
         height: 17px;
         border-radius: 3px;
         font-weight: bold;
-        margin-top: 6px;
+        margin-top: 4px;
         img {
           width: 10px;
           height: 12px;

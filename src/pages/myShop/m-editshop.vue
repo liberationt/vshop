@@ -230,9 +230,10 @@ export default {
       border: none;
       margin-top: 10px;
       font-size: 14px;
-      color: #999;
+      color: #333;
       width: 340px;
       height: 78px;
+      margin-left: -5px;
     }
     .editSubmit {
       width: 100%;

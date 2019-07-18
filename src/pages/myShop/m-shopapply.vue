@@ -139,7 +139,7 @@ export default {
     changeMenu() {
       this.pageNum = 1
       this.shopPapplyList = [] // 数据初始化
-      this.Initialization();
+      this.Initialization(1);
     },
     parentMethod() {
       // this.$refs.loanFacility.makeMoney(); //过this.$refs.ref.method调用
@@ -155,8 +155,8 @@ export default {
     },
     search() {
       this.pageNum = 1
-      this.shopPapplyList = [] // 数据初始化
-      this.Initialization();
+      this.shopPapplyList = []
+      this.Initialization(1);
     },
     // 上拉加载
     onLoad() {
@@ -185,6 +185,9 @@ export default {
             this.finished = true
             this.loading = false
             return false
+          }
+          if(i == 1){
+            this.shopPapplyList = [] // 数据初始化
           }
           // if(data.data.total > 10){
           //   this.finished = false

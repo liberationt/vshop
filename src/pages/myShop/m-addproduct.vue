@@ -133,7 +133,7 @@ export default {
     // 保存或编辑
     addProduct() {
       let apiKey, dataList;
-      if(this.shopValue.productName.length > 21 || this.shopValue.productName.length < 2){
+      if(this.shopValue.productName.length > 20 || this.shopValue.productName.length < 2){
         this.$toast('产品名称范围2-20个字')
         return false;
       }
