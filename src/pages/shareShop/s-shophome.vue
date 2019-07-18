@@ -68,7 +68,7 @@ export default {
 			},
 			toinvit(){
 				statistics.click("shophome","setshop");
-				window.location.href='http://dev.qdx.zanfin.com/main/#/register'
+				window.location.href='http://qdx.zanfin.com/main/#/register'
 			},
 			onClickLeft(){
 				this.$router.go(-1)
