@@ -189,7 +189,7 @@ export default {
 <style lang="less" scoped>
 .mselfshopdetails_common {
   background-color: #f1f1fb;
-  padding-bottom: 76px;
+  padding-bottom: 86px;
   height: 100%;
   .mselfshopdetails_header {
     .header_message {
