@@ -119,7 +119,6 @@ export default {
 					}
 					this.commissiondList = this.commissiondList.concat(commissiondList1)
 					this.pageNumber++
-					console.log(this.commissiondList,1111)
         })
         .catch(err => {
           console.log(err);

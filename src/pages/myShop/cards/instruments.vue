@@ -198,7 +198,6 @@ export default {
           size:100,
           colorDark:'red'
         })
-        console.log(url)
         var img = document.createElement( 'img' );
         img.src = canvas.toDataURL( 'image/png', 1 );  //1表示质量(无损压缩)
         document.getElementById("qrcode").innerHTML = '',

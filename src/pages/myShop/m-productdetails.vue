@@ -174,7 +174,6 @@ export default {
       } else {
         url = window.location.href
       }
-      console.log(window.location.origin+window.location.pathname)
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
         url: url
       }).then(data => {
@@ -265,7 +264,6 @@ export default {
       content.scale(scale,scale);
       var rect = document.getElementById('posterdom').getBoundingClientRect();//获取元素相对于视察的偏移量
       content.translate(-rect.left,-rect.top);//设置context位置，值为相对于视窗的偏移量负值，让图片复位
-      console.log(rect)
       html2canvas(this.$refs.imageWrapper,{
         backgroundColor: null,    // 解决生成的图片有白边
         dpi: window.devicePixelRatio*2,
@@ -275,7 +273,6 @@ export default {
         }).then((canvas) => {
           let dataURL = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream"); // 获取生成的图片的url
           this.logoUrl = dataURL
-          console.log(dataURL)
        })
     }
   },

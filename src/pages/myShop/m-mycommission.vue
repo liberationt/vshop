@@ -116,7 +116,6 @@ export default {
 		// 数据初始化
 		Initialization(){
       this.request("wisdom.vshop.account.detail",{}).then(data=>{
-				console.log(data)
 				this.mycommission = data.data
 				this.mycommissionlist = data.data.productOrderList
       }).catch(err=>{console.log(err)})

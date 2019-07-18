@@ -196,13 +196,11 @@ export default {
       for(var i in this.bankCardList){
         // console.log(i)    //输出属性
         // console.log(this.bankCardList[i])    //输出属性对应的值
-        console.log(this.bankCardList[i],i)
         if(this.bankCardList[i] == ""){
           this.flag = false
         } else {
           this.flag = true
         }
-        console.log(this.flag)
       }
     },
     //清除定时器

@@ -248,7 +248,6 @@ export default {
     objectKeyIsEmpty(obj) {
       let empty = null;
       for (const key in obj) {
-        console.log(obj[key])
         if (obj[key] == null || obj[key] == "") {
           empty = true;
         } else {

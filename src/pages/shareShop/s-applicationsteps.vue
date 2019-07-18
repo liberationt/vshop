@@ -68,7 +68,6 @@ export default {
 				this.active = msg
 			},
 			close(){
-				console.log(this.active)
 			}
     },
     mounted(){

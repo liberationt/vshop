@@ -214,7 +214,6 @@ export default {
       // let label = [list]
       this.rightShow = true
       if(label){ // 数据回显
-      console.log(label)
         this.materialsArr = []
         this.huixianArr = [] // 初始化
         label.forEach(v=>{
@@ -297,7 +296,6 @@ export default {
         } else {
           this.labelTitleName2 = []
         }
-        console.log(this.labelTitleName2)
         parmise = {
           followTime : this.labelTitleName0 == "" ? null : this.labelTitleName0,
           followState : this.labelTitleName1 == "" ? null : this.labelTitleName1,

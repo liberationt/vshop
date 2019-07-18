@@ -270,7 +270,6 @@ export default {
 		},
     // 初始化数据
     Initialization(i, user, data1) {
-      // console.log('莉莉',)
       this.request("wisdom.vshop.vshopLoanUser.queryVshopLoanUserList", Object.assign({
         searchStr: user,
         type: 0,
@@ -384,7 +383,6 @@ export default {
     updateTags(){
       let parmise 
       if(this.userCode){
-        console.log(this.materialsArr,"更新标签数据")
         if(this.labelTitleName0 == "" && this.labelTitleName1 == "" && this.materialsArr.length == 0){ // 必须选择一个标签
           this.$toast('请选择标签')
           return false
@@ -413,7 +411,6 @@ export default {
           this.Initialization(1,'',{})
         }).catch(err=>{console.log(err)})
       } else {
-        console.log(this.labelArr)
         this.pageNumber = 1
         this.customerList = []
         this.Initialization(1, this.searchValue,Object.assign(this.labelObj,{goodLabelList:this.labelArr}))
@@ -421,7 +418,6 @@ export default {
     },
     // 选择标签事件
     materialsChange(code,name) {
-      console.log(code)
       if(this.huixianArr.includes(code.labelOptionKey)){
         this.materialsArr= this.materialsArr.filter(function (ele){return ele != code;})//回显数据
         this.huixianArr=this.huixianArr.filter(function (ele){return ele != code.labelOptionKey;}); // 更新标签
@@ -432,7 +428,6 @@ export default {
         this.labelArr.push(code.labelOptionKey) // 查询条件
         this.name = name
       }
-      console.log(this.materialsArr)
       // this.changeList(code, this.materialsArr);
       // this.labelTitleName2.push(Object.assign(code,{labelTitleName:name}))
     },

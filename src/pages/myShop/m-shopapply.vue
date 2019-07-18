@@ -197,8 +197,6 @@ export default {
           this.pageNum++
           this.total = data.data.total
           this.finished = false
-          
-          console.log(this.shopPapplyList)
         })
         .catch(err => {
           console.log(err);

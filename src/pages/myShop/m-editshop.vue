@@ -160,7 +160,6 @@ export default {
       } else {
         this.flag = true
       }
-      console.log(this.flag,this.weixinImg,'====')
     },
     fuzhi(){
       this.shopValue = !utils.getlocal('shopValue') ? {} : utils.getlocal('shopValue')

@@ -173,7 +173,6 @@ export default {
     },
     wxShare(inviterCode) {
       let url
-      console.log(this.$store.state.iosUrl,111)
       if( !utils.isAndroid1() ){//ios
         // if(this.$route.query.id ==1) {
         //   url = window.location.origin+'/mlogin'+window.location.search

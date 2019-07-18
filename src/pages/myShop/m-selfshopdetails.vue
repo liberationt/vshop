@@ -166,7 +166,6 @@ export default {
     },
     Initialization(){
       this.request("wisdom.vshop.proprietaryProduct.getH5ProprietaryProductByCode",{proprietaryProductCode: this.$route.query.code}).then(data=>{
-        console.log(data)
         if(data.data.state == 1){
           this.$router.push({ path: "./undershelf?inviterCode="+this.inviterCode });
         }

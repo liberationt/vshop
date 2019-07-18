@@ -131,7 +131,7 @@ export default {
         return false
       }
       // 0 我要代理 1 马上赚钱
-      console.log(num);
+      // console.log(num);
       switch (num) {
         case 1:
           this.goDetails(code, num);
@@ -271,7 +271,7 @@ export default {
       }).then(canvas => {
         let dataURL = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream") // 获取生成的图片的url
         this.logoUrl = dataURL;
-        console.log(dataURL);
+        // console.log(dataURL);
       });
     },
     // 弹窗

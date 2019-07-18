@@ -78,7 +78,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$refs.hahah);
     this.Initialization(1);
   },
   methods: {
@@ -128,7 +127,6 @@ export default {
 					}
 					this.shopPapplyList = this.shopPapplyList.concat(shopPapplyList)
 					this.pageNumber++
-					console.log(shopPapplyList,1111)
           // this.shopPapplyList = data.data
           // console.log(data);
         })
