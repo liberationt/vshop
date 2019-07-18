@@ -212,10 +212,11 @@ export default {
 					this.inviterCode= v.split('=')[1]
 				}
 			})
+			utils.setCookie('inviterCode',this.inviterCode)
 		}else if(this.$route.query.inviterCode){
 			this.inviterCode=this.$route.query.inviterCode
+			utils.setCookie('inviterCode',this.inviterCode)
 		}
-		utils.setCookie('inviterCode',this.inviterCode)
 		window.scrollTo(0,0);
 		this.getDatas()
 	},
