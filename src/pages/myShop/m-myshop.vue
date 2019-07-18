@@ -118,7 +118,7 @@ export default {
   },
   methods: {
     goto2(){
-      this.$router.push({path:'/mshopregister'})
+      this.$router.push({path:'/mshopregister?inviterCode='+this.inviterCode})
     },
     goto(){
       this.$router.push({path:'/mycommission'})
