@@ -103,7 +103,7 @@ export default {
 		},
 		getDatas(){
 			let data ={
-				inviterCode:this.$route.query.inviterCode?this.$route.query.inviterCode:utils.getCookie('inviterCode'),
+				inviterCode:this.inviterCode?this.inviterCode:utils.getCookie('inviterCode'),
 				storeCode:''
 			}
 			this.https('wisdom.vshop.vshopStore.getStoreIndex',data).then(data=>{
@@ -204,10 +204,19 @@ export default {
 		}
 	},
 	created(){
-		window.scrollTo(0,0);
-		if(this.$route.query.inviterCode){
-			utils.setCookie('inviterCode',this.$route.query.inviterCode)
+		if(this.$route.query.p){
+			let plist = atob(this.$route.query.p).split('&')
+			let str = {}
+			plist.map(v=>{
+				if(v.split('=')[0] == "inviterCode"){
+					this.inviterCode= v.split('=')[1]
+				}
+			})
+		}else if(this.$route.query.inviterCode){
+			this.inviterCode=this.$route.query.inviterCode
 		}
+		utils.setCookie('inviterCode',this.inviterCode)
+		window.scrollTo(0,0);
 		this.getDatas()
 	},
 	mounted(){
