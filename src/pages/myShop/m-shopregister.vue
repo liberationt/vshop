@@ -195,7 +195,7 @@ export default {
     },
     //一键推广店铺链接
     generalizeStoreLink(){
-      this.request('wisdom.vshop.vshopStore.generalizeStoreLink',{data:window.location.href}).then(data=>{
+      this.request('wisdom.vshop.vshopStore.generalizeStoreLink',{data:window.location.origin +"shoppage?inviterCode="+this.$route.query.inviterCode }).then(data=>{
         this.generalizeStore = data.data
       }).catch(err=>{console.log(err)})
     },
@@ -629,7 +629,6 @@ export default {
     width: 375px;
     font-size: 14px;
     border-top: 1px solid #f2f2f2;/*no*/
-    
     .van-cell{
       height: 34px;
       padding-top: 6px;
