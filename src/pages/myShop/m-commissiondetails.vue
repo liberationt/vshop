@@ -28,7 +28,8 @@
 									</div>
 									<div class="datailslist">
 										<div class="div1">
-											<h5>贷款产品</h5>
+											<h5>{{item.productType == 0 ?"贷款产品" : item.productType == 1 ?"返佣信用卡" : "返佣工具"}}
+												</h5>
 											<p class="datailslistD">{{item.productName}}</p>
 										</div>
 										<div v-show="daikuan == 0 && item.productType == 0">
