@@ -78,6 +78,8 @@ export default {
 			this.$router.go(-1)
 		},
 		search(){
+			this.pageNumber = 1
+			this.commissiondList =[]
 			this.Initialization(1)
 		},
 		// 获取数据
@@ -85,6 +87,8 @@ export default {
 
 		},
 		onenquiries(){
+			this.pageNumber = 1
+			this.commissiondList =[]
 			this.Initialization(1)
 		},
 		// 上拉加载
