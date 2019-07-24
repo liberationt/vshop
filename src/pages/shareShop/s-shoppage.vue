@@ -52,7 +52,7 @@
 			<div v-for="(item,i) in dataList.exhibitionContentList" :key="i" @click="todetails(item.exhibitionContentCode)">
 				<div class="tweetslistbanner"><img :src=item.photoPath alt=""></div>
 				<div class="listright">
-					<p style="width:230px;">{{item.contentTitle}}</p>
+					<p style="width:230px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;">{{item.contentTitle}}</p>
 					<span>{{item.dataCreateTime}}</span>
 				</div>
 			</div>

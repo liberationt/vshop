@@ -40,7 +40,7 @@
 							<img :src=item.photoPath alt="">
 						</div>
 						<div class="recommendright">
-							<h4>{{item.contentTitle}}</h4>
+							<h4 style="width:230px;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;">{{item.contentTitle}}</h4>
 							<p>{{item.dataCreateTime}}</p>
 						</div>
 					</li>
