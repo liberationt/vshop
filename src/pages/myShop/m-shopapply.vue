@@ -223,11 +223,8 @@ export default {
         background: #eeeeee;
         border-radius: 17px;
         text-indent: 20px;
-        line-height: 0px;
         width: 90%;
-        padding: 5px 0px;
         padding-left: 10px;
-        font-size: 14px;
       }
       img {
         width: 16px;
