@@ -161,7 +161,7 @@ export default {
     // 上拉加载
     onLoad() {
       setTimeout(() => {
-        this.Initialization(1)
+        this.Initialization(0)
       }, 500);
     },
     // 跳转到详情
@@ -216,7 +216,6 @@ export default {
       background: #eeeeee;
       height: 34px;
       font-size: 12px;
-      // color: #aaaaaa;
       line-height: 34px;
       border-radius: 17px;
       position: relative;
@@ -224,8 +223,11 @@ export default {
         background: #eeeeee;
         border-radius: 17px;
         text-indent: 20px;
+        line-height: 0px;
         width: 90%;
+        padding: 5px 0px;
         padding-left: 10px;
+        font-size: 14px;
       }
       img {
         width: 16px;
