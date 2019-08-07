@@ -32,9 +32,9 @@
 					<span>累计奖励(元)</span>
 					<p>{{mycommission.commissionAmountAsFormat}}</p>
 				</div>
-				<div>
-					<span>已提现(元)</span>
-					<p>{{mycommission.withdrawAmountAsFormat}}</p>
+				<div @click="golink">
+					<span>预计收益(元)</span>
+					<p>{{mycommission.futureAmountAsFormat}}</p>
 				</div>
 			</div>
 			<div class="cashdetail lookall">
@@ -119,7 +119,11 @@ export default {
 				this.mycommission = data.data
 				this.mycommissionlist = data.data.productOrderList
       }).catch(err=>{console.log(err)})
-    }
+    },
+		//跳转到 预计收益
+		golink(){
+			this.$router.push({path:'./myujishouyi'})
+		}
 	},
 	mounted(){
 		this.Initialization()
@@ -205,10 +209,10 @@ export default {
 		div{
 			width:50%;
 			text-align: center;
-			font-size:17px;
+			font-size:15px;
 			color:#999999;
 			p{
-				font-size:20px;
+				font-size:18px;
 				color:#4597FB;
 				font-weight: bold;
 				margin-top: 7px;

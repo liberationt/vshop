@@ -295,6 +295,16 @@ const router = new Router({
         import ('./pages/myShop/m-commissiondetails.vue')
     },
     {
+      path: '/myujishouyi',
+      name: 'myujishouyi',
+      title: '预计收益',
+      meta: {
+        auth: true
+      },
+      component: () =>
+        import ('./pages/myShop/m-yujishouyi.vue')
+    },
+    {
       path: '/cashdetails',
       name: 'cashdetails',
       title: '现金明细',
