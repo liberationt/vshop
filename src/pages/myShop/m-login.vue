@@ -34,7 +34,7 @@
         登录
       </div>
       <div class="login_footer">
-        点击“登录”代表您已经同意 <span style="color:#4697FB; z-index:9" @click="goAgree">《抢单侠用户协议》</span>
+        点击“登录”代表您已经同意hahha <span style="color:#4697FB; z-index:9" @click="goAgree">《抢单侠用户协议》</span>
       </div>
     </div>
     
