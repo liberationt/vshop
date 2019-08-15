@@ -28,7 +28,6 @@ if (!store.state.actives ) {
   // 从sessionStorage中读取状态
   store.state.actives = utils.getlocal('actives')
 }
-
 // 设置title meta
 router.beforeEach((to, from, next) => {
   // console.log('router===>',to.meta.content)
@@ -69,6 +68,9 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     next()
+  }
+  if (!store.state.iosUrls) {
+    store.commit('setUrls', document.URL)
   }
   // 微信分享 链接存储
   if (!store.state.iosUrl) {
