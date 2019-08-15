@@ -88,7 +88,7 @@ export default {
     wxShare(exhibitionContentCode,storeCode,tittle,sharecontnet) {
       let url
       if( !utils.isAndroid1() ){
-        url =  decodeURIComponent(this.$store.state.iosUrl) || decodeURIComponent(window.location.href)
+        url =  decodeURIComponent(this.$store.state.iosUrls) || decodeURIComponent(window.location.href)
       } else {
         url = window.location.href
       }
