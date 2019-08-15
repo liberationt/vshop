@@ -7,7 +7,6 @@
 				@click-left="onClickLeft"
 			/> 
 		</header> 
-     
       <div class="mainTop">
         <div class="title">{{responseData.contentTitle}}</div>
         <div class="business">
@@ -46,12 +45,14 @@
 <script>
 import utils from '../../utils/utils';
 import QRCode from "qrcodejs2"; 
+import { constants } from 'crypto';
+import wx from 'weixin-js-sdk'
 export default {
 	data(){
 		return{
 			responseData:{},
       exhibitionUserRes:'',
-      tittle:''
+      tittle:'',
 		}
 	},
 	methods:{
@@ -69,20 +70,54 @@ export default {
 					this.responseData = data.data
           this.exhibitionUserRes = data.data.exhibitionUserRes
           this.tittle= data.data.contentTitle
-					this.qrcode()
+          this.qrcode()
+          this.wxShare(data.data.exhibitionContentCode,this.$route.query.storeCode,this.tittle)
 				}
 			})
 		},
 		qrcode() {
-        let qrcode = new QRCode("qrcode", {
-          width: 60,
-          height: 60, // 高度
-          text: this.exhibitionUserRes.qrUrl // 二维码内容
-        });
+      let qrcode = new QRCode("qrcode", {
+        width: 60,
+        height: 60, // 高度
+        text: this.exhibitionUserRes.qrUrl // 二维码内容
+      });
+    },
+    wxShare(exhibitionContentCode,storeCode,tittle) {
+      let url
+      if( !utils.isAndroid1() ){
+        url =  decodeURIComponent(window.location.href)
+      } else {
+        url = window.location.href
       }
+      let sharecontnet = document.getElementsByClassName('contentText')[0].innerText.slice(0, 51) + "..."
+      let that = this
+      this.https("wisdom.vshop.wechatOpen.getJsconf", {url:url})
+      .then(data => {
+        setTimeout(() => {
+          utils.wxShare(data.data)
+          wx.ready(function(){
+            wx.updateAppMessageShareData({
+            title: tittle, // 分享标题
+            desc: sharecontnet, // 分享描述
+            link: window.location.origin + "/tweetsdetails?exhibitionContentCode="+exhibitionContentCode+"&storeCode="+storeCode, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: 'https://wisdom-loan.oss-cn-shanghai.aliyuncs.com/productParam/60938f68-1fa0-4620-a90a-7a4d7a7c7117.png', // 分享图标
+            success: function () {
+            },
+            cancel: function(err){
+
+            }
+            });
+          })
+　　　　 }, 500)
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
 	},
 	mounted(){
-		this.getdata()
+    this.getdata()
+   
 	}	
 }
 </script>
