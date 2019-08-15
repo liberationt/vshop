@@ -71,7 +71,10 @@ export default {
           this.exhibitionUserRes = data.data.exhibitionUserRes
           this.tittle= data.data.contentTitle
           this.qrcode()
-          this.wxShare(data.data.exhibitionContentCode,this.$route.query.storeCode,this.tittle)
+          this.$nextTick(()=> {
+            let contentText = document.getElementsByClassName('contentText')[0].innerText.slice(0, 51) + "..."
+            this.wxShare(data.data.exhibitionContentCode,this.$route.query.storeCode,this.tittle,contentText)
+          })
 				}
 			})
 		},
@@ -82,14 +85,13 @@ export default {
         text: this.exhibitionUserRes.qrUrl // 二维码内容
       });
     },
-    wxShare(exhibitionContentCode,storeCode,tittle) {
+    wxShare(exhibitionContentCode,storeCode,tittle,sharecontnet) {
       let url
       if( !utils.isAndroid1() ){
         url =  decodeURIComponent(window.location.href)
       } else {
         url = window.location.href
       }
-      let sharecontnet = document.getElementsByClassName('contentText')[0].innerText.slice(0, 51) + "..."
       let that = this
       this.https("wisdom.vshop.wechatOpen.getJsconf", {url:url})
       .then(data => {
@@ -117,7 +119,6 @@ export default {
 	},
 	mounted(){
     this.getdata()
-   
 	}	
 }
 </script>
