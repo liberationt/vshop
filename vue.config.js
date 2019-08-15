@@ -34,13 +34,14 @@ module.exports = {
           }
         }
       }
-      let output = {
-        filename: `[name].${process.env.VUE_APP_Version}.${Timestamp}.js`,
-        chunkFilename: `[name].${process.env.VUE_APP_Version}.${Timestamp}.js`
-      }
       Object.assign(config, {
-        optimization
-      },{output})
+        optimization,
+        output: {
+          ...config.output,
+          filename: `[name].${process.env.VUE_APP_Version}.${Timestamp}.js`,
+          chunkFilename: `[name].${process.env.VUE_APP_Version}.${Timestamp}.js`
+        },
+      })
     } else {
       // 为开发环境修改配置...
       config.mode = 'development'
