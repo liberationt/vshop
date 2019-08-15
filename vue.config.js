@@ -1,4 +1,6 @@
 const path = require('path')
+// 添加版本号
+const Timestamp = new Date().getTime();
 
 module.exports = {
   transpileDependencies: [], // 兼容ie10
@@ -32,9 +34,13 @@ module.exports = {
           }
         }
       }
+      let output = {
+        filename: `[name].${process.env.VUE_APP_Version}.${Timestamp}.js`,
+        chunkFilename: `[name].${process.env.VUE_APP_Version}.${Timestamp}.js`
+      }
       Object.assign(config, {
         optimization
-      })
+      },{output})
     } else {
       // 为开发环境修改配置...
       config.mode = 'development'
@@ -51,6 +57,7 @@ module.exports = {
       }
     })
   },
+  
   productionSourceMap: false, // 生产环境是否生成 sourceMap 文件
   // css相关配置
   css: {
