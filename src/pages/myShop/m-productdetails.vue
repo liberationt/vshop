@@ -2,21 +2,24 @@
   <div class="productdetails_common pddingTop">
     <header class="productdetails_header">
       <van-nav-bar
-        title="代理推广"
+        :title =productList.productName
         left-arrow
         @click-left="onGoback"
       />
       <div class="header_img">
         <img :src=productList.bannerUrl alt="">
       </div>
+      <div class="header_text">
+        {{productList.agencyLabel}}
+      </div>
     </header>
     <div class="productdetails_center">
       <div class="productdetails_process">
         <div class="process">
           <span class="process1"></span>
-          <span class="process2">申请流程</span>
+          <span class="process2">工资结算说明</span>
         </div>
-        <ul class="process_img clearfix">
+        <!-- <ul class="process_img clearfix">
           <li class="left" v-for="(item,index) in productList.applicationProcedureList">
             <div class="left">
               <img :src=item.productParamIcon class="img_top" alt="">
@@ -24,18 +27,26 @@
             </div>
             <p v-if="index != productList.applicationProcedureList.length-1" class="left img_bottom"><img src="./imgs/arrows_icon@2x.png" alt=""></p>
           </li>
-        </ul>
+        </ul> -->
+      </div>
+      <div class="Explain">
+        推荐用户成功赚<span style="font-size:18px;font-family:'Alibaba PuHuiTi';font-weight:bold;">{{productList.agentContent}}</span>佣金
+      </div>
+      <div class="Explain_content" v-html="productList.salaryCalculateExplain">
       </div>
       <div class="productdetails_process">
         <div class="process">
           <span class="process1"></span>
-          <span class="process2">申请资料</span>
+          <span class="process2">代理步骤</span>
         </div>
-        <ul class="process_text">
+        <!-- <ul class="process_text">
           <li v-for="(item,index) in productList.applicationMaterialList">{{index+1+'、'+item.productParamName}}</li>
-        </ul>
+        </ul> -->
       </div>
-      <div class="productdetails_process">
+      <div class="dailibz" v-html="productList.agencyStep">
+        
+      </div>
+      <!-- <div class="productdetails_process">
         <div class="process">
           <span class="process1"></span>
           <span class="process2">申请条件</span>
@@ -43,18 +54,18 @@
         <ul class="process_text">
           <li v-for="(item,index) in productList.applyCondition">{{index+1+'、'+item}}</li>
         </ul>
-      </div>
+      </div> -->
     </div>
     <footer class="productdetail_footer">
       <van-row>
-        <van-col class="van_daili" span="8">
+        <!-- <van-col class="van_daili" span="8">
           代理后推荐用户 赚 <span style="color:#FE951E">{{productList.agentContent}}</span> 佣金
-        </van-col>
+        </van-col> -->
         <div v-if="this.$route.query.num == 1">
-          <van-col span="8">
+          <van-col span="12">
             <button @click="productposter">产品海报</button>
           </van-col>
-          <van-col span="8">
+          <van-col span="12">
             <button @click="recommenduser" class="button_user">
               <p>推荐用户</p>
               <p>推荐后会隐藏佣金</p>
@@ -62,7 +73,7 @@
           </van-col>  
         </div>
         <div v-else>
-          <van-col span="16">
+          <van-col span="24">
             <button @click="wydaili" class="button_user button_userc">
               我要代理
             </button>
@@ -101,6 +112,10 @@
       <div  v-if="logoUrl != ''" class="haibaoIMg">
         <img :src=logoUrl alt="">
       </div>
+      <div class="popu_caozuo">
+        <button class="btn1" @click="downimg">下载图片</button>
+        <button class="btn2" @click="coplink">复制链接</button>
+      </div>
       <div class="popu_close" @click="showPoster = false">
         <img src="./imgs/turn_off@2x.png" alt="">
       </div>
@@ -124,199 +139,311 @@
     <van-popup class="yindaoshow" v-model="yindaoshow">
       <img src="./imgs/yindao.png" alt="">
     </van-popup>
+    <!-- 分享复制弹框 -->
+    <van-popup class="conpyImg" v-model="conpyImg">
+      <img src="./imgs/png@2x.png" alt="">
+    </van-popup>
   </div>
 </template>
 <script>
-import html2canvas from 'html2canvas'
-import { qrcanvas } from 'qrcanvas';
-import { Popup, RadioGroup, Radio,} from 'vant';
+import html2canvas from "html2canvas";
+import { qrcanvas } from "qrcanvas";
+import { Popup, RadioGroup, Radio, Toast } from "vant";
 import utils from "../../utils/utils";
-import wx from 'weixin-js-sdk'
-import { statistics } from "wisdom-h5"
+import http from "../../utils/http";
+import wx from "weixin-js-sdk";
+import { statistics } from "wisdom-h5";
+import { setTimeout } from 'timers';
 export default {
   components: {
-    [Popup.name] : Popup,
-    [RadioGroup.name] : RadioGroup,
-    [Radio.name] : Radio,
+    [Popup.name]: Popup,
+    [RadioGroup.name]: RadioGroup,
+    [Radio.name]: Radio
   },
-  data(){
-    return{
+  data() {
+    return {
       showPoster: false,
-      productList:[],
-      showPosterList:{},
+      productList: [],
+      showPosterList: {},
       moneyShow: false,
-      radioName:"1",
-      flag:true,
-      logoUrl:"",
-      yindaoshow:false
-    }
+      radioName: "1",
+      flag: true,
+      logoUrl: "",
+      yindaoshow: false,
+      prefixBase64: 'data:image/png;base64,',
+      isFirefox: false,
+      qrcodeUrl:"",
+      conpyImg:false
+    };
   },
-  created(){
-  },
-  methods:{
-    wydaili(){
-      this.moneyShow = true
-      statistics.click("mproductdetails","wydaili")
+  methods: {
+    wydaili() {
+      this.moneyShow = true;
+      statistics.click("mproductdetails", "wydaili");
     },
-    onGoback(){
-      this.$router.push({path:'/magentproduct'})
+    onGoback() {
+      this.$router.push({ path: "/magentproduct" });
     },
-    productposter(){
+    productposter() {
       // this.showPoster = true
-      this.operationType(1)
-      statistics.click("mproductdetails","productposter")
+      this.operationType(1);
+      statistics.click("mproductdetails", "productposter");
     },
     // 分享授权
     wxShare() {
-      let url
-      if( !utils.isAndroid1() ){
-        url = decodeURIComponent(this.$store.state.iosUrl) || decodeURIComponent(window.location.href)
+      let url;
+      if (!utils.isAndroid1()) {
+        url =
+          decodeURIComponent(this.$store.state.iosUrl) ||
+          decodeURIComponent(window.location.href);
       } else {
-        url = window.location.href
+        url = window.location.href;
       }
       this.request("wisdom.vshop.wechatOpen.getJsconf", {
         url: url
-      }).then(data => {
-        utils.wxShare(data.data)
       })
-      .catch(err => {
-        console.log(err);
-      });
+        .then(data => {
+          utils.wxShare(data.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     // 推荐用户
-    recommenduser(){
-      this.yindaoshow= true
-      statistics.click("mproductdetails","recommenduser")
+    recommenduser() {
+      var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+      if (ua.match(/MicroMessenger/i) != "micromessenger") {
+        this.conpyImg = true
+        utils.copyContent("抢单侠创业平台")
+      }else{
+        this.yindaoshow = true;
+      }
+      statistics.click("mproductdetails", "recommenduser");
     },
-    recommenduserwx(){
-      this.wxShare()
-      this.request('wisdom.vshop.product.createProductPoster',{url: window.location.origin+'/productnamedetail',operationType:2,productCode:this.$route.query.code}).then(data=>{
-        let dataList = data.data
-        wx.ready(function(){
+    recommenduserwx() {
+      let _self = this
+      this.wxShare();
+      this.request("wisdom.vshop.product.createProductPoster", {
+        url: window.location.origin + "/productnamedetail",
+        operationType: 2,
+        productCode: this.$route.query.code
+      })
+        .then(data => {
+          let dataList = data.data;
+          wx.ready(function() {
             wx.updateAppMessageShareData({
               title: dataList.shareTitle, // 分享标题
               desc: dataList.shareDescribe, // 分享描述
               link: dataList.url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
               imgUrl: dataList.productLogo, // 分享图标
-              success: function () {
+              success: function() {
                 // 用户点击了分享后执行的回调函数
                 // alert('分享成功回调')
               },
-              cancel: function(err){
+              cancel: function(err) {
                 // alert('分享取消回调')
               }
             });
-          })
-      }).catch(err=>{console.log(err)})
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     // 确认代理
-    confirm(){
-      this.flag = false
-      let agentStatusData = [{productCode:this.$route.query.code,productType:this.$route.query.type}]
-      statistics.click("mproductdetails","woyaodailiQR")
-      this.request('wisdom.vshop.product.batchAgentProducts',{queryH5UserProductDetailReqList:agentStatusData}).then(data=>{
-        this.moneyShow =  false
-        this.flag = true
-        this.$router.push({path:"./magentproduct"})
-      }).catch(err=>{console.log(err);this.moneyShow =  false})
+    confirm() {
+      this.flag = false;
+      let agentStatusData = [
+        {
+          productCode: this.$route.query.code,
+          productType: this.$route.query.type
+        }
+      ];
+      statistics.click("mproductdetails", "woyaodailiQR");
+      this.request("wisdom.vshop.product.batchAgentProducts", {
+        queryH5UserProductDetailReqList: agentStatusData
+      })
+        .then(data => {
+          this.moneyShow = false;
+          this.flag = true;
+          this.$router.push({ path: "./magentproduct" });
+        })
+        .catch(err => {
+          console.log(err);
+          this.moneyShow = false;
+        });
     },
-    Initialization(){
-      this.request("wisdom.vshop.product.queryH5ProductMarketDetail",{productCode:this.$route.query.code}).then(data=>{
-        this.productList = data.data
-      }).catch(err=>{console.log(err)})
+    Initialization() {
+      this.request("wisdom.vshop.product.queryH5ProductMarketDetail", {
+        productCode: this.$route.query.code
+      })
+        .then(data => {
+          this.productList = data.data;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     // operationType操作类型：1产品海报，2推荐用户
-    operationType(num){
-      this.request("wisdom.vshop.product.createProductPoster",{productCode:this.$route.query.code,operationType:num,url: window.location.origin+'/productnamedetail'}).then(data=>{
-        switch(num){
-          case 1:
-            this.showPosterList = data.data
-            this.showPoster = true
-            this.logoUrl = ""
-            this.qrcode(data.data.url)
-            setTimeout(() => {
-              this.rrrr()
-　　　　     }, 500)
-            break;
-          case 2:
-            break;
-        }
-      }).catch(err=>{console.log(err)})
-    },
-    qrcode(url){
-       this.$nextTick(()=>{
-        var canvas = qrcanvas({
-          data:url,
-          size:100,
-          colorDark:'red'
-        })
-        var img = document.createElement( 'img' );
-        img.src = canvas.toDataURL( 'image/png', 1 );  //1表示质量(无损压缩)
-        document.getElementById("qrcode").innerHTML = '',
-        document.getElementById("qrcode").appendChild(img)
+    operationType(num) {
+      this.request("wisdom.vshop.product.createProductPoster", {
+        productCode: this.$route.query.code,
+        operationType: num,
+        url: window.location.origin + "/productnamedetail"
       })
+        .then(data => {
+          switch (num) {
+            case 1:
+              this.showPosterList = data.data;
+              this.showPoster = true;
+              this.logoUrl = "";
+              this.qrcode(data.data.url);
+              this.qrcodeUrl = data.data.url
+              setTimeout(() => {
+                this.rrrr();
+              }, 1000);
+              break;
+            case 2:
+              break;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    qrcode(url) {
+      this.$nextTick(() => {
+        var canvas = qrcanvas({
+          data: url,
+          size: 100,
+          colorDark: "red"
+        });
+        var img = document.createElement("img");
+        img.src = canvas.toDataURL("image/png", 1); //1表示质量(无损压缩)
+        (document.getElementById("qrcode").innerHTML = ""),
+          document.getElementById("qrcode").appendChild(img);
+      });
+    },
+    // 下载海报
+    downimg() {
+      var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+      if(ua.match(/MicroMessenger/i) == "micromessenger"){
+        this.$toast("请长按保存图片")
+      } else {
+        let that = this
+        const toast = Toast.loading({
+          duration: 0,       // 持续展示 toast
+          forbidClick: true, // 禁用背景点击
+          loadingType: 'spinner',
+          message: '图片生成中...'
+        });
+        setTimeout(() => {
+          if(that.logoUrl == ""){
+            this.$toast('网络延时，稍后再试！');Toast.clear()
+          }else{
+            that.upload(utils.dataURLtoFile(that.logoUrl,'haibao.png'))
+              .then(data => {
+                Toast.clear();
+                const a = document.createElement('a'); // 创建a标签
+                a.setAttribute('download', 'img');// download属性
+                a.setAttribute('href', data.url);// href链接
+                a.click();
+            })
+            .catch(err=>{this.$toast('网络延时，稍后再试！');Toast.clear()});
+          }
+        },1000)
+      }
+    },
+    // 复制
+    coplink(){
+      utils.copyContent(this.qrcodeUrl)
+      this.$toast('已复制粘贴板中')
     },
     // 生成图片
-    rrrr () {
-      var scale = 2;//放大倍数
-      var canvas = document.createElement('canvas');
+    rrrr() {
+      var scale = 2; //放大倍数
+      var canvas = document.createElement("canvas");
       var content = canvas.getContext("2d");
-      content.scale(scale,scale);
-      var rect = document.getElementById('posterdom').getBoundingClientRect();//获取元素相对于视察的偏移量
-      content.translate(-rect.left,-rect.top);//设置context位置，值为相对于视窗的偏移量负值，让图片复位
-      html2canvas(this.$refs.imageWrapper,{
-        backgroundColor: null,    // 解决生成的图片有白边
-        dpi: window.devicePixelRatio*2,
-        scale:scale,
-        y:1,
-        scrollY:-rect.top
-        }).then((canvas) => {
-          let dataURL = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream"); // 获取生成的图片的url
-          this.logoUrl = dataURL
-       })
+      content.scale(scale, scale);
+      var rect = document.getElementById("posterdom").getBoundingClientRect(); //获取元素相对于视察的偏移量
+      content.translate(-rect.left, -rect.top); //设置context位置，值为相对于视窗的偏移量负值，让图片复位
+      html2canvas(this.$refs.imageWrapper, {
+        useCORS:true,
+        backgroundColor: null, // 解决生成的图片有白边
+        dpi: window.devicePixelRatio * 2,
+        scale: scale,
+        timeout: 500,
+        y: 1,
+        x:rect.left,
+        scrollY: -rect.top
+      }).then(canvas => {
+        let dataURL = canvas
+          .toDataURL("image/jpeg")
+          .replace("image/jpeg", "image/octet-stream"); // 获取生成的图片的url
+        this.logoUrl = dataURL;
+      });
     }
   },
-  mounted(){
-    statistics.page("mproductdetails")
+  mounted() {
+    statistics.page("mproductdetails");
     // 微信授权
-    this.recommenduserwx()
+    this.recommenduserwx();
+    // 判断浏览器是否是火狐
+    if (navigator.userAgent.indexOf("Firefox") > 0) {
+      this.isFirefox = true;
+    }
   },
-  created(){
-    this.Initialization()
+  created() {
+    this.Initialization();
   }
-}
+};
 </script>
 <style lang="less" scoped>
 .productdetails_common {
-  background-color: #f1f1fb;
   padding-bottom: 76px;
   .productdetails_header {
     .header_img {
+      text-align: center;
+      padding: 8px 0px;
+      position: relative;
       img {
-        width: 375px;
-        height: 157px;
+        width: 345px;
+        height: 155px;
       }
+    }
+    .header_text {
+      background:#FFEADF;
+      border-radius:5px 0px 0px 5px;
+      height:24px;
+      line-height: 24px;
+      font-size:10px;
+      color: #EB5A48;
+      padding: 0px 9px;
+      position: absolute;
+      top: 160px;
+      right: 14px;
     }
   }
   .productdetails_process {
     background-color: #fff;
     margin-bottom: 8px;
+    margin-top: 8px;
     .process {
       height: 40px;
       padding: 11px;
       color: #4597fb;
       font-size: 14px;
-      border-bottom: 1px solid #f2f2f2; /*no*/
+      // border-bottom: 1px solid #f2f2f2; /*no*/
       padding-left: 15px;
       position: relative;
-      .process1{
+      .process1 {
         display: inline-block;
         width: 3px;
         height: 18px;
         background-color: #4597fb;
         border-radius: 1px;
       }
-      .process2{
+      .process2 {
         padding-left: 8px;
         position: absolute;
         top: 10px;
@@ -346,35 +473,53 @@ export default {
       padding: 10px 7px 7px 15px;
       color: #333333;
       font-size: 13px;
-      li{
+      li {
         margin-bottom: 5px;
       }
     }
+  }
+  .dailibz{
+    background-color: #fff;
+    padding: 20px 20px;
+    font-size: 14px;
+  }
+  .Explain {
+    background: url("./imgs/yongjinBG@2x.png") no-repeat;
+    background-size: 100%;
+    width: 359px;
+    height: 41px;
+    margin: 8px auto;
+    font-size: 13px;
+    font-family: "PingFang SC";
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    line-height: 41px;
+  }
+  .Explain_content {
+    background-color: #fff;
+    padding: 20px;
+    font-size: 14px;
   }
   .productdetail_footer {
     position: fixed;
     bottom: 0px;
     width: 375px;
-    height: 65px;
-    background: url("./imgs/dibutouying.png") no-repeat;
     background-size: 100%;
-    padding-top: 13px;
-    padding-right: 5px;
     .van_daili {
       padding: 4px 17px 0px 18px;
       text-align: center;
       font-size: 12px;
     }
     .button_userc {
-      width: 240px;
+      width: 375px;
     }
     button {
-      font-size: 15px;
-      width: 120px;
-      height: 44px;
+      font-size: 16px;
+      width: 188px;
+      height: 50px;
       color: #fff;
       background-color: #f3b13e;
-      border-radius: 3px;
     }
     .button_user {
       background-color: #4597fb;
@@ -430,10 +575,28 @@ export default {
   }
   .popu_close {
     text-align: center;
-    margin-top: 34px;
+    margin-top: 10px;
     img {
       width: 35px;
       height: 36px;
+    }
+  }
+  .popu_caozuo {
+    button {
+      width: 135px;
+      height: 40px;
+      line-height: 35px;
+      font-size: 17px;
+      font-family: "PingFang SC";
+      font-weight: 500;
+      color: rgba(255, 255, 255, 1);
+      border-radius: 20px;
+      background-color: #4597fb;
+    }
+    .btn1 {
+      background-color: #f3b13e;
+      margin-right: 15px;
+      margin-top: 15px;
     }
   }
 }

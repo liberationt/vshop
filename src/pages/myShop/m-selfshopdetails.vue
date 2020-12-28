@@ -68,6 +68,10 @@
     <van-popup class="yindaoshow" v-model="yindaoshow">
       <img src="./imgs/yindao.png" alt="">
     </van-popup>
+    <!-- 分享复制弹框 -->
+    <van-popup class="conpyImg" v-model="conpyImg">
+      <img src="./imgs/png@2x.png" alt="">
+    </van-popup>
   </div>
 </template>
 <script>
@@ -86,7 +90,9 @@ export default {
       id: this.$route.query.id,
       code:this.$route.query.code,
       shopdetailsData:{},
-      yindaoshow:false
+      yindaoshow:false,
+      storeCode:"",
+      conpyImg:false
     };
   },
   methods: {
@@ -137,14 +143,24 @@ export default {
     },
     iwantagent() {
       if(!this.inviterCode){ // 立即分享
-        this.yindaoshow = true
+       var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+        if (ua.match(/MicroMessenger/i) != "micromessenger") {
+          this.ontanchuang()
+        }else{
+          this.yindaoshow = true
+        }
         statistics.click("mselfshopdetails","wxShare")
       } else { // 立即申请
         this.$router.push({path:'./stiflingborrow?productType='+3+"&inviterCode="+ this.inviterCode +"&productCode="+this.code})
-        utils.setCookie('InviterCode',this.InviterCode)
+        utils.setCookie('InviterCode',this.inviterCode)
         utils.setCookie('ProductCode',this.code)
+        utils.setCookie('storeCode',this.storeCode)
         statistics.click("mselfshopdetails","lijishenqing")
       }
+    },
+    ontanchuang(){
+      this.conpyImg = true
+      utils.copyContent("抢单侠创业平台")
     },
     goEdit(){
       // 调到编辑页
@@ -166,6 +182,7 @@ export default {
     },
     Initialization(){
       this.request("wisdom.vshop.proprietaryProduct.getH5ProprietaryProductByCode",{proprietaryProductCode: this.$route.query.code}).then(data=>{
+        this.storeCode = data.data.storeCode
         if(data.data.state == 1){
           this.$router.push({ path: "./undershelf?inviterCode="+this.inviterCode });
         }

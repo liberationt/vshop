@@ -65,7 +65,7 @@ export default {
 			option1: [
 				{ text: '全部类型', value: "" },
         { text: '贷款', value: 0 },
-        { text: '信用卡', value: 1 },
+        // { text: '信用卡', value: 1 },
         { text: '信贷工具', value: 2 }
 			],
 			value1:"",

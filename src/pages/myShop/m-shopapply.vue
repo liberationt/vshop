@@ -27,7 +27,7 @@
         </div>
         <div class="vantTab_center">
           <van-tab title="贷款申请"></van-tab>
-          <van-tab title="信用卡申请"></van-tab>
+          <!-- <van-tab title="信用卡申请"></van-tab> -->
           <van-tab title="实用工具"></van-tab>
             <div class="loanFacility_common"> 
               <!-- 下拉加载 -->
@@ -173,7 +173,7 @@ export default {
     Initialization(i) {
       this.request("wisdom.vshop.productOrder.queryPageListByType", {
         queryStr: this.nameOphone,
-        productType: this.active,
+        productType: this.active == 1 ? 2 : this.active,
         pageNum: this.pageNum,
         pageSize: 10,
         orderStatus: this.orderStatus == "''" ? "" : this.orderStatus
@@ -212,6 +212,7 @@ export default {
   .search {
     background: #ffffff;
     padding: 8px 15px;
+    padding-top: 13px;
     .inputserch {
       background: #eeeeee;
       height: 34px;

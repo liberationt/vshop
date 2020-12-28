@@ -202,20 +202,24 @@ export default {
     // 一键推广
     extension() {
       statistics.click("mshopregister","yjtg")
-      let message,generalizeName
+      let message,generalizeName,title
       if(this.generalizeStore.hasStore){
         message = this.generalizeStore.text+" "+this.generalizeStore.shortLink
+        title = "可将以下推广内容复制发送至微信群、QQ群，群发短信等各种推广渠道。"
         generalizeName = '复制内容'
         statistics.click("mshopregister","copy")
+
       } else {
-        message = "您还没有创建店铺，请先编辑保存店铺信息"
+        message = ""
+        title = "您还没有创建店铺，请先编辑保存店铺信息"
         generalizeName = '去编辑'
         statistics.click("mshopregister","bianji")
       }
       Dialog.confirm({
-        title: "",
+        title: title,
         message: message,
-        confirmButtonText:generalizeName
+        confirmButtonText:generalizeName,
+        className:"copyClass"
       })
         .then(() => {
           if(this.generalizeStore.hasStore){
@@ -711,7 +715,7 @@ export default {
             .message_icon,
             .phone_icon,
             .biajidianpu {
-              margin-left: 6px;
+              margin-left: 5px;
             }
             .message_icon {
               margin-left: 15px;

@@ -14,11 +14,11 @@
             {{RecommendText}}
           </div>
           <div class="vantTab_center">
-            <van-tab title="相关产品">
+            <van-tab title="更多产品">
               <products ref="mychild"></products>
             </van-tab>
-            <van-tab title="信用卡">
-              <cards ref="mychild"></cards>
+            <van-tab title="贷款产品">
+              <mackmoney ref="mychild"></mackmoney>
             </van-tab>
             <van-tab title="信贷工具">
               <instruments ref="mychild"></instruments>
@@ -31,13 +31,13 @@
 <script>
 import { Tab, Tabs } from 'vant';
 import products from './cards/products.vue'
-import cards from './cards/cards.vue'
+import mackmoney from './cards/mackmoney.vue'
 import instruments from './cards/instruments.vue'
 import { statistics } from "wisdom-h5"
 export default {
   components:{
     products,
-    cards,
+    mackmoney,
     instruments,
     [Tab.name] : Tab,
     [Tabs.name] : Tabs,
@@ -45,7 +45,7 @@ export default {
   data(){
     return{
       active:0,
-      RecommendText:'推荐他人贷款申请成功，更多佣金等你拿',
+      RecommendText:'多种产品任你选，推荐好友加入，赚取更多佣金分红',
     }
   },
   methods:{
@@ -59,10 +59,10 @@ export default {
     switch (key) {
       switch(key){
         case 0:
-          this.RecommendText='推荐他人贷款申请成功，更多佣金等你拿'
+          this.RecommendText='多种产品任你选，推荐好友加入，赚取更多佣金分红'
         break;
         case 1:
-          this.RecommendText='推荐办卡核卡成功后最高可返100元'
+          this.RecommendText='多种产品任你选，推荐好友加入，赚取更多佣金分红'
         break;
         case 2:
           this.RecommendText='推荐他人使用查询工具，轻松拿返佣'

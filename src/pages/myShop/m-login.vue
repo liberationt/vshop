@@ -30,14 +30,18 @@
         </van-tab>
       </van-tabs>
       <div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
+      <div class="register_liji">
+        <router-link to='./register'>立即注册</router-link>
+      </div>
       <div class="login_login" :class="!flag ? 'login_w' : 'login_b'" @click="flag && goLogin()">
         登录
       </div>
       <div class="login_footer">
-        点击“登录”代表您已经同意 <span style="color:#4697FB; z-index:9" @click="goAgree">《抢单侠用户协议》</span>
+       <!-- <span @click="xuanzhong"> <img :src=xyImg alt=""> </span>  -->
+       点击登录即表示同意<span style="color:#4697FB; z-index:9" @click="goAgree(1)">《用户服务协议》</span>和<span style="color:#4697FB; z-index:9" @click="goAgree(2)">《用户使用规范》</span>
       </div>
+      
     </div>
-    
   </div>
 </template>
 <script>
@@ -65,6 +69,8 @@ export default {
       show: true,
       flag: false,
       seal_control: false,
+      xyImg:require("./imgs/yixuan@2x.png"),
+      isxy:2
     };
   },
   mounted(){
@@ -139,9 +145,6 @@ export default {
     },
     // 登录
     goLogin() {
-      // if (!this.isCheck(1)) {
-      //   return false;
-      // }
       this.flag = false
       if (this.tabactive == 0) {
         this.request("wisdom.vshop.vshopStoreManager.captchaLogin", {
@@ -177,11 +180,15 @@ export default {
             this.flag = true
           });
       }
-
       // this.$router.push({ path: "./myshop" });
     },
-    goAgree() {
-      window.location.href = "http://qdx.zanfin.com/promotion/#/agreement";
+    goAgree(num) {
+      statistics.click("mlogin","yhxy")
+      if(num==1){
+        this.$router.push({path:'./magree'})
+      } else {
+        this.$router.push({path:'./magree1'})
+      }
     },
     onInput(){
       this.isCheck(0)
@@ -248,7 +255,17 @@ export default {
       this.show = true;
       clearInterval(this.timer);
       this.timer = null;
-    }
+    },
+    // 协议选中
+    // xuanzhong(){
+    //   if(this.isxy == 1){
+    //     this.xyImg=require("./imgs/yixuan@2x.png")
+    //     this.isxy = 2
+    //   } else {
+    //     this.xyImg=require("./imgs/weixuan@2x.png")
+    //     this.isxy = 1
+    //   }
+    // }
   }
 };
 </script>
@@ -311,7 +328,7 @@ export default {
     height: 50px;
     border-radius: 25px;
     line-height: 53px;
-    margin: 30px auto 0px auto;
+    margin: 10px auto 0px auto;
   }
   .login_b{
     background-color: #4597fb;
@@ -327,6 +344,24 @@ export default {
     font-size: 10px;
     color: #999;
     margin-top: 15px;
+    img{
+      width: 11px;
+      height: 11px;
+      margin-bottom: 3px;
+      margin-right: 8px;
+    }
+  }
+  .register_liji{
+    a{
+      color: #4597FB;
+      font-size:14px;
+      font-family:'PingFang SC';
+      font-weight:500;
+    }
+    text-align: left;
+    width: 295px;
+    margin: 0 auto;
+    margin-top: 10px;
   }
 }
 </style>

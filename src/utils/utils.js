@@ -194,6 +194,7 @@ const zipImgFile = (imgFile,callback) =>{
   }
 }
 const dataURLtoFile = (dataurl, filename) => {
+  console.log(dataurl)
   var arr = dataurl.split(','), 
   mime = arr[0].match(/:(.*?);/)[1],        
   bstr = atob(arr[1]), 
@@ -205,6 +206,40 @@ const dataURLtoFile = (dataurl, filename) => {
   return new File([u8arr], filename, {type:mime});
 }
 
+// 海报生成
+import html2canvas from 'html2canvas'
+const generatePosters = (rect,offsetY,demo,wxLink,sjlink)=>{
+  var scale = 2;//放大倍数
+  var canvas = document.createElement('canvas');
+  var content = canvas.getContext("2d");
+  content.scale(scale,scale);
+  content.translate(-rect.left,-rect.top);//设置context位置，值为相对于视窗的偏移量负值，让图片复位
+  let offetLeft
+  if(isAndroid1()){
+    offetLeft = (document.body.clientWidth - 289)/2+5
+  } else {
+    offetLeft = rect.left
+  }
+  let parameter = {
+    useCORS:true,
+    backgroundColor: null, // 解决生成的图片有白边
+    dpi: window.devicePixelRatio*2,
+    scale:scale,
+    timeout: 500,
+    y:1,
+    x:offetLeft,
+    scrollY:offsetY
+  }
+  html2canvas(demo,parameter).then((canvas) => {
+    let dataURL = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream"); // 获取生成的图片的url
+    var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+    if(ua.match(/MicroMessenger/i) == "micromessenger"){
+      wxLink(dataURL)
+    } else {
+      sjlink(dataURL)
+    }
+  })
+}
 export default {
   getCookie,
   setCookie,
@@ -217,5 +252,7 @@ export default {
   wxShare,
   ip,
   isAndroid1,
-  compress  
+  compress,
+  dataURLtoFile,
+  generatePosters
 }

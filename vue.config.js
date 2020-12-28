@@ -81,7 +81,7 @@ module.exports = {
   // webpack-dev-server 相关配置
   devServer: {
     open: process.platform === 'darwin',
-    host: '0.0.0.0', // 允许外部ip访问
+    host: '192.168.1.187', // 允许外部ip访问
     port: 8022, // 端口
     https: false, // 启用https
     overlay: {

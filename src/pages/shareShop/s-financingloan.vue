@@ -42,7 +42,7 @@ export default {
 			// },
 			getdatas(){
 				let data = {
-					storeCode:utils.getCookie('storeCode'),
+					storeCode:this.$route.query.storeCode?this.$route.query.storeCode:utils.getCookie('storeCode'),
 					head : true , 
 					type:3
 				}
@@ -94,7 +94,7 @@ export default {
 		 font-size:12px;
 		 color:#4897FB;
 		 padding-left:15px;
-		 margin-bottom: 5px;
+		 margin-bottom: 10px;
 		 border-radius: 4px;
 		 margin-top:12px;
 	 }

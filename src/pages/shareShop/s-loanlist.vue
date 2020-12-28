@@ -18,16 +18,19 @@
 			@load="onLoad"
 		>	
 			<div class="listdata" @click="toproductnamedetail(item.productCode)" v-for="(item,i) in dataList" :key="i">
-				<div class="listdatatop">
+				<div class="leftpic"><img :src=item.productLeftTopPic alt=""></div>
+				<div class="listdatatop" :class="item.productParamShow==1?'listdatatop':'listdatatops'">
 					<div>
-						<div><img :src=item.productLogo alt=""></div>
+						<div class="borderRaduils"><img :src=item.productLogo alt=""></div>
 					</div>
 					<div>
 						<h4>{{item.productName}}</h4>
 						<p>{{item.subTitle}}</p>
 					</div>
+					<div class="productLabel">{{item.productLabel}}</div>
+					<div class="apply applys" v-show="item.productParamShow!=1" @click="toproductnamedetail(item.productCode)">立即申请</div>
 				</div>
-				<div class="listdatabot">
+				<div class="listdatabot" v-show="item.productParamShow===1">
 					<div class="listrightleft">
 						<p style="font-size:16px;font-weight:bold;color:#FE951E">{{item.amount}}</p>
 						<p>可借额度 (元)</p>
@@ -36,7 +39,7 @@
 						<p>期限：<span style="font-weight:bold;font-size:12px;">{{item.limit}}</span></p>
 						<p>{{item.desc}}</p>
 					</div>
-					<div class="apply">立即申请</div>
+					<div class="apply" @click="toproductnamedetail(item.productCode)">立即申请</div>
 				</div>
 			</div>
 		</van-list>
@@ -236,59 +239,103 @@ export default {
 			}
 		}
 		.listdata{
-			margin:10px 15px;
-			margin-bottom:10px;
+			position: relative;
+			margin:0 15px 10px;
 			background: #ffffff;
-			border-radius: 4px;
-			.listdatatop{
-				height:53px;
-				border-bottom:1px dashed #f2f2f2 /*no*/;
-				padding:0 15px;
-				display: flex;
-				align-items: center;
-				img{
-					width:33px;
-					height:33px;
-					margin-right: 10px;
-				}
-				h4{
-					font-size:16px;
-					color:#333333;
-					font-weight: bold;
-				}
-				p{
-					font-size: 11px;
-					color:#999999;
-				}
-			}
-			.listdatabot{
-				display: flex;
-				padding:0 15px;
-				position: relative;
-				align-items: center;
-				height:58px;
-				font-size:12px;
-				color:#333333;
-				.listrightleft{
-					width:100px;
-					border-right:1px solid #f2f2f2;
-					margin-right: 20px;
-				}
-				div{
-					line-height:20px;
-					span{
-						color:#FE951E;
-					}
-				}
-				.apply{
-					background: #4597FB;
-					color:#ffffff;
-					font-weight: bold;
-					border-radius: 15px;
-					padding:6px 10px 5px;
-					position:absolute;right:10px;
-				}
+			border-radius: 5px;
+		.leftpic{
+			position:absolute;
+			top:0;
+			left:0;
+			img{
+				width:35px;height:35px;
+				z-index: 10;
 			}
 		}
+		.listdatatop{
+			height:53px;
+			border-bottom:1px dashed #f2f2f2 /*no*/;
+			padding:0 15px;
+			display: flex;
+			align-items: center;
+			.productLabel{
+				position: absolute;
+				top:0;
+				right:10px;
+				font-size:10px;
+				color:#4597FB;
+				background:#D9EAFF;
+				padding:5px 9px;
+				border-radius:  0 0 5px 5px;
+			}
+			img{
+				width:33px;
+				height:33px;
+				margin-right: 10px;
+			}
+			h4{
+				font-size:16px;
+				color:#333333;
+				font-weight: bold;
+				margin-bottom:4px;
+			}
+			p{
+				font-size: 11px;
+				color:#999999;
+			}
+		}
+		.listdatatops{
+			height:93px;
+			border:none;
+			.borderRaduils{
+				border-radius: 5px;
+				overflow: hidden;
+				width:45px;
+				height:45px;
+				margin-right: 10px;
+			}
+			img{
+				width:45px;
+				height:45px;
+			}
+			p{
+				font-size:14px;
+			}
+		}
+		.listdatabot{
+			display: flex;
+			padding:0 15px;
+			position: relative;
+			align-items: center;
+			height:58px;
+			font-size:12px;
+			color:#333333;
+			.listrightleft{
+				width:100px;
+				border-right:1px solid #f2f2f2;
+				margin-right: 20px;
+			}
+			div{
+				line-height:20px;
+				span{
+					color:#FE951E;
+				}
+			}
+			
+		}
+		.apply{
+			background: #4597FB;
+			color:#ffffff;
+			font-weight: bold;
+			border-radius: 15px;
+			padding:6px 10px 5px;;
+			position:absolute;right:10px;
+		}
+		.applys{
+			bottom:20px;
+			font-size:12px;
+
+		}
+	}
 	}
 </style>

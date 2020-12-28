@@ -98,7 +98,7 @@ export function upload(file = {}) {
         //console.log('response=====> ' + JSON.stringify(response))
         resolve && resolve(response.data)
       } else {
-        Toast("图片过大，请处理一下");
+        Toast(response.message);
       }
     }).catch(err => {
       Toast("图片过大，请处理一下");

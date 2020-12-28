@@ -16,7 +16,9 @@
 				</div>
 				<div class="utilistittle">申请多个产品，可大幅度提高贷款成功率</div>
 				<div class="utilisdatalist" @click="tostiflingborrow(item.productCode)" v-for="(item,i) in dataList" :key='i'>
+					<div class="leftpic"><img :src=item.productLeftTopPic alt=""></div>
 					<div class="datalistbanner"><img :src=item.productLogo alt=""></div>
+					<div class="productLabel">{{item.productLabel}}</div>
 					<div class="detailstittle">
 						<h4>{{item.productName}}</h4>
 						<p>{{item.desc}}</p>
@@ -71,8 +73,10 @@ export default {
 						this.personImg=(data.data.personImg==""?this.personImg:data.data.personImg)
 						this.name = data.data.name
 						this.adNameSecond = data.data.adNameSecond
-						this.havemoneyImg = data.data.bannerResList[0].bannerUrl
-						this.jumpUrl = data.data.bannerResList[0].jumpUrl
+						if(data.data.bannerResList!=null){
+							this.havemoneyImg = data.data.bannerResList[0].bannerUrl
+							this.jumpUrl = data.data.bannerResList[0].jumpUrl
+						}
 						this.realStatus = data.data.realStatus
 						this.showUMoney = data.data.showUMoney
 						this.$emit('toparent',data.data.storeName,2,data.data.inviterCode,data.data.name)
@@ -173,7 +177,7 @@ export default {
 				line-height:40px;
 				background: #ffffff;
 				font-size:12px;
-				margin: 12px 0 5px;
+				margin: 12px 0 10px;
 				padding-left:15px;border-radius:4px;
 			}
 			.utilisdatalist{
@@ -184,6 +188,26 @@ export default {
 				padding-top:25px;
 				margin-bottom: 10px;
 				border-radius: 4px;
+				position: relative;
+				.productLabel{
+					position: absolute;
+					top:0;
+					font-size:10px;
+					right:10px;
+					color:#4597FB;
+					background:#D9EAFF;
+					padding:5px 9px;
+					border-radius:  0 0 5px 5px;
+				}
+				.leftpic{
+					position:absolute;
+					top:0;
+					left:0;
+					img{
+						width:35px;height:35px;
+						z-index: 10;
+					}
+				}
 				.datalistbanner{
 					height:50px;
 					width:50px;

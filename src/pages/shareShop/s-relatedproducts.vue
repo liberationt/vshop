@@ -1,5 +1,5 @@
 <template>
-	<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功' class="xialashuaxin" :disabled="disabled=='贷款'">
+	<van-pull-refresh v-model="isLoading" @refresh="onRefresh" success-text='刷新成功' class="xialashuaxin" :disabled="disabled=='贷款产品'">
 	<div class="srelamain">
 		<header class="srelatop">
 			<div class="srelatopmain">
@@ -13,14 +13,14 @@
 			<div class="invitenum"><img src="./images/xiantiaobanner.png"/>邀请码 &nbsp;{{inviterCode}}</div>
 		</header>
 		<div class="havemoney" >
-			<div class="havemoneytop" v-show="showUMoney">
+			<div class="havemoneytop" v-show="showUMoney&&disabled!='更多产品'">
 				<div @click="tohavemoney" class="havamoneyImg"><img :src=havemoneyImg alt=""></div>
 				<div class="close" @click="closeTost" v-show="isshow"><img src="./images/close.png" alt=""></div>
 			</div>
 			<div>
-				<officialloans v-show="disabled=='贷款'"></officialloans>
-				<creditcard ref="getcred" v-show="disabled=='信用卡'"></creditcard>
-				<financingloan ref='getfin'  v-show="disabled=='自营'"></financingloan>
+				<creditcard ref="getcred" v-show="disabled=='更多产品'"></creditcard>
+				<officialloans v-show="disabled=='贷款产品'"></officialloans>
+				<financingloan ref='getfin'  v-show="disabled=='自营贷款'"></financingloan>
 			</div>
 		</div>
 		
@@ -61,9 +61,9 @@ export default {
 	},
 	methods:{
 		onClick(i,v){
-			if(v=='贷款'){
+			if(v=='贷款产品'){
 				statistics.page("officialloans");
-			}else if(v=='信用卡'){
+			}else if(v=='更多产品'){
 				statistics.page("creditcard");
 			}else{
 				statistics.page("financingloan");
@@ -106,7 +106,7 @@ export default {
 		onRefresh(){
 			// var that = this
 			setTimeout(() => {
-				if(this.disabled=='信用卡'){
+				if(this.disabled=='更多产品'){
 					this.$refs.getcred.getdatas()
 				}else{
 					this.$refs.getfin.getdatas()
@@ -117,27 +117,33 @@ export default {
 		//获取数据
 		getdatas(){
 			let data = {
-				storeCode:utils.getCookie('storeCode'),
+				storeCode:this.$route.query.storeCode?this.$route.query.storeCode:utils.getCookie('storeCode'),
 				head : true , 
 				type:1
 			}
 			this.https('wisdom.vshop.vshopStore.queryStoreProduct',data)
 			.then(data=>{ 
-				this.loanlist = data.data.searchOptionBeanList
-				this.inviterCode = data.data.inviterCode
-				this.personImg = (data.data.personImg==""?this.personImg:data.data.personImg)
-				if(data.data.bannerResList.length){
-					this.havemoneyImg=data.data.bannerResList[0].bannerUrl
-					this.jumpUrl = data.data.bannerResList[0].jumpUrl
+				if(data.code=='success'){
+					this.loanlist = data.data.searchOptionBeanList
+					this.inviterCode = data.data.inviterCode
+					this.personImg = (data.data.personImg==""?this.personImg:data.data.personImg)
+					if(data.data.bannerResList!=null){
+						this.havemoneyImg=data.data.bannerResList[0].bannerUrl
+						this.jumpUrl = data.data.bannerResList[0].jumpUrl
+					}
+					this.dayUMoney = data.data.dayUMoney
+					this.showUMoney = data.data.showUMoney
+					this.$emit('toparent',data.data.storeName,2,data.data.inviterCode,data.data.name)
+					if(this.$route.query.disbaled){
+						this.disabled=decodeURI(this.$route.query.disbaled)
+					}else{
+						this.disabled = this.loanlist[0].label
+					}
+					utils.setCookie('inviterCode',data.data.inviterCode)
 				}
-				this.dayUMoney = data.data.dayUMoney
-				this.showUMoney = data.data.showUMoney
-				this.$emit('toparent',data.data.storeName,2,data.data.inviterCode,data.data.name)
-				if(this.$route.query.disbaled){
-					this.disabled=decodeURI(this.$route.query.disbaled)
-				}else{
-					this.disabled = this.loanlist[0].label
-				}
+			})
+			.catch(err=>{
+				console.log(err)
 			})
 		}
 	},
@@ -151,8 +157,10 @@ export default {
 		if(this.$route.query.index){
 			this.active =String(this.$route.query.index)
 		}
+		if(this.$route.query.storeCode){
+			utils.setCookie('storeCode',this.$route.query.storeCode)
+		}
 		this.getdatas()
-		
 	}
 }
 </script>

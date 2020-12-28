@@ -36,6 +36,13 @@ const router = new Router({
         import ('./pages/myShop/m-login.vue')
     },
     {
+      path: '/register',
+      name: 'register',
+      tittle: '注册页面',
+      component: () =>
+        import ('./pages/shareShop/register.vue')
+    },
+    {
       path: '/mlogin',
       name: 'mlogin',
       tittle: '登陆页面',
@@ -422,6 +429,41 @@ const router = new Router({
       title: '分享',
       component: () =>
         import ('./pages/myShop/share.vue')
+    },
+    {
+      path: '/mRegister',
+      name: 'mRegister',
+      title: '推广注册页',
+      component: () =>
+        import ('./pages/myShop/m-register.vue')
+    },
+    {
+      path: '/magree',
+      name: 'magree',
+      title: '用户服务协议',
+      component: () =>
+        import ('./pages/myShop/m-agree.vue')
+    },
+    {
+      path: '/magree1',
+      name: 'magree1',
+      title: '用户服务协议',
+      component: () =>
+        import ('./pages/myShop/m-agree1.vue')
+    },
+    {
+      path: '/mtixieyi',
+      name: 'mtixieyi',
+      title: '提现规则',
+      component: () =>
+        import ('./pages/myShop/m-tixieyi.vue')
+    },
+    {
+      path: '/mopening',
+      name: 'mopening',
+      title: '提现规则',
+      component: () =>
+        import ('./pages/myShop/m-opening.vue')
     }
   ]
 })

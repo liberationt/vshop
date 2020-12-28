@@ -10,12 +10,15 @@
 		</div>
 		 <!-- 风险弹窗 -->
 		<van-popup class="yindaoshow" v-model="yindaoshow">
-		<img src="./images/yingdao.png" alt="">
+			<img src="./images/yingdao.png" alt="">
+		</van-popup>
+		<van-popup class="conpyImgs" v-model="conpyImg">
+			<img src="./images/feiwx.png" alt="">
 		</van-popup>
 		<footer class="shophome">
 			<van-tabbar v-model="active" active-color="#07c160" @change="onchange">
 				<van-tabbar-item name="1"><router-link to="/shoppage"><div class="footbar"><img :src='this.active==1?srcs1:nosrc1'><span>店铺首页</span></div></router-link></van-tabbar-item>
-				<van-tabbar-item name="2"><router-link to="/relatedproducts"><div class="footbar"><img :src='this.active==2?srcs2:nosrc2'><span>相关产品</span></div></router-link></van-tabbar-item>
+				<van-tabbar-item name="2"><router-link to="/relatedproducts"><div class="footbar"><img :src='this.active==2?srcs2:nosrc2'><span>更多产品</span></div></router-link></van-tabbar-item>
 				<van-tabbar-item name="3"><router-link to="/utilities"><div class="footbar"><img :src='this.active==3?srcs3:nosrc3'><span>实用工具</span></div></router-link></van-tabbar-item>
 				<van-tabbar-item name="4"><div class="footbar" @click='toinvit'><img :src='this.active==4?srcs4:nosrc4'><span>我要开店</span></div></van-tabbar-item>
 			</van-tabbar>
@@ -45,6 +48,8 @@ export default {
 				storeCode:'',
 				inviterCode:'',
 				isLoading:false,
+				conpyImg:false,
+				wxShareContent:"",
 				name:'',
 				srcs1:require('./images/home1.png'),
 				nosrc1:require('./images/home2.png'),
@@ -88,8 +93,14 @@ export default {
 
 			},
 			toshare(){
-				this.yindaoshow = true
-				this.wxShare(this.inviterCode)
+				var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+				if (ua.match(/MicroMessenger/i) != "micromessenger") {
+					this.conpyImg = true
+					utils.copyContent("抢单侠创业平台")
+				}else{
+					this.yindaoshow = true
+					this.wxShare(this.inviterCode)
+				}
 			},
 			wxShare(inviterCode) {
 				let url
@@ -112,7 +123,6 @@ export default {
 							success: function () {
 							},
 							cancel: function(err){
-
 							}
 							});
 						})

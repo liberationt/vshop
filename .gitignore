@@ -19,3 +19,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+src/pages/shareShop/images/weixuan@2x.png
+src/pages/shareShop/images/yixuan@2x.png

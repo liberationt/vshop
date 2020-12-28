@@ -8,8 +8,8 @@
 				/>
 			</header>
       		<div class="productbannerimg">
-				<div><div><img :src=dataobject.productLogo alt=""></div></div>
-				<p>{{tittle}}</p>
+				<div><img :src=dataobject.userBannerUrl alt=""></div>
+				<!-- <p>{{tittle}}</p> -->
 			</div>
 			<!-- 信息 -->
 			<div class="productinfor">
@@ -18,13 +18,14 @@
 					<p v-for="(item,i) in dataobject.productDescribe" :key="i">{{item}}</p>
 				</div>
 				<div>
-					<h3><span></span>申请条件</h3>
-					<p v-for="(item,i) in dataobject.applyCondition" :key="i">{{item}}</p>
+					<h3><span></span>申请步骤</h3>
+					<p v-html="dataobject.checkStep"></p>
+					<!-- <p v-for="(item,i) in dataobject.applyCondition" :key="i">{{item}}</p> -->
 				</div>
 				<div class="rightapply" @click="apply">立即申请</div>
 			</div>
 			<div class="guesslike">
-				<h3><span></span>猜你喜欢</h3>
+				<h3><span></span>热门推荐</h3>
 				<div class="guesslikecont">
 					<div v-for="(item,i) in dataobject.vshopProductResList" :key='i' @click="todetails(item.productCode)">
 						<div class="guessimgs"><img :src=item.productLogo alt=""></div>
@@ -127,32 +128,15 @@ export default {
 	background: #f1f1fb;
 }
     .productbannerimg{
-			padding-top:6px;
-			height:126px;
-			background: #ffffff;
-			text-align: center;
-			>div{
-				margin:0 auto;
-				text-align: center;
-				width:80px;
-				height:80px;
-				border-radius: 50%;
-				padding:3px 3px 0;
-				border:1px solid #f2f2f2;
-				div{
-					width:72px;height:72px;border-radius: 50%;overflow: hidden;
-				}
-				img{
-					width:72px;
-					height:72px;
-				}
+			height:155px;
+			margin: 8px 8px;
+			border-radius: 5px;
+			overflow: hidden;
+			img{
+				height:155px;
+				width:100%;
 			}
-			p{
-				font-size:18px;
-				color:#4597fb;
-				font-weight: bold;
-				margin-top: 2px;
-			}
+			
 		}
 		.productinfor{
 			margin:8px 8px 20px;

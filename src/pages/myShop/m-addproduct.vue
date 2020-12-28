@@ -119,6 +119,7 @@ export default {
       if(file.file.size > m){
         this.$toast('图片不能大于4M')
       } else {
+        console.log(file.file)
         utils.compress(file.file,function(zipFile){
           that.upload(zipFile)
             .then(data => {

@@ -8,6 +8,8 @@ import wx from 'weixin-js-sdk'
 import Api from './utils/api'
 import 'lib-flexible'
 import scroll from 'vue-seamless-scroll'
+// 引用切图js
+import clipper from './static/clipper'
 // 导航栏
 import { NavBar  } from 'vant';
 // 下拉刷新
@@ -22,6 +24,7 @@ Vue.use(List)
 Vue.use(Toast)
 Vue.use(scroll)
 Vue.use(wx)
+Vue.use(clipper)
 //兼容ie10 以上
 import '@babel/polyfill'
 if (!store.state.actives ) {

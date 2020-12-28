@@ -263,10 +263,13 @@ export default {
       var rect = document.getElementById('posterdom').getBoundingClientRect();//获取元素相对于视察的偏移量
       content.translate(-rect.left,-rect.top);//设置context位置，值为相对于视窗的偏移量负值，让图片复位
       html2canvas(this.$refs.imageWrapper, {
+        useCORS:true,
         backgroundColor: null, // 解决生成的图片有白边
         dpi: window.devicePixelRatio*2,
         scale:scale,
+        timeout: 500,
         y:1,
+        x:rect.left,
         scrollY:-rect.top
       }).then(canvas => {
         let dataURL = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream") // 获取生成的图片的url

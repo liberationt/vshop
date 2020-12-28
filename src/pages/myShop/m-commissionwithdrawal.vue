@@ -34,6 +34,9 @@
 				<div class="deduction">{{contentT}}元</div>
 			</div>
 			<div class="config" @click="flag && withdrawal()">确认提现</div>
+      <div class="tixieyi"> 
+        <span @click="xuanzhong"> <img :src=xyImg alt=""> </span> 我已阅读并同意<span style="color:#4697FB; z-index:9" @click="goAgree(1)">《费用结算服务协议》</span> 
+      </div>
 			<div class="txsm">
 				<p>提现说明</p>
 				<p>1. 提现时会验证交易密码，<span class="setUp" @click="setUp">设置或修改交易密码</span></p>
@@ -124,6 +127,8 @@ export default {
       pwdNum: 0,
       contentT:"",
       tixian:0,
+      xyImg:require("./imgs/yixuan@2x.png"),
+      isxy:2
     };
   },
   methods: {
@@ -146,7 +151,11 @@ export default {
     },
     // 确认提现
     withdrawal() {
-       this.tixian = 0 // 提现
+      if(this.isxy == 1){
+        Toast("请选择协议")
+        return false
+      }
+      this.tixian = 0 // 提现
       if(Number(this.money) < this.withdrawalList.singleMinAmount || Number(this.money) > this.withdrawalList.singleMaxAmount){
         this.$toast("提现金额范围为"+this.withdrawalList.singleMinAmount+"-"+this.withdrawalList.singleMaxAmount)
         return false
@@ -337,6 +346,21 @@ export default {
           console.log(err);
         });
     },
+    // 协议
+    goAgree(){
+      this.$router.push({path:'./mtixieyi'})
+    },
+    // 协议选中
+    xuanzhong(){
+      statistics.click("commissionwithdrawal","txxy")
+      if(this.isxy == 1){
+        this.xyImg=require("./imgs/yixuan@2x.png")
+        this.isxy = 2
+      } else {
+        this.xyImg=require("./imgs/weixuan@2x.png")
+        this.isxy = 1
+      }
+    },
     // 定时器
     setTimeout() {
       const TIME_COUNT = 60;
@@ -389,6 +413,21 @@ export default {
     margin-right: 11px;
   }
 }
+.tixieyi {
+    width: 100%;
+    height: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 10px;
+    color: #999;
+    margin-bottom: 25px;
+    img{
+      width: 11px;
+      height: 11px;
+      margin-bottom: 3px;
+      margin-right: 8px;
+    }
+  }
 .setUp {
   color: #4597fb;
   border-bottom: 1px solid #4597fb; /*no*/
@@ -497,7 +536,7 @@ export default {
 .config {
   height: 45px;
   background: #4597fb;
-  margin: 30px 15px 35px;
+  margin: 30px 15px 10px;
   line-height: 45px;
   text-align: center;
   color: #ffffff;

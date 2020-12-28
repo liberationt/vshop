@@ -79,7 +79,7 @@ export default {
 <style lang="less" scoped>
 .shopsign_common {
   background-color: #f1f1fb;
-  padding-bottom: 50px;
+  padding-bottom: 80px;
   .shopsign_center {
     padding-top: 15px;
   }

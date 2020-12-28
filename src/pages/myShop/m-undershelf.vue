@@ -18,16 +18,19 @@
 			<p>申请多个产品，可大幅提高贷款成功率</p>
 		</div>
 		<div class="listdata" v-for="(item,i) in productResList" :key="i">
-			<div class="listdatatop">
+			<div class="leftpic"><img :src=item.productLeftTopPic alt=""></div>
+			<div class="listdatatop" :class="item.productParamShow===1?'listdatatop':'listdatatops'">
 				<div>
-					<div><img :src=item.productLogo alt=""></div>
+					<div class="borderRaduils"><img :src=item.productLogo alt=""></div>
 				</div>
 				<div>
 					<h4>{{item.productName}}</h4>
 					<p>{{item.subTitle}}</p>
 				</div>
+				<div class="productLabel">{{item.productLabel}}</div>
+				<div class="apply applys" v-show="item.productParamShow!=1" @click="toproductnamedetail(item.productCode)">立即申请</div>
 			</div>
-			<div class="listdatabot">
+			<div class="listdatabot" v-show="item.productParamShow===1">
 				<div class="listrightleft">
 					<p style="font-size:16px;font-weight:bold;color:#FE951E">{{item.amount}}</p>
 					<p>可借额度 (元)</p>
@@ -203,18 +206,39 @@ export default {
 			line-height: 42px;
 		}
 		.listdata{
-		margin-bottom:10px;
-		background: #ffffff;
-		border-radius: 4px;
+			position: relative;
+			margin-bottom:10px;
+			background: #ffffff;
+			border-radius: 4px;
+		.leftpic{
+			position:absolute;
+			top:0;
+			left:0;
+			z-index: 10;
+			img{
+				width:35px;height:35px;
+			}
+		}
+		
 		.listdatatop{
 			display: flex;
 			padding:0 15px;
 			position: relative;
 			align-items: center;
 			border-bottom: 1px dashed #f2f2f2;
-			height:58px;
+			height:53px;
 			font-size:12px;
 			color:#333333;
+			.productLabel{
+				position: absolute;
+				top:0;
+				right:10px;
+				font-size:10px;
+				color:#4597FB;
+				background:#D9EAFF;
+				padding:5px 9px;
+				border-radius:  0 0 5px 5px;
+			}
 			.listrightleft{
 				width:100px;
 				margin-right: 20px;
@@ -228,10 +252,29 @@ export default {
 				font-size:16px;
 				color:#333333;
 				font-weight: bold;
+				margin-bottom:4px;
 			}
 			p{
 				font-size: 11px;
 				color:#999999;
+			}
+		}
+		.listdatatops{
+			height:93px;
+			border:none;
+			.borderRaduils{
+				border-radius: 5px;
+				overflow: hidden;
+				width:45px;
+				height:45px;
+				margin-right: 10px;
+			}
+			img{
+				width:45px;
+				height:45px;
+			}
+			p{
+				font-size:14px;
 			}
 		}
 		.listdatabot{
@@ -253,14 +296,20 @@ export default {
 					color:#FE951E;
 				}
 			}
-			.apply{
-				background: #4597FB;
-				color:#ffffff;
-				font-weight: bold;
-				border-radius: 15px;
-				padding:6px 10px 5px;
-				position:absolute;right:10px;
-			}
+			
+		}
+		.apply{
+			background: #4597FB;
+			color:#ffffff;
+			font-weight: bold;
+			border-radius: 15px;
+			padding:6px 10px 5px;
+			position:absolute;right:10px;
+		}
+		.applys{
+			bottom:20px;
+			font-size:12px;
+
 		}
 	}
 	.viewall{

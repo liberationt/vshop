@@ -12,6 +12,8 @@
     "@babel/polyfill": "^7.4.4",
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
+    "cropperjs": "^1.5.5",
+    "exif-js": "^2.3.0",
     "html2canvas": "^1.0.0-rc.3",
     "js-md5": "^0.7.3",
     "less": "^2.7.3",

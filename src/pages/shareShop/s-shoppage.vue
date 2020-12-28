@@ -30,11 +30,11 @@
 					</div>
 				</div>
 				<div @click="card">
-					<div class="banka"><img src="./images/banka.png" alt=""></div>
+					<div class="banka"><img src="./images/allproduct.png" alt=""></div>
 					<div>
-						<h4>我要办卡</h4>
-						<p>各种热门信用卡</p>
-						<p>额度高批卡率99%</p>
+						<h4>发现</h4>
+						<p>你想要的都在这里</p>
+						<p>一般人我不告诉他</p>
 					</div>
 				</div>
 				<div @click="tool">
@@ -68,7 +68,7 @@
 				:beforeClose="beforeClose"
 				@confirm = confirm(dataList.weixinNumber)
 			>
-			<div class="dialogbanner"><img :src=dataList.weixinImg alt=""></div>
+			<div class="dialogbanner" v-if="dataList.weixinImg!=null&&dataList.weixinImg!=''"><img :src=dataList.weixinImg alt=""></div>
 			<div class="dialogtitle">
 				<p>长按识别二维码图片</p>
 				<p>或复制微信ID搜索添加</p>
@@ -161,7 +161,7 @@ export default {
 					index = this.searchOptionBeanList[i].order-1
 				}
 			}
-			this.$router.push('/relatedproducts?disbaled='+encodeURI('贷款')+'&'+'index='+index)
+			this.$router.push('/relatedproducts?disbaled='+encodeURI('贷款产品')+'&'+'index='+index)
 		},
 		card(){
 			statistics.click('shappage','card')
@@ -171,7 +171,7 @@ export default {
 					index = this.searchOptionBeanList[i].order-1
 				}
 			}
-			this.$router.push('/relatedproducts?disbaled='+encodeURI('信用卡')+'&index='+index)
+			this.$router.push('/relatedproducts?disbaled='+encodeURI('更多产品')+'&index='+index)
 		},
 		tool(){
 			statistics.click('shappage','tool')

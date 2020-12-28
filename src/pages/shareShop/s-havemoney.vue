@@ -33,7 +33,7 @@
 		</div>
 		<div v-show="seal_control" style='margin: 0px auto;' id='captcha_div' class="seal_control"></div>
 		<div class="agree">
-			<van-checkbox icon-size='15px' v-model="checked">已阅读并同意<span @click="serviceAgreement">《服务协议》</span></van-checkbox>
+			点击立即注册即表示同意<span @click="agree(1)">《用户服务协议》</span>和<span @click="agree(2)">《用户使用规范》</span></van-checkbox>
 		</div>
 		<div class="rightapply" @click='immediately'>立即申请贷款</div>
 	</div>
@@ -57,7 +57,6 @@ export default {
 			flag:true,
 			countext:'获取验证码',
 			countNumber:1,
-			checked:true,
 			seal_control:false,
 			isshow:false,
 			listData: [
@@ -98,9 +97,12 @@ export default {
 		returngo(){
 			this.$router.go(-1)
 		},
-		//同意服务协议
-		serviceAgreement(){
-			this.$router.push('/serviceagreement')
+		agree(num){
+			if(num==1){
+               this.$router.push({path:'./magree'})
+            }else{
+               this.$router.push({path:'./magree1'})
+            }
 		},
 		//清楚定时器
 		deleteTime() {
@@ -193,10 +195,6 @@ export default {
 		immediately(){
 			if(utils.getCookie('users')){
 				statistics.click("havemoney","todetails");
-				if(!this.checked){
-					Toast("请勾选服务协议");
-					return false;
-				}
 				this.$router.push('/applicationloan')
 			}else{
 				if(!this.phonenumber){
@@ -222,10 +220,6 @@ export default {
 				}
 				if (!/^[0-9]*$/.test(this.verification) || this.verification.length < 6) {
 					Toast("验证码有误，请重新输入！");
-					return false;
-				}
-				if(this.checked==false){
-					Toast("请勾选服务协议");
 					return false;
 				}
 				let data={
@@ -313,11 +307,13 @@ export default {
 				height:55px;
 				line-height: 55px;
 				font-size:12px;
-				.van-checkbox{
-					height:55px;
-				}
 				span{
 					color:#4896FB;
+				}
+				img{
+					width: 12px;
+					height: 12px;
+					margin-right: 8px;
 				}
 			}
 			.rightapply{

@@ -17,7 +17,7 @@
 					<p v-show="isshow">
 						<span>验证码:</span>
 						<input type="number" @focus="getFocus" v-model="verification" style="width:140px;" oninput='if(value.length>6)value=value.slice(0,6)'>
-						<i style='color:#4697FB;padding:2px 0 0 8px;border-left:1px solid #4597fb;' @click="obtain()&&flag">{{content}}</i>
+						<i style='color:#4697FB;padding:2px 0 0 8px;border-left:1px solid #4597fb;' @click="flag&&obtain()">{{content}}</i>
 					</p>
 					<p>
 						<span>姓名:</span>
@@ -164,6 +164,7 @@ export default {
 			}
 			statistics.click("stiflingborrow","getconfignum");
 			this.confims = false
+			let agent = navigator.userAgent.toLowerCase();
 			let params={
 				inviterCode:this.$route.query.inviterCode,
 				productCode:this.$route.query.productCode,
@@ -171,7 +172,8 @@ export default {
 				verifyCode:this.verification,
 				userName :this.userName,
 				idCard:this.idCard,
-				adNameSecond:this.city
+				adNameSecond:this.city,
+				userAgent:agent
 			}
 			if(this.$route.query.productType){
 				params.productType = this.$route.query.productType
@@ -196,16 +198,22 @@ export default {
 								message:'提交申请成功',
 								duration:800
 							})
-							this.$router.push('/relatedproducts?disbaled='+encodeURI('自营')+'&'+'index='+2)
+							this.$router.push('/relatedproducts?disbaled='+encodeURI('自营贷款')+'&'+'index='+2)
 						}else{
 							window.location.href = data.data.jumpUrl
 						}
 					}
 				}else{
+					this.deleteTime()
+					this.content='获取验证码'
 					this.confims = true
+					this.flag = true
 				}
 			}).catch(err=>{
+				this.deleteTime()
+				this.content='获取验证码'
 				this.confims = true
+				this.flag = true
 				console.log(err)
 			})
 		},
@@ -350,8 +358,10 @@ export default {
 		padding-bottom:25px;
 	}
 	.stiflimg{
-		width:100%;
 		height:157px;
+		margin:8px;
+		border-radius: 5px;
+		overflow: hidden;
 		img{
 			width:100%;
 			height:100%;
@@ -427,7 +437,7 @@ export default {
 			padding-left:30px;
 			margin-left:-22px;
 			width:164px;
-			height:35px;
+			height:34px;
 		}
 		img{
 			width:35px;height:36px;border-radius: 50%;
